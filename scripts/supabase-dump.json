@@ -1,0 +1,1387 @@
+{
+  "site_config": [
+    {
+      "id": "e46bd4b2-62c8-4902-b3ba-ec6331a30200",
+      "nom_complet": "Olivier Tousche",
+      "image_profil_url": "http://www.image-heberg.fr/files/17738354042738634562.png",
+      "image_profil_alt": "Olivier Touche",
+      "created_at": "2025-12-19T16:03:46.138451+00:00",
+      "updated_at": "2026-01-16T17:11:07.202104+00:00",
+      "linkedin_url": "https://www.linkedin.com/in/olivier-tousche-a6160b122/"
+    }
+  ],
+  "navigation": [
+    {
+      "id": "cfd38c41-f916-4425-a3e4-927e1f42e364",
+      "label": "About",
+      "section_id": "about",
+      "ordre": 1,
+      "created_at": "2025-12-19T16:03:46.138451+00:00"
+    },
+    {
+      "id": "09f7a974-5143-4af8-a1d2-7e10f77ed85f",
+      "label": "Work",
+      "section_id": "parcours",
+      "ordre": 2,
+      "created_at": "2025-12-19T16:03:46.138451+00:00"
+    },
+    {
+      "id": "b4dde5a5-ba23-40f8-98a7-1172e052a8f9",
+      "label": "Contact",
+      "section_id": "contact",
+      "ordre": 3,
+      "created_at": "2025-12-19T16:03:46.138451+00:00"
+    }
+  ],
+  "hero_section": [
+    {
+      "id": "a3153cfa-3519-49f7-823f-a4624cebf82b",
+      "titres_animes": [
+        "Product",
+        "Service",
+        "UX",
+        "Vibe Coding",
+        "Dad &"
+      ],
+      "titre_fixe": "Designer.",
+      "description": "De l'identification des irritants aux tests utilisateurs, je conçois des <strong class=\"font-semibold text-gray-700\">expériences produit</strong> et de service centrées utilisateurs, en articulant <strong class=\"font-semibold text-gray-700\">stratégie, recherche et design</strong>.",
+      "created_at": "2025-12-19T16:03:46.138451+00:00",
+      "updated_at": "2025-12-19T16:03:46.138451+00:00"
+    }
+  ],
+  "methodologie": [
+    {
+      "id": "1a0ce77c-7c66-4efb-b8fa-71c1c885a4e2",
+      "titre_section": "Methodologie",
+      "paragraphe_principal": "Je conçois le design comme un <strong class=\"font-semibold text-gray-700\">levier de clarification</strong>, un outil d'aide à la decision. Face à la complexité des produits et des services, ma démarche vise à rendre les <strong class=\"font-semibold text-gray-700\">enjeux lisibles</strong>, à aligner les équipes et à concevoir des expériences utiles, <strong class=\"font-semibold text-gray-700\">cohérentes et centrées utilisateurs</strong>.",
+      "paragraphe_secondaire": "",
+      "created_at": "2025-12-19T16:03:46.138451+00:00",
+      "updated_at": "2025-12-19T20:46:29.443071+00:00"
+    }
+  ],
+  "methodologie_blocs": [
+    {
+      "id": "b00fa8e5-fee0-4758-a9f3-07d70d0fd9a1",
+      "titre": "Comprendre",
+      "description": "Chaque projet débute par une phase d'exploration destinée à clarifier les enjeux et à comprendre les usages réels. Recherche utilisateur, analyse des irritants, cadrage produit et alignement des parties prenantes permettent de poser un socle commun et de définir des objectifs clairs et partagés.",
+      "ordre": 1,
+      "created_at": "2025-12-19T20:46:46.152973+00:00"
+    },
+    {
+      "id": "9ecc6445-3f5e-404d-b240-af7a288619f1",
+      "titre": "Concevoir",
+      "description": "À partir de ces enseignements, je conçois des solutions progressives et pragmatiques. Wireframes, parcours, prototypes et itérations successives transforment des problématiques complexes en expériences lisibles et cohérentes, en collaboration étroite avec les équipes produit et techniques.",
+      "ordre": 2,
+      "created_at": "2025-12-19T20:46:46.152973+00:00"
+    },
+    {
+      "id": "f9c3d1ba-ce39-4910-840e-535bdf62b372",
+      "titre": "Valider",
+      "description": "Les hypothèses de conception sont systématiquement confrontées au réel. Tests utilisateurs, retours terrain et ajustements continus permettent de sécuriser les décisions et de construire des solutions utiles, viables et pérennes.",
+      "ordre": 3,
+      "created_at": "2025-12-19T20:46:46.152973+00:00"
+    }
+  ],
+  "section_titres": [
+    {
+      "id": "1b7cad70-0e4b-4a7c-ae0b-945aac66b0e6",
+      "section_id": "parcours",
+      "titre": "Experience professionnelle",
+      "created_at": "2025-12-19T16:03:46.138451+00:00",
+      "updated_at": "2025-12-19T16:03:46.138451+00:00"
+    },
+    {
+      "id": "c1292bb4-6e19-44e4-af42-4262deea2023",
+      "section_id": "contact",
+      "titre": "Contact",
+      "created_at": "2025-12-19T16:03:46.138451+00:00",
+      "updated_at": "2025-12-19T16:03:46.138451+00:00"
+    }
+  ],
+  "contact_info": [
+    {
+      "id": "37ca9aae-15e1-474c-8842-79a164fd7d1c",
+      "email_label": "Email",
+      "email_value": "otousche@gmail.com",
+      "linkedin_label": "LinkedIn",
+      "linkedin_texte": "Olivier Tousche",
+      "linkedin_url": "https://www.linkedin.com/in/olivier-tousche-a6160b122/",
+      "cv_label": "CV",
+      "cv_texte": "Télécharger mon CV",
+      "cv_url": "/Olivier_Tousche_CV_compressed.pdf",
+      "telephone_label": "Téléphone",
+      "telephone_value": "+33 6 78 19 88 88",
+      "created_at": "2025-12-19T16:03:46.138451+00:00",
+      "updated_at": "2025-12-19T16:03:46.138451+00:00"
+    }
+  ],
+  "ui_texts": [
+    {
+      "id": "ef6d686d-f1ff-412d-b545-a2fc92002fba",
+      "cle": "chargement",
+      "texte": "Chargement...",
+      "created_at": "2025-12-19T16:03:46.138451+00:00",
+      "updated_at": "2025-12-19T16:03:46.138451+00:00"
+    },
+    {
+      "id": "6e9b2c1b-d481-4b9c-a596-085ba6fdb2f0",
+      "cle": "back_button",
+      "texte": "BACK",
+      "created_at": "2025-12-19T16:03:46.138451+00:00",
+      "updated_at": "2025-12-19T16:03:46.138451+00:00"
+    },
+    {
+      "id": "a6917c0b-7c01-42e1-8060-73721993af0a",
+      "cle": "experience_non_trouvee",
+      "texte": "Expérience non trouvée",
+      "created_at": "2025-12-19T16:03:46.138451+00:00",
+      "updated_at": "2025-12-19T16:03:46.138451+00:00"
+    }
+  ],
+  "skills_tags": [
+    {
+      "id": "2c5c18ce-a05e-4d56-bd32-4dcc1fdd7166",
+      "nom": "User research",
+      "ordre": 1,
+      "visible": true,
+      "created_at": "2025-12-19T17:09:56.265253+00:00"
+    },
+    {
+      "id": "579d2ee2-e64c-4ef0-a7e1-d02d36c970f7",
+      "nom": "Prototyping",
+      "ordre": 2,
+      "visible": true,
+      "created_at": "2025-12-19T17:09:56.265253+00:00"
+    },
+    {
+      "id": "8afbb8d2-2f2d-4248-b266-cd07731b0c52",
+      "nom": "Wireframe",
+      "ordre": 3,
+      "visible": true,
+      "created_at": "2025-12-19T17:09:56.265253+00:00"
+    },
+    {
+      "id": "c60545bf-89c5-49a6-9cd2-9fd987aec42b",
+      "nom": "User tests",
+      "ordre": 4,
+      "visible": true,
+      "created_at": "2025-12-19T17:09:56.265253+00:00"
+    }
+  ],
+  "experiences": [
+    {
+      "id": "7fdd9044-21c5-441e-a4f0-6512062d6c7a",
+      "titre": "Product Designer",
+      "annee": "2021-2022",
+      "description": "Designed mobile and web experiences for fintech products, conducted user testing and iterative improvements.",
+      "imageurl": "https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "ordre": 2,
+      "created_at": "2025-12-02T09:25:04.580314+00:00",
+      "entreprise": "Oodrive",
+      "logourl": "https://www.oodrive.com/wp-content/uploads/2023/01/LOGO-OODRIVE-2022-noir.svg",
+      "hero_image_url": "/Hero.png",
+      "project_title": "Conception et amélioration continue des solutions cloud sécurisées",
+      "role_duration": "2021-2022 • 1 an",
+      "product_name": "Oodrive",
+      "is_clickable": false
+    },
+    {
+      "id": "7675f824-2a6e-46af-9cd3-de210eab6053",
+      "titre": "UX Designer",
+      "annee": "2018-2021",
+      "description": "Created user-centered designs for e-commerce platforms, developed wireframes and high-fidelity mockups.",
+      "imageurl": "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "ordre": 3,
+      "created_at": "2025-12-02T09:25:04.580314+00:00",
+      "entreprise": "WeDigitalGarden",
+      "logourl": "https://d1hbpr09pwz0sk.cloudfront.net/logo_url/wedigitalgarden-bc0d8be9",
+      "hero_image_url": "/Hero.png",
+      "project_title": "Design UX pour des plateformes e-commerce et applications web",
+      "role_duration": "2018-2021 • 3 ans",
+      "product_name": "WeDigitalGarden",
+      "is_clickable": false
+    },
+    {
+      "id": "6e26f486-10bb-4cd5-bfa2-13eed39537a1",
+      "titre": "Junior Designer",
+      "annee": "2017-2018",
+      "description": "Supported design team with research, prototyping, and visual design for various client projects.",
+      "imageurl": "https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "ordre": 4,
+      "created_at": "2025-12-02T09:25:04.580314+00:00",
+      "entreprise": "Logitech",
+      "logourl": "https://logo-marque.com/wp-content/uploads/2020/11/Logitech-Logo.png",
+      "hero_image_url": "/Hero.png",
+      "project_title": "Support design et recherche pour produits tech",
+      "role_duration": "2017-2018 • 1 an",
+      "product_name": "Logitech",
+      "is_clickable": false
+    },
+    {
+      "id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "titre": "Vibe Codeur",
+      "annee": "2025-2026",
+      "description": "Equinox est un studio indépendant développant Altered, un jeu de cartes à collectionner nouvelle génération, pensé dès l'origine comme un écosystème phygital associant cartes physiques et services digitaux avancés.\n\nLe projet a connu un succès majeur lors de sa campagne Kickstarter, validant fortement la proposition de valeur et donnant naissance à une communauté internationale de joueurs très engagée. Ce succès a rapidement placé l'équipe dans un contexte de forte exposition publique, avec des deadlines serrées, des enjeux de passage à l'échelle et un haut niveau d'exigence sur la qualité du produit.",
+      "imageurl": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "ordre": 0,
+      "created_at": "2025-12-02T09:25:04.580314+00:00",
+      "entreprise": "Go Moonbound",
+      "logourl": "/go-moonbound-thumbnail.png",
+      "hero_image_url": "http://www.image-heberg.fr/files/17738695331006044367.png",
+      "project_title": "Go MoonBound - Visualiser vos performances Strava d'une autre manière!",
+      "role_duration": "2 semaines",
+      "product_name": "Go Moonbound",
+      "is_clickable": true
+    },
+    {
+      "id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "titre": "Service Designer",
+      "annee": "2022-2025",
+      "description": "Écosystème phygital pour un jeu de cartes à collectionner nouvelle génération",
+      "imageurl": "/altered_homepage_push_background-scaled.jpg",
+      "ordre": 1,
+      "created_at": "2026-03-17T14:48:09.591612+00:00",
+      "entreprise": "Equinox",
+      "logourl": "/images.webp",
+      "hero_image_url": "http://www.image-heberg.fr/files/17738358241041540869.jpg",
+      "project_title": "Altered — Écosystème phygital pour un jeu de cartes à collectionner",
+      "role_duration": "Service Designer · 2021-2025",
+      "product_name": "Altered",
+      "is_clickable": true
+    }
+  ],
+  "experience_content_blocks": [
+    {
+      "id": "c7607257-53d1-4216-af3e-2bd378ec8acd",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 1,
+      "type": "heading",
+      "content": {
+        "text": "Context",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:48:34.580705+00:00",
+      "updated_at": "2026-03-17T14:48:34.580705+00:00"
+    },
+    {
+      "id": "cefed2c7-d14e-4efa-9ac3-4fd05864afdd",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 3,
+      "type": "heading",
+      "content": {
+        "text": "Vision produit & Stratégie",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:49:09.169965+00:00",
+      "updated_at": "2026-03-18T19:52:23.973954+00:00"
+    },
+    {
+      "id": "cec3cff4-6761-42d5-ad8d-e3e4962f591d",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 7,
+      "type": "text",
+      "content": {
+        "text": "Mais ce qui change le plus, c'est la posture. On passe d'un métier de prescription à quelque chose de plus proche de la sculpture — on observe son œuvre prendre forme en direct, on teste, on ajuste au geste, on expérimente le produit réel plutôt qu'une simulation de celui-ci. L'intention et l'exécution ne font plus qu'un."
+      },
+      "visible": true,
+      "created_at": "2026-03-19T10:03:05.274192+00:00",
+      "updated_at": "2026-03-19T10:31:40.841796+00:00"
+    },
+    {
+      "id": "4f28c141-ac60-4c18-8fb8-8253c8e13c9b",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 11,
+      "type": "image",
+      "content": {
+        "alt": "Cursor + Claude Code + Strava",
+        "url": "/logo.png"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T11:13:50.916905+00:00",
+      "updated_at": "2026-03-19T11:13:50.916905+00:00"
+    },
+    {
+      "id": "2a9e72ea-92a5-4dd1-81b0-a22cdc4b31ac",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 5,
+      "type": "text",
+      "content": {
+        "text": "Face à la complexité du produit et à la pression des délais, j'ai défendu un plan de déploiement en trois temps, conçu pour aligner produit, design et tech sur une vision commune de la progression des usages.",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:49:09.169965+00:00",
+      "updated_at": "2026-03-20T14:01:03.76972+00:00"
+    },
+    {
+      "id": "4fa5b9be-797c-4fe3-8b14-939c9f14e82e",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 2,
+      "type": "text",
+      "content": {
+        "text": "En 2026, le vibe coding apporte une nouvelle façon de travailler en tant que Product Designer."
+      },
+      "visible": true,
+      "created_at": "2026-03-19T10:03:05.274192+00:00",
+      "updated_at": "2026-03-19T10:03:05.274192+00:00"
+    },
+    {
+      "id": "b949d9ca-5b5c-46b2-836b-f6749b403e1e",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 3,
+      "type": "text",
+      "content": {
+        "text": "Pendant des années, le workflow reposait sur une séparation stricte des rôles : le designer prescrit, l'ingénieur exécute. Cela engendrait de la friction — du temps perdu, de la traduction, de la perte. L'idée initiale pouvait se retrouver diluée à chaque transfert, et une attention toute particulière était nécessaire pour s'assurer que le résultat final restait aligné avec l'intention de départ."
+      },
+      "visible": true,
+      "created_at": "2026-03-19T10:03:05.274192+00:00",
+      "updated_at": "2026-03-19T10:03:05.274192+00:00"
+    },
+    {
+      "id": "0d180ed8-70bc-485b-a37d-c83427fed55e",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 23,
+      "type": "text",
+      "content": {
+        "text": "Le premiers utilisateurs sont déja la! et toi, où en es-tu ?  Pour le savoir, rends toi sur https://gomoonbound.com !"
+      },
+      "visible": true,
+      "created_at": "2026-03-23T09:31:44.547783+00:00",
+      "updated_at": "2026-03-23T09:40:55.743506+00:00"
+    },
+    {
+      "id": "b1f64a3a-6947-436a-98d6-6386ddc34a21",
+      "experience_id": "7fdd9044-21c5-441e-a4f0-6512062d6c7a",
+      "ordre": 1,
+      "type": "heading",
+      "content": {
+        "text": "Context",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:35.938889+00:00",
+      "updated_at": "2026-03-19T13:12:35.938889+00:00"
+    },
+    {
+      "id": "d90abdfa-6c69-43d5-8c6f-823a6e36c662",
+      "experience_id": "7fdd9044-21c5-441e-a4f0-6512062d6c7a",
+      "ordre": 2,
+      "type": "text",
+      "content": {
+        "text": "Oodrive est un acteur majeur européen des solutions de stockage et de partage de données sécurisées pour les entreprises. En tant que Product Designer, j'ai travaillé sur l'amélioration continue des interfaces web et mobile, en collaboration étroite avec les équipes produit et développement.",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:35.938889+00:00",
+      "updated_at": "2026-03-19T13:12:35.938889+00:00"
+    },
+    {
+      "id": "25cbb470-b102-4e35-ab08-1ed916fd7a39",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 5,
+      "type": "text",
+      "content": {
+        "text": "Avec des outils comme Claude Code ou Cursor, ce circuit disparaît. Le designer construit lui-même, teste en local des interactions complexes, des API, des logiques métier — des choses impossibles à vraiment valider sur une maquette Figma. Les tâches répétitives à faible valeur pour le Product Designer sont confiées à des agents IA dédiés. Le temps récupéré va là où il a de la valeur : la réflexion, le cadrage, les choix qui font le produit."
+      },
+      "visible": true,
+      "created_at": "2026-03-19T10:03:05.274192+00:00",
+      "updated_at": "2026-03-19T10:28:34.322079+00:00"
+    },
+    {
+      "id": "8b214313-0d2c-447b-b92e-5538d3282125",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 26,
+      "type": "text",
+      "content": {
+        "text": "<strong>De nouveaux pays ont rejoint l'aventure, la scène compétitive s'est structurée, et le premier championnat du monde s'est tenu en juin 2025. La communauté, toujours plus active, continue de porter le projet. Aujourd'hui, la sixième extension est en cours de financement participatif — et sortira dans le courant de l'année.</strong>",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:50:29.831665+00:00",
+      "updated_at": "2026-03-23T10:01:30.950977+00:00"
+    },
+    {
+      "id": "144f2bb5-64e1-4034-85d1-a57bcfe50b18",
+      "experience_id": "7fdd9044-21c5-441e-a4f0-6512062d6c7a",
+      "ordre": 3,
+      "type": "divider",
+      "content": {},
+      "visible": true,
+      "created_at": "2026-03-19T13:12:35.938889+00:00",
+      "updated_at": "2026-03-19T13:12:35.938889+00:00"
+    },
+    {
+      "id": "962b2ad9-8e62-4e12-933b-7f48654fff00",
+      "experience_id": "7fdd9044-21c5-441e-a4f0-6512062d6c7a",
+      "ordre": 4,
+      "type": "heading",
+      "content": {
+        "text": "Missions principales",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:35.938889+00:00",
+      "updated_at": "2026-03-19T13:12:35.938889+00:00"
+    },
+    {
+      "id": "8ce05776-72ee-41d8-92a2-ee21944c0bf4",
+      "experience_id": "7fdd9044-21c5-441e-a4f0-6512062d6c7a",
+      "ordre": 5,
+      "type": "bullet_list",
+      "content": {
+        "items": [
+          "Refonte des interfaces utilisateur pour améliorer l'expérience de partage de fichiers",
+          "Conception de nouveaux parcours utilisateurs pour les fonctionnalités de collaboration",
+          "Participation aux tests utilisateurs et analyse des retours",
+          "Création de design systems et documentation des composants",
+          "Collaboration avec les équipes de développement pour garantir la faisabilité technique"
+        ]
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:35.938889+00:00",
+      "updated_at": "2026-03-19T13:12:35.938889+00:00"
+    },
+    {
+      "id": "2a295dfa-8634-4716-966d-4216fcd403cf",
+      "experience_id": "7fdd9044-21c5-441e-a4f0-6512062d6c7a",
+      "ordre": 6,
+      "type": "divider",
+      "content": {},
+      "visible": true,
+      "created_at": "2026-03-19T13:12:35.938889+00:00",
+      "updated_at": "2026-03-19T13:12:35.938889+00:00"
+    },
+    {
+      "id": "b2a2f0cc-ab5a-419a-926e-5fe19210b156",
+      "experience_id": "7fdd9044-21c5-441e-a4f0-6512062d6c7a",
+      "ordre": 7,
+      "type": "heading",
+      "content": {
+        "text": "Approche & Méthodologie",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:35.938889+00:00",
+      "updated_at": "2026-03-19T13:12:35.938889+00:00"
+    },
+    {
+      "id": "5dfe8014-a6aa-44cc-a744-64e863665784",
+      "experience_id": "7fdd9044-21c5-441e-a4f0-6512062d6c7a",
+      "ordre": 8,
+      "type": "text",
+      "content": {
+        "text": "Mon travail s'est articulé autour d'une approche user-centric, en mettant l'accent sur la compréhension des besoins des utilisateurs professionnels. J'ai régulièrement conduit des sessions de recherche utilisateur et d'tests d'usabilité pour valider les hypothèses de design.",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:35.938889+00:00",
+      "updated_at": "2026-03-19T13:12:35.938889+00:00"
+    },
+    {
+      "id": "6ff6a930-f693-4169-8f86-3c298d2c7baa",
+      "experience_id": "7fdd9044-21c5-441e-a4f0-6512062d6c7a",
+      "ordre": 9,
+      "type": "divider",
+      "content": {},
+      "visible": true,
+      "created_at": "2026-03-19T13:12:35.938889+00:00",
+      "updated_at": "2026-03-19T13:12:35.938889+00:00"
+    },
+    {
+      "id": "c2dfa90a-c841-4ded-bd07-a445a0ba96d3",
+      "experience_id": "7fdd9044-21c5-441e-a4f0-6512062d6c7a",
+      "ordre": 10,
+      "type": "heading",
+      "content": {
+        "text": "Impact & Résultats",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:35.938889+00:00",
+      "updated_at": "2026-03-19T13:12:35.938889+00:00"
+    },
+    {
+      "id": "c1c94cbd-8940-4d9d-8e11-064601d0b857",
+      "experience_id": "7fdd9044-21c5-441e-a4f0-6512062d6c7a",
+      "ordre": 11,
+      "type": "text",
+      "content": {
+        "text": "Les améliorations apportées ont contribué à une meilleure satisfaction utilisateur et à une réduction significative du temps d'apprentissage pour les nouvelles fonctionnalités. La mise en place d'un design system cohérent a également permis d'accélérer les cycles de développement.",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:35.938889+00:00",
+      "updated_at": "2026-03-19T13:12:35.938889+00:00"
+    },
+    {
+      "id": "7bc9812b-ea59-4731-8214-34d22fd9d78f",
+      "experience_id": "6e26f486-10bb-4cd5-bfa2-13eed39537a1",
+      "ordre": 11,
+      "type": "text",
+      "content": {
+        "text": "Cette première expérience professionnelle a été déterminante dans ma carrière. Elle m'a permis d'acquérir les bases méthodologiques du design centré utilisateur et de développer des soft skills essentiels comme la communication en équipe, la gestion de feedback et l'adaptabilité.",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:13:18.23514+00:00",
+      "updated_at": "2026-03-19T13:13:18.23514+00:00"
+    },
+    {
+      "id": "f2d397a7-66f4-4fd3-ba86-4374a189f8aa",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 24,
+      "type": "text",
+      "content": {
+        "text": "Depuis 2021, Altered est passé par toutes les phases d'un produit ambitieux : campagne Kickstarter, première release, puis livraisons successives en suivant le plan défini. À chaque étape, le produit a tenu ses promesses — et la communauté a répondu présente.\n\nAujourd'hui, après 3 ans de développement, les chiffres parlent d'eux-mêmes :",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:50:29.831665+00:00",
+      "updated_at": "2026-03-23T10:01:30.950977+00:00"
+    },
+    {
+      "id": "e2fcde20-ab13-4342-8069-09dbcd934675",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 8,
+      "type": "section_horizontal",
+      "content": {
+        "subtitle": "Meet the Game : Connecter le digital au jeu et aux usages cœur",
+        "image_alt": "Temps 2 - Meet the Game",
+        "image_url": "http://www.image-heberg.fr/files/17738335903243946195.png",
+        "intro_text": "L'univers approprié, le digital devait devenir un vrai prolongement du jeu — facilitant la pratique, renforçant les liens entre joueurs et donnant vie à une scène compétitive naissante.",
+        "heading_text": "Temps 2",
+        "text_content": "• Outils de gameplay\n• Gestion d'événements et de tournois\n• Gamification de l'expérience\n• Fonctionnalités sociales et communautaires\n• Intégration des boutiques partenaires\n• Optimisation des parcours pour les joueurs réguliers",
+        "heading_level": 3,
+        "image_position": "left",
+        "text_alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:49:09.169965+00:00",
+      "updated_at": "2026-03-23T09:50:05.350655+00:00"
+    },
+    {
+      "id": "0785ad59-fd94-4ad4-ae62-6986c6fb78e2",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 8,
+      "type": "text",
+      "content": {
+        "text": "Ce projet documente cette façon de travailler."
+      },
+      "visible": true,
+      "created_at": "2026-03-19T10:03:05.274192+00:00",
+      "updated_at": "2026-03-19T10:31:40.841796+00:00"
+    },
+    {
+      "id": "8d6dbfa7-119b-45d5-a4d2-39156d0c690a",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 15,
+      "type": "heading",
+      "content": {
+        "text": "Process",
+        "level": 2
+      },
+      "visible": true,
+      "created_at": "2026-03-19T11:50:14.45953+00:00",
+      "updated_at": "2026-03-19T11:50:14.45953+00:00"
+    },
+    {
+      "id": "424bff50-aa3d-4128-b73b-63df3db0f9ea",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 10,
+      "type": "section_horizontal",
+      "content": {
+        "subtitle": "Meet the Market : Activer l'économie et les échanges à l'échelle",
+        "image_alt": "Temps 3 - Meet the Market",
+        "image_url": "http://www.image-heberg.fr/files/17738320052668649868.png",
+        "intro_text": "Les usages installés, la communauté engagée, il était temps d'activer la dimension économique du produit — dans un cadre sécurisé, conforme à l'international, et pensé pour accompagner la croissance du projet sur le long terme.",
+        "heading_text": "Temps 3",
+        "text_content": "• Cagnotte intégrée et gestion des flux financiers\n• Échanges et transactions entre joueurs\n• Prise en compte des contraintes réglementaires et fiscales\n• Sécurisation des parcours de paiement\n• Services à valeur ajoutée autour de la collection",
+        "heading_level": 3,
+        "image_position": "left",
+        "text_alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:49:09.169965+00:00",
+      "updated_at": "2026-03-23T09:57:57.04998+00:00"
+    },
+    {
+      "id": "332624a9-8f0b-4ea6-8a2d-b9bc9d3f46d7",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 22,
+      "type": "heading",
+      "content": {
+        "text": "Conclusion",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:50:29.831665+00:00",
+      "updated_at": "2026-03-23T10:01:30.950977+00:00"
+    },
+    {
+      "id": "81cfdbd5-638c-49d7-8bc3-d17d6c4578f5",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 23,
+      "type": "heading",
+      "content": {
+        "text": "Un produit vivant, une communauté qui ne cesse de grandir",
+        "level": 3,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:50:29.831665+00:00",
+      "updated_at": "2026-03-23T10:01:30.950977+00:00"
+    },
+    {
+      "id": "3e1e744e-bd82-471a-8282-bb440bdc7bba",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 18,
+      "type": "text",
+      "content": {
+        "text": "Une fois le prompt prêt, Claude Code prend le relais et livre en local. Je teste directement le produit réel — pas une maquette, pas un prototype — et j'itère sur ce que je vois et ressens. La boucle test → ajustement → nouvelle livraison locale tourne jusqu'à ce que le produit soit prêt. Puis déploiement.\nZéro handoff. Zéro ticket. De l'intention à la production, en autonomie complète."
+      },
+      "visible": true,
+      "created_at": "2026-03-19T11:50:14.45953+00:00",
+      "updated_at": "2026-03-19T11:53:00.886269+00:00"
+    },
+    {
+      "id": "bfd7a59e-9aac-4a87-a471-2d455f66ca68",
+      "experience_id": "7675f824-2a6e-46af-9cd3-de210eab6053",
+      "ordre": 1,
+      "type": "heading",
+      "content": {
+        "text": "Context",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:59.699017+00:00",
+      "updated_at": "2026-03-19T13:12:59.699017+00:00"
+    },
+    {
+      "id": "bda69e0d-5853-4574-8542-2319057b05b7",
+      "experience_id": "7675f824-2a6e-46af-9cd3-de210eab6053",
+      "ordre": 2,
+      "type": "text",
+      "content": {
+        "text": "WeDigitalGarden est une agence digitale spécialisée dans la création d'expériences utilisateur pour des plateformes e-commerce et des applications web. Durant mes trois années en tant qu'UX Designer, j'ai eu l'opportunité de travailler sur des projets variés pour des clients de différents secteurs.",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:59.699017+00:00",
+      "updated_at": "2026-03-19T13:12:59.699017+00:00"
+    },
+    {
+      "id": "06cbccff-b0ff-4405-820f-3275c2f4bdb9",
+      "experience_id": "7675f824-2a6e-46af-9cd3-de210eab6053",
+      "ordre": 3,
+      "type": "divider",
+      "content": {},
+      "visible": true,
+      "created_at": "2026-03-19T13:12:59.699017+00:00",
+      "updated_at": "2026-03-19T13:12:59.699017+00:00"
+    },
+    {
+      "id": "48d71f69-b45c-41ed-89b7-f17c8a3845b2",
+      "experience_id": "7675f824-2a6e-46af-9cd3-de210eab6053",
+      "ordre": 4,
+      "type": "heading",
+      "content": {
+        "text": "Projets & Responsabilités",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:59.699017+00:00",
+      "updated_at": "2026-03-19T13:12:59.699017+00:00"
+    },
+    {
+      "id": "1085c0d9-0cb6-4554-94f3-b9c8c73e39b8",
+      "experience_id": "7675f824-2a6e-46af-9cd3-de210eab6053",
+      "ordre": 5,
+      "type": "bullet_list",
+      "content": {
+        "items": [
+          "Conception d'expériences utilisateur pour des sites e-commerce à forte conversion",
+          "Création de wireframes, prototypes interactifs et maquettes haute-fidélité",
+          "Animation d'ateliers de co-création avec les clients et les équipes",
+          "Réalisation d'audits UX et recommandations d'optimisation",
+          "Développement et maintenance de guidelines design pour plusieurs clients",
+          "Mentorat de designers juniors sur les méthodologies UX"
+        ]
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:59.699017+00:00",
+      "updated_at": "2026-03-19T13:12:59.699017+00:00"
+    },
+    {
+      "id": "2e12a201-4089-43e9-8e79-c83690902ca1",
+      "experience_id": "7675f824-2a6e-46af-9cd3-de210eab6053",
+      "ordre": 6,
+      "type": "divider",
+      "content": {},
+      "visible": true,
+      "created_at": "2026-03-19T13:12:59.699017+00:00",
+      "updated_at": "2026-03-19T13:12:59.699017+00:00"
+    },
+    {
+      "id": "1e63a693-ba2e-467a-9ed6-7ef5f7fd6fcf",
+      "experience_id": "7675f824-2a6e-46af-9cd3-de210eab6053",
+      "ordre": 7,
+      "type": "heading",
+      "content": {
+        "text": "Méthodologie",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:59.699017+00:00",
+      "updated_at": "2026-03-19T13:12:59.699017+00:00"
+    },
+    {
+      "id": "5c2329c4-d157-41f1-b9dc-1c2d10a6914b",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 12,
+      "type": "text",
+      "content": {
+        "text": "<strong>Ce découpage s'est révélé structurant bien au-delà du produit : repris par l'équipe marketing pour piloter sa relation avec la communauté, il a donné une cohérence narrative à chaque livraison, canalisé les attentes des joueurs autour de jalons clairs, et accompagné la montée en puissance du projet auprès d'une communauté déjà très engagée.</strong>",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:49:09.169965+00:00",
+      "updated_at": "2026-03-23T10:01:30.950977+00:00"
+    },
+    {
+      "id": "2f7ff61d-8572-44af-acff-8b09123d8447",
+      "experience_id": "7675f824-2a6e-46af-9cd3-de210eab6053",
+      "ordre": 8,
+      "type": "text",
+      "content": {
+        "text": "Mon approche s'est construite autour d'une méthodologie design thinking rigoureuse : recherche utilisateur approfondie, définition des personas, idéation collaborative, prototypage rapide et tests itératifs. Chaque projet était l'occasion d'affiner cette méthodologie en fonction des contraintes et objectifs spécifiques des clients.",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:59.699017+00:00",
+      "updated_at": "2026-03-19T13:12:59.699017+00:00"
+    },
+    {
+      "id": "10b8bbc3-4fc8-4f90-9b2e-3a407e401e02",
+      "experience_id": "7675f824-2a6e-46af-9cd3-de210eab6053",
+      "ordre": 9,
+      "type": "divider",
+      "content": {},
+      "visible": true,
+      "created_at": "2026-03-19T13:12:59.699017+00:00",
+      "updated_at": "2026-03-19T13:12:59.699017+00:00"
+    },
+    {
+      "id": "3e0c3119-412a-4ace-a07e-93f62fa24abb",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 4,
+      "type": "image",
+      "content": {
+        "alt": "Schéma du workflow itératif",
+        "url": "/itera.png"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T10:28:40.133643+00:00",
+      "updated_at": "2026-03-19T10:28:40.133643+00:00"
+    },
+    {
+      "id": "af571593-f56d-4ae1-9953-183554c8a417",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 16,
+      "type": "section_horizontal",
+      "content": {
+        "text": "Le process repose sur deux agents Claude aux rôles distincts, activés en séquence.\\nD'abord, un agent \"Senior Product Engineer\" — que j'utilise en amont pour cadrer le concept, challenger mes décisions produit, structurer le PRD et anticiper les contraintes techniques. Une phase de réflexion itérative, en boucle avec la définition du concept, jusqu'à ce que le brief soit solide.\\nEnsuite, un agent \"Prompt Master\" — chargé de traduire ce brief en instructions précises pour Claude Code. Son rôle : formuler les prompts de façon à minimiser les allers-retours et maximiser la qualité du code généré dès la première passe.",
+        "imageAlt": "Diagramme du process avec agents Claude",
+        "imageUrl": "/yeye.png",
+        "imagePosition": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T11:53:00.886269+00:00",
+      "updated_at": "2026-03-19T11:57:23.02841+00:00"
+    },
+    {
+      "id": "5b7182bc-ba5f-41fa-9ff7-3a26f51c0185",
+      "experience_id": "7675f824-2a6e-46af-9cd3-de210eab6053",
+      "ordre": 10,
+      "type": "heading",
+      "content": {
+        "text": "Compétences développées",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:59.699017+00:00",
+      "updated_at": "2026-03-19T13:12:59.699017+00:00"
+    },
+    {
+      "id": "8303c832-f399-462a-8a32-c6f7b996e0c3",
+      "experience_id": "7675f824-2a6e-46af-9cd3-de210eab6053",
+      "ordre": 11,
+      "type": "text",
+      "content": {
+        "text": "Cette expérience m'a permis de développer une solide expertise en conception d'interfaces e-commerce, en optimisation de parcours de conversion, et en collaboration client. J'ai également renforcé mes compétences en facilitation d'ateliers et en présentation de concepts design à des audiences variées.",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:12:59.699017+00:00",
+      "updated_at": "2026-03-19T13:12:59.699017+00:00"
+    },
+    {
+      "id": "6d4935d9-0a1f-4f7d-a169-c41e1ef0c2d6",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 2,
+      "type": "section_vertical",
+      "content": {
+        "image_alt": "Altered Kickstarter Success",
+        "image_url": "http://www.image-heberg.fr/files/17738689354087614427.png",
+        "text_content": "<strong>Equinox est un studio indépendant développant Altered, un jeu de cartes à collectionner nouvelle génération, pensé dès l'origine comme un écosystème phygital associant cartes physiques et services digitaux avancés.</strong>\n\n[IMAGE]\n\nLe projet a connu un succès majeur lors de sa campagne Kickstarter — 14 997 contributeurs ont engagé 6 213 305 €, validant fortement la proposition de valeur et donnant naissance à une communauté internationale de joueurs très engagée. Ce succès a rapidement placé l'équipe dans un contexte de forte exposition publique, avec des deadlines serrées, des enjeux de passage à l'échelle et un haut niveau d'exigence sur la qualité du produit.",
+        "text_alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:48:34.580705+00:00",
+      "updated_at": "2026-03-19T14:00:59.48721+00:00"
+    },
+    {
+      "id": "9b485445-8b26-4f10-9919-c2819ad8a69a",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 16,
+      "type": "text",
+      "content": {
+        "text": "L'écosystème Altered repose sur deux flux financiers distincts — les transactions entre joueurs et nos services payants. Concevoir le système de paiement, c'était rendre ces mécaniques fluides et transparentes pour le joueur, tout en absorbant une complexité légale et technique réelle.",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:49:43.159243+00:00",
+      "updated_at": "2026-03-23T10:01:30.950977+00:00"
+    },
+    {
+      "id": "27035235-d354-4711-b39c-604aee928df1",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 25,
+      "type": "text",
+      "content": {
+        "text": "• 7 788 484 cartes scannées\n• 15+ pays couverts\n• +1 000 joueurs réunis lors de tournois\n• Des dizaines de milliers de comptes créés",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:50:29.831665+00:00",
+      "updated_at": "2026-03-23T10:01:30.950977+00:00"
+    },
+    {
+      "id": "3fa72d59-f826-44f7-af2c-6c5e88044641",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 17,
+      "type": "section_vertical",
+      "content": {
+        "subtitle": "Comprendre les usages et le marché",
+        "image_alt": "Explorer - Comprendre les usages",
+        "image_url": "http://www.image-heberg.fr/files/17738535782975082649.png",
+        "intro_text": "Les usages installés, la communauté engagée, il était temps d'activer la dimension économique du produit — dans un cadre sécurisé, conforme à l'international, et pensé pour accompagner la croissance du projet sur le long terme.",
+        "heading_text": "① Explorer",
+        "text_content": "Le projet m'a été confié via un cahier des charges rédigé par l'équipe dirigeante — posant les grandes orientations du service, ses objectifs et ses contraintes. Point de départ structurant, mais qui soulevait autant de questions qu'il n'en résolvait : nos cartes phygitales étaient-elles des biens physiques ou numériques ? Fallait-il un paiement direct ou une logique de cagnotte ? Le joueur devait-il passer par un panier ou payer au moment de l'action ? Comment la communauté percevait-elle ce type de service ?\n\n<strong>Pour ancrer ces décisions dans les usages réels, j'ai mené des entretiens utilisateurs à distance et en présentiel, animé des ateliers avec l'équipe décisionnaire, et conduit un benchmark du secteur et des acteurs pure-players. Ces différentes sources ont généré des learnings terrain, regroupés et synthétisés en insights clés — eux-mêmes mis en regard de nos grands principes de design pour orienter nos choix de conception.</strong>",
+        "heading_level": 3,
+        "text_alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:49:43.159243+00:00",
+      "updated_at": "2026-03-23T10:01:30.950977+00:00"
+    },
+    {
+      "id": "81a137ee-e92e-47d4-b9d5-c4af1e61f88f",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 13,
+      "type": "heading",
+      "content": {
+        "text": "Démarche et Méthodologie design",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:49:43.159243+00:00",
+      "updated_at": "2026-03-23T10:01:30.950977+00:00"
+    },
+    {
+      "id": "4e7ac381-d7eb-40c1-ad22-477325d648d6",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 4,
+      "type": "image",
+      "content": {
+        "alt": "Plan de déploiement en trois temps",
+        "url": "/3temps.png",
+        "width": "medium"
+      },
+      "visible": true,
+      "created_at": "2026-03-20T14:01:11.160348+00:00",
+      "updated_at": "2026-03-20T14:02:51.430495+00:00"
+    },
+    {
+      "id": "6b91d413-92a8-407a-8e5a-00a0dc9f2a49",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 7,
+      "type": "text",
+      "content": {
+        "text": "Pour mesurer le succès de Meet the Lore, trois métriques clés. Tout d'abord, le nombre de création de compte. Ensuite, le nombre de cartes scannées — signal fort d'appropriation du produit physique — Enfin, la lecture d'articles de lore, qui indique que le joueur s'immerge dans l'univers au-delà du simple onboarding.",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-23T09:50:05.350655+00:00",
+      "updated_at": "2026-03-23T09:50:05.350655+00:00"
+    },
+    {
+      "id": "256c8c88-747d-49cc-a0cb-9a2d6601c792",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 9,
+      "type": "text",
+      "content": {
+        "text": "Pour mesurer le succès de Meet the Game, trois métriques clés : le nombre d'événements et tournois organisés par les boutiques depuis notre plateforme, le taux d'utilisation des outils de gameplay — signal fort que le digital est devenu un vrai prolongement du jeu physique — et la fréquence de retour sur la plateforme, qui indique que les joueurs s'y retrouvent régulièrement dans leur pratique quotidienne.",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-23T09:57:57.04998+00:00",
+      "updated_at": "2026-03-23T09:57:57.04998+00:00"
+    },
+    {
+      "id": "035082b1-8905-4c57-98db-a2ada289742d",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 14,
+      "type": "text",
+      "content": {
+        "text": "<em>Double diamant appliqué à un cas concret : le système de paiement.</em>",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-18T09:36:35.641146+00:00",
+      "updated_at": "2026-03-23T10:01:30.950977+00:00"
+    },
+    {
+      "id": "87bc4e0b-eaa3-47e0-add2-ef95c3203927",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 20,
+      "type": "image",
+      "content": {
+        "alt": "Go Moonbound Demo",
+        "url": "/ezgif-7c9bb19094315f3a.gif",
+        "width": "full"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:50:03.694902+00:00",
+      "updated_at": "2026-04-03T09:59:22.854548+00:00"
+    },
+    {
+      "id": "820aa204-be93-400a-a0bc-a5e3ee318762",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 20,
+      "type": "text",
+      "content": {
+        "text": "Dès le premier prompt, l'effet est immédiat : une scène 3D fonctionnelle, connectée à l'API Strava, qui positionne l'utilisateur sur le trajet Terre → Lune. Pas une maquette. Un produit réel.\nLa suite : quelques sessions de debug, des ajustements d'affichage mobile, des itérations sur le rendu 3D, et l'ajout de nouvelles features au fil des retours. Achat du nom de domaine, création du repo GitHub, déploiement. En 2 semaines, https://gomoonbound.com est en ligne."
+      },
+      "visible": true,
+      "created_at": "2026-03-19T12:05:50.112899+00:00",
+      "updated_at": "2026-04-03T10:26:05.688262+00:00"
+    },
+    {
+      "id": "22bab25c-6e38-44ab-89ab-36bb6abee6ef",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 1,
+      "type": "heading",
+      "content": {
+        "text": "Context",
+        "level": 2
+      },
+      "visible": true,
+      "created_at": "2026-03-19T09:50:58.732402+00:00",
+      "updated_at": "2026-03-19T09:50:58.732402+00:00"
+    },
+    {
+      "id": "71f047bc-6e90-49be-ac97-85d54b662cf9",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 6,
+      "type": "image",
+      "content": {
+        "alt": "Schéma du flow Vibecoding",
+        "url": "/vibecod.png"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T10:31:46.129744+00:00",
+      "updated_at": "2026-03-19T10:31:46.129744+00:00"
+    },
+    {
+      "id": "f4da82de-e9b1-486b-b1ce-aba959c9b3b0",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 19,
+      "type": "heading",
+      "content": {
+        "text": "Résultats",
+        "level": 2
+      },
+      "visible": true,
+      "created_at": "2026-03-19T12:05:50.112899+00:00",
+      "updated_at": "2026-03-19T12:05:50.112899+00:00"
+    },
+    {
+      "id": "698201d7-6970-4ac1-af3c-dfa9d55ddcb8",
+      "experience_id": "6e26f486-10bb-4cd5-bfa2-13eed39537a1",
+      "ordre": 1,
+      "type": "heading",
+      "content": {
+        "text": "Context",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:13:18.23514+00:00",
+      "updated_at": "2026-03-19T13:13:18.23514+00:00"
+    },
+    {
+      "id": "7dc61e05-9863-4da0-8a26-1ce0f346c329",
+      "experience_id": "6e26f486-10bb-4cd5-bfa2-13eed39537a1",
+      "ordre": 2,
+      "type": "text",
+      "content": {
+        "text": "Logitech est un leader mondial dans la conception et la fabrication de périphériques informatiques et de produits technologiques. Mon rôle de Junior Designer m'a offert une première immersion dans le monde du design produit au sein d'une entreprise internationale reconnue.",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:13:18.23514+00:00",
+      "updated_at": "2026-03-19T13:13:18.23514+00:00"
+    },
+    {
+      "id": "23dd136a-849b-403a-9683-d0effaa4ecb3",
+      "experience_id": "6e26f486-10bb-4cd5-bfa2-13eed39537a1",
+      "ordre": 3,
+      "type": "divider",
+      "content": {},
+      "visible": true,
+      "created_at": "2026-03-19T13:13:18.23514+00:00",
+      "updated_at": "2026-03-19T13:13:18.23514+00:00"
+    },
+    {
+      "id": "aee5ef0d-31c3-4d26-80ff-741838e86133",
+      "experience_id": "6e26f486-10bb-4cd5-bfa2-13eed39537a1",
+      "ordre": 4,
+      "type": "heading",
+      "content": {
+        "text": "Apprentissage & Contributions",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:13:18.23514+00:00",
+      "updated_at": "2026-03-19T13:13:18.23514+00:00"
+    },
+    {
+      "id": "9c40bf61-2728-4afc-90be-5a0a56e4ff5a",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 22,
+      "type": "text",
+      "content": {
+        "text": "Seul frein : les requirements Strava pour ouvrir l'API au-delà d'un utilisateur. J'ai créé un agent Claude dédié pour préparer le dossier de validation et respecter les exigences de la plateforme. Apres soumission du dossier, une semaine aura suffit pour avoir un retour de Strava, m'ouvrant l'API pour 999 utilisateurs. Tu peux suivre ma propre progression ici : https://gomoonbound.com/share/2a1c034f-b5a4-4dce-b6f6-1d26bcea9a10",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T12:09:33.139262+00:00",
+      "updated_at": "2026-03-23T09:29:49.863651+00:00"
+    },
+    {
+      "id": "b0db2f7d-9896-4f37-85df-d7456e424e24",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 15,
+      "type": "image",
+      "content": {
+        "alt": "Schéma du double diamant",
+        "url": "http://www.image-heberg.fr/files/1773837938881494543.png",
+        "width": "full",
+        "caption": ""
+      },
+      "visible": true,
+      "created_at": "2026-03-18T11:22:47.11499+00:00",
+      "updated_at": "2026-03-23T10:01:30.950977+00:00"
+    },
+    {
+      "id": "d6e9fdc3-d7f5-4954-9784-19fc601e2292",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 9,
+      "type": "heading",
+      "content": {
+        "text": "Projet",
+        "level": 2
+      },
+      "visible": true,
+      "created_at": "2026-03-19T10:44:57.608549+00:00",
+      "updated_at": "2026-03-19T10:44:57.608549+00:00"
+    },
+    {
+      "id": "d42ad822-8051-45b9-a800-941a1e08961b",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 6,
+      "type": "section_horizontal",
+      "content": {
+        "subtitle": "Meet the Lore : Poser les fondations de l'univers et de l'identité joueur",
+        "image_alt": "Temps 1 - Meet the Lore",
+        "image_url": "http://www.image-heberg.fr/files/17738299951721555269.png",
+        "intro_text": "Altered est un univers riche et complexe — factions, Héros, personnages, Cartes. Avant d'activer la moindre mécanique de jeu ou logique économique, il fallait donner aux joueurs le temps et les outils pour s'y immerger, se l'approprier, et y construire leur identité.",
+        "heading_text": "Temps 1",
+        "text_content": "• Création et gestion du compte joueur\n• Découverte de l'univers, du lore et des factions\n• Premières briques de gestion de collection digitale\n• Revendication des cartes physiques via QR codes\n• Profils joueurs et éléments d'identité",
+        "heading_level": 3,
+        "image_position": "left",
+        "text_alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:49:09.169965+00:00",
+      "updated_at": "2026-03-20T14:01:03.76972+00:00"
+    },
+    {
+      "id": "b156e7d1-540f-43ce-8829-20e1c263b582",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 10,
+      "type": "text",
+      "content": {
+        "text": "Go Moonbound est un side project construit en autonomie complète, de la génération du premier prompt à la mise en production, en utilisant Cursor, Claude Code, et l'API Strava."
+      },
+      "visible": true,
+      "created_at": "2026-03-19T10:44:57.608549+00:00",
+      "updated_at": "2026-03-19T10:59:11.336964+00:00"
+    },
+    {
+      "id": "82b0d684-1935-4b30-b805-75f915fed6af",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 14,
+      "type": "text",
+      "content": {
+        "text": "Le défi était double. D'abord technique : connecter l'API Strava pour faire remonter des données réelles, et construire une expérience 3D interactive — impossible à vraiment valider sur une maquette Figma. Ensuite de méthode : aller vite. L'objectif n'était pas la perfection, c'était de mettre le produit entre les mains d'utilisateurs réels le plus tôt possible, pour obtenir des retours concrets et itérer."
+      },
+      "visible": true,
+      "created_at": "2026-03-19T10:44:57.608549+00:00",
+      "updated_at": "2026-03-19T11:13:50.916905+00:00"
+    },
+    {
+      "id": "7b43c4a7-ac26-4d86-8e12-7cd3ddaac90f",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 13,
+      "type": "text",
+      "content": {
+        "text": "Le concept : donner de l'émotion aux chiffres bruts. 10 000 km de vélo, c'est abstrait. Voir que tu es à 2,6% du chemin vers la Lune sur une scéne 3D, c'est autre chose. Via l'API Strava, chaque activité — course, vélo, natation, marche — s'additionne et te positionne quelque part dans l'espace, sur les 384 400 km qui séparent les deux astres."
+      },
+      "visible": true,
+      "created_at": "2026-03-19T10:44:57.608549+00:00",
+      "updated_at": "2026-03-19T11:18:46.467596+00:00"
+    },
+    {
+      "id": "294c1c5a-fd03-439b-85b4-6281ac071658",
+      "experience_id": "6e26f486-10bb-4cd5-bfa2-13eed39537a1",
+      "ordre": 5,
+      "type": "bullet_list",
+      "content": {
+        "items": [
+          "Support à l'équipe design sur la recherche utilisateur et les tests d'usabilité",
+          "Création de prototypes et maquettes pour des projets internes",
+          "Participation aux sessions de brainstorming et d'idéation produit",
+          "Assistance à la documentation des guidelines design",
+          "Veille concurrentielle et analyse des tendances UX/UI"
+        ]
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:13:18.23514+00:00",
+      "updated_at": "2026-03-19T13:13:18.23514+00:00"
+    },
+    {
+      "id": "268f42db-a6cc-4675-b622-319011e6e3c1",
+      "experience_id": "d1bfdd6d-1565-4e9a-b0a8-4bd583a208ab",
+      "ordre": 21,
+      "type": "image",
+      "content": {
+        "alt": "GoMoonbound dashboard",
+        "url": "/gomoonbound-dashboard.png",
+        "width": "auto"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T12:09:33.139262+00:00",
+      "updated_at": "2026-03-19T12:15:13.983669+00:00"
+    },
+    {
+      "id": "bc63f801-e664-41c5-9d1d-e5f5c6ecfd3d",
+      "experience_id": "6e26f486-10bb-4cd5-bfa2-13eed39537a1",
+      "ordre": 6,
+      "type": "divider",
+      "content": {},
+      "visible": true,
+      "created_at": "2026-03-19T13:13:18.23514+00:00",
+      "updated_at": "2026-03-19T13:13:18.23514+00:00"
+    },
+    {
+      "id": "86d0c9e2-9a6e-4c1a-86d8-8b8e776f3ec9",
+      "experience_id": "6e26f486-10bb-4cd5-bfa2-13eed39537a1",
+      "ordre": 7,
+      "type": "heading",
+      "content": {
+        "text": "Environnement d'apprentissage",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:13:18.23514+00:00",
+      "updated_at": "2026-03-19T13:13:18.23514+00:00"
+    },
+    {
+      "id": "dcc25301-3f76-4b89-9d25-ca1e60b7f44f",
+      "experience_id": "6e26f486-10bb-4cd5-bfa2-13eed39537a1",
+      "ordre": 8,
+      "type": "text",
+      "content": {
+        "text": "Travailler chez Logitech m'a permis de découvrir les processus de design au sein d'une grande organisation, d'apprendre à collaborer avec des équipes multidisciplinaires et internationales, et de comprendre l'importance de l'alignement entre les objectifs business et les besoins utilisateurs.",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:13:18.23514+00:00",
+      "updated_at": "2026-03-19T13:13:18.23514+00:00"
+    },
+    {
+      "id": "8419732b-3ebf-4baa-bd91-9bab6fb224bf",
+      "experience_id": "6e26f486-10bb-4cd5-bfa2-13eed39537a1",
+      "ordre": 9,
+      "type": "divider",
+      "content": {},
+      "visible": true,
+      "created_at": "2026-03-19T13:13:18.23514+00:00",
+      "updated_at": "2026-03-19T13:13:18.23514+00:00"
+    },
+    {
+      "id": "757afcd9-72c0-4749-8150-109fdd312269",
+      "experience_id": "6e26f486-10bb-4cd5-bfa2-13eed39537a1",
+      "ordre": 10,
+      "type": "heading",
+      "content": {
+        "text": "Fondations professionnelles",
+        "level": 2,
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-19T13:13:18.23514+00:00",
+      "updated_at": "2026-03-19T13:13:18.23514+00:00"
+    },
+    {
+      "id": "22cda76b-aa28-4f8f-91a4-3f6d0621febb",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 19,
+      "type": "section_vertical",
+      "content": {
+        "subtitle": "Des parcours simples pour des mécanismes complexes",
+        "image_alt": "Concevoir - Parcours simples",
+        "image_url": "http://www.image-heberg.fr/files/17738709562717472243.png",
+        "heading_text": "③ Concevoir",
+        "text_content": "J'ai démarré par des wireframes co-construits avec l'équipe tech, pour valider la faisabilité des parcours au regard des contraintes identifiées en amont. Une fois la logique fonctionnelle stabilisée, j'ai produit des maquettes haute fidélité testées directement auprès des utilisateurs finaux — pour m'assurer que la complexité du service ne transparaissait jamais dans l'expérience joueur. Tout au long de cette phase, je me suis assuré que chaque nouvel écran respectait le design system en vigueur, réalisé par notre UI designer, garantissant la cohérence visuelle du service avec le reste de l'écosystème Altered.\n\n<strong>La phase s'est conclue par une passation formelle à l'équipe tech : rédaction de la documentation fonctionnelle, traduction des choix de design en spécifications exploitables, et vérification qu'aucun angle mort ne subsistait avant le passage en développement.</strong>",
+        "heading_level": 3,
+        "text_alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:50:03.694902+00:00",
+      "updated_at": "2026-03-23T10:01:30.950977+00:00"
+    },
+    {
+      "id": "5ecfd1ee-04bb-4902-be5c-915d19a92bee",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 11,
+      "type": "text",
+      "content": {
+        "text": "Pour mesurer le succès de Meet the Market, trois métriques clés : le volume de transactions réalisées entre joueurs, le taux d'activation de la cagnotte et les services payants — signal fort que la communauté fait confiance au système de paiement — et le nombre de pays actifs sur la plateforme, qui valide la capacité du service à absorber les contraintes réglementaires à l'international.",
+        "alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-23T10:01:30.950977+00:00",
+      "updated_at": "2026-03-23T10:01:30.950977+00:00"
+    },
+    {
+      "id": "007da439-3fe7-4c31-8be2-8aed39a80c70",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 18,
+      "type": "section_vertical",
+      "content": {
+        "subtitle": "Poser les fondations légales et produit",
+        "image_alt": "Cadrer - Fondations légales",
+        "image_url": "http://www.image-heberg.fr/files/17738669862966691384.png",
+        "heading_text": "② Cadrer",
+        "text_content": "Le sujet se trouvait dans un flou juridique aux conséquences directes sur notre modèle économique : la nature de nos cartes phygitales conditionnait l'ensemble de notre fiscalité et de nos obligations légales à l'international.\n\n[IMAGE]\n\n<strong>J'ai identifié un cabinet d'avocats spécialisé pour nous accompagner sur ces questions, et collaboré étroitement avec notre prestataire de paiement pour aligner contraintes techniques et réglementaires avec les parcours à concevoir. Dans ce contexte, j'ai utilisé le design comme outil d'aide à la décision — en produisant des livrables clairs et en animant des ateliers d'alignement avec les équipes concernées, pour aider la direction à faire des choix structurants en ayant pleinement conscience de leurs implications produit, légales et économiques.</strong>",
+        "heading_level": 3,
+        "text_alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:49:43.159243+00:00",
+      "updated_at": "2026-03-26T09:59:09.146645+00:00"
+    },
+    {
+      "id": "d8bbbaae-2b32-48c5-8cb3-c679774228ca",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "ordre": 21,
+      "type": "section_vertical",
+      "content": {
+        "subtitle": "Un service conforme, lancé dans plusieurs pays",
+        "image_alt": "Déployer - Lancement international",
+        "image_url": "http://www.image-heberg.fr/files/17738365763352985434.png",
+        "heading_text": "④ Déployer",
+        "text_content": "Le service a été lancé simultanément dans plusieurs pays, chacun avec ses contraintes légales spécifiques absorbées côté produit — et conçu avec suffisamment de souplesse pour intégrer de nouveaux pays en cours de route, sans refonte des parcours. Un lancement qui s'est fait malgré de nombreux imprévus gérés en temps réel : ajustements réglementaires de dernière minute, contraintes techniques non anticipées, arbitrages produit sous pression. <strong>Résultat : une expérience fluide pour le joueur, une conformité réglementaire assurée à l'international, et des frictions de paiement réduites au minimum.</strong>\n\nAu-delà de la rédaction de la documentation technique à destination des développeurs, j'ai maintenu un wiki produit enrichissant une base de connaissances interne partagée.\n\n<img src=\"/doc.png\" alt=\"Wiki produit Altered\" style=\"max-width: 100%; height: auto; margin: 20px 0;\" />\n\nPensé comme un véritable produit interne, ce wiki centralisait les décisions, les itérations et les arbitrages réalisés tout au long du développement. Il permettait d'aligner durablement les équipes produit, design et tech autour d'une compréhension commune.\n\nChaque évolution de feature impliquait une mise à jour systématique de cette documentation, garantissant sa fiabilité et son adoption.\n\n<strong>La rédaction, la structuration et la diffusion de ce contenu faisaient partie intégrante de mon rôle, jusqu'à devenir une étape clé dans la livraison des fonctionnalités.</strong>",
+        "heading_level": 3,
+        "text_alignment": "left"
+      },
+      "visible": true,
+      "created_at": "2026-03-17T14:50:03.694902+00:00",
+      "updated_at": "2026-04-03T10:21:55.62261+00:00"
+    }
+  ],
+  "key_figures": [
+    {
+      "id": "d6237514-c264-49f9-bb6e-dcff635bf698",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "label": "Cartes scannées",
+      "value": "7 788 484",
+      "icon": "scan",
+      "ordre": 1,
+      "visible": true,
+      "created_at": "2026-03-17T14:50:50.685032+00:00",
+      "updated_at": "2026-03-17T14:50:50.685032+00:00"
+    },
+    {
+      "id": "128be0c3-783f-40fc-a1c7-32d7eb688170",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "label": "Pays couverts",
+      "value": "15+",
+      "icon": "globe",
+      "ordre": 2,
+      "visible": true,
+      "created_at": "2026-03-17T14:50:50.685032+00:00",
+      "updated_at": "2026-03-17T14:50:50.685032+00:00"
+    },
+    {
+      "id": "ced78212-6470-44cc-9cd6-bb052b810411",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "label": "Joueurs en tournois",
+      "value": "+1 000",
+      "icon": "users",
+      "ordre": 3,
+      "visible": true,
+      "created_at": "2026-03-17T14:50:50.685032+00:00",
+      "updated_at": "2026-03-17T14:50:50.685032+00:00"
+    },
+    {
+      "id": "10330640-e7cd-4300-a4f0-8b1e76ed4a52",
+      "experience_id": "2d6a87af-5529-49cf-9ca7-40ea04689ddf",
+      "label": "Comptes créés",
+      "value": "Dizaines de milliers",
+      "icon": "user-check",
+      "ordre": 4,
+      "visible": true,
+      "created_at": "2026-03-17T14:50:50.685032+00:00",
+      "updated_at": "2026-03-17T14:50:50.685032+00:00"
+    }
+  ]
+}
