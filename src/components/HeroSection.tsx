@@ -68,7 +68,7 @@ export default function HeroSection() {
           <div className="flex-1">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tight text-ink leading-tight mb-6 md:mb-8">
               <motion.span
-                className="inline-block"
+                className="block"
                 custom={0}
                 initial="hidden"
                 animate="visible"
@@ -79,9 +79,9 @@ export default function HeroSection() {
                   className="animate-blink inline-block w-[0.55ch] h-[0.85em] bg-accent align-baseline translate-y-[0.1em] mx-1"
                   aria-hidden="true"
                 ></span>
-              </motion.span>{' '}
+              </motion.span>
               <motion.span
-                className="inline-block"
+                className="block"
                 custom={1}
                 initial="hidden"
                 animate="visible"
