@@ -35,7 +35,7 @@ export default function HomePage() {
   }, [location]);
 
   return (
-    <div className="min-h-screen relative z-10">
+    <div className="bg-white min-h-screen">
       <Header />
       <main>
         <HeroSection />
