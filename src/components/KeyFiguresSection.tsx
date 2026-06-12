@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
-import { Users, Globe, TrendingUp, Award, Target, Zap, Scan, ArrowLeftRight } from 'lucide-react';
-import { supabase, KeyFigure } from '../lib/supabase';
+import { Users, Globe, TrendingUp, Award, Target, Zap, Scan, ArrowLeftRight, LucideIcon } from 'lucide-react';
+import { KeyFigure } from '../lib/content-types';
 
 interface KeyFiguresSectionProps {
-  experienceId: string;
+  figures: KeyFigure[];
 }
 
-const iconMap: { [key: string]: any } = {
+const iconMap: { [key: string]: LucideIcon } = {
   Users,
   Globe,
   TrendingUp,
@@ -17,57 +16,36 @@ const iconMap: { [key: string]: any } = {
   ArrowLeftRight,
 };
 
-export default function KeyFiguresSection({ experienceId }: KeyFiguresSectionProps) {
-  const [keyFigures, setKeyFigures] = useState<KeyFigure[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchKeyFigures();
-  }, [experienceId]);
-
-  const fetchKeyFigures = async () => {
-    const { data, error } = await supabase
-      .from('key_figures')
-      .select('*')
-      .eq('experience_id', experienceId)
-      .eq('visible', true)
-      .order('ordre', { ascending: true });
-
-    if (error) {
-      console.error('Error fetching key figures:', error);
-    } else if (data && data.length > 0) {
-      setKeyFigures(data);
-    }
-    setLoading(false);
-  };
-
-  if (loading || keyFigures.length === 0) {
+export default function KeyFiguresSection({ figures }: KeyFiguresSectionProps) {
+  if (figures.length === 0) {
     return null;
   }
 
   return (
-    <section className="py-16 px-8 bg-gray-50">
+    <section className="py-16 px-6 md:px-8 bg-gray-50 border-y border-gray-200">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-light text-black mb-12 text-center">
+        <h2 className="text-2xl md:text-4xl font-bold uppercase tracking-tight text-ink mb-12 text-center">
           Chiffres clés
         </h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-          {keyFigures.map((figure) => {
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
+          {figures.map((figure) => {
             const IconComponent = figure.icon ? iconMap[figure.icon] : null;
 
             return (
               <div
-                key={figure.id}
-                className="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                key={figure.label}
+                className="flex flex-col items-center text-center p-6 bg-white hover:bg-accent-light/10 transition-colors"
               >
                 {IconComponent && (
-                  <IconComponent className="w-8 h-8 text-gray-600 mb-4" />
+                  <div className="w-12 h-12 bg-accent-light/30 flex items-center justify-center mb-4">
+                    <IconComponent className="w-6 h-6 text-ink" strokeWidth={1.5} />
+                  </div>
                 )}
-                <div className="text-3xl md:text-4xl font-light text-black mb-2">
+                <div className="text-2xl md:text-3xl font-bold tracking-tight text-ink mb-2">
                   {figure.value}
                 </div>
-                <div className="text-sm text-gray-600 font-light">
+                <div className="text-xs uppercase tracking-wider text-gray-600">
                   {figure.label}
                 </div>
               </div>

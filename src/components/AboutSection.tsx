@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
 import { Search, PenTool, CheckCircle } from 'lucide-react';
-import { supabase, Methodologie, MethodologieBloc } from '../lib/supabase';
+import { motion } from 'framer-motion';
+import { methodologie } from '../../content/methodologie';
 
 const getIconForTitle = (title: string) => {
   const normalizedTitle = title.toLowerCase();
@@ -10,114 +10,67 @@ const getIconForTitle = (title: string) => {
   return null;
 };
 
-const getColorForIndex = (index: number) => {
-  const colors = [
-    'from-blue-400 to-blue-500',
-    'from-teal-400 to-teal-500',
-    'from-green-400 to-green-500',
-  ];
-  return colors[index % colors.length];
-};
-
 export default function AboutSection() {
-  const [methodologie, setMethodologie] = useState<Methodologie | null>(null);
-  const [blocs, setBlocs] = useState<MethodologieBloc[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [visibleIcons, setVisibleIcons] = useState<number[]>([]);
-
-  useEffect(() => {
-    fetchMethodologieData();
-  }, []);
-
-  const fetchMethodologieData = async () => {
-    const { data: methodo } = await supabase
-      .from('methodologie')
-      .select('*')
-      .maybeSingle();
-
-    const { data: blocsData } = await supabase
-      .from('methodologie_blocs')
-      .select('*')
-      .order('ordre', { ascending: true });
-
-    if (methodo) setMethodologie(methodo);
-    if (blocsData) {
-      setBlocs(blocsData);
-      blocsData.forEach((_, index) => {
-        setTimeout(() => {
-          setVisibleIcons((prev) => [...prev, index]);
-        }, index * 400);
-      });
-    }
-    setLoading(false);
-  };
-
-  if (loading) {
-    return (
-      <section id="about" className="py-32 px-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-gray-500">Chargement...</div>
-        </div>
-      </section>
-    );
-  }
-
   return (
-    <section id="about" className="py-32 px-8 bg-gray-50">
+    <section id="about" className="py-24 md:py-32 px-6 md:px-8 bg-gray-50 border-y border-gray-200">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-light text-black mb-16">
-          {methodologie?.titre_section || 'Methodologie'}
-        </h2>
+        <motion.h2
+          className="text-3xl md:text-5xl font-bold uppercase tracking-tight text-ink mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.5 }}
+        >
+          {methodologie.titreSection}
+        </motion.h2>
 
-        <div className="max-w-4xl">
+        <motion.div
+          className="max-w-4xl"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <p
-            className="text-xl md:text-2xl text-gray-800 leading-relaxed mb-12 font-light"
-            dangerouslySetInnerHTML={{ __html: methodologie?.paragraphe_principal || '' }}
+            className="accent-strong text-xl md:text-2xl text-ink leading-relaxed mb-12"
+            dangerouslySetInnerHTML={{ __html: methodologie.paragraphePrincipal }}
           />
 
-          {methodologie?.paragraphe_secondaire && (
+          {methodologie.paragrapheSecondaire && (
             <p
-              className="text-base md:text-lg text-gray-600 leading-relaxed font-light"
-              dangerouslySetInnerHTML={{ __html: methodologie.paragraphe_secondaire }}
+              className="accent-strong text-base md:text-lg text-gray-600 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: methodologie.paragrapheSecondaire }}
             />
           )}
-        </div>
+        </motion.div>
 
-        <div className="mt-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {blocs.map((bloc, index) => {
+        <div className="mt-20 md:mt-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
+          {methodologie.blocs.map((bloc, index) => {
             const Icon = getIconForTitle(bloc.titre);
-            const isVisible = visibleIcons.includes(index);
-            const colorClass = getColorForIndex(index);
 
             return (
-              <div key={bloc.id} className="flex flex-col items-start">
-                <div className="flex items-center gap-4 mb-3">
+              <motion.div
+                key={bloc.titre}
+                className="flex flex-col items-start bg-white p-8 hover:bg-accent-light/10 transition-colors"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.5, delay: index * 0.15 }}
+              >
+                <div className="flex items-center gap-4 mb-5">
                   {Icon && (
-                    <div
-                      className={`relative transition-all duration-700 ${
-                        isVisible
-                          ? 'opacity-100 translate-y-0 scale-100'
-                          : 'opacity-0 -translate-y-4 scale-90'
-                      }`}
-                    >
-                      <div
-                        className={`w-12 h-12 rounded-full bg-gradient-to-br ${colorClass} flex items-center justify-center shadow-lg transform transition-transform duration-300 hover:scale-110`}
-                      >
-                        <Icon size={22} className="text-white" strokeWidth={1.5} />
-                      </div>
-                      <div
-                        className={`absolute inset-0 rounded-full bg-gradient-to-br ${colorClass} opacity-20 blur-lg animate-pulse`}
-                      />
+                    <div className="w-12 h-12 bg-accent-light/30 flex items-center justify-center">
+                      <Icon size={22} className="text-ink" strokeWidth={1.5} />
                     </div>
                   )}
-                  <h3 className="text-sm font-medium text-black uppercase tracking-wider">
+                  <h3 className="text-sm font-bold text-ink uppercase tracking-wider">
                     {bloc.titre}
                   </h3>
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed font-light">
+                <p className="text-sm text-gray-600 leading-relaxed">
                   {bloc.description}
                 </p>
-              </div>
+              </motion.div>
             );
           })}
         </div>

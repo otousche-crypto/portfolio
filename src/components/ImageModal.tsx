@@ -73,14 +73,14 @@ export default function ImageModal({ imageUrl, alt, caption, onClose }: ImageMod
 
   return (
     <div
-      className="fixed inset-0 z-[100] bg-black bg-opacity-95 flex items-center justify-center"
+      className="fixed inset-0 z-[100] bg-ink/95 flex items-center justify-center"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 z-[110] p-2 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full transition-all"
+        className="absolute top-4 right-4 z-[110] p-2 border border-white/30 hover:border-white hover:bg-white/10 transition-colors"
         aria-label="Fermer"
       >
         <X className="w-6 h-6 text-white" />
@@ -90,7 +90,7 @@ export default function ImageModal({ imageUrl, alt, caption, onClose }: ImageMod
         <button
           onClick={handleZoomIn}
           disabled={scale >= 4}
-          className="p-2 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="p-2 border border-white/30 hover:border-white hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Zoom avant"
         >
           <ZoomIn className="w-6 h-6 text-white" />
@@ -98,7 +98,7 @@ export default function ImageModal({ imageUrl, alt, caption, onClose }: ImageMod
         <button
           onClick={handleZoomOut}
           disabled={scale <= 0.5}
-          className="p-2 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="p-2 border border-white/30 hover:border-white hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Zoom arrière"
         >
           <ZoomOut className="w-6 h-6 text-white" />
@@ -106,7 +106,7 @@ export default function ImageModal({ imageUrl, alt, caption, onClose }: ImageMod
         {scale !== 1 && (
           <button
             onClick={resetZoom}
-            className="px-3 py-2 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full transition-all text-white text-sm font-light"
+            className="px-3 py-2 border border-white/30 hover:border-white hover:bg-white/10 transition-colors text-white text-xs uppercase tracking-wider"
           >
             Réinitialiser
           </button>
@@ -135,8 +135,8 @@ export default function ImageModal({ imageUrl, alt, caption, onClose }: ImageMod
       </div>
 
       {caption && (
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-70 text-white px-6 py-3 rounded-lg max-w-2xl text-center">
-          <p className="text-sm font-light">{caption}</p>
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-ink border border-white/30 text-white px-6 py-3 max-w-2xl text-center">
+          <p className="text-xs uppercase tracking-wider">{caption}</p>
         </div>
       )}
     </div>
