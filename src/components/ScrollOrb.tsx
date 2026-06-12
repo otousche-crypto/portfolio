@@ -131,7 +131,7 @@ export default function ScrollOrb() {
             height: coreSize,
             background: coreBg,
             scale: coreScale,
-            filter: 'blur(60px)',
+            filter: 'blur(28px)',
             borderRadius: '50%',
             willChange: 'transform',
           }}
@@ -153,7 +153,7 @@ export default function ScrollOrb() {
           x: coreX,
           y: coreY,
           scale: coreScale,
-          filter: 'blur(60px)',
+          filter: 'blur(28px)',
           willChange: 'transform',
         }}
         animate={{ borderRadius: MORPH }}
@@ -170,7 +170,7 @@ export default function ScrollOrb() {
           x: sat1X,
           y: sat1Y,
           scale: sat1Scale,
-          filter: 'blur(40px)',
+          filter: 'blur(18px)',
           willChange: 'transform',
         }}
         animate={{ borderRadius: MORPH }}
@@ -188,7 +188,7 @@ export default function ScrollOrb() {
             x: sat2X,
             y: sat2Y,
             scale: sat2Scale,
-            filter: 'blur(30px)',
+            filter: 'blur(14px)',
             willChange: 'transform',
           }}
           animate={{ borderRadius: MORPH }}
