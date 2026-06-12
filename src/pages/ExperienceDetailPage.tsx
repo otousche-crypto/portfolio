@@ -35,7 +35,7 @@ export default function ExperienceDetailPage() {
 
   if (!experience) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen relative z-10">
         <Header />
         <div className="flex items-center justify-center pt-32">
           <div className="text-gray-500 text-sm uppercase tracking-wider">
@@ -47,7 +47,7 @@ export default function ExperienceDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen relative z-10">
       <Header />
 
       <button

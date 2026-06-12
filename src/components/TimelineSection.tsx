@@ -2,14 +2,25 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { experiences, titreSection } from '../../content/experiences';
+import { useCenterHighlight } from '../hooks/useCenterHighlight';
 
 interface TimelineSectionProps {
   excludeExperienceId?: string;
   customTitle?: string;
 }
 
+function ExperienceTitle({ children }: { children: React.ReactNode }) {
+  const ref = useCenterHighlight<HTMLHeadingElement>();
+  return (
+    <h3 ref={ref} className="center-highlight text-lg md:text-xl font-bold uppercase tracking-tight text-ink mb-1">
+      {children}
+    </h3>
+  );
+}
+
 export default function TimelineSection({ excludeExperienceId, customTitle }: TimelineSectionProps) {
   const navigate = useNavigate();
+  const titleRef = useCenterHighlight<HTMLHeadingElement>();
 
   const visibleExperiences = excludeExperienceId
     ? experiences.filter((exp) => exp.id !== excludeExperienceId)
@@ -19,7 +30,8 @@ export default function TimelineSection({ excludeExperienceId, customTitle }: Ti
     <section id="parcours" className="py-24 md:py-32 px-6 md:px-8">
       <div className="max-w-7xl mx-auto">
         <motion.h2
-          className="text-3xl md:text-5xl font-bold uppercase tracking-tight text-ink mb-16"
+          ref={titleRef}
+          className="center-highlight text-3xl md:text-5xl font-bold uppercase tracking-tight text-ink mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
@@ -64,9 +76,7 @@ export default function TimelineSection({ excludeExperienceId, customTitle }: Ti
                     <p className="text-xs uppercase tracking-wider text-gray-500 mb-2">
                       {experience.annee}
                     </p>
-                    <h3 className="text-lg md:text-xl font-bold uppercase tracking-tight text-ink mb-1">
-                      {experience.titre}
-                    </h3>
+                    <ExperienceTitle>{experience.titre}</ExperienceTitle>
                     <p className="text-sm md:text-base text-gray-600">{experience.entreprise}</p>
                   </div>
                   {isClickable ? (

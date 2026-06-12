@@ -36,6 +36,28 @@
     -webkit-box-decoration-break: clone;
   }
 
+  /* Highlight "coup de surligneur" des titres quand ils traversent le centre
+     du viewport (voir useCenterHighlight) : fond #93D4FF déployé de gauche à
+     droite derrière le texte, qui reste noir. */
+  .center-highlight {
+    width: fit-content;
+    background-image: linear-gradient(#93d4ff, #93d4ff);
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+    background-position: 0 0;
+    transition: background-size 0.5s ease-out;
+  }
+
+  .center-highlight.is-highlighted {
+    background-size: 100% 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .center-highlight {
+      transition: none;
+    }
+  }
+
   @keyframes blink {
     0%,
     49% {

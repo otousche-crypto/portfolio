@@ -1,6 +1,7 @@
 import { Search, PenTool, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { methodologie } from '../../content/methodologie';
+import { useCenterHighlight } from '../hooks/useCenterHighlight';
 
 const getIconForTitle = (title: string) => {
   const normalizedTitle = title.toLowerCase();
@@ -11,11 +12,14 @@ const getIconForTitle = (title: string) => {
 };
 
 export default function AboutSection() {
+  const titleRef = useCenterHighlight<HTMLHeadingElement>();
+
   return (
     <section id="about" className="py-24 md:py-32 px-6 md:px-8 bg-gray-50 border-y border-gray-200">
       <div className="max-w-7xl mx-auto">
         <motion.h2
-          className="text-3xl md:text-5xl font-bold uppercase tracking-tight text-ink mb-16"
+          ref={titleRef}
+          className="center-highlight text-3xl md:text-5xl font-bold uppercase tracking-tight text-ink mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}

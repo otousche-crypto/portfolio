@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ExperienceContentBlock } from '../lib/content-types';
 import ImageModal from './ImageModal';
+import { useCenterHighlight } from '../hooks/useCenterHighlight';
 
 interface ContentBlockProps {
   block: ExperienceContentBlock;
@@ -17,13 +18,22 @@ const linkClass =
 export default function ContentBlock({ block }: ContentBlockProps) {
   const { type, content } = block;
   const [modalImage, setModalImage] = useState<{ url: string; alt?: string; caption?: string } | null>(null);
+  const headingRef = useCenterHighlight<HTMLHeadingElement>();
 
   switch (type) {
     case 'heading': {
-      const HeadingTag = `h${content.level || 2}` as keyof JSX.IntrinsicElements;
+      // Les h2 (titres de section) reçoivent le highlight au passage du centre.
+      if ((content.level || 2) === 2) {
+        return (
+          <h2 ref={headingRef} className={`center-highlight ${headingClasses(2)} mb-5`}>
+            {content.text}
+          </h2>
+        );
+      }
+      const HeadingTag = `h${content.level}` as keyof JSX.IntrinsicElements;
       return (
         <HeadingTag className={`${headingClasses(content.level)} ${
-          content.level === 1 ? 'mb-6' : content.level === 3 ? 'mb-4' : 'mb-5'
+          content.level === 1 ? 'mb-6' : 'mb-4'
         }`}>
           {content.text}
         </HeadingTag>

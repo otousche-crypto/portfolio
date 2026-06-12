@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import { contact } from '../../content/contact';
+import { useCenterHighlight } from '../hooks/useCenterHighlight';
 
 export default function ContactSection() {
+  const titleRef = useCenterHighlight<HTMLHeadingElement>();
   const items = [
     {
       label: contact.email.label,
@@ -33,7 +35,8 @@ export default function ContactSection() {
     <section id="contact" className="py-24 md:py-32 px-6 md:px-8 border-t border-gray-200">
       <div className="max-w-7xl mx-auto">
         <motion.h2
-          className="text-3xl md:text-5xl font-bold uppercase tracking-tight text-ink mb-16"
+          ref={titleRef}
+          className="center-highlight text-3xl md:text-5xl font-bold uppercase tracking-tight text-ink mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
