@@ -5,6 +5,7 @@ import HeroSection from '../components/HeroSection';
 import AboutSection from '../components/AboutSection';
 import TimelineSection from '../components/TimelineSection';
 import ContactSection from '../components/ContactSection';
+import EditorGutter from '../components/EditorGutter';
 
 export default function HomePage() {
   const location = useLocation();
@@ -36,6 +37,7 @@ export default function HomePage() {
 
   return (
     <div className="bg-white min-h-screen">
+      <EditorGutter />
       <Header />
       <main>
         <HeroSection />

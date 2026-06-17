@@ -2,7 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { experiences, titreSection } from '../../content/experiences';
+import { site } from '../../content/site';
 import { useCenterHighlight } from '../hooks/useCenterHighlight';
+import { useLocalizedContent } from '../hooks/useLocalizedContent';
 
 interface TimelineSectionProps {
   excludeExperienceId?: string;
@@ -21,6 +23,7 @@ function ExperienceTitle({ children }: { children: React.ReactNode }) {
 export default function TimelineSection({ excludeExperienceId, customTitle }: TimelineSectionProps) {
   const navigate = useNavigate();
   const titleRef = useCenterHighlight<HTMLHeadingElement>();
+  const { t } = useLocalizedContent();
 
   const visibleExperiences = excludeExperienceId
     ? experiences.filter((exp) => exp.id !== excludeExperienceId)
@@ -37,10 +40,14 @@ export default function TimelineSection({ excludeExperienceId, customTitle }: Ti
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.5 }}
         >
-          {customTitle || titreSection}
+          {customTitle || t(titreSection)}
         </motion.h2>
 
-        <div className="border-t border-gray-200">
+        <div className="relative border-t border-gray-200">
+          <div
+            aria-hidden="true"
+            className="hidden md:block absolute top-0 bottom-0 left-9 w-px bg-gray-200"
+          />
           {visibleExperiences.map((experience, index) => {
             const isClickable = experience.is_clickable !== false;
 
@@ -59,6 +66,14 @@ export default function TimelineSection({ excludeExperienceId, customTitle }: Ti
                 transition={{ duration: 0.5, delay: index * 0.08 }}
               >
                 <div className="flex items-center gap-5 md:gap-6">
+                  <div className="hidden md:flex w-6 flex-shrink-0 items-center justify-center relative z-10">
+                    <span
+                      aria-hidden="true"
+                      className={`w-2.5 h-2.5 rounded-full bg-white border-2 transition-colors ${
+                        isClickable ? 'border-gray-300 group-hover:border-accent' : 'border-gray-300'
+                      }`}
+                    />
+                  </div>
                   <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center bg-white border border-gray-200 group-hover:border-ink transition-colors">
                     {experience.logourl ? (
                       <img
@@ -76,14 +91,14 @@ export default function TimelineSection({ excludeExperienceId, customTitle }: Ti
                     <p className="text-xs uppercase tracking-wider text-gray-500 mb-2">
                       {experience.annee}
                     </p>
-                    <ExperienceTitle>{experience.titre}</ExperienceTitle>
+                    <ExperienceTitle>{t(experience.titre)}</ExperienceTitle>
                     <p className="text-sm md:text-base text-gray-600">{experience.entreprise}</p>
                   </div>
                   {isClickable ? (
                     <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-ink group-hover:translate-x-1 transition-all flex-shrink-0" />
                   ) : (
                     <span className="text-xs uppercase tracking-wider text-gray-400 flex-shrink-0">
-                      Work in progress
+                      {t(site.uiTexts.workInProgress)}
                     </span>
                   )}
                 </div>

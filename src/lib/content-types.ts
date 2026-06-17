@@ -3,8 +3,13 @@
 // Ne modifier qu'en cas d'évolution de structure — pour éditer le contenu,
 // voir les fichiers dans content/.
 
+export interface LocalizedString {
+  fr: string;
+  en: string;
+}
+
 export interface NavItem {
-  label: string;
+  label: LocalizedString;
   sectionId: string;
 }
 
@@ -12,40 +17,49 @@ export interface SiteContent {
   prenom: string;
   nom: string;
   imageProfilUrl: string;
-  imageProfilAlt: string;
-  linkedinUrl: string;
+  imageProfilAlt: LocalizedString;
   navigation: NavItem[];
   uiTexts: {
-    backButton: string;
-    experienceNonTrouvee: string;
+    backButton: LocalizedString;
+    experienceNonTrouvee: LocalizedString;
+    roleLabel: LocalizedString;
+    produitLabel: LocalizedString;
+    dureeLabel: LocalizedString;
+    workInProgress: LocalizedString;
+    closeLabel: LocalizedString;
+    zoomInLabel: LocalizedString;
+    zoomOutLabel: LocalizedString;
+    resetZoomLabel: LocalizedString;
+    nextSectionLabel: LocalizedString;
   };
 }
 
 export interface HeroContent {
-  titresAnimes: string[];
-  titreFixe: string;
-  description: string;
-  skillTags: string[];
+  titresAnimes: LocalizedString[];
+  titreFixe: LocalizedString;
+  description: LocalizedString;
+  skillTags: LocalizedString[];
 }
 
 export interface MethodologieBloc {
-  titre: string;
-  description: string;
+  iconKey?: 'comprendre' | 'concevoir' | 'valider';
+  titre: LocalizedString;
+  description: LocalizedString;
 }
 
 export interface MethodologieContent {
-  titreSection: string;
-  paragraphePrincipal: string;
-  paragrapheSecondaire: string;
+  titreSection: LocalizedString;
+  paragraphePrincipal: LocalizedString;
+  paragrapheSecondaire: LocalizedString;
   blocs: MethodologieBloc[];
 }
 
 export interface ContactContent {
-  titreSection: string;
-  email: { label: string; value: string };
-  linkedin: { label: string; texte: string; url: string };
-  cv: { label: string; texte: string; url: string };
-  telephone: { label: string; value: string };
+  titreSection: LocalizedString;
+  email: { label: LocalizedString; value: string };
+  linkedin: { label: LocalizedString; texte: LocalizedString; url: string };
+  cv: { label: LocalizedString; texte: LocalizedString; url: string };
+  telephone: { label: LocalizedString; value: string };
 }
 
 export type ContentBlockType =
@@ -61,32 +75,32 @@ export type ContentBlockType =
   | 'video';
 
 export interface ContentBlockContent {
-  text?: string;
+  text?: LocalizedString;
   alignment?: 'left' | 'center' | 'right';
   level?: 1 | 2 | 3;
   url?: string;
-  alt?: string;
-  caption?: string;
+  alt?: LocalizedString;
+  caption?: LocalizedString;
   width?: 'full' | 'large' | 'medium' | 'small';
-  author?: string;
+  author?: LocalizedString;
   style?: 'line' | 'dots' | 'space';
-  images?: Array<{ url: string; alt: string; caption?: string }>;
+  images?: Array<{ url: string; alt: LocalizedString; caption?: LocalizedString }>;
   columns?: 2 | 3;
-  heading_text?: string;
+  heading_text?: LocalizedString;
   heading_level?: 1 | 2 | 3;
   image_url?: string;
-  image_alt?: string;
-  image_caption?: string;
-  intro_text?: string;
-  text_content?: string;
+  image_alt?: LocalizedString;
+  image_caption?: LocalizedString;
+  intro_text?: LocalizedString;
+  text_content?: LocalizedString;
   text_alignment?: 'left' | 'center' | 'right';
   image_position?: 'left' | 'right';
   imageUrl?: string;
-  imageAlt?: string;
-  imageCaption?: string;
+  imageAlt?: LocalizedString;
+  imageCaption?: LocalizedString;
   imagePosition?: 'left' | 'right';
-  items?: string[];
-  subtitle?: string;
+  items?: LocalizedString[];
+  subtitle?: LocalizedString;
 }
 
 export interface ExperienceContentBlock {
@@ -103,14 +117,14 @@ export interface KeyFigure {
 export interface Experience {
   // id = slug utilisé dans l'URL /experience/[id]
   id: string;
-  titre: string;
+  titre: LocalizedString;
   annee: string;
   entreprise: string;
-  description: string;
+  description: LocalizedString;
   logourl: string;
   hero_image_url?: string;
-  project_title?: string;
-  role_duration?: string;
+  project_title?: LocalizedString;
+  role_duration?: LocalizedString;
   product_name?: string;
   is_clickable?: boolean;
   contentBlocks: ExperienceContentBlock[];

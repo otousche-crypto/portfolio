@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -7,31 +7,16 @@ import { site } from '../../content/site';
 import Header from '../components/Header';
 import ContactSection from '../components/ContactSection';
 import ContentBlock from '../components/ContentBlock';
+import { useLocalizedContent } from '../hooks/useLocalizedContent';
 
 export default function ExperienceDetailPage() {
   const { id } = useParams<{ id: string }>();
   const experience = id ? getExperienceById(id) : undefined;
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const { t } = useLocalizedContent();
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY < 10) {
-        setIsHeaderVisible(true);
-      } else if (currentScrollY > lastScrollY) {
-        setIsHeaderVisible(false);
-      } else {
-        setIsHeaderVisible(true);
-      }
-
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+    window.scrollTo(0, 0);
+  }, [id]);
 
   if (!experience) {
     return (
@@ -39,7 +24,7 @@ export default function ExperienceDetailPage() {
         <Header />
         <div className="flex items-center justify-center pt-32">
           <div className="text-gray-500 text-sm uppercase tracking-wider">
-            {site.uiTexts.experienceNonTrouvee}
+            {t(site.uiTexts.experienceNonTrouvee)}
           </div>
         </div>
       </div>
@@ -52,12 +37,10 @@ export default function ExperienceDetailPage() {
 
       <button
         onClick={() => window.location.href = '/#parcours'}
-        className={`fixed left-4 md:left-8 top-8 flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-ink hover:border-ink hover:bg-accent-light/20 transition-all duration-300 group z-50 ${
-          isHeaderVisible ? '-translate-y-20' : 'translate-y-0'
-        }`}
+        className="fixed left-4 md:left-8 top-20 md:top-28 flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-ink hover:border-ink hover:bg-accent-light/20 transition-colors duration-300 group z-50"
       >
         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-        <span className="text-xs font-bold uppercase tracking-wider">{site.uiTexts.backButton}</span>
+        <span className="text-xs font-bold uppercase tracking-wider">{t(site.uiTexts.backButton)}</span>
       </button>
 
       {experience.hero_image_url ? (
@@ -65,7 +48,7 @@ export default function ExperienceDetailPage() {
           <div className="w-full h-[400px] md:h-[600px] relative">
             <img
               src={experience.hero_image_url}
-              alt={experience.project_title || experience.titre}
+              alt={experience.project_title ? t(experience.project_title) : t(experience.titre)}
               className="w-full h-full object-cover"
             />
           </div>
@@ -80,26 +63,26 @@ export default function ExperienceDetailPage() {
               >
                 {experience.project_title && (
                   <h1 className="text-2xl md:text-4xl font-bold uppercase tracking-tight text-ink mb-6">
-                    {experience.project_title}
+                    {t(experience.project_title)}
                   </h1>
                 )}
                 <div className="space-y-2">
                   {experience.titre && (
                     <p className="text-sm md:text-base">
-                      <span className="text-xs uppercase tracking-wider text-gray-500 mr-2">Role :</span>
-                      <span className="text-ink">{experience.titre}</span>
+                      <span className="text-xs uppercase tracking-wider text-gray-500 mr-2">{t(site.uiTexts.roleLabel)} :</span>
+                      <span className="text-ink">{t(experience.titre)}</span>
                     </p>
                   )}
                   {experience.entreprise && (
                     <p className="text-sm md:text-base">
-                      <span className="text-xs uppercase tracking-wider text-gray-500 mr-2">Produit :</span>
+                      <span className="text-xs uppercase tracking-wider text-gray-500 mr-2">{t(site.uiTexts.produitLabel)} :</span>
                       <span className="text-ink">{experience.entreprise}</span>
                     </p>
                   )}
                   {experience.role_duration && (
                     <p className="text-sm md:text-base">
-                      <span className="text-xs uppercase tracking-wider text-gray-500 mr-2">Durée :</span>
-                      <span className="text-ink">{experience.role_duration}</span>
+                      <span className="text-xs uppercase tracking-wider text-gray-500 mr-2">{t(site.uiTexts.dureeLabel)} :</span>
+                      <span className="text-ink">{t(experience.role_duration)}</span>
                     </p>
                   )}
                 </div>

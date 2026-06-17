@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ExperienceContentBlock } from '../lib/content-types';
 import ImageModal from './ImageModal';
 import { useCenterHighlight } from '../hooks/useCenterHighlight';
+import { useLocalizedContent } from '../hooks/useLocalizedContent';
 
 interface ContentBlockProps {
   block: ExperienceContentBlock;
@@ -19,6 +20,7 @@ export default function ContentBlock({ block }: ContentBlockProps) {
   const { type, content } = block;
   const [modalImage, setModalImage] = useState<{ url: string; alt?: string; caption?: string } | null>(null);
   const headingRef = useCenterHighlight<HTMLHeadingElement>();
+  const { t } = useLocalizedContent();
 
   switch (type) {
     case 'heading': {
@@ -26,7 +28,7 @@ export default function ContentBlock({ block }: ContentBlockProps) {
       if ((content.level || 2) === 2) {
         return (
           <h2 ref={headingRef} className={`center-highlight ${headingClasses(2)} mb-5`}>
-            {content.text}
+            {content.text && t(content.text)}
           </h2>
         );
       }
@@ -35,7 +37,7 @@ export default function ContentBlock({ block }: ContentBlockProps) {
         <HeadingTag className={`${headingClasses(content.level)} ${
           content.level === 1 ? 'mb-6' : 'mb-4'
         }`}>
-          {content.text}
+          {content.text && t(content.text)}
         </HeadingTag>
       );
 
@@ -49,7 +51,7 @@ export default function ContentBlock({ block }: ContentBlockProps) {
       const alignmentClass = alignmentClasses[content.alignment || 'left'];
 
       // Convert URLs to clickable links
-      let textWithLinks = (content.text || '');
+      let textWithLinks = content.text ? t(content.text) : '';
 
       // Convert www. URLs (add https:// prefix)
       textWithLinks = textWithLinks.replace(
@@ -77,11 +79,11 @@ export default function ContentBlock({ block }: ContentBlockProps) {
       return (
         <blockquote className="border-l-4 border-accent pl-6 py-2 my-8">
           <p className="text-xl text-gray-800 leading-relaxed mb-2 italic">
-            "{content.text}"
+            "{content.text && t(content.text)}"
           </p>
           {content.author && (
             <cite className="text-xs uppercase tracking-wider text-gray-500 not-italic">
-              — {content.author}
+              — {t(content.author)}
             </cite>
           )}
         </blockquote>
@@ -103,14 +105,14 @@ export default function ContentBlock({ block }: ContentBlockProps) {
             <div className="overflow-hidden">
               <img
                 src={content.url}
-                alt={content.alt || ''}
+                alt={content.alt ? t(content.alt) : ''}
                 className="w-full h-auto object-contain cursor-pointer hover:opacity-90 transition-opacity"
-                onClick={() => setModalImage({ url: content.url!, alt: content.alt, caption: content.caption })}
+                onClick={() => setModalImage({ url: content.url!, alt: content.alt ? t(content.alt) : undefined, caption: content.caption ? t(content.caption) : undefined })}
               />
             </div>
             {content.caption && (
               <figcaption className={`text-xs uppercase tracking-wider text-gray-500 text-center mt-3 ${isFullBleed ? 'px-8 max-w-4xl mx-auto' : ''}`}>
-                {content.caption}
+                {t(content.caption)}
               </figcaption>
             )}
           </figure>
@@ -140,14 +142,14 @@ export default function ContentBlock({ block }: ContentBlockProps) {
                 <div className="overflow-hidden border border-gray-200">
                   <img
                     src={img.url}
-                    alt={img.alt}
+                    alt={t(img.alt)}
                     className="w-full h-auto object-cover cursor-pointer hover:opacity-90 transition-opacity"
-                    onClick={() => setModalImage({ url: img.url, alt: img.alt, caption: img.caption })}
+                    onClick={() => setModalImage({ url: img.url, alt: t(img.alt), caption: img.caption ? t(img.caption) : undefined })}
                   />
                 </div>
                 {img.caption && (
                   <figcaption className="text-xs uppercase tracking-wider text-gray-500 text-center">
-                    {img.caption}
+                    {t(img.caption)}
                   </figcaption>
                 )}
               </figure>
@@ -182,20 +184,23 @@ export default function ContentBlock({ block }: ContentBlockProps) {
 
     case 'section_vertical': {
       const VerticalHeadingTag = `h${content.heading_level || 2}` as keyof JSX.IntrinsicElements;
+      const resolvedTextContent = content.text_content ? t(content.text_content) : '';
+      const resolvedImageAlt = content.image_alt ? t(content.image_alt) : '';
+      const resolvedImageCaption = content.image_caption ? t(content.image_caption) : undefined;
 
       // Si le texte contient [IMAGE], on sépare le texte et on insère l'image au bon endroit
-      if (content.text_content && content.image_url && content.text_content.includes('[IMAGE]')) {
+      if (resolvedTextContent && content.image_url && resolvedTextContent.includes('[IMAGE]')) {
         const splitImageUrl = content.image_url;
-        const parts = content.text_content.split('[IMAGE]');
+        const parts = resolvedTextContent.split('[IMAGE]');
         return (
           <div className="my-12">
             {content.heading_text && (
               <VerticalHeadingTag className={`${headingClasses(content.heading_level)} mb-3`}>
-                {content.heading_text}
+                {t(content.heading_text)}
               </VerticalHeadingTag>
             )}
             {content.subtitle && (
-              <p className="text-sm uppercase tracking-wider text-accent font-medium mb-6">{content.subtitle}</p>
+              <p className="text-sm uppercase tracking-wider text-accent font-medium mb-6">{t(content.subtitle)}</p>
             )}
             {parts[0] && (
               <div className={`max-w-none text-${content.text_alignment || 'left'} mb-6`}>
@@ -209,14 +214,14 @@ export default function ContentBlock({ block }: ContentBlockProps) {
               <div className="overflow-hidden border border-gray-200">
                 <img
                   src={content.image_url}
-                  alt={content.image_alt || ''}
+                  alt={resolvedImageAlt}
                   className="w-full h-auto object-cover cursor-pointer hover:opacity-90 transition-opacity"
-                  onClick={() => setModalImage({ url: splitImageUrl, alt: content.image_alt, caption: content.image_caption })}
+                  onClick={() => setModalImage({ url: splitImageUrl, alt: resolvedImageAlt, caption: resolvedImageCaption })}
                 />
               </div>
               {content.image_caption && (
                 <figcaption className="text-xs uppercase tracking-wider text-gray-500 text-center mt-3">
-                  {content.image_caption}
+                  {resolvedImageCaption}
                 </figcaption>
               )}
             </figure>
@@ -237,34 +242,34 @@ export default function ContentBlock({ block }: ContentBlockProps) {
         <div className="my-12">
           {content.heading_text && (
             <VerticalHeadingTag className={`${headingClasses(content.heading_level)} mb-3`}>
-              {content.heading_text}
+              {t(content.heading_text)}
             </VerticalHeadingTag>
           )}
           {content.subtitle && (
-            <p className="text-sm uppercase tracking-wider text-accent font-medium mb-6">{content.subtitle}</p>
+            <p className="text-sm uppercase tracking-wider text-accent font-medium mb-6">{t(content.subtitle)}</p>
           )}
           {content.image_url && (
             <figure className="mb-6">
               <div className="overflow-hidden border border-gray-200">
                 <img
                   src={content.image_url}
-                  alt={content.image_alt || ''}
+                  alt={resolvedImageAlt}
                   className="w-full h-auto object-cover cursor-pointer hover:opacity-90 transition-opacity"
-                  onClick={() => setModalImage({ url: content.image_url!, alt: content.image_alt, caption: content.image_caption })}
+                  onClick={() => setModalImage({ url: content.image_url!, alt: resolvedImageAlt, caption: resolvedImageCaption })}
                 />
               </div>
               {content.image_caption && (
                 <figcaption className="text-xs uppercase tracking-wider text-gray-500 text-center mt-3">
-                  {content.image_caption}
+                  {resolvedImageCaption}
                 </figcaption>
               )}
             </figure>
           )}
-          {content.text_content && (
+          {resolvedTextContent && (
             <div className={`max-w-none text-${content.text_alignment || 'left'}`}>
               <p
                 className="accent-strong text-base md:text-lg text-gray-800 leading-relaxed whitespace-pre-wrap"
-                dangerouslySetInnerHTML={{ __html: content.text_content }}
+                dangerouslySetInnerHTML={{ __html: resolvedTextContent }}
               />
             </div>
           )}
@@ -278,29 +283,32 @@ export default function ContentBlock({ block }: ContentBlockProps) {
       const imageUrl = content.imageUrl || content.image_url;
       const imageAlt = content.imageAlt || content.image_alt;
       const imageCaption = content.imageCaption || content.image_caption;
+      const resolvedImageAlt = imageAlt ? t(imageAlt) : '';
+      const resolvedImageCaption = imageCaption ? t(imageCaption) : undefined;
       const textContent = content.text || content.text_content;
+      const resolvedTextContent = textContent ? t(textContent) : '';
       const imageElement = imageUrl && (
         <figure className="w-full md:w-1/2 flex-shrink-0">
           <div className="overflow-hidden border border-gray-200">
             <img
               src={imageUrl}
-              alt={imageAlt || ''}
+              alt={resolvedImageAlt}
               className="w-full h-auto object-cover cursor-pointer hover:opacity-90 transition-opacity"
-              onClick={() => setModalImage({ url: imageUrl, alt: imageAlt, caption: imageCaption })}
+              onClick={() => setModalImage({ url: imageUrl, alt: resolvedImageAlt, caption: resolvedImageCaption })}
             />
           </div>
           {imageCaption && (
             <figcaption className="text-xs uppercase tracking-wider text-gray-500 text-center mt-3">
-              {imageCaption}
+              {resolvedImageCaption}
             </figcaption>
           )}
         </figure>
       );
-      const textElement = textContent && (
+      const textElement = resolvedTextContent && (
         <div className={`max-w-none w-full md:w-1/2 text-${content.text_alignment || 'left'}`}>
           <p
             className="accent-strong text-base md:text-lg text-gray-800 leading-relaxed whitespace-pre-wrap"
-            dangerouslySetInnerHTML={{ __html: textContent }}
+            dangerouslySetInnerHTML={{ __html: resolvedTextContent }}
           />
         </div>
       );
@@ -309,16 +317,16 @@ export default function ContentBlock({ block }: ContentBlockProps) {
         <div className="my-12">
           {content.heading_text && (
             <HorizontalHeadingTag className={`${headingClasses(content.heading_level)} mb-3`}>
-              {content.heading_text}
+              {t(content.heading_text)}
             </HorizontalHeadingTag>
           )}
           {content.subtitle && (
-            <p className="text-sm uppercase tracking-wider text-accent font-medium mb-6">{content.subtitle}</p>
+            <p className="text-sm uppercase tracking-wider text-accent font-medium mb-6">{t(content.subtitle)}</p>
           )}
           {content.intro_text && (
             <div className="max-w-none mb-6">
               <p className="accent-strong text-base md:text-lg text-gray-800 leading-relaxed">
-                {content.intro_text}
+                {t(content.intro_text)}
               </p>
             </div>
           )}
@@ -343,13 +351,13 @@ export default function ContentBlock({ block }: ContentBlockProps) {
       return (
         <div className="my-8">
           {content.heading_text && (
-            <p className="text-base text-gray-800 mb-3">{content.heading_text}</p>
+            <p className="text-base text-gray-800 mb-3">{t(content.heading_text)}</p>
           )}
           <ul className="space-y-2">
             {content.items?.map((item, index) => (
               <li key={index} className="flex gap-3 text-base text-gray-800 leading-relaxed">
                 <span className="mt-[0.6em] w-2 h-2 flex-shrink-0 bg-accent" aria-hidden="true"></span>
-                <span>{item}</span>
+                <span>{t(item)}</span>
               </li>
             ))}
           </ul>
@@ -384,7 +392,7 @@ export default function ContentBlock({ block }: ContentBlockProps) {
           </div>
           {content.caption && (
             <p className="text-xs uppercase tracking-wider text-gray-500 text-center mt-3">
-              {content.caption}
+              {t(content.caption)}
             </p>
           )}
         </div>

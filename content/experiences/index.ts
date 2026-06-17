@@ -10,7 +10,7 @@ import { oodrive } from './oodrive';
 import { wedigitalgarden } from './wedigitalgarden';
 import { logitech } from './logitech';
 
-export const titreSection = 'Experience professionnelle';
+export const titreSection = { fr: 'Experience professionnelle', en: 'Professional experience' };
 
 // Du plus récent au plus ancien — l'ordre du tableau = l'ordre d'affichage.
 export const experiences: Experience[] = [

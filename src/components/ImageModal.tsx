@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { X, ZoomIn, ZoomOut } from 'lucide-react';
+import { site } from '../../content/site';
+import { useLocalizedContent } from '../hooks/useLocalizedContent';
 
 interface ImageModalProps {
   imageUrl: string;
@@ -9,6 +11,7 @@ interface ImageModalProps {
 }
 
 export default function ImageModal({ imageUrl, alt, caption, onClose }: ImageModalProps) {
+  const { t } = useLocalizedContent();
   const [scale, setScale] = useState(1);
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -81,7 +84,7 @@ export default function ImageModal({ imageUrl, alt, caption, onClose }: ImageMod
       <button
         onClick={onClose}
         className="absolute top-4 right-4 z-[110] p-2 border border-white/30 hover:border-white hover:bg-white/10 transition-colors"
-        aria-label="Fermer"
+        aria-label={t(site.uiTexts.closeLabel)}
       >
         <X className="w-6 h-6 text-white" />
       </button>
@@ -91,7 +94,7 @@ export default function ImageModal({ imageUrl, alt, caption, onClose }: ImageMod
           onClick={handleZoomIn}
           disabled={scale >= 4}
           className="p-2 border border-white/30 hover:border-white hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label="Zoom avant"
+          aria-label={t(site.uiTexts.zoomInLabel)}
         >
           <ZoomIn className="w-6 h-6 text-white" />
         </button>
@@ -99,7 +102,7 @@ export default function ImageModal({ imageUrl, alt, caption, onClose }: ImageMod
           onClick={handleZoomOut}
           disabled={scale <= 0.5}
           className="p-2 border border-white/30 hover:border-white hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label="Zoom arrière"
+          aria-label={t(site.uiTexts.zoomOutLabel)}
         >
           <ZoomOut className="w-6 h-6 text-white" />
         </button>
@@ -108,7 +111,7 @@ export default function ImageModal({ imageUrl, alt, caption, onClose }: ImageMod
             onClick={resetZoom}
             className="px-3 py-2 border border-white/30 hover:border-white hover:bg-white/10 transition-colors text-white text-xs uppercase tracking-wider"
           >
-            Réinitialiser
+            {t(site.uiTexts.resetZoomLabel)}
           </button>
         )}
       </div>

@@ -3,134 +3,173 @@
 // Les images sont dans public/experiences/go-moonbound/.
 // Types de blocs : heading, text, image, section_vertical, section_horizontal,
 // bullet_list, quote, divider. Le HTML (<strong>, <em>…) est accepté dans les textes.
+// Chaque champ texte est bilingue : { fr: '...', en: '...' }.
 
 import type { Experience } from '../../src/lib/content-types';
 
 export const goMoonbound: Experience = {
   id: 'go-moonbound',
-  titre: 'Vibe Codeur',
+  titre: { fr: 'Vibe Codeur', en: 'Vibe Coder' },
   annee: '2025-2026',
   entreprise: 'Go Moonbound',
-  description:
-    "Go Moonbound est un side project construit en autonomie complète, de la génération du premier prompt à la mise en production, en utilisant Cursor, Claude Code, et l'API Strava.",
+  description: {
+    fr: "Go Moonbound est un side project construit en autonomie complète, de la génération du premier prompt à la mise en production, en utilisant Cursor, Claude Code, et l'API Strava.",
+    en: 'Go Moonbound is a side project built in complete autonomy, from the first prompt to production deployment, using Cursor, Claude Code, and the Strava API.',
+  },
   logourl: '/experiences/go-moonbound/logo.png',
   hero_image_url: '/experiences/go-moonbound/hero.png',
-  project_title: "Go MoonBound - Visualiser vos performances Strava d'une autre manière!",
-  role_duration: '2 semaines',
+  project_title: {
+    fr: "Go MoonBound - Visualiser vos performances Strava d'une autre manière!",
+    en: 'Go MoonBound - Visualize your Strava performance in a whole new way!',
+  },
+  role_duration: { fr: '2 semaines', en: '2 weeks' },
   product_name: 'Go Moonbound',
   is_clickable: true,
 
   contentBlocks: [
     {
       type: 'heading',
-      content: { text: 'Context', level: 2 },
+      content: { text: { fr: 'Context', en: 'Context' }, level: 2 },
     },
     {
       type: 'text',
       content: {
-        text: "En 2026, le vibe coding apporte une nouvelle façon de travailler en tant que Product Designer.",
+        text: {
+          fr: 'En 2026, le vibe coding apporte une nouvelle façon de travailler en tant que Product Designer.',
+          en: 'In 2026, vibe coding brings a new way of working as a Product Designer.',
+        },
       },
     },
     {
       type: 'text',
       content: {
-        text: "Pendant des années, le workflow reposait sur une séparation stricte des rôles : le designer prescrit, l'ingénieur exécute. Cela engendrait de la friction — du temps perdu, de la traduction, de la perte. L'idée initiale pouvait se retrouver diluée à chaque transfert, et une attention toute particulière était nécessaire pour s'assurer que le résultat final restait aligné avec l'intention de départ.",
+        text: {
+          fr: "Pendant des années, le workflow reposait sur une séparation stricte des rôles : le designer prescrit, l'ingénieur exécute. Cela engendrait de la friction — du temps perdu, de la traduction, de la perte. L'idée initiale pouvait se retrouver diluée à chaque transfert, et une attention toute particulière était nécessaire pour s'assurer que le résultat final restait aligné avec l'intention de départ.",
+          en: "For years, the workflow relied on a strict separation of roles: the designer prescribes, the engineer executes. This created friction — wasted time, translation, loss. The initial idea could get diluted at each handoff, and particular attention was needed to ensure the final result stayed aligned with the original intent.",
+        },
       },
     },
     {
       type: 'image',
       content: {
-        alt: 'Schéma du workflow itératif',
+        alt: { fr: 'Schéma du workflow itératif', en: 'Diagram of the iterative workflow' },
         url: '/experiences/go-moonbound/workflow-iteratif.png',
       },
     },
     {
       type: 'text',
       content: {
-        text: "Avec des outils comme Claude Code ou Cursor, ce circuit disparaît. Le designer construit lui-même, teste en local des interactions complexes, des API, des logiques métier — des choses impossibles à vraiment valider sur une maquette Figma. Les tâches répétitives à faible valeur pour le Product Designer sont confiées à des agents IA dédiés. Le temps récupéré va là où il a de la valeur : la réflexion, le cadrage, les choix qui font le produit.",
+        text: {
+          fr: "Avec des outils comme Claude Code ou Cursor, ce circuit disparaît. Le designer construit lui-même, teste en local des interactions complexes, des API, des logiques métier — des choses impossibles à vraiment valider sur une maquette Figma. Les tâches répétitives à faible valeur pour le Product Designer sont confiées à des agents IA dédiés. Le temps récupéré va là où il a de la valeur : la réflexion, le cadrage, les choix qui font le produit.",
+          en: 'With tools like Claude Code or Cursor, this circuit disappears. The designer builds it themselves, testing complex interactions, APIs, and business logic locally — things impossible to truly validate on a Figma mockup. Low-value repetitive tasks for the Product Designer are handed off to dedicated AI agents. The time saved goes where it has value: thinking, framing, the choices that shape the product.',
+        },
       },
     },
     {
       type: 'image',
       content: {
-        alt: 'Schéma du flow Vibecoding',
+        alt: { fr: 'Schéma du flow Vibecoding', en: 'Diagram of the Vibecoding flow' },
         url: '/experiences/go-moonbound/flow-vibecoding.png',
       },
     },
     {
       type: 'text',
       content: {
-        text: "Mais ce qui change le plus, c'est la posture. On passe d'un métier de prescription à quelque chose de plus proche de la sculpture — on observe son œuvre prendre forme en direct, on teste, on ajuste au geste, on expérimente le produit réel plutôt qu'une simulation de celui-ci. L'intention et l'exécution ne font plus qu'un.",
+        text: {
+          fr: "Mais ce qui change le plus, c'est la posture. On passe d'un métier de prescription à quelque chose de plus proche de la sculpture — on observe son œuvre prendre forme en direct, on teste, on ajuste au geste, on expérimente le produit réel plutôt qu'une simulation de celui-ci. L'intention et l'exécution ne font plus qu'un.",
+          en: "But what changes the most is the posture. We move from a prescriptive profession to something closer to sculpture — watching the work take shape live, testing, adjusting by feel, experiencing the real product rather than a simulation of it. Intention and execution become one.",
+        },
       },
     },
     {
       type: 'text',
       content: {
-        text: 'Ce projet documente cette façon de travailler.',
+        text: {
+          fr: 'Ce projet documente cette façon de travailler.',
+          en: 'This project documents this way of working.',
+        },
       },
     },
     {
       type: 'heading',
-      content: { text: 'Projet', level: 2 },
+      content: { text: { fr: 'Projet', en: 'Project' }, level: 2 },
     },
     {
       type: 'text',
       content: {
-        text: "Go Moonbound est un side project construit en autonomie complète, de la génération du premier prompt à la mise en production, en utilisant Cursor, Claude Code, et l'API Strava.",
+        text: {
+          fr: "Go Moonbound est un side project construit en autonomie complète, de la génération du premier prompt à la mise en production, en utilisant Cursor, Claude Code, et l'API Strava.",
+          en: 'Go Moonbound is a side project built in complete autonomy, from the first prompt to production deployment, using Cursor, Claude Code, and the Strava API.',
+        },
       },
     },
     {
       type: 'image',
       content: {
-        alt: 'Cursor + Claude Code + Strava',
+        alt: { fr: 'Cursor + Claude Code + Strava', en: 'Cursor + Claude Code + Strava' },
         url: '/experiences/go-moonbound/outils.png',
       },
     },
     {
       type: 'text',
       content: {
-        text: "Le concept : donner de l'émotion aux chiffres bruts. 10 000 km de vélo, c'est abstrait. Voir que tu es à 2,6% du chemin vers la Lune sur une scéne 3D, c'est autre chose. Via l'API Strava, chaque activité — course, vélo, natation, marche — s'additionne et te positionne quelque part dans l'espace, sur les 384 400 km qui séparent les deux astres.",
+        text: {
+          fr: "Le concept : donner de l'émotion aux chiffres bruts. 10 000 km de vélo, c'est abstrait. Voir que tu es à 2,6% du chemin vers la Lune sur une scéne 3D, c'est autre chose. Via l'API Strava, chaque activité — course, vélo, natation, marche — s'additionne et te positionne quelque part dans l'espace, sur les 384 400 km qui séparent les deux astres.",
+          en: "The concept: give emotion to raw numbers. 10,000 km of cycling is abstract. Seeing that you're 2.6% of the way to the Moon on a 3D scene is something else entirely. Through the Strava API, every activity — running, cycling, swimming, walking — adds up and places you somewhere in space, along the 384,400 km that separate the two celestial bodies.",
+        },
       },
     },
     {
       type: 'text',
       content: {
-        text: "Le défi était double. D'abord technique : connecter l'API Strava pour faire remonter des données réelles, et construire une expérience 3D interactive — impossible à vraiment valider sur une maquette Figma. Ensuite de méthode : aller vite. L'objectif n'était pas la perfection, c'était de mettre le produit entre les mains d'utilisateurs réels le plus tôt possible, pour obtenir des retours concrets et itérer.",
+        text: {
+          fr: "Le défi était double. D'abord technique : connecter l'API Strava pour faire remonter des données réelles, et construire une expérience 3D interactive — impossible à vraiment valider sur une maquette Figma. Ensuite de méthode : aller vite. L'objectif n'était pas la perfection, c'était de mettre le produit entre les mains d'utilisateurs réels le plus tôt possible, pour obtenir des retours concrets et itérer.",
+          en: "The challenge was twofold. First technical: connecting the Strava API to pull real data, and building an interactive 3D experience — impossible to truly validate on a Figma mockup. Then methodological: move fast. The goal wasn't perfection, it was getting the product into the hands of real users as early as possible, to get concrete feedback and iterate.",
+        },
       },
     },
     {
       type: 'heading',
-      content: { text: 'Process', level: 2 },
+      content: { text: { fr: 'Process', en: 'Process' }, level: 2 },
     },
     {
       type: 'section_horizontal',
       content: {
-        text: 'Le process repose sur deux agents Claude aux rôles distincts, activés en séquence.\nD\'abord, un agent "Senior Product Engineer" — que j\'utilise en amont pour cadrer le concept, challenger mes décisions produit, structurer le PRD et anticiper les contraintes techniques. Une phase de réflexion itérative, en boucle avec la définition du concept, jusqu\'à ce que le brief soit solide.\nEnsuite, un agent "Prompt Master" — chargé de traduire ce brief en instructions précises pour Claude Code. Son rôle : formuler les prompts de façon à minimiser les allers-retours et maximiser la qualité du code généré dès la première passe.',
+        text: {
+          fr: 'Le process repose sur deux agents Claude aux rôles distincts, activés en séquence.\nD\'abord, un agent "Senior Product Engineer" — que j\'utilise en amont pour cadrer le concept, challenger mes décisions produit, structurer le PRD et anticiper les contraintes techniques. Une phase de réflexion itérative, en boucle avec la définition du concept, jusqu\'à ce que le brief soit solide.\nEnsuite, un agent "Prompt Master" — chargé de traduire ce brief en instructions précises pour Claude Code. Son rôle : formuler les prompts de façon à minimiser les allers-retours et maximiser la qualité du code généré dès la première passe.',
+          en: 'The process relies on two Claude agents with distinct roles, activated in sequence.\nFirst, a "Senior Product Engineer" agent — which I use upfront to frame the concept, challenge my product decisions, structure the PRD and anticipate technical constraints. An iterative reflection phase, looping with the concept definition, until the brief is solid.\nThen, a "Prompt Master" agent — tasked with translating this brief into precise instructions for Claude Code. Its role: phrase prompts to minimize back-and-forth and maximize the quality of the generated code on the first pass.',
+        },
         imageUrl: '/experiences/go-moonbound/agents-claude.png',
-        imageAlt: 'Diagramme du process avec agents Claude',
+        imageAlt: { fr: 'Diagramme du process avec agents Claude', en: 'Diagram of the process with Claude agents' },
         imagePosition: 'left',
       },
     },
     {
       type: 'text',
       content: {
-        text: "Une fois le prompt prêt, Claude Code prend le relais et livre en local. Je teste directement le produit réel — pas une maquette, pas un prototype — et j'itère sur ce que je vois et ressens. La boucle test → ajustement → nouvelle livraison locale tourne jusqu'à ce que le produit soit prêt. Puis déploiement.\nZéro handoff. Zéro ticket. De l'intention à la production, en autonomie complète.",
+        text: {
+          fr: "Une fois le prompt prêt, Claude Code prend le relais et livre en local. Je teste directement le produit réel — pas une maquette, pas un prototype — et j'itère sur ce que je vois et ressens. La boucle test → ajustement → nouvelle livraison locale tourne jusqu'à ce que le produit soit prêt. Puis déploiement.\nZéro handoff. Zéro ticket. De l'intention à la production, en autonomie complète.",
+          en: 'Once the prompt is ready, Claude Code takes over and delivers locally. I test the real product directly — not a mockup, not a prototype — and iterate on what I see and feel. The test → adjust → new local delivery loop runs until the product is ready. Then deployment.\nZero handoff. Zero ticket. From intention to production, in complete autonomy.',
+        },
       },
     },
     {
       type: 'heading',
-      content: { text: 'Résultats', level: 2 },
+      content: { text: { fr: 'Résultats', en: 'Results' }, level: 2 },
     },
     {
       type: 'text',
       content: {
-        text: "Dès le premier prompt, l'effet est immédiat : une scène 3D fonctionnelle, connectée à l'API Strava, qui positionne l'utilisateur sur le trajet Terre → Lune. Pas une maquette. Un produit réel.\nLa suite : quelques sessions de debug, des ajustements d'affichage mobile, des itérations sur le rendu 3D, et l'ajout de nouvelles features au fil des retours. Achat du nom de domaine, création du repo GitHub, déploiement. En 2 semaines, https://gomoonbound.com est en ligne.",
+        text: {
+          fr: "Dès le premier prompt, l'effet est immédiat : une scène 3D fonctionnelle, connectée à l'API Strava, qui positionne l'utilisateur sur le trajet Terre → Lune. Pas une maquette. Un produit réel.\nLa suite : quelques sessions de debug, des ajustements d'affichage mobile, des itérations sur le rendu 3D, et l'ajout de nouvelles features au fil des retours. Achat du nom de domaine, création du repo GitHub, déploiement. En 2 semaines, https://gomoonbound.com est en ligne.",
+          en: 'From the very first prompt, the effect is immediate: a functional 3D scene, connected to the Strava API, positioning the user on the Earth → Moon journey. Not a mockup. A real product.\nWhat followed: a few debugging sessions, mobile display adjustments, iterations on the 3D rendering, and new features added based on feedback. Domain name purchase, GitHub repo creation, deployment. In 2 weeks, https://gomoonbound.com was live.',
+        },
       },
     },
     {
       type: 'image',
       content: {
-        alt: 'GoMoonbound dashboard',
+        alt: { fr: 'GoMoonbound dashboard', en: 'GoMoonbound dashboard' },
         url: '/experiences/go-moonbound/dashboard.png',
         width: 'medium',
       },
@@ -138,14 +177,20 @@ export const goMoonbound: Experience = {
     {
       type: 'text',
       content: {
-        text: "Seul frein : les requirements Strava pour ouvrir l'API au-delà d'un utilisateur. J'ai créé un agent Claude dédié pour préparer le dossier de validation et respecter les exigences de la plateforme. Apres soumission du dossier, une semaine aura suffit pour avoir un retour de Strava, m'ouvrant l'API pour 999 utilisateurs. Tu peux suivre ma propre progression ici : https://gomoonbound.com/share/2a1c034f-b5a4-4dce-b6f6-1d26bcea9a10",
+        text: {
+          fr: "Seul frein : les requirements Strava pour ouvrir l'API au-delà d'un utilisateur. J'ai créé un agent Claude dédié pour préparer le dossier de validation et respecter les exigences de la plateforme. Apres soumission du dossier, une semaine aura suffit pour avoir un retour de Strava, m'ouvrant l'API pour 999 utilisateurs. Tu peux suivre ma propre progression ici : https://gomoonbound.com/share/2a1c034f-b5a4-4dce-b6f6-1d26bcea9a10",
+          en: 'The only hurdle: Strava\'s requirements to open the API beyond a single user. I created a dedicated Claude agent to prepare the validation file and meet the platform\'s requirements. After submitting the file, it only took a week to get a response from Strava, opening up the API for 999 users. You can follow my own progress here: https://gomoonbound.com/share/2a1c034f-b5a4-4dce-b6f6-1d26bcea9a10',
+        },
         alignment: 'left',
       },
     },
     {
       type: 'text',
       content: {
-        text: "Le premiers utilisateurs sont déja la! et toi, où en es-tu ?  Pour le savoir, rends toi sur https://gomoonbound.com !",
+        text: {
+          fr: 'Le premiers utilisateurs sont déja la! et toi, où en es-tu ?  Pour le savoir, rends toi sur https://gomoonbound.com !',
+          en: 'The first users are already here! And you, how far along are you? Find out at https://gomoonbound.com !',
+        },
       },
     },
   ],
