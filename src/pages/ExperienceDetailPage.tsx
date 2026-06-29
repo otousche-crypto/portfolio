@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -14,6 +14,25 @@ export default function ExperienceDetailPage() {
   const experience = id ? getExperienceById(id) : undefined;
   const { t } = useLocalizedContent();
 
+  const [unlocked, setUnlocked] = useState(() => {
+    if (!experience?.access_code) return true;
+    try { return sessionStorage.getItem(`access_${id}`) === experience.access_code; }
+    catch { return false; }
+  });
+  const [codeInput, setCodeInput] = useState('');
+  const [error, setError] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (codeInput.trim().toUpperCase() === experience?.access_code?.toUpperCase()) {
+      sessionStorage.setItem(`access_${id}`, experience.access_code!);
+      setUnlocked(true);
+    } else {
+      setError(true);
+      setCodeInput('');
+    }
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
@@ -25,6 +44,56 @@ export default function ExperienceDetailPage() {
         <div className="flex items-center justify-center pt-32">
           <div className="text-gray-500 text-sm uppercase tracking-wider">
             {t(site.uiTexts.experienceNonTrouvee)}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!unlocked) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Header />
+        <div className="flex items-center justify-center min-h-[80vh] px-6">
+          <div className="w-full max-w-sm">
+            <div className="border border-gray-200 p-8 md:p-10">
+              <p className="text-xs font-bold uppercase tracking-widest text-accent mb-6">
+                {t({ fr: 'Accès restreint', en: 'Restricted access' })}
+              </p>
+              <h1 className="text-2xl font-bold uppercase tracking-tight text-ink mb-4">
+                {t(experience.project_title ?? experience.titre)}
+              </h1>
+              <p className="text-sm text-gray-800 leading-relaxed mb-6">
+                {t(experience.description)}
+              </p>
+              <p className="text-xs text-gray-400 leading-relaxed mb-8">
+                {t({
+                  fr: 'Projet en beta fermée — entrez votre code pour accéder au case study.',
+                  en: 'Project in closed beta — enter your code to access the case study.',
+                })}
+              </p>
+              <form onSubmit={handleSubmit} className="flex gap-0">
+                <input
+                  type="text"
+                  value={codeInput}
+                  onChange={e => { setCodeInput(e.target.value); setError(false); }}
+                  placeholder={t({ fr: 'CODE', en: 'CODE' })}
+                  autoFocus
+                  className="flex-1 border border-gray-300 border-r-0 px-4 py-3 text-sm font-mono uppercase tracking-widest outline-none focus:border-ink transition-colors bg-white text-ink placeholder:text-gray-300"
+                />
+                <button
+                  type="submit"
+                  className="px-5 py-3 bg-accent text-ink text-base font-bold hover:bg-accent-light transition-colors"
+                >
+                  →
+                </button>
+              </form>
+              {error && (
+                <p className="text-xs uppercase tracking-wider text-red-500 mt-3">
+                  {t({ fr: 'Code incorrect', en: 'Invalid code' })}
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>

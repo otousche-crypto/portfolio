@@ -1,4 +1,4 @@
-// ─── EXPÉRIENCE : Equinox / Altered (Service Designer, 2022-2025) ───
+// ─── EXPÉRIENCE : Equinox / Altered (Senior Product Designer, 2022-2025) ───
 // Modifier ici : les infos d'en-tête (titre, année, entreprise…) et les blocs
 // de contenu de la page détail, dans l'ordre d'affichage.
 // Les images sont dans public/experiences/equinox-altered/.
@@ -13,7 +13,7 @@ import type { Experience } from '../../src/lib/content-types';
 
 export const equinoxAltered: Experience = {
   id: 'equinox-altered',
-  titre: { fr: 'Service Designer', en: 'Service Designer' },
+  titre: { fr: 'Senior Product Designer', en: 'Senior Product Designer' },
   annee: '2022-2025',
   entreprise: 'Equinox',
   description: {
@@ -26,7 +26,7 @@ export const equinoxAltered: Experience = {
     fr: 'Altered — Écosystème phygital pour un jeu de cartes à collectionner',
     en: 'Altered — Phygital ecosystem for a trading card game',
   },
-  role_duration: { fr: 'Service Designer · 2021-2025', en: 'Service Designer · 2021-2025' },
+  role_duration: { fr: 'Senior Product Designer · 2021-2025', en: 'Senior Product Designer · 2021-2025' },
   product_name: 'Altered',
   is_clickable: true,
 

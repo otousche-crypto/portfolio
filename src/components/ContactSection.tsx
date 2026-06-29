@@ -42,11 +42,11 @@ export default function ContactSection() {
   ];
 
   return (
-    <section id="contact" className="py-24 md:py-32 px-6 md:px-8 border-t border-gray-200">
+    <section id="contact" className="py-24 md:py-32 px-6 md:px-8 border-t border-gray-800" style={{ backgroundColor: '#0A0A0A' }}>
       <div className="max-w-7xl mx-auto">
         <motion.h2
           ref={titleRef}
-          className="center-highlight text-3xl md:text-5xl font-bold uppercase tracking-tight text-ink mb-16"
+          className="center-highlight text-3xl md:text-5xl font-bold uppercase tracking-tight text-white mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
@@ -55,30 +55,32 @@ export default function ContactSection() {
           {t(contact.titreSection)}
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-200 border border-gray-200 max-w-3xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-px max-w-3xl" style={{ backgroundColor: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.12)' }}>
           {items.map((item, index) => (
             <motion.a
               key={item.key}
               href={item.href}
               target={item.external ? '_blank' : undefined}
               rel={item.external ? 'noopener noreferrer' : undefined}
-              className="block bg-white p-8 hover:bg-accent-light/20 transition-colors group"
+              className="block p-8 transition-colors group"
+              style={{ backgroundColor: 'rgba(255,255,255,0.06)' }}
+              onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.12)')}
+              onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.06)')}
               aria-label={item.label}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.5, delay: index * 0.08 }}
             >
-              <h3 className="font-code text-xs font-bold text-gray-400 group-hover:text-accent mb-3 tracking-wider transition-colors">
+              <h3 className="font-code text-xs font-bold mb-3 tracking-wider transition-colors" style={{ color: 'rgba(255,255,255,0.4)' }}>
                 {item.flag}
               </h3>
-              <span className="text-base md:text-lg text-ink break-words">{item.texte}</span>
+              <span className="text-base md:text-lg text-white break-words">{item.texte}</span>
             </motion.a>
           ))}
         </div>
 
-        <div className="flex items-center gap-2 font-code text-sm text-gray-400 mt-10">
-          <span aria-hidden="true">$</span>
+        <div className="flex items-center gap-2 font-code text-sm mt-10" style={{ color: 'rgba(255,255,255,0.35)' }}>
           <span className="animate-blink inline-block w-2 h-4 bg-accent" aria-hidden="true" />
         </div>
       </div>

@@ -12,7 +12,7 @@ export const site: SiteContent = {
   imageProfilAlt: { fr: 'Olivier Tousche', en: 'Olivier Tousche' },
   navigation: [
     { label: { fr: 'À propos', en: 'About' }, sectionId: 'about' },
-    { label: { fr: 'Parcours', en: 'Work' }, sectionId: 'parcours' },
+    { label: { fr: 'Projets', en: 'Works' }, sectionId: 'parcours' },
     { label: { fr: 'Contact', en: 'Contact' }, sectionId: 'contact' },
   ],
   uiTexts: {

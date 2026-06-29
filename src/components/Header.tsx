@@ -1,19 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 import { site } from '../../content/site';
 import { useLocalizedContent } from '../hooks/useLocalizedContent';
-import LanguageSwitch from './LanguageSwitch';
+import { useLanguage } from '../contexts/LanguageContext';
 
-const COMPACT_THRESHOLD = 40;
+const getCompactThreshold = () => window.innerHeight - 80;
 
 export default function Header() {
   const { t } = useLocalizedContent();
+  const { language, setLanguage } = useLanguage();
   const [isCompact, setIsCompact] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsCompact(window.scrollY > COMPACT_THRESHOLD);
+      setIsCompact(window.scrollY > getCompactThreshold());
     };
 
     handleScroll();
@@ -21,7 +24,17 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
   const handleNavigation = (sectionId: string) => {
+    setMenuOpen(false);
     if (location.pathname === '/') {
       const element = document.getElementById(sectionId);
       if (element) {
@@ -55,19 +68,64 @@ export default function Header() {
           <span>{site.nom}</span>
         </button>
 
-        <nav className="flex gap-3 md:gap-8 items-center">
+        <button
+          className="flex items-center justify-center text-ink p-1"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+        >
+          {menuOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
+      </div>
+
+      {/* Drawer */}
+      <div
+        className={`fixed top-0 right-0 w-4/5 max-w-xs z-40 flex flex-col pt-24 px-8 pb-10 transition-transform duration-300 ease-in-out ${
+          menuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+        style={{ backgroundColor: '#4CB8FF', height: '100dvh' }}
+      >
+        <nav className="flex flex-col gap-1 flex-1">
           {site.navigation.map((item) => (
             <button
               key={item.sectionId}
               onClick={() => handleNavigation(item.sectionId)}
-              className="text-[11px] md:text-xs uppercase tracking-wide md:tracking-wider font-medium text-gray-500 hover:text-ink border-b-2 border-transparent hover:border-accent pb-1 transition-colors"
+              className="text-left text-2xl font-bold uppercase tracking-tight text-white py-3 border-b border-white/20 hover:opacity-70 transition-opacity"
             >
               {t(item.label)}
             </button>
           ))}
-          <LanguageSwitch />
         </nav>
+
+        <div className="flex items-center gap-1 text-sm uppercase tracking-wider font-medium mt-6">
+          <button
+            onClick={() => setLanguage('fr')}
+            aria-pressed={language === 'fr'}
+            className={`px-2 py-1 transition-opacity text-white ${
+              language === 'fr' ? 'font-bold border-b-2 border-white' : 'opacity-50 hover:opacity-100'
+            }`}
+          >
+            FR
+          </button>
+          <span className="text-white/30">/</span>
+          <button
+            onClick={() => setLanguage('en')}
+            aria-pressed={language === 'en'}
+            className={`px-2 py-1 transition-opacity text-white ${
+              language === 'en' ? 'font-bold border-b-2 border-white' : 'opacity-50 hover:opacity-100'
+            }`}
+          >
+            EN
+          </button>
+        </div>
       </div>
+
+      {/* Backdrop */}
+      {menuOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/30"
+          onClick={() => setMenuOpen(false)}
+        />
+      )}
     </header>
   );
 }

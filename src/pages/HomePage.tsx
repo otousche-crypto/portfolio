@@ -41,9 +41,11 @@ export default function HomePage() {
       <Header />
       <main>
         <HeroSection />
-        <AboutSection />
-        <TimelineSection />
-        <ContactSection />
+        <div className="relative z-10 bg-white">
+          <AboutSection />
+          <TimelineSection />
+          <ContactSection />
+        </div>
       </main>
     </div>
   );

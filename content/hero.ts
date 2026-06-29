@@ -22,7 +22,7 @@ export const hero: HeroContent = {
   skillTags: [
     { fr: 'User research', en: 'User research' },
     { fr: 'Prototyping', en: 'Prototyping' },
-    { fr: 'Wireframe', en: 'Wireframe' },
+    { fr: 'Product vision', en: 'Product vision' },
     { fr: 'User tests', en: 'User tests' },
   ],
 };

@@ -1,4 +1,4 @@
-import { Users, Globe, TrendingUp, Award, Target, Zap, Scan, ArrowLeftRight, LucideIcon } from 'lucide-react';
+import { Users, Globe, TrendingUp, Award, Target, Zap, Scan, ArrowLeftRight, Video as LucideIcon } from 'lucide-react';
 import { KeyFigure } from '../lib/content-types';
 
 interface KeyFiguresSectionProps {

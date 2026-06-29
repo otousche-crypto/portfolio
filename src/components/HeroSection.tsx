@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo } from 'react';
-import { ChevronDown } from 'lucide-react';
 import { motion, Variants, useReducedMotion } from 'framer-motion';
 import { hero } from '../../content/hero';
 import { site } from '../../content/site';
@@ -50,13 +49,6 @@ export default function HeroSection() {
     return () => clearTimeout(timeout);
   }, [displayText, isDeleting, currentIndex, titles]);
 
-  const scrollToNextSection = () => {
-    window.scrollTo({
-      top: window.innerHeight,
-      behavior: 'smooth',
-    });
-  };
-
   const handlePortraitMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (prefersReducedMotion) return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -68,7 +60,7 @@ export default function HeroSection() {
   const handlePortraitLeave = () => setTilt({ x: 0, y: 0 });
 
   return (
-    <section id="home" className="min-h-screen flex flex-col items-center justify-center px-6 md:px-8 pt-24 pb-20 md:pt-32 md:pb-24">
+    <section id="home" className="sticky top-0 z-0 h-[calc(100dvh-72px)] flex flex-col items-center justify-center px-6 md:px-8 pt-24 pb-8 md:pt-32 md:pb-12 bg-white overflow-hidden">
       <div className="max-w-7xl w-full flex-1 flex items-center">
         <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-16 lg:gap-20 w-full">
           <div
@@ -91,11 +83,6 @@ export default function HeroSection() {
           </div>
 
           <div className="flex-1">
-            <p className="font-code text-xs md:text-sm text-gray-400 mb-4 flex items-center gap-2 flex-wrap">
-              <span className="text-accent">~/olivier-tousche</span>
-              <span>%</span>
-              <span className="text-ink">whoami</span>
-            </p>
             <h1 className="text-[clamp(2.75rem,7vw,6rem)] font-bold uppercase tracking-tight text-ink leading-[1.05] mb-6 md:mb-8">
               <motion.span
                 className="block"
@@ -148,20 +135,6 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <motion.button
-        onClick={scrollToNextSection}
-        className="mt-8 md:mt-12 p-3 border border-gray-200 hover:border-ink hover:bg-accent-light/20 transition-colors cursor-pointer group"
-        aria-label={t(site.uiTexts.nextSectionLabel)}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.6 }}
-      >
-        <ChevronDown
-          size={28}
-          className="text-gray-400 group-hover:text-ink transition-colors"
-          strokeWidth={1.5}
-        />
-      </motion.button>
     </section>
   );
 }

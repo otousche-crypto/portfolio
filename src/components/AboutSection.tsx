@@ -7,6 +7,12 @@ import { useLocalizedContent } from '../hooks/useLocalizedContent';
 
 const iconMap = { comprendre: Search, concevoir: PenTool, valider: CheckCircle } as const;
 
+const CARD_BG = '#FFF0F2';
+const CARD_BG_HOVER = '#FADADD';
+const ICON_BG = '#F5C6CD';
+const ACCENT_ROSE = '#C96478';
+const SEPARATOR = '#E8A0AC';
+
 export default function AboutSection() {
   const titleRef = useCenterHighlight<HTMLHeadingElement>();
   const { t } = useLocalizedContent();
@@ -39,7 +45,7 @@ export default function AboutSection() {
   };
 
   return (
-    <section id="about" className="py-24 md:py-32 px-6 md:px-8 bg-gray-50 border-y border-gray-200">
+    <section id="about" className="py-24 md:py-32 px-6 md:px-8 border-y border-pink-200" style={{ backgroundColor: '#FADADD' }}>
       <div className="max-w-7xl mx-auto">
         <motion.h2
           ref={titleRef}
@@ -66,13 +72,13 @@ export default function AboutSection() {
 
           {methodologie.paragrapheSecondaire && t(methodologie.paragrapheSecondaire) && (
             <p
-              className="accent-strong text-base md:text-lg text-gray-600 leading-relaxed"
+              className="accent-strong text-base md:text-lg text-ink/70 leading-relaxed"
               dangerouslySetInnerHTML={{ __html: t(methodologie.paragrapheSecondaire) }}
             />
           )}
         </motion.div>
 
-        {/* Carrousel (mobile uniquement) : swipe + scroll-snap natif, pas de JS de glissement */}
+        {/* Carrousel (mobile uniquement) */}
         <div className="md:hidden mt-20">
           <div
             ref={trackRef}
@@ -84,19 +90,18 @@ export default function AboutSection() {
               return (
                 <div
                   key={bloc.iconKey ?? index}
-                  ref={(el) => {
-                    slideRefs.current[index] = el;
-                  }}
-                  className="snap-center shrink-0 w-[80%] border border-gray-200 bg-white p-8"
+                  ref={(el) => { slideRefs.current[index] = el; }}
+                  className="snap-center shrink-0 w-[80%] p-8"
+                  style={{ backgroundColor: CARD_BG, border: `1px solid ${SEPARATOR}` }}
                 >
                   <div className="flex items-center gap-4 mb-5">
                     {Icon && (
-                      <div className="w-12 h-12 bg-accent-light/30 flex items-center justify-center">
+                      <div className="w-12 h-12 flex items-center justify-center" style={{ backgroundColor: ICON_BG }}>
                         <Icon size={22} className="text-ink" strokeWidth={1.5} />
                       </div>
                     )}
                     <div>
-                      <span className="font-code text-[11px] text-accent tabular-nums block mb-0.5">
+                      <span className="font-code text-[11px] tabular-nums block mb-0.5" style={{ color: ACCENT_ROSE }}>
                         {String(index + 1).padStart(2, '0')}
                       </span>
                       <h3 className="text-sm font-bold text-ink uppercase tracking-wider">
@@ -104,7 +109,7 @@ export default function AboutSection() {
                       </h3>
                     </div>
                   </div>
-                  <p className="text-sm text-gray-600 leading-relaxed">
+                  <p className="text-sm leading-relaxed text-ink/70">
                     {t(bloc.description)}
                   </p>
                 </div>
@@ -118,23 +123,31 @@ export default function AboutSection() {
                 key={index}
                 onClick={() => goToSlide(index)}
                 aria-label={`Aller à l'étape ${index + 1}`}
-                className={`h-1.5 rounded-full transition-all ${
-                  activeIndex === index ? 'w-6 bg-accent' : 'w-1.5 bg-gray-300'
-                }`}
+                className="h-1.5 rounded-full transition-all"
+                style={{
+                  width: activeIndex === index ? '1.5rem' : '0.375rem',
+                  backgroundColor: activeIndex === index ? ACCENT_ROSE : '#E8A0AC',
+                }}
               />
             ))}
           </div>
         </div>
 
         {/* Grille (md+) */}
-        <div className="hidden md:grid mt-20 md:mt-24 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
+        <div
+          className="hidden md:grid mt-20 md:mt-24 md:grid-cols-2 lg:grid-cols-3 gap-px border"
+          style={{ backgroundColor: SEPARATOR, borderColor: SEPARATOR }}
+        >
           {methodologie.blocs.map((bloc, index) => {
             const Icon = bloc.iconKey ? iconMap[bloc.iconKey] : null;
 
             return (
               <motion.div
                 key={bloc.iconKey ?? index}
-                className="flex flex-col items-start bg-white p-8 hover:bg-accent-light/10 transition-colors"
+                className="flex flex-col items-start p-8 transition-colors"
+                style={{ backgroundColor: CARD_BG }}
+                onMouseEnter={e => (e.currentTarget.style.backgroundColor = CARD_BG_HOVER)}
+                onMouseLeave={e => (e.currentTarget.style.backgroundColor = CARD_BG)}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-80px' }}
@@ -142,12 +155,12 @@ export default function AboutSection() {
               >
                 <div className="flex items-center gap-4 mb-5">
                   {Icon && (
-                    <div className="w-12 h-12 bg-accent-light/30 flex items-center justify-center">
+                    <div className="w-12 h-12 flex items-center justify-center" style={{ backgroundColor: ICON_BG }}>
                       <Icon size={22} className="text-ink" strokeWidth={1.5} />
                     </div>
                   )}
                   <div>
-                    <span className="font-code text-[11px] text-accent tabular-nums block mb-0.5">
+                    <span className="font-code text-[11px] tabular-nums block mb-0.5" style={{ color: ACCENT_ROSE }}>
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <h3 className="text-sm font-bold text-ink uppercase tracking-wider">
@@ -155,7 +168,7 @@ export default function AboutSection() {
                     </h3>
                   </div>
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm leading-relaxed text-ink/70">
                   {t(bloc.description)}
                 </p>
               </motion.div>

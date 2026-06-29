@@ -7,7 +7,7 @@
 import type { MethodologieContent } from '../src/lib/content-types';
 
 export const methodologie: MethodologieContent = {
-  titreSection: { fr: 'Methodologie', en: 'Methodology' },
+  titreSection: { fr: 'À propos', en: 'About' },
   paragraphePrincipal: {
     fr: "Je conçois le design comme un <strong>levier de clarification</strong>, un outil d'aide à la decision. Face à la complexité des produits et des services, ma démarche vise à rendre les <strong>enjeux lisibles</strong>, à aligner les équipes et à concevoir des expériences utiles, <strong>cohérentes et centrées utilisateurs</strong>.",
     en: "I see design as a <strong>tool for clarification</strong>, a support for decision-making. Faced with the complexity of products and services, my approach aims to make <strong>challenges legible</strong>, align teams, and design useful experiences that are <strong>coherent and user-centered</strong>.",

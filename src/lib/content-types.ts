@@ -72,7 +72,8 @@ export type ContentBlockType =
   | 'section_vertical'
   | 'section_horizontal'
   | 'bullet_list'
-  | 'video';
+  | 'video'
+  | 'diagram';
 
 export interface ContentBlockContent {
   text?: LocalizedString;
@@ -101,6 +102,7 @@ export interface ContentBlockContent {
   imagePosition?: 'left' | 'right';
   items?: LocalizedString[];
   subtitle?: LocalizedString;
+  svg?: string;
 }
 
 export interface ExperienceContentBlock {
@@ -127,6 +129,7 @@ export interface Experience {
   role_duration?: LocalizedString;
   product_name?: string;
   is_clickable?: boolean;
+  access_code?: string;
   contentBlocks: ExperienceContentBlock[];
   keyFigures?: KeyFigure[];
 }

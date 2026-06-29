@@ -4,16 +4,20 @@
 // (copier un fichier existant comme modèle), l'importer et l'ajouter au tableau.
 
 import type { Experience } from '../../src/lib/content-types';
+import { novelia } from './novelia';
+import { sklip } from './sklip';
 import { goMoonbound } from './go-moonbound';
 import { equinoxAltered } from './equinox-altered';
 import { oodrive } from './oodrive';
 import { wedigitalgarden } from './wedigitalgarden';
 import { logitech } from './logitech';
 
-export const titreSection = { fr: 'Experience professionnelle', en: 'Professional experience' };
+export const titreSection = { fr: 'Projets', en: 'Works' };
 
 // Du plus récent au plus ancien — l'ordre du tableau = l'ordre d'affichage.
 export const experiences: Experience[] = [
+  novelia,
+  sklip,
   goMoonbound,
   equinoxAltered,
   oodrive,

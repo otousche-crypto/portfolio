@@ -36,6 +36,19 @@
     -webkit-box-decoration-break: clone;
   }
 
+  /* Dans la section #about (fond rose), les highlights passent en rose foncé */
+  #about .accent-strong strong {
+    background-color: rgba(198, 100, 120, 0.35);
+  }
+
+  #about .center-highlight {
+    background-image: linear-gradient(rgba(198, 100, 120, 0.35), rgba(198, 100, 120, 0.35));
+  }
+
+  #contact .center-highlight {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.18));
+  }
+
   /* Highlight "coup de surligneur" des titres quand ils traversent le centre
      du viewport (voir useCenterHighlight) : fond #93D4FF déployé de gauche à
      droite derrière le texte, qui reste noir. */
