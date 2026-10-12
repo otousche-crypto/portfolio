@@ -62,6 +62,12 @@ export interface ContactContent {
   telephone: { label: LocalizedString; value: string };
 }
 
+export interface ChangelogEntry {
+  version: string;
+  date: LocalizedString;
+  description: LocalizedString;
+}
+
 export type ContentBlockType =
   | 'text'
   | 'image'
@@ -73,7 +79,8 @@ export type ContentBlockType =
   | 'section_horizontal'
   | 'bullet_list'
   | 'video'
-  | 'diagram';
+  | 'diagram'
+  | 'changelog';
 
 export interface ContentBlockContent {
   text?: LocalizedString;
@@ -103,6 +110,7 @@ export interface ContentBlockContent {
   items?: LocalizedString[];
   subtitle?: LocalizedString;
   svg?: string;
+  entries?: ChangelogEntry[];
 }
 
 export interface ExperienceContentBlock {

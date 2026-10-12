@@ -42,24 +42,93 @@ export const sklip: Experience = {
       type: 'text',
       content: {
         text: {
-          fr: "Un skip-proof est une boucle audio gravée sur disque vinyle — l'outil de base de tout DJ scratcher pour s'entraîner et performer. <strong>Aucun outil web n'existait pour en créer un sur mesure : les DJs bricolaient dans des DAW généralistes ou achetaient des disques préenregistrés à usage unique.</strong>",
-          en: "A skip-proof is an audio loop pressed onto vinyl — the core tool of every scratch DJ for practice and performance. <strong>No web tool existed to create a custom one: DJs were hacking around in generalist DAWs or buying single-use pre-recorded records.</strong>",
+          fr: `Aujourd'hui, 90 000 DJs pratiquent le scratch dans le monde. 54 000 d'entre eux sont équipés d'une solution digitale appelée DVS — un système qui leur permet de contrôler des logiciels audio via de vrais platines vinyle. <strong>Pourtant, aucune solution digitale ne leur est proposée pour leur pratique du scratch.</strong>
+
+Ils utilisent encore des vinyles physiques, avec tous leurs pain points : fragiles, difficiles à trouver, onéreux, non customisables — et composés de samples non libres de droits, qui leur interdisent d'utiliser ces compositions dans des œuvres originales.`,
+          en: `Today, 90,000 DJs practice scratch worldwide. 54,000 of them are equipped with a digital solution called DVS — a system that lets them control audio software via real vinyl turntables. <strong>Yet no digital solution exists for their scratch practice.</strong>
+
+They still rely on physical vinyl records, with all the pain points that come with them: fragile, hard to find, expensive, non-customisable — and made of copyrighted samples that prevent them from using these compositions in original work.`,
         },
         alignment: 'left',
       },
     },
     {
       type: 'heading',
-      content: { text: { fr: 'Constat', en: 'Insight' }, level: 2, alignment: 'left' },
+      content: {
+        text: { fr: "L'idée", en: 'The Idea' },
+        level: 2,
+        alignment: 'left',
+      },
     },
     {
       type: 'text',
       content: {
         text: {
-          fr: "~90 000 scratch DJs actifs dans le monde, ~54 000 équipés DVS. <strong>Aucun concurrent web direct identifié.</strong> Un outil dédié, positionné sous le prix d'un seul disque physique (15–33 €), avait un sens économique immédiat.",
-          en: "~90,000 active scratch DJs worldwide, ~54,000 equipped with DVS. <strong>No direct web competitor identified.</strong> A dedicated tool, priced below a single physical record (€15–33), made immediate economic sense.",
+          fr: `Sklip s'adresse aux DJs équipés DVS pour corriger ces pain points un par un. <strong>Une librairie de samples libres de droits, conçue spécifiquement pour la pratique du scratch — et un outil pour composer soi-même ses propres enchaînements.</strong>
+
+Plus de galère pour trouver le bon disque. Plus de samples inutilisables dans une œuvre originale. Une composition sur mesure, exportée en numérique, prête à l'emploi.`,
+          en: `Sklip targets DVS-equipped DJs to fix these pain points one by one. <strong>A library of copyright-free samples, designed specifically for scratch practice — and a tool to compose your own custom sequences.</strong>
+
+No more hunting for the right record. No more samples you can't use in original work. A custom composition, exported digitally, ready to use.`,
         },
         alignment: 'left',
+      },
+    },
+    {
+      type: 'diagram',
+      content: {
+        svg: `<svg viewBox="0 0 700 255" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">
+
+  <!-- LEFT PANEL : LIBRAIRIE IA -->
+  <rect x="10" y="10" width="295" height="235" fill="#fff" stroke="#4CB8FF" stroke-width="1.5"/>
+  <rect x="10" y="10" width="295" height="42" fill="#4CB8FF"/>
+  <text x="25" y="32" font-size="10" font-weight="700" fill="#111" letter-spacing="1">LIBRAIRIE IA</text>
+  <text x="25" y="46" font-size="7" fill="#111" opacity="0.7">Samples libres de droits · Générés par IA</text>
+
+  <rect x="25" y="67" width="4" height="4" fill="#111"/>
+  <text x="38" y="75" font-size="9" fill="#333">Libre de droits</text>
+
+  <rect x="25" y="97" width="4" height="4" fill="#111"/>
+  <text x="38" y="105" font-size="9" fill="#333">Gratuite</text>
+
+  <rect x="25" y="127" width="4" height="4" fill="#111"/>
+  <text x="38" y="135" font-size="9" fill="#333">High quality</text>
+
+  <rect x="25" y="157" width="4" height="4" fill="#111"/>
+  <text x="38" y="165" font-size="9" fill="#333">Par catégories</text>
+
+  <rect x="25" y="187" width="4" height="4" fill="#111"/>
+  <text x="38" y="195" font-size="9" fill="#333">Mise à jour régulièrement</text>
+
+  <rect x="25" y="217" width="4" height="4" fill="#111"/>
+  <text x="38" y="225" font-size="9" fill="#333">Générée par IA</text>
+
+  <!-- RIGHT PANEL : OUTIL DE COMPOSITION -->
+  <rect x="395" y="10" width="295" height="235" fill="#fff" stroke="#111" stroke-width="1.5"/>
+  <rect x="395" y="10" width="295" height="42" fill="#111"/>
+  <text x="410" y="32" font-size="10" font-weight="700" fill="#4CB8FF" letter-spacing="1">COMPOSITEUR</text>
+  <text x="410" y="46" font-size="7" fill="#666">Outil de composition scratch</text>
+
+  <rect x="410" y="67" width="4" height="4" fill="#4CB8FF"/>
+  <text x="423" y="75" font-size="9" fill="#333">Visuel</text>
+
+  <rect x="410" y="102" width="4" height="4" fill="#4CB8FF"/>
+  <text x="423" y="110" font-size="9" fill="#333">Accessible</text>
+
+  <rect x="410" y="137" width="4" height="4" fill="#4CB8FF"/>
+  <text x="423" y="145" font-size="9" fill="#333">Ergonomique</text>
+
+  <rect x="410" y="172" width="4" height="4" fill="#4CB8FF"/>
+  <text x="423" y="180" font-size="9" fill="#333">Facile à prendre en main</text>
+
+  <rect x="410" y="207" width="4" height="4" fill="#4CB8FF"/>
+  <text x="423" y="215" font-size="9" fill="#333">Répondant aux attentes</text>
+  <text x="423" y="229" font-size="9" fill="#333">spécifiques du scratch</text>
+</svg>`,
+        caption: {
+          fr: 'Librairie IA (gauche) → Compositeur vinyle (droite)',
+          en: 'AI Library (left) → Vinyl Composer (right)',
+        },
       },
     },
     {
