@@ -1,15 +1,15 @@
-// ─── EXPÉRIENCE : Go Moonbound (Vibe Codeur, 2025-2026) ───
+// ─── EXPÉRIENCE : Go Moonbound (Product Builder, 2025-2026) ───
 // Modifier ici : les infos d'en-tête et les blocs de contenu de la page détail.
 // Les images sont dans public/experiences/go-moonbound/.
 // Types de blocs : heading, text, image, section_vertical, section_horizontal,
-// bullet_list, quote, divider. Le HTML (<strong>, <em>…) est accepté dans les textes.
+// bullet_list, quote, divider, changelog. Le HTML (<strong>, <em>…) est accepté dans les textes.
 // Chaque champ texte est bilingue : { fr: '...', en: '...' }.
 
 import type { Experience } from '../../src/lib/content-types';
 
 export const goMoonbound: Experience = {
   id: 'go-moonbound',
-  titre: { fr: 'Vibe Codeur', en: 'Vibe Coder' },
+  titre: { fr: 'Product Builder', en: 'Product Builder' },
   annee: '2025-2026',
   entreprise: 'Go Moonbound',
   description: {
@@ -148,8 +148,8 @@ export const goMoonbound: Experience = {
       type: 'text',
       content: {
         text: {
-          fr: "Une fois le prompt prêt, Claude Code prend le relais et livre en local. Je teste directement le produit réel — pas une maquette, pas un prototype — et j'itère sur ce que je vois et ressens. La boucle test → ajustement → nouvelle livraison locale tourne jusqu'à ce que le produit soit prêt. Puis déploiement.\nZéro handoff. Zéro ticket. De l'intention à la production, en autonomie complète.",
-          en: 'Once the prompt is ready, Claude Code takes over and delivers locally. I test the real product directly — not a mockup, not a prototype — and iterate on what I see and feel. The test → adjust → new local delivery loop runs until the product is ready. Then deployment.\nZero handoff. Zero ticket. From intention to production, in complete autonomy.',
+          fr: "Une fois le prompt prêt, Claude Code prend le relais et livre en local. Je teste directement le produit réel — pas une maquette, pas un prototype — et j'itère sur ce que je vois et ressens. La boucle test → ajustement → nouvelle livraison locale tourne jusqu'à ce que le produit soit prêt.\n\nLe déploiement est automatisé avec Vercel, connecté au dépôt GitHub. Chaque push génère une URL de prévisualisation, ce qui me permet de tester une évolution en conditions réelles avant de la valider. Une fois la branche fusionnée sur main, la mise en production se fait automatiquement, sans intervention manuelle. Résultat : quelques minutes entre l'idée et la mise en ligne, et la possibilité de revenir à une version précédente en un clic en cas de problème.\nZéro handoff. Zéro ticket. De l'intention à la production, en autonomie complète.",
+          en: 'Once the prompt is ready, Claude Code takes over and delivers locally. I test the real product directly — not a mockup, not a prototype — and iterate on what I see and feel. The test → adjust → new local delivery loop runs until the product is ready.\n\nDeployment is automated with Vercel, connected to the GitHub repo. Every push generates a preview URL, which lets me test a change in real conditions before validating it. Once the branch is merged into main, the production release happens automatically, with no manual step. The result: a few minutes from idea to live, and the ability to roll back to a previous version in one click if something goes wrong.\nZero handoff. Zero ticket. From intention to production, in complete autonomy.',
         },
       },
     },
@@ -191,6 +191,93 @@ export const goMoonbound: Experience = {
           fr: 'Le premiers utilisateurs sont déja la! et toi, où en es-tu ?  Pour le savoir, rends toi sur https://gomoonbound.com !',
           en: 'The first users are already here! And you, how far along are you? Find out at https://gomoonbound.com !',
         },
+      },
+    },
+    {
+      type: 'heading',
+      content: {
+        text: { fr: 'Changelog', en: 'Changelog' },
+        level: 2,
+      },
+    },
+    {
+      type: 'text',
+      content: {
+        text: {
+          fr: "Le produit continue d'évoluer après le lancement, au fil des retours utilisateurs. Chaque version corrige un frein ou ajoute ce que l'usage réel a révélé comme manquant.",
+          en: 'The product keeps evolving after launch, based on user feedback. Each version fixes a friction point or adds what real usage revealed was missing.',
+        },
+      },
+    },
+    {
+      type: 'changelog',
+      content: {
+        entries: [
+          {
+            version: 'v1.0',
+            date: { fr: '16 mars 2026', en: 'March 16, 2026' },
+            description: {
+              fr: 'Lancement de Go Moonbound — scène 3D Terre/Lune, auth Strava, classement, page de partage, support mobile Safari',
+              en: 'Launch of Go Moonbound — 3D Earth/Moon scene, Strava auth, leaderboard, share page, mobile Safari support',
+            },
+          },
+          {
+            version: 'v1.1',
+            date: { fr: '17 mars 2026', en: 'March 17, 2026' },
+            description: {
+              fr: 'Texture NASA Blue Marble, modals responsive, header aligné mobile/desktop, sécurité webhook Strava',
+              en: 'NASA Blue Marble texture, responsive modals, aligned mobile/desktop header, Strava webhook security',
+            },
+          },
+          {
+            version: 'v1.2',
+            date: { fr: '25 mars 2026', en: 'March 25, 2026' },
+            description: {
+              fr: 'Paramètre pour masquer les autres participants, robustesse in-app browsers (LinkedIn, Instagram)',
+              en: 'Setting to hide other participants, robustness for in-app browsers (LinkedIn, Instagram)',
+            },
+          },
+          {
+            version: 'v1.3',
+            date: { fr: '1er avril 2026', en: 'April 1, 2026' },
+            description: {
+              fr: 'SEO + image OG, changelog modal, CTA de partage quand un participant est introuvable dans le classement',
+              en: "SEO + OG image, changelog modal, share CTA when a participant can't be found in the leaderboard",
+            },
+          },
+          {
+            version: 'v2.0',
+            date: { fr: '7 mai 2026', en: 'May 7, 2026' },
+            description: {
+              fr: 'Sphères communautaires avec nuages de progression, podium or/argent/bronze, médailles au survol, correction du plafond de lignes PostgREST',
+              en: 'Community spheres with progress clouds, gold/silver/bronze podium, hover medals, fix for the PostgREST row cap',
+            },
+          },
+          {
+            version: 'v2.1',
+            date: { fr: '9 juin 2026', en: 'June 9, 2026' },
+            description: {
+              fr: `Menu "À propos" avec crédit design, suppression du vaisseau spatial, tracking source de trafic à l'inscription`,
+              en: '"About" menu with design credit, removal of the spaceship, traffic source tracking on signup',
+            },
+          },
+          {
+            version: 'v2.2',
+            date: { fr: '17 juin 2026', en: 'June 17, 2026' },
+            description: {
+              fr: 'Analytics GA + Vercel, lien club Strava, scène 3D sur la landing page avec hero animé, favicon orange Go Moonbound',
+              en: 'GA + Vercel analytics, Strava club link, 3D scene on the landing page with animated hero, orange Go Moonbound favicon',
+            },
+          },
+          {
+            version: 'v2.3',
+            date: { fr: '30 juin 2026', en: 'June 30, 2026' },
+            description: {
+              fr: 'Clic sur une sphère ou une ligne du classement affiche les stats du participant, bouton Share adaptatif, retour en un clic',
+              en: "Clicking a sphere or leaderboard row shows the participant's stats, adaptive Share button, one-click back",
+            },
+          },
+        ],
       },
     },
   ],

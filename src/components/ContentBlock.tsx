@@ -19,6 +19,7 @@ const linkClass =
 export default function ContentBlock({ block }: ContentBlockProps) {
   const { type, content } = block;
   const [modalImage, setModalImage] = useState<{ url: string; alt?: string; caption?: string } | null>(null);
+  const [changelogOpen, setChangelogOpen] = useState(false);
   const headingRef = useCenterHighlight<HTMLHeadingElement>();
   const { t } = useLocalizedContent();
 
@@ -139,7 +140,7 @@ export default function ContentBlock({ block }: ContentBlockProps) {
           <div className={`my-8 grid ${gridClass} gap-6`}>
             {content.images?.map((img, index) => (
               <figure key={index} className="space-y-2">
-                <div className="overflow-hidden border border-gray-200">
+                <div className="overflow-hidden">
                   <img
                     src={img.url}
                     alt={t(img.alt)}
@@ -211,7 +212,7 @@ export default function ContentBlock({ block }: ContentBlockProps) {
               </div>
             )}
             <figure className="my-6">
-              <div className="overflow-hidden border border-gray-200">
+              <div className="overflow-hidden">
                 <img
                   src={content.image_url}
                   alt={resolvedImageAlt}
@@ -250,7 +251,7 @@ export default function ContentBlock({ block }: ContentBlockProps) {
           )}
           {content.image_url && (
             <figure className="mb-6">
-              <div className="overflow-hidden border border-gray-200">
+              <div className="overflow-hidden">
                 <img
                   src={content.image_url}
                   alt={resolvedImageAlt}
@@ -289,7 +290,7 @@ export default function ContentBlock({ block }: ContentBlockProps) {
       const resolvedTextContent = textContent ? t(textContent) : '';
       const imageElement = imageUrl && (
         <figure className="w-full md:w-1/2 flex-shrink-0">
-          <div className="overflow-hidden border border-gray-200">
+          <div className="overflow-hidden">
             <img
               src={imageUrl}
               alt={resolvedImageAlt}
@@ -379,7 +380,7 @@ export default function ContentBlock({ block }: ContentBlockProps) {
 
       return (
         <div className={`my-8 ${videoWidthClass}`}>
-          <div className="relative border border-gray-200" style={{ paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+          <div className="relative" style={{ paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
             <iframe
               src={embedUrl}
               title="YouTube video player"
@@ -399,6 +400,48 @@ export default function ContentBlock({ block }: ContentBlockProps) {
       );
 
     }
+    case 'changelog':
+      return (
+        <div className="my-8 border border-gray-200">
+          <button
+            type="button"
+            onClick={() => setChangelogOpen((open) => !open)}
+            className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-gray-50 transition-colors"
+            aria-expanded={changelogOpen}
+          >
+            <span className="text-sm uppercase tracking-wider font-bold text-ink">
+              {t({ fr: 'Historique des mises à jour', en: 'Update history' })}
+            </span>
+            <span
+              className={`text-accent flex-shrink-0 transition-transform duration-300 ${changelogOpen ? 'rotate-180' : ''}`}
+              aria-hidden="true"
+            >
+              ▾
+            </span>
+          </button>
+          <div
+            className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${
+              changelogOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+            }`}
+          >
+            <div className="overflow-hidden">
+              <div className="px-5 pb-6 pt-2 border-t border-gray-200">
+                {content.entries?.map((entry, index) => (
+                  <div key={index} className="relative border-l-2 border-gray-200 pl-6 pt-6 last:pb-0">
+                    <span className="absolute -left-[5px] top-[1.65rem] w-2 h-2 bg-accent" aria-hidden="true"></span>
+                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-1.5">
+                      <span className="font-bold uppercase tracking-tight text-ink text-lg">{entry.version}</span>
+                      <span className="text-xs uppercase tracking-wider text-gray-500">{t(entry.date)}</span>
+                    </div>
+                    <p className="text-base text-gray-800 leading-relaxed">{t(entry.description)}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
     case 'diagram':
       return (
         <div className="my-8 border border-gray-200 bg-white p-4 md:p-8 overflow-x-auto">

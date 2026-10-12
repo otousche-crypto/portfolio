@@ -74,7 +74,7 @@ export default function TimelineSection({ excludeExperienceId, customTitle }: Ti
                       }`}
                     />
                   </div>
-                  <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center bg-white border border-gray-200 group-hover:border-ink transition-colors">
+                  <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center bg-white">
                     {experience.logourl ? (
                       <img
                         src={experience.logourl}

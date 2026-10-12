@@ -81,7 +81,7 @@ export const novelia: Experience = {
   id: 'novelia',
   titre: { fr: 'Product Designer & Builder', en: 'Product Designer & Builder' },
   annee: '2026',
-  entreprise: 'NoveliA',
+  entreprise: 'Collaboration & Agentic Orchestration',
   description: {
     fr: 'NoveliA est le prétexte. Le vrai projet : mettre en place un système d\'orchestration agentique et un espace de travail collaboratif partagé — une nouvelle façon de co-construire un produit à plusieurs, avec des agents IA spécialisés. La série littéraire est le terrain d\'expérimentation.',
     en: 'NoveliA is the pretext. The real project: building an agentic orchestration system and a shared collaborative workspace — a new way to co-build a product as a team, with specialised AI agents. The literary series is the testing ground.',
