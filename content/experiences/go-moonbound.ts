@@ -277,6 +277,30 @@ export const goMoonbound: Experience = {
               en: "Clicking a sphere or leaderboard row shows the participant's stats, adaptive Share button, one-click back",
             },
           },
+          {
+            version: 'v3.0',
+            date: { fr: '11 juillet 2026', en: 'July 11, 2026' },
+            description: {
+              fr: 'Bouton Profil (photo, progression, streak, classement), collection de 23 badges à débloquer, récap hebdomadaire de progression par email',
+              en: 'Profile button (photo, progress, streak, rank), collection of 23 badges to unlock, weekly progress recap by email',
+            },
+          },
+          {
+            version: 'v3.1',
+            date: { fr: '19 juillet 2026', en: 'July 19, 2026' },
+            description: {
+              fr: 'Flèches de mouvement quotidien dans le classement, objectif de dépassement dans le profil (km restants avant le voyageur suivant), paramètres du compte regroupés dans le profil',
+              en: 'Daily movement arrows in the leaderboard, overtake goal in the profile (km left before the next traveler), account settings grouped in the profile',
+            },
+          },
+          {
+            version: 'v3.2',
+            date: { fr: '19 juillet 2026', en: 'July 19, 2026' },
+            description: {
+              fr: "Badges d'invitation débloqués à 1, 5, 10 et 25 inscriptions depuis la page de partage",
+              en: 'Invite badges unlocked at 1, 5, 10 and 25 sign-ups from the share page',
+            },
+          },
         ],
       },
     },
