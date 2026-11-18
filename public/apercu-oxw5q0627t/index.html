@@ -22,6 +22,7 @@
   --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
   --radius: 28px;
+  --accent: #4CB8FF;
   color-scheme: light;
 }
 
@@ -29,7 +30,7 @@
 body {
   background: var(--bg); color: var(--fg);
   font-family: var(--sans); font-size: 16px; line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased; overflow-x: clip;
 }
 a { color: inherit; }
 .wrap {
@@ -40,23 +41,34 @@ a { color: inherit; }
 @media (min-width: 720px) { .wrap { padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); } }
 
 /* ── Top bar ── */
-.top { display: flex; justify-content: space-between; align-items: center; padding-block: 24px; font-size: 14px; }
+/* Sticky glass bar: translucent white with a strong blur, no stroke */
+.top { position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; padding-block: 20px; font-size: 14px; }
+.top::before { content: ""; position: absolute; inset: 0 calc(50% - 50vw); z-index: -1;
+  background: linear-gradient(to bottom, rgba(255,255,255,.78), rgba(255,255,255,.6));
+  -webkit-backdrop-filter: saturate(180%) blur(24px); backdrop-filter: saturate(180%) blur(24px); }
 .top nav { display: flex; gap: 20px; }
-.top nav a { text-decoration: none; color: var(--muted); transition: color .2s; }
+.top nav a { text-decoration: none; color: #5f5f68; transition: color .2s; }
 .top nav a:hover, .top nav a:focus-visible { color: var(--fg); }
 .brand { font-weight: 600; letter-spacing: -0.01em; text-decoration: none; }
 
 /* ── Hero ── */
-.hero { padding-block: 72px 88px; max-width: 860px; }
+.hero { padding-block: 72px 96px; max-width: 980px; }
 .avatar { width: 64px; height: 64px; border-radius: 50%; background: #ff6a3d; display: block; margin-bottom: 28px; }
+/* Same type as the About section: Geist, grey for the typed word, black for the fixed "Designer." */
 .hero h1 {
-  font-size: clamp(36px, 6vw, 64px); line-height: 1.04; letter-spacing: -0.035em;
-  font-weight: 600; margin: 0; text-wrap: balance; color: var(--muted);
+  font-family: var(--sans); font-size: clamp(48px, 9vw, 112px); line-height: 1; letter-spacing: -0.045em;
+  font-weight: 600; margin: 0; color: var(--fg);
 }
-.hero h1 strong { color: var(--fg); font-weight: 600; }
-.hero h1 em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
-.hero p { font-size: 18px; color: var(--muted); max-width: 56ch; margin: 28px 0 0; }
-.hero p b { color: var(--fg); font-weight: 500; }
+.hero h1 .ln { display: block; min-height: 1em; white-space: nowrap; }
+.hero h1 .ln:first-child { color: var(--muted); }
+/* Typewriter: types at 100ms/char, holds 2s, erases at 50ms/char; only the differing end is retyped */
+.caret { display: inline-block; width: .06em; height: .8em; margin-left: .06em; background: var(--muted); vertical-align: -.04em; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .caret { animation: none; } }
+.hero p { font-size: 18px; color: var(--muted); max-width: 56ch; margin: 36px 0 0; }
+.hero p strong { color: var(--fg); font-weight: 500; }
+.hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.hero-tags span { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
 
 .label {
   font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
@@ -94,6 +106,11 @@ a { color: inherit; }
 .visual img { display: block; max-width: 100%; }
 .card .visual > * { transition: transform .6s cubic-bezier(.2,.7,.2,1); }
 .card:hover .visual > * { transform: scale(1.025); }
+/* The whole card opens its primary link; other links inside keep their own target */
+.card { cursor: pointer; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+.card:hover { transform: translateY(-3px); }
+.card:hover .btn.primary { transform: translateY(-1px); }
+@media (prefers-reduced-motion: reduce) { .card, .card:hover { transform: none; } }
 
 /* browser frame */
 .browser {
@@ -172,22 +189,8 @@ a { color: inherit; }
 .safari span { margin: 0 auto; font-size: 1.15cqw; color: #6b675f; background: #e4e2dd; padding: .3cqw 6cqw; border-radius: .6cqw; }
 .nav-demo { background: #fff; }
 .nav-demo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
-.nav-demo .v-mois { transform-origin: 57.6% 50.6%; animation: moisZoom 10s infinite cubic-bezier(.6,0,.3,1); }
-.nav-demo .v-jour { animation: jourZoom 10s infinite cubic-bezier(.6,0,.3,1); }
-@keyframes moisZoom {
-  0%, 30%  { transform: scale(1); opacity: 1; }
-  40%, 82% { transform: scale(3); opacity: 0; }
-  92%, 100% { transform: scale(1); opacity: 1; }
-}
-@keyframes jourZoom {
-  0%, 30%  { transform: scale(.85); opacity: 0; }
-  40%, 82% { transform: scale(1); opacity: 1; }
-  92%, 100% { transform: scale(.85); opacity: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .nav-demo .v-mois, .nav-demo .v-jour { animation: none; }
-  .nav-demo .v-mois { opacity: 0; }
-}
+/* Real navigation recorded on decadi.vercel.app: Année → Brumaire → 27 → swipe to the 28 → Année */
+.nav-demo video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
 .decadi .macbook .lid { box-shadow: 0 0 0 1px #2c2c31, 0 40px 80px -30px rgba(60,40,10,.45); }
 .macbook { position: relative; width: 92%; margin-right: 8%; }
 .macbook .lid { background: #1a1a1d; border-radius: 16px 16px 4px 4px; padding: 2.2% 2.2% 3%; box-shadow: 0 0 0 1px #2c2c31, 0 40px 80px -30px rgba(252,76,2,.25); }
@@ -346,8 +349,9 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 
   <section class="hero">
     <img class="avatar" src="img/avatar.png" alt="Olivier Tousche">
-    <h1><strong>Salut, moi c'est Olivier.</strong> Product Designer qui <em>construit</em> ce qu'il dessine.</h1>
-    <p>De l'identification des irritants aux tests utilisateurs, je conçois des <b>expériences produit</b> centrées utilisateurs. Depuis 2025, je les livre aussi moi-même, du premier prompt à la mise en production.</p>
+    <h1 aria-label="UX Designer, Product Designer, AI Designer, Builder Designer."><span class="ln" aria-hidden="true">UX</span><span class="ln" aria-hidden="true">Designer.</span></h1>
+    <p>De l'identification des irritants aux tests utilisateurs, je conçois des <strong>expériences produit</strong> et de service centrées utilisateurs, en articulant <strong>stratégie, recherche et design</strong>.</p>
+    <div class="hero-tags"><span>User research</span><span>Prototyping</span><span>Product vision</span><span>User tests</span></div>
   </section>
 
   <div class="label" id="projets"><span>Projets sélectionnés</span><span>2022 — 2026</span></div>
@@ -405,7 +409,8 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
         <div class="wave" aria-hidden="true" id="wave"></div>
         <div class="meta">Product Designer &amp; Builder · solo · 2026</div>
         <div class="actions">
-          <a class="btn primary" href="#">Visiter Sklip <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg></a>
+          <a class="btn primary" href="#">Lire le use case</a>
+          <a class="btn" href="#">Visiter Sklip <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg></a>
         </div>
       </div>
       <div class="visual">
@@ -475,8 +480,7 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
             <div class="menubar" aria-hidden="true"><span class="apple"></span><b>Safari</b><span>Fichier</span><span>Édition</span><span>Présentation</span><span class="mb-right">mar. 17 nov. 9:41</span></div>
             <div class="safari" aria-hidden="true"><i></i><i></i><i></i><span>decadi.vercel.app</span></div>
             <div class="stage nav-demo">
-              <img class="v-jour" src="img/decadi-desktop.jpg" alt="Décadi sur desktop : vue Jour du 26 Brumaire an 235, jour de la Pistache, avec le récit du jour">
-              <img class="v-mois" src="img/decadi-mois.jpg" alt="Décadi sur desktop : vue Mois de Brumaire, en rangées de dix jours">
+              <video src="img/decadi-nav.mp4" poster="img/decadi-annee.jpg" autoplay muted loop playsinline aria-label="Navigation réelle dans Décadi : de la vue Année à Brumaire, au 27 Brumaire, puis glissement au jour suivant"></video>
             </div>
           </div></div>
           <div class="base"></div>
@@ -517,6 +521,50 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 </div>
 
 <script>
+
+  // Whole-card click: forward to the card's primary link unless a link itself (or a text selection) was the target
+  document.querySelectorAll('.card').forEach(card => {
+    const link = card.querySelector('.btn.primary');
+    if (!link) return;
+    card.addEventListener('click', e => {
+      if (e.target.closest('a') || String(getSelection())) return;
+      if (e.metaKey || e.ctrlKey || link.target === '_blank') window.open(link.href, '_blank', 'noopener');
+      else link.click();
+    });
+  });
+
+  // Decadi recording: keep it still for reduced motion
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelectorAll('.nav-demo video').forEach(v => { v.removeAttribute('autoplay'); v.pause(); });
+
+  // Hero typewriter
+  (() => {
+    const lines = [...document.querySelectorAll('.hero h1 .ln')];
+    const pairs = [['UX', 'Designer.'], ['Product', 'Designer.'], ['AI', 'Designer.'], ['Builder', 'Designer.']];
+    if (!lines.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const caret = document.createElement('i'); caret.className = 'caret';
+    const text = [...pairs[0]], node = lines.map(l => (l.textContent = '', l.appendChild(document.createTextNode(''))));
+    const show = n => { node[n].data = text[n]; lines[n].appendChild(caret); };
+    text.forEach((_, n) => show(n)); lines[0].appendChild(caret);
+    const common = (a, b) => { let n = 0; while (n < a.length && n < b.length && a[n] === b[n]) n++; return n; };
+    let i = 0;
+    // Erase the bottom line then the top one down to what they share with the next pair, then type top, then bottom
+    const run = (ops, done) => {
+      if (!ops.length) return done();
+      const [n, target] = ops[0];
+      if (text[n] === target) { show(n); return run(ops.slice(1), done); }
+      const erasing = target.length < text[n].length;
+      text[n] = erasing ? text[n].slice(0, -1) : target.slice(0, text[n].length + 1); show(n);
+      setTimeout(() => run(ops, done), erasing ? 50 : 100);
+    };
+    const step = () => {
+      const next = pairs[(i + 1) % pairs.length];
+      const keep = next.map((w, n) => text[n].slice(0, common(text[n], w)));
+      run([[1, keep[1]], [0, keep[0]], [0, next[0]], [1, next[1]]], () => {
+        i = (i + 1) % pairs.length; lines[0].appendChild(caret); setTimeout(step, 2000);
+      });
+    };
+    setTimeout(step, 2000);
+  })();
 
   // Sklip composer: add samples from the library, then swap their places (timeline + vinyl), looped; the disc itself stays still
   (() => {
