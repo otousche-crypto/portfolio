@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Sklip · Olivier Tousche</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Outfit:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: one narrow column of intro text, then full-width project panels, each in its product's own colours */
+:root {
+  --bg: #ffffff;
+  --fg: #111113;
+  --muted: #9a9aa2;
+  --soft: #f3f3f5;
+  --line: #e7e7ea;
+  --pill: #111113;
+  --pill-fg: #ffffff;
+  --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --radius: 28px;
+  --accent: #4CB8FF;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--sans); font-size: 16px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased; overflow-x: clip;
+}
+a { color: inherit; }
+.wrap {
+  max-width: 1200px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 720px) { .wrap { padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); } }
+
+/* ── Top bar ── */
+/* Sticky glass bar: translucent white with a strong blur, no stroke */
+.top { position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; padding-block: 20px; font-size: 14px; }
+.top::before { content: ""; position: absolute; inset: 0 calc(50% - 50vw); z-index: -1;
+  background: linear-gradient(to bottom, rgba(255,255,255,.78), rgba(255,255,255,.6));
+  -webkit-backdrop-filter: saturate(180%) blur(24px); backdrop-filter: saturate(180%) blur(24px); }
+.top nav { display: flex; gap: 20px; }
+.top nav a { text-decoration: none; color: #5f5f68; transition: color .2s; }
+.top nav a:hover, .top nav a:focus-visible { color: var(--fg); }
+.brand { font-weight: 600; letter-spacing: -0.01em; text-decoration: none; }
+
+/* ── Hero ── */
+.hero { padding-block: 72px 96px; max-width: 980px; }
+.avatar { width: 64px; height: 64px; border-radius: 50%; background: #ff6a3d; display: block; margin-bottom: 28px; }
+/* Same type as the About section: Geist, grey for the typed word, black for the fixed "Designer." */
+.hero h1 {
+  font-family: var(--sans); font-size: clamp(48px, 9vw, 112px); line-height: 1; letter-spacing: -0.045em;
+  font-weight: 600; margin: 0; color: var(--fg);
+}
+.hero h1 .ln { display: block; min-height: 1em; white-space: nowrap; }
+.hero h1 .ln:first-child { color: var(--muted); }
+/* Typewriter: types at 100ms/char, holds 2s, erases at 50ms/char; only the differing end is retyped */
+.caret { display: inline-block; width: .06em; height: .8em; margin-left: .06em; background: var(--muted); vertical-align: -.04em; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .caret { animation: none; } }
+.hero p { font-size: 18px; color: var(--muted); max-width: 56ch; margin: 36px 0 0; }
+.hero p strong { color: var(--fg); font-weight: 500; }
+.hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.hero-tags span { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
+
+.label {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted); display: flex; justify-content: space-between; align-items: baseline;
+  padding-bottom: 16px; border-bottom: 1px solid var(--line); margin-bottom: 20px;
+}
+
+/* ── Project panels ── */
+.projects { display: grid; gap: 20px; padding-bottom: 96px; }
+.card {
+  --c-bg: #eee; --c-fg: #111; --c-muted: rgba(0,0,0,.55); --c-pill: #111; --c-pill-fg: #fff; --c-ghost: rgba(0,0,0,.07);
+  position: relative; overflow: hidden; border-radius: var(--radius);
+  background: var(--c-bg); color: var(--c-fg);
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  min-height: 520px;
+}
+.card .text {
+  position: relative; z-index: 2; padding: 48px; display: flex; flex-direction: column; justify-content: center; gap: 18px; min-width: 0;
+}
+.logo { width: 40px; height: 40px; border-radius: 10px; object-fit: contain; display: block; }
+.card h3 { margin: 0; font-size: 15px; font-weight: 600; letter-spacing: .01em; }
+.card h2 { margin: 0; font-size: clamp(24px, 2.6vw, 32px); line-height: 1.12; letter-spacing: -0.025em; font-weight: 600; text-wrap: balance; }
+.meta { font-family: var(--mono); font-size: 12px; color: var(--c-muted); letter-spacing: .02em; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+  font-size: 13px; font-weight: 500; padding: 9px 15px; border-radius: 999px;
+  background: var(--c-ghost); color: var(--c-fg); transition: transform .2s, background .2s;
+}
+.btn.primary { background: var(--c-pill); color: var(--c-pill-fg); }
+.btn:hover { transform: translateY(-1px); }
+.btn:focus-visible { outline: 2px solid var(--c-fg); outline-offset: 2px; }
+.btn svg { width: 12px; height: 12px; }
+.visual { position: relative; min-width: 0; display: flex; align-items: center; justify-content: center; padding: 40px 40px 40px 0; }
+.visual img { display: block; max-width: 100%; }
+.card .visual > * { transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.card:hover .visual > * { transform: scale(1.025); }
+/* The whole card opens its primary link; other links inside keep their own target */
+.card { cursor: pointer; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+.card:hover { transform: translateY(-3px); }
+.card:hover .btn.primary { transform: translateY(-1px); }
+@media (prefers-reduced-motion: reduce) { .card, .card:hover { transform: none; } }
+
+/* browser frame */
+.browser {
+  width: 100%; border-radius: 14px; overflow: hidden; background: #000;
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.08);
+}
+.browser .bar { height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 12px; background: #1b1b1f; }
+.browser .bar i { width: 9px; height: 9px; border-radius: 50%; background: #3a3a40; display: block; }
+.browser .bar span { margin-left: 10px; font-family: var(--mono); font-size: 10.5px; color: #8b8b93; }
+.browser img { width: 100%; }
+
+/* Equinox: full-bleed key art */
+.equinox { --c-bg: #0d1626; --c-fg: #fff; --c-muted: rgba(255,255,255,.7); --c-pill: #fff; --c-pill-fg: #0d1626; --c-ghost: rgba(255,255,255,.16); }
+.equinox .art { position: absolute; inset: 0; z-index: 0; }
+.equinox .art img { width: 100%; height: 100%; object-fit: cover; object-position: 70% 40%; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+.equinox:hover .art img { transform: scale(1.03); }
+.equinox::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(8,14,28,.92) 0%, rgba(8,14,28,.7) 35%, rgba(8,14,28,0) 65%); }
+.equinox .stats { display: flex; gap: 28px; margin-top: 8px; }
+.equinox .stats b { display: block; font-size: 22px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.equinox .stats span { font-size: 12px; color: var(--c-muted); }
+.equinox .logo { filter: invert(1); background: transparent; }
+
+/* GoMoonBound */
+/* GoMoonBound: the app's own night sky (deep navy, faint blue nebula, scattered stars) across the whole card */
+.moon { --c-bg: #04050c; --c-fg: #fff; --c-muted: rgba(255,255,255,.6); --c-pill: #fc4c02; --c-pill-fg: #fff; --c-ghost: rgba(255,255,255,.1);
+  background:
+    radial-gradient(38% 55% at 22% 78%, rgba(70,82,140,.32), transparent 70%),
+    radial-gradient(30% 45% at 70% 30%, rgba(60,70,125,.22), transparent 70%),
+    radial-gradient(45% 60% at 95% 95%, rgba(48,56,104,.25), transparent 70%),
+    url("img/moon-sky.jpg") center / cover,
+    #04050c; }
+.moon h3 { color: #fc6a2a; letter-spacing: .14em; text-transform: uppercase; font-size: 13px; }
+.moon .stars { position: absolute; inset: 0; pointer-events: none; background-image:
+  radial-gradient(1px 1px at 20px 30px, #fffc, transparent 1.5px), radial-gradient(1px 1px at 110px 90px, #fff9, transparent 1.5px),
+  radial-gradient(1.4px 1.4px at 60px 140px, #fffb, transparent 2px), radial-gradient(1px 1px at 150px 20px, #fff7, transparent 1.5px),
+  radial-gradient(1px 1px at 45px 75px, #fff6, transparent 1.5px), radial-gradient(1.2px 1.2px at 190px 160px, #fffa, transparent 2px),
+  radial-gradient(1px 1px at 130px 200px, #fff8, transparent 1.5px), radial-gradient(1px 1px at 10px 190px, #fff5, transparent 1.5px);
+  background-size: 210px 220px; }
+.moon .stars::after { content: ""; position: absolute; inset: 0; background-image:
+  radial-gradient(1.6px 1.6px at 70px 40px, #fff, transparent 2.2px), radial-gradient(1px 1px at 250px 260px, #fff9, transparent 1.5px),
+  radial-gradient(1px 1px at 330px 120px, #fffa, transparent 1.5px), radial-gradient(1.3px 1.3px at 180px 330px, #fffc, transparent 2px);
+  background-size: 390px 370px; opacity: .8; }
+.moon .km { font-family: var(--mono); font-size: 12px; color: var(--c-muted); display: flex; align-items: center; gap: 10px; }
+.moon .km .track { flex: 1; height: 2px; background: rgba(255,255,255,.12); border-radius: 2px; position: relative; max-width: 180px; }
+.moon .km .track::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 1.1%; min-width: 6px; background: #fc4c02; border-radius: 2px; }
+
+/* Decadi */
+.decadi { --c-bg: #e9e4d8; --c-fg: #1d1a15; --c-muted: rgba(29,26,21,.6); --c-pill: #1d1a15; --c-pill-fg: #e9e4d8; --c-ghost: rgba(29,26,21,.08); }
+.decadi h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 3.2vw, 40px); letter-spacing: -0.01em; }
+.engraving { width: 46%; aspect-ratio: 1000/746; border-radius: 6px; overflow: hidden; transform: rotate(-3deg) translateX(30px); box-shadow: 0 20px 40px -18px rgba(0,0,0,.45); }
+.engraving img { width: 100%; height: 100%; object-fit: cover; }
+.phone {
+  position: relative; z-index: 1; width: 250px; flex: none; border-radius: 38px; padding: 9px; background: #1b1a17;
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,.5);
+}
+.phone .screen { border-radius: 30px; background: #fbfaf6; color: #1d1a15; padding: 18px 16px 20px; display: flex; flex-direction: column; gap: 6px; text-align: center; }
+.phone .decade { display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; font-family: var(--mono); font-size: 9px; color: #8b8577; margin-bottom: 6px; }
+.phone .decade span { padding: 4px 0; border-radius: 6px; font-variant-numeric: tabular-nums; }
+.phone .decade .on { background: #b23a26; color: #fff; }
+.phone .kicker { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: .1em; color: #8b8577; }
+.phone .date { font-family: var(--serif); font-size: 22px; line-height: 1.1; }
+.phone .plate { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: 50% 40%; mix-blend-mode: multiply; }
+.phone .day { font-family: var(--serif); font-style: italic; font-size: 30px; line-height: 1; color: #b23a26; }
+.phone .greg { font-size: 10.5px; color: #8b8577; }
+
+/* GoMoonBound devices: MacBook + iPhone */
+.card .devices { padding: 48px 48px 48px 0; }
+/* Décadi desktop: browser bar under the notch, then Mois view zooms into the 26 → Jour view, and back out, looped */
+.mb-screen.has-bar { display: grid; grid-template-rows: 3.6% 5.4% 1fr; container-type: inline-size; }
+.menubar { display: flex; align-items: center; gap: 1.6cqw; padding: 0 1.6cqw; font-size: 1.05cqw; background: #e9e8e6; color: #1c1c1e; }
+.menubar .apple { width: 1cqw; height: 1.2cqw; background: #1c1c1e; border-radius: 45% 45% 50% 50%; display: block; }
+.menubar .mb-right { margin-left: auto; }
+.stage { position: relative; overflow: hidden; min-height: 0; }
+.safari { display: flex; position: relative; align-items: center; gap: .55cqw; padding: 0 1.4cqw; background: #f1f0ee; border-bottom: 1px solid #dddbd6; }
+.safari i { width: .8cqw; height: .8cqw; border-radius: 50%; background: #d0cdc7; display: block; }
+.safari span { margin: 0 auto; font-size: 1.15cqw; color: #6b675f; background: #e4e2dd; padding: .3cqw 6cqw; border-radius: .6cqw; }
+.nav-demo { background: #fff; }
+.nav-demo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+/* Real navigation recorded on decadi.vercel.app: Année → Brumaire → 27 → swipe to the 28 → Année */
+.nav-demo video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.decadi .macbook .lid { box-shadow: 0 0 0 1px #2c2c31, 0 40px 80px -30px rgba(60,40,10,.45); }
+.macbook { position: relative; width: 92%; margin-right: 8%; }
+.macbook .lid { background: #1a1a1d; border-radius: 16px 16px 4px 4px; padding: 2.2% 2.2% 3%; box-shadow: 0 0 0 1px #2c2c31, 0 40px 80px -30px rgba(252,76,2,.25); }
+.macbook .mb-screen { position: relative; aspect-ratio: 16/10; border-radius: 6px; overflow: hidden; background: #000; }
+.macbook .mb-screen::before { content: ""; position: absolute; z-index: 1; top: 0; left: 50%; transform: translateX(-50%); width: 7%; height: 2.2%; background: #1a1a1d; border-radius: 0 0 6px 6px; }
+.macbook .mb-screen.has-bar::before { width: 9%; height: 3.6%; }
+.macbook .mb-screen img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.macbook .base { height: 14px; margin: 0 -6%; background: linear-gradient(#3a3a40, #232327 60%, #141416); border-radius: 0 0 14px 14px; position: relative; }
+.macbook .base::before { content: ""; position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 16%; height: 5px; background: #121214; border-radius: 0 0 8px 8px; }
+.iphone {
+  position: absolute; right: 40px; bottom: 28px; width: 23%; min-width: 120px; aspect-ratio: 393/852;
+  border-radius: 30px; padding: 6px; background: #1f1f23;
+  box-shadow: 0 0 0 1px #3a3a40, 0 30px 60px -15px rgba(0,0,0,.8);
+}
+.iphone .scr { height: 100%; border-radius: 24px; overflow: hidden; display: grid; grid-template-rows: auto 1fr; container-type: inline-size; }
+.iphone img { width: 100%; height: 100%; min-height: 0; object-fit: cover; object-position: center top; }
+.ios-bar { position: relative; display: flex; align-items: center; justify-content: space-between; height: 15cqw; padding: 0 8cqw 0 10cqw; font-size: 4.6cqw; font-weight: 600; }
+.ios-bar .island { position: absolute; left: 50%; top: 3cqw; transform: translateX(-50%); width: 30cqw; height: 9cqw; border-radius: 9cqw; background: #000; }
+.ios-bar .ind { display: flex; gap: 1.5cqw; align-items: center; }
+.ios-bar svg { height: 3.6cqw; fill: currentColor; }
+.moon .ios-bar { background: #04040a; color: #fff; }
+.moon .iphone img { object-position: center bottom; }
+.decadi .ios-bar { background: #fff; color: #000; }
+.decadi .iphone img { object-position: center bottom; }
+
+/* Stampit */
+.moon, .sklip { box-shadow: inset 0 0 0 1px rgba(255,255,255,.07); }
+.stampit { --c-bg: #f1f1f4; --c-fg: #0f0f12; --c-muted: rgba(15,15,18,.55); --c-pill: #0f0f12; --c-pill-fg: #fff; --c-ghost: rgba(15,15,18,.07); }
+.stampit .browser { box-shadow: 0 30px 60px -24px rgba(20,20,40,.28), 0 0 0 1px rgba(15,15,18,.08); background: #fff; }
+.stampit .browser .bar { background: #e9e9ed; }
+.stampit .browser .bar i { background: #cfcfd6; }
+.stampit .browser .bar span { color: #77777f; }
+.stampit::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(15,15,18,.09) 1px, transparent 1px); background-size: 18px 18px; mask-image: radial-gradient(70% 70% at 70% 50%, #000, transparent); }
+.stampit .visual { flex-direction: column; gap: 18px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 12px; padding: 8px 20px 8px 8px; border-radius: 999px;
+  background: #fff; color: #111; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 12px 30px -10px rgba(20,20,40,.25);
+  font-size: clamp(16px, 2vw, 24px); white-space: nowrap; text-decoration: none;
+}
+.badge img { width: 1.9em; height: 1.9em; border-radius: 50%; background: #ff6a3d; }
+.badge .by { color: #8a8a92; }
+.badge b { font-weight: 600; }
+.badge svg { width: .8em; height: .8em; margin-left: 10px; color: #8a8a92; }
+.badge.sm { font-size: 13px; transform: rotate(-4deg) translateX(-60px); opacity: .9; }
+.badge.sm.dark { background: #16161a; color: #fff; transform: rotate(3deg) translateX(80px); }
+.badge.sm.dark .by { color: #8a8a92; }
+.badge.sm.mint { background: #d9f6e6; transform: rotate(-2deg) translateX(30px); }
+.stampit .stack { display: flex; flex-direction: column; align-items: center; gap: 16px; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.stampit:hover .badge.big { transform: scale(1.04) rotate(-1deg); }
+.badge.big { transition: transform .5s cubic-bezier(.3,1.6,.5,1); }
+
+/* Sklip */
+.sklip { --c-bg: #100e16; --c-fg: #edeaf2; --c-muted: #a39dbc; --c-pill: #ff5470; --c-pill-fg: #fff; --c-ghost: #221e2e; }
+.sklip::before { content: ""; position: absolute; right: -10%; bottom: -40%; width: 70%; aspect-ratio: 1; border-radius: 50%;
+  background: repeating-radial-gradient(circle, #191622 0 2px, #100e16 2px 6px); opacity: .9; }
+.sklip .wave { display: flex; align-items: center; gap: 3px; height: 28px; }
+.sklip .wave i { width: 3px; border-radius: 2px; background: #ff5470; display: block; }
+
+/* Sklip composer, rebuilt live at 1440×900 and scaled to the browser frame */
+.sk-stage { position: relative; aspect-ratio: 1440 / 900; overflow: hidden; background: #100E16; }
+.sk-app { position: absolute; top: 0; left: 0; width: 1440px; height: 900px; transform-origin: 0 0; transform: scale(var(--k, .5));
+  background: #100E16; color: #EDEAF2; font-family: Outfit, "Geist", sans-serif; display: flex; flex-direction: column; }
+.sk-top { height: 56px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+.sk-top b { font-size: 21px; font-weight: 600; letter-spacing: -.3px; }
+.sk-dot { width: 24px; height: 24px; border-radius: 50%; background: #FF5470; display: flex; align-items: center; justify-content: center; }
+.sk-dot i { width: 8px; height: 8px; border-radius: 50%; background: #100E16; display: block; }
+.sk-avatar { width: 34px; height: 34px; border-radius: 50%; background: #B66BFF; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; }
+.sk-body { flex: 1; display: flex; gap: 16px; padding: 2px 20px 22px; min-height: 0; }
+.sk-lib { width: 312px; flex: none; background: #191622; border-radius: 24px; padding: 20px 12px; display: flex; flex-direction: column; }
+.sk-label { font: 10px "IBM Plex Mono", monospace; letter-spacing: 2px; color: #6E6889; margin: 0 8px 8px; }
+.sk-proj { font-size: 18px; font-weight: 600; margin: 0 8px 16px; }
+.sk-search { display: flex; align-items: center; gap: 9px; background: #221E2E; border-radius: 999px; padding: 11px 16px; font-size: 13px; color: #6E6889; margin: 0 8px 18px; }
+.sk-cat { display: flex; align-items: center; padding: 10px 12px; background: #221E2E; border-radius: 14px; margin-bottom: 6px; font-size: 13px; font-weight: 600; letter-spacing: .3px; }
+.sk-cat span { color: #FF5470; font-size: 10px; margin-right: 9px; }
+.sk-cat em { margin-left: auto; font: normal 12px "IBM Plex Mono", monospace; color: #6E6889; }
+.sk-cat.off { background: none; color: #8A85A0; margin: 4px 0 0; }
+.sk-cat.off span { color: #6E6889; }
+.sk-row { display: flex; align-items: center; gap: 11px; padding: 10px 12px; border-radius: 16px; margin-bottom: 4px; transition: background .25s; }
+.sk-row.on { background: #201C2B; }
+.sk-row .pl { width: 30px; height: 30px; border-radius: 50%; border: 2.5px solid var(--c); display: flex; align-items: center; justify-content: center; flex: none; }
+.sk-row .nm { flex: 1; min-width: 0; font-size: 14px; font-weight: 500; }
+.sk-row .nm small { display: flex; align-items: center; gap: 8px; margin-top: 2px; font: 11px "IBM Plex Mono", monospace; color: #6E6889; }
+.sk-row .add { width: 26px; height: 26px; border-radius: 50%; background: #221E2E; color: #A39DBC; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 600; flex: none; transition: background .3s cubic-bezier(.3,.7,.4,1), color .3s cubic-bezier(.3,.7,.4,1); }
+.sk-row.press .add { background: #FF5470; color: #fff; transition: none; }
+.sk-main { flex: 1; min-width: 0; background: #191622; border-radius: 24px; display: flex; flex-direction: column; padding: 16px 22px 20px; }
+.sk-toolbar { height: 46px; flex: none; display: flex; align-items: center; gap: 12px; }
+.sk-tl, .sk-tr { flex: 1; display: flex; align-items: center; gap: 10px; }
+.sk-tr { justify-content: flex-end; gap: 12px; }
+.sk-tc { display: flex; align-items: center; gap: 12px; }
+.sk-pill { font: 12px "IBM Plex Mono", monospace; color: #8A85A0; background: #221E2E; padding: 7px 13px; border-radius: 999px; }
+.sk-pill b { color: #EDEAF2; }
+.sk-pill.snap { color: #3DD68C; }
+.sk-sq { width: 36px; height: 36px; border-radius: 12px; background: #221E2E; display: flex; align-items: center; justify-content: center; font: 13px "IBM Plex Mono", monospace; color: #A39DBC; }
+.sk-sq i { width: 11px; height: 11px; background: #A39DBC; border-radius: 3px; display: block; }
+.sk-play { width: 48px; height: 48px; border-radius: 50%; background: #FF5470; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(255,84,112,.45); }
+.sk-time { font: 12px "IBM Plex Mono", monospace; color: #8A85A0; font-variant-numeric: tabular-nums; }
+.sk-time em { font-style: normal; color: #5C5775; }
+.sk-export { font-size: 13px; font-weight: 600; background: #3DD68C; color: #0B2218; padding: 9px 18px; border-radius: 999px; }
+.sk-wave { display: block; width: 100%; height: 100px; margin-top: 12px; flex: none; overflow: visible; }
+.sk-vinyl { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+.sk-vinyl svg { height: 100%; max-height: 520px; overflow: visible; }
+.sk-pitch { height: 36px; flex: none; display: flex; align-items: center; justify-content: center; gap: 16px; font: 11px "IBM Plex Mono", monospace; letter-spacing: 2px; color: #6E6889; }
+.sk-pitch b { font-size: 13px; letter-spacing: 0; color: #FF5470; }
+.sk-slider { width: 260px; height: 8px; background: #221E2E; border-radius: 999px; position: relative; }
+.sk-slider i { position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; border-radius: 50%; background: #FF5470; transform: translate(-50%,-50%); box-shadow: 0 3px 10px rgba(255,84,112,.5); }
+
+/* ── About + contact ── */
+.about { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; padding-block: 40px 96px; }
+.about h2 { margin: 0; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 600; text-wrap: balance; }
+/* GitHub activity under the About title: a monochrome contribution calendar (snapshot of the public profile) */
+.about-head { display: flex; flex-direction: column; gap: 40px; min-width: 0; }
+.gh { display: block; text-decoration: none; color: inherit; }
+.gh-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+.gh-top b { color: var(--fg); font-weight: 500; }
+.gh-grid { display: block; width: 100%; height: auto; }
+.gh-grid text { font-family: var(--mono); font-size: 9px; fill: var(--muted); }
+.gh-legend { display: flex; align-items: center; justify-content: flex-end; gap: 3px; margin-top: 8px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.gh-legend span { margin: 0 4px; }
+.gh-legend i { --l0: #efeff1; --l1: #cfcfd4; --l2: #9a9aa2; --l3: #55555c; --l4: #111113; }
+.gh-legend i { width: 10px; height: 10px; border-radius: 2px; background: var(--l0); }
+.gh-legend i[data-l="1"] { background: var(--l1); } .gh-legend i[data-l="2"] { background: var(--l2); }
+.gh-legend i[data-l="3"] { background: var(--l3); } .gh-legend i[data-l="4"] { background: var(--l4); }
+.about p { margin: 0 0 16px; color: var(--muted); max-width: 60ch; }
+.about p b { color: var(--fg); font-weight: 500; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.tags span { font-size: 13px; padding: 6px 12px; border-radius: 999px; background: var(--soft); }
+.contact { border-top: 1px solid var(--line); padding-block: 48px; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 32px; }
+.contact h4 { margin: 0 0 10px; font-family: var(--mono); font-size: 12px; font-weight: 400; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.contact .big { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+.contact a.big { text-decoration: none; display: inline-flex; gap: 8px; align-items: center; }
+.contact a.big:hover { text-decoration: underline; text-underline-offset: 4px; }
+.copy-btn { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer; margin-top: 10px; }
+footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .card { grid-template-columns: 1fr; min-height: 0; }
+  .card .text { padding: 32px 28px 8px; }
+  .visual { padding: 24px 24px 32px; }
+  .equinox .text { padding-top: 220px; padding-bottom: 32px; }
+  .equinox::after { background: linear-gradient(180deg, rgba(8,14,28,0) 0%, rgba(8,14,28,.55) 35%, rgba(8,14,28,.95) 70%); }
+  .equinox .visual { display: none; }
+  .card .devices { padding: 24px 24px 40px; }
+  .iphone { right: 16px; bottom: 16px; border-radius: 22px; padding: 4px; }
+  .iphone .scr { border-radius: 18px; }
+  .about, .contact { grid-template-columns: 1fr; gap: 28px; }
+}
+@media (max-width: 420px) {
+  .phone { width: 220px; }
+  .badge { font-size: 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+
+/* ── Case study pages ── */
+.cs-back { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); text-decoration: none; margin: 24px 0 40px; transition: color .2s; }
+.cs-back:hover { color: var(--fg); }
+.cs-head { max-width: 860px; }
+.cs-kicker { display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600; margin-bottom: 20px; }
+.cs-kicker img { width: 40px; height: 40px; border-radius: 10px; object-fit: contain; background: #000; }
+.cs-head h1 { margin: 0; font-size: clamp(34px, 5.2vw, 60px); line-height: 1.04; letter-spacing: -0.04em; font-weight: 600; text-wrap: balance; }
+.cs-lede { font-size: 20px; color: var(--muted); max-width: 46ch; margin: 20px 0 0; text-wrap: pretty; }
+.cs-meta { display: flex; flex-wrap: wrap; gap: 12px 40px; margin: 36px 0 0; padding: 0; }
+.cs-meta div { display: grid; gap: 4px; }
+.cs-meta dt { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.cs-meta dd { margin: 0; font-size: 15px; }
+.cs-hero { margin: 48px 0 0; border-radius: var(--radius); overflow: hidden; background: var(--hero-bg); aspect-ratio: 16 / 8; }
+.cs-hero img { display: block; width: 100%; height: 100%; object-fit: var(--hero-fit); }
+.cs-hero.contain img { padding: 4%; }
+.cs-hero.video { position: relative; aspect-ratio: 16 / 9; }
+.cs-hero video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cs-sound { position: absolute; right: 16px; bottom: 16px; font: inherit; font-size: 13px; color: #fff; padding: 8px 14px; border: 0; border-radius: 999px; cursor: pointer;
+  background: rgba(255,255,255,.14); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); transition: background .2s; }
+.cs-sound:hover { background: rgba(255,255,255,.24); }
+.cs-body { max-width: 760px; margin: 0 auto; padding: 96px 0 40px; }
+.cs-body > * + * { margin-top: 24px; }
+.cs-h2 { font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 600; margin: 96px 0 0 !important; text-wrap: balance; }
+.cs-body > .cs-h2:first-child { margin-top: 0 !important; }
+.cs-h2 + * { margin-top: 28px !important; }
+.cs-h3 { font-size: 22px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 600; margin: 0; text-wrap: balance; }
+.cs-body > .cs-h3 { margin-top: 56px !important; }
+.cs-sub { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 10px 0 0; line-height: 1.5; }
+.cs-sec { margin-top: 64px !important; }
+.cs-sec > * + * { margin-top: 24px; }
+.cs-sec > .cs-sub { margin-top: 10px; }
+.cs-text p, .cs-list { font-size: 18px; line-height: 1.7; color: #55555c; margin: 0; text-wrap: pretty; }
+.cs-text p + p { margin-top: 18px; }
+.cs-text strong, .cs-list strong { color: var(--fg); font-weight: 600; }
+.cs-text em { color: var(--fg); }
+.cs-text img { display: block; width: 100%; height: auto; border-radius: 18px; margin: 16px 0; }
+.cs-text a, .cs-list a { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line); }
+.cs-list { padding-left: 1.1em; }
+.cs-text p + .cs-list { margin-top: 12px; }
+.cs-diagram { margin: 40px 0 !important; padding: clamp(16px, 3vw, 32px); border: 1px solid var(--line); border-radius: 18px; overflow-x: auto; }
+.cs-diagram svg { display: block; min-width: 560px; }
+.cs-diagram figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: center; margin-top: 16px; }
+.cs-list li + li { margin-top: 6px; }
+.cs-list li::marker { color: var(--muted); }
+.cs-quote { margin: 40px 0 !important; padding-left: 24px; border-left: 2px solid var(--fg); }
+.cs-quote p { font-size: 24px; line-height: 1.4; letter-spacing: -0.015em; color: var(--fg); margin: 0; text-wrap: balance; }
+.cs-hr { border: 0; border-top: 1px solid var(--line); margin: 64px 0 !important; }
+.cs-fig { margin: 40px 0 !important; }
+.cs-fig .zoom { all: unset; display: block; width: 100%; cursor: zoom-in; border-radius: 18px; overflow: hidden; }
+.cs-fig .zoom:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+.cs-fig img { display: block; width: 100%; height: auto; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.cs-fig .zoom:hover img { transform: scale(1.015); }
+.cs-fig figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: center; margin-top: 12px; }
+/* Full-width images break out of the reading column up to the page width */
+.cs-fig.w-full { width: min(1136px, 100vw - 64px); position: relative; left: 50%; transform: translateX(-50%); }
+.cs-fig.w-small { max-width: 50%; margin-inline: auto !important; }
+.cs-split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; width: min(1136px, 100vw - 64px); position: relative; left: 50%; transform: translateX(-50%); }
+.cs-split .cs-fig { margin: 0 !important; }
+.cs-log { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+.cs-log summary { list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; cursor: pointer; font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.cs-log summary::-webkit-details-marker { display: none; }
+.cs-log summary:hover { background: var(--soft); }
+.cs-log summary i { width: 8px; height: 8px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform .25s; }
+.cs-log[open] summary i { transform: rotate(-135deg) translateY(-2px); }
+.cs-log ol { list-style: none; margin: 0; padding: 4px 22px 22px; border-top: 1px solid var(--line); }
+.cs-log li { position: relative; padding: 18px 0 0 22px; border-left: 1px solid var(--line); }
+.cs-log li::before { content: ""; position: absolute; left: -4px; top: 26px; width: 7px; height: 7px; border-radius: 50%; background: var(--fg); }
+.cs-log li div { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+.cs-log li b { font-size: 16px; font-weight: 600; }
+.cs-log li span { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.cs-log li p { margin: 4px 0 0; color: #55555c; font-size: 15px; line-height: 1.6; }
+.cs-next { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 32px; margin: 96px 0 0; padding: 40px 48px; border-radius: var(--radius); background: var(--next-bg); color: #fff; text-decoration: none; overflow: hidden; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+.cs-next:hover { transform: translateY(-3px); }
+.cs-next small { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+.cs-next h3 { margin: 10px 0 18px; font-size: clamp(22px, 2.4vw, 30px); line-height: 1.15; letter-spacing: -0.025em; font-weight: 600; text-wrap: balance; }
+.cs-next .btn { background: #fff; color: #111; }
+.cs-next img { width: 100%; border-radius: 12px; display: block; box-shadow: 0 30px 60px -30px rgba(0,0,0,.6); }
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+.cs-fig.w-full.reveal { transform: translate(-50%, 16px); }
+.cs-fig.w-full.reveal.in, .cs-split.reveal.in { transform: translateX(-50%); }
+.cs-split.reveal { transform: translate(-50%, 16px); }
+@media (prefers-reduced-motion: reduce) { .reveal, .cs-fig.w-full.reveal, .cs-split.reveal { opacity: 1; transition: none; } }
+.lightbox { border: 0; padding: 0; background: transparent; max-width: none; max-height: none; width: 100vw; height: 100dvh; }
+.lightbox::backdrop { background: rgba(10,10,12,.86); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.lightbox form { all: unset; display: grid; place-items: center; width: 100%; height: 100%; cursor: zoom-out; }
+.lightbox button { all: unset; display: grid; place-items: center; width: 100%; height: 100%; }
+.lightbox img { max-width: 94vw; max-height: 90dvh; border-radius: 12px; }
+@media (max-width: 760px) {
+  .cs-body { padding-top: 64px; }
+  .cs-hero { aspect-ratio: 4 / 3; }
+  .cs-split, .cs-next { grid-template-columns: 1fr; }
+  .cs-split, .cs-fig.w-full { width: 100%; left: 0; transform: none; }
+  .cs-split.reveal, .cs-fig.w-full.reveal { transform: translateY(16px); }
+  .cs-split.reveal.in, .cs-fig.w-full.reveal.in { transform: none; }
+  .cs-fig.w-small { max-width: 100%; }
+  .cs-next { padding: 28px; }
+  .cs-text p, .cs-list { font-size: 17px; }
+}
+
+body { margin: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="index.html">Olivier Tousche</a>
+    <nav>
+      <a href="index.html#projets">Projets</a>
+      <a href="index.html#about">À propos</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <a class="cs-back" href="index.html#projets">← Tous les projets</a>
+  <header class="cs-head">
+    <div class="cs-kicker"><img src="img/logo-sklip.png" alt="">Sklip</div>
+    <h1>Sklip — Outil de composition de skip-proofs pour DJ scratchers</h1>
+    <p class="cs-lede">Outil web de composition de skip-proofs pour DJ scratchers — du constat de marché au produit testable, conçu et développé en solo.</p>
+    <dl class="cs-meta"><div><dt>Rôle</dt><dd>Product Designer &amp; Builder</dd></div><div><dt>Produit</dt><dd>Sklip Studio</dd></div><div><dt>Durée</dt><dd>2026</dd></div></dl>
+  </header>
+  <div class="cs-hero video" style="--hero-bg:#100e16"><video src="img/cases/sklip/reel.mp4" poster="img/cases/sklip/reel-poster.jpg" autoplay muted loop playsinline aria-label="Reel de présentation de Sklip"></video><button class="cs-sound" type="button" aria-pressed="false">Activer le son</button></div>
+
+  <article class="cs-body">
+    <h2 class="cs-h2">Contexte</h2>
+    <div class="cs-text"><p class="">Les DJs de scratch jouent sur des vinyles de contrôle reliés à un logiciel : c'est le DVS (Serato, Traktor, Phase). Ils y chargent des boucles <strong>skip-proof</strong> : le même son répété à chaque tour du disque. Si l'aiguille saute pendant un scratch, elle retombe au même endroit du son et la routine continue.</p><p class="">À 33⅓ tours par minute, un tour dure exactement <strong>1800 ms</strong>. Une boucle de 1818 ms, calée sur 33 tours, dérive de 18 ms à chaque tour. Cette contrainte physique est devenue la règle centrale du produit.</p></div>
+    <h2 class="cs-h2">Méthode : le framework BMAD</h2>
+    <div class="cs-text"><p class="">Seul sur le projet, j'ai utilisé <strong>BMAD</strong> (Breakthrough Method for Agile AI-Driven Development), un framework open source qui organise le travail avec l'IA comme une équipe produit : un analyste, un product manager, un architecte, un UX designer, un développeur. Chaque agent produit un livrable écrit et versionné, qui sert d'entrée au suivant.</p><p class="">L'intérêt pour moi : <strong>garder la rigueur d'une équipe sans en avoir une.</strong> Rien ne se code sans exigence écrite, aucune exigence n'existe sans décision d'architecture qui la porte, et chaque story est développée puis relue dans un contexte neuf.</p></div>
+    <figure class="cs-diagram"><svg viewBox="0 0 800 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">
+  <defs>
+    <marker id="bm-arr" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+      <polygon points="0 0, 8 3.5, 0 7" fill="#111111"/>
+    </marker>
+  </defs>
+
+  <!-- Sources -->
+  <rect x="10" y="10" width="780" height="30" fill="#f2f2f2"/>
+  <text x="400" y="29" text-anchor="middle" font-size="9" fill="#333333" letter-spacing="0.5">SOURCES · étude de marché · audit · stratégie de lancement · code existant</text>
+
+  <!-- 1 Contexte -->
+  <rect x="10" y="60" width="138" height="130" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="22" y="80" font-size="8" fill="#888888" letter-spacing="1">ANALYSE</text>
+  <text x="22" y="100" font-size="11" font-weight="700" fill="#111111">CONTEXTE</text>
+  <text x="22" y="124" font-size="8.5" fill="#333333">AGENTS.md</text>
+  <text x="22" y="140" font-size="8.5" fill="#333333">règles, pièges,</text>
+  <text x="22" y="156" font-size="8.5" fill="#333333">projet brownfield</text>
+
+  <line x1="149" y1="125" x2="166" y2="125" stroke="#111111" stroke-width="1.5" marker-end="url(#bm-arr)"/>
+
+  <!-- 2 PRD -->
+  <rect x="170" y="60" width="138" height="130" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="182" y="80" font-size="8" fill="#888888" letter-spacing="1">PLANIFICATION</text>
+  <text x="182" y="100" font-size="11" font-weight="700" fill="#111111">PRD</text>
+  <text x="182" y="124" font-size="8.5" fill="#333333">26 exigences</text>
+  <text x="182" y="140" font-size="8.5" fill="#333333">fonctionnelles</text>
+  <text x="182" y="156" font-size="8.5" fill="#333333">6 non fonctionnelles</text>
+
+  <line x1="309" y1="125" x2="326" y2="125" stroke="#111111" stroke-width="1.5" marker-end="url(#bm-arr)"/>
+
+  <!-- 3 Architecture -->
+  <rect x="330" y="60" width="138" height="130" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="342" y="80" font-size="8" fill="#888888" letter-spacing="1">SOLUTIONING</text>
+  <text x="342" y="100" font-size="11" font-weight="700" fill="#111111">ARCHITECTURE</text>
+  <text x="342" y="124" font-size="8.5" fill="#333333">10 décisions</text>
+  <text x="342" y="140" font-size="8.5" fill="#333333">AD-1 … AD-10</text>
+  <text x="342" y="156" font-size="8.5" fill="#333333">schéma = code</text>
+
+  <line x1="469" y1="125" x2="486" y2="125" stroke="#111111" stroke-width="1.5" marker-end="url(#bm-arr)"/>
+
+  <!-- 4 Epics -->
+  <rect x="490" y="60" width="138" height="130" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="502" y="80" font-size="8" fill="#888888" letter-spacing="1">SOLUTIONING</text>
+  <text x="502" y="100" font-size="11" font-weight="700" fill="#111111">EPICS</text>
+  <text x="502" y="124" font-size="8.5" fill="#333333">5 epics</text>
+  <text x="502" y="140" font-size="8.5" fill="#333333">23 stories</text>
+  <text x="502" y="156" font-size="8.5" fill="#333333">1 sprint planifié</text>
+
+  <line x1="629" y1="125" x2="646" y2="125" stroke="#111111" stroke-width="1.5" marker-end="url(#bm-arr)"/>
+
+  <!-- 5 Build / Review -->
+  <rect x="650" y="60" width="140" height="130" fill="#4CB8FF"/>
+  <text x="662" y="80" font-size="8" fill="#111111" letter-spacing="1">IMPLÉMENTATION</text>
+  <text x="662" y="100" font-size="11" font-weight="700" fill="#111111">BUILD ⇄ REVIEW</text>
+  <text x="662" y="124" font-size="8.5" fill="#111111">1 story = 1 chat</text>
+  <text x="662" y="140" font-size="8.5" fill="#111111">revue en contexte</text>
+  <text x="662" y="156" font-size="8.5" fill="#111111">neuf, puis recette</text>
+
+  <!-- Human in the loop -->
+  <rect x="10" y="210" width="780" height="30" fill="#111111"/>
+  <text x="400" y="229" text-anchor="middle" font-size="9" fill="#4CB8FF" letter-spacing="0.5">DÉCISIONS PRODUIT, UX ET MISE EN PROD · TOUJOURS VALIDÉES PAR MOI</text>
+</svg><figcaption>Chaîne BMAD appliquée à Sklip : chaque livrable sert d'entrée au suivant</figcaption></figure>
+    <div class="cs-text"><p>Comment je l'ai adapté à un projet existant :</p><ul class="cs-list"><li>Projet brownfield : les agents partent de mes documents (étude de marché, audit, stratégie) et du code déjà en production, pas d'une page blanche.</li><li>La conception UX reste de mon côté : l'agent UX ne produit rien sans demande explicite, la référence est mon design system.</li><li>Les retouches rapides (texte, traduction, CSS ponctuel) sortent du cadre BMAD, pour ne pas alourdir le flux.</li><li>Toute modification du schéma de base de données passe par une migration versionnée, et rien n'est déployé en production sans mon accord.</li></ul></div>
+    <h2 class="cs-h2">Problématique</h2>
+    <div class="cs-text"><p class="">Pour obtenir une boucle à soi, un scratcher a aujourd'hui trois options : un disque de battle préenregistré (15 à 33 €, aucune personnalisation, tout le monde scratche les mêmes sons), un pressage sur mesure (200 à 500 €, lent, réservé aux compétiteurs) ou un logiciel audio généraliste (sans aucune notion de tour de platine). <strong>Aucune n'est à la fois personnalisable, rapide et abordable.</strong></p><p class="">S'y ajoute un problème moins visible : les sons « classiques » du scratch sont des enregistrements protégés, même sur une demi-seconde. Ils ne peuvent ni être distribués par un logiciel, ni être utilisés dans une vidéo ou une création originale.</p></div>
+    <blockquote class="cs-quote"><p class="">Comment permettre à un scratcher de composer sa propre boucle skip-proof, juste au tour près, avec des sons qu'il a le droit d'utiliser, sans compétence audio ni budget de studio ?</p></blockquote>
+    <div class="cs-text"><ul class="cs-list"><li>Enjeu utilisateur : une boucle qui ne saute pas et qui sonne comme lui, obtenue en minutes et non en soirées.</li><li>Enjeu produit : rendre visible une contrainte physique (1800 ms) sans demander à l'utilisateur de la calculer.</li><li>Enjeu juridique : ne distribuer que des sons dont la provenance et la licence sont documentées.</li><li>Enjeu business : gagner la confiance d'une communauté restreinte avant toute ouverture publique.</li></ul></div>
+    <h2 class="cs-h2">Personae et jobs to be done</h2>
+    <div class="cs-text"><p class="">Trois profils se dégagent de l'étude. Ils partagent le même geste, mais pas le même usage de la boucle. Chaque job est écrit au format <strong>Quand… je veux… pour…</strong>, pour décrire la situation et le progrès attendu plutôt qu'une fonctionnalité.</p></div>
+    <h3 class="cs-h3">Karim, 24 ans · le compétiteur</h3>
+    <div class="cs-text"><p class="">Scratcher de battle à Lyon, il prépare une routine pour une sélection régionale DMC. Deux heures de pratique par jour. Il scratche les mêmes disques que ses adversaires, découpe ses sons au jugé et voit sa boucle dériver au bout de quelques tours.</p></div>
+    <div class="cs-text"><ul class="cs-list"><li>Quand je prépare une routine de battle, je veux composer une boucle avec des sons qui me sont propres, pour être reconnu dès la première seconde.</li><li>Quand je charge un son sous le vinyle, je veux qu'il tombe juste à chaque tour, pour ne jamais perdre le fil après un saut d'aiguille.</li></ul></div>
+    <h3 class="cs-h3">Nadia, 36 ans · l'enseignante</h3>
+    <div class="cs-text"><p class="">Professeure de scratch dans une école de DJ à Bordeaux, une trentaine d'élèves. Elle prépare un nouvel exercice chaque semaine, le soir, sans outil adapté, et ses élèves n'ont pas les mêmes disques à la maison.</p></div>
+    <div class="cs-text"><ul class="cs-list"><li>Quand un élève débute, je veux découper le tour en moins de slices, pour qu'il entende chaque attaque distinctement.</li><li>Quand le cours se termine, je veux transmettre le fichier, pour que l'élève s'entraîne sur le même support que moi.</li></ul></div>
+    <h3 class="cs-h3">Théo, 19 ans · le créateur de contenu</h3>
+    <div class="cs-text"><p class="">Portablist à Marseille, il scratche sur platine portable et publie trois vidéos courtes par semaine. Ses vidéos sont régulièrement bloquées pour des samples protégés, et les outils audio sont pensés pour un ordinateur.</p></div>
+    <div class="cs-text"><ul class="cs-list"><li>Quand je prépare une vidéo, je veux des sons dont la provenance est claire, pour que la plateforme ne la bloque pas.</li><li>Quand j'ai une idée en déplacement, je veux composer sur mon téléphone, pour ne pas la perdre.</li></ul></div>
+    <div class="cs-text"><p class=""><strong>Hors cible en v1</strong> : les DJs de mix qui ne scratchent pas, et les producteurs qui cherchent un logiciel audio complet. Les nommer évite d'ajouter des fonctions qui alourdiraient l'outil. Ces personae restent des hypothèses de travail, construites à partir de l'étude de marché et de ma pratique de DJ ; la beta sert à les confronter à de vrais utilisateurs.</p></div>
+    <h2 class="cs-h2">La solution : un compositeur et une librairie</h2>
+    <div class="cs-text"><p class="">Un séquenceur sans sons utilisables ne sert à rien. Une librairie sans outil pour caler les sons au tour près non plus. <strong>J'ai conçu les deux ensemble, comme un seul produit.</strong></p></div>
+    <figure class="cs-diagram"><svg viewBox="0 0 800 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">
+  <defs>
+    <marker id="so-arr" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+      <polygon points="0 0, 8 3.5, 0 7" fill="#111111"/>
+    </marker>
+  </defs>
+
+  <!-- LIBRAIRIE -->
+  <rect x="10" y="10" width="230" height="250" fill="#ffffff" stroke="#4CB8FF" stroke-width="1.5"/>
+  <rect x="10" y="10" width="230" height="42" fill="#4CB8FF"/>
+  <text x="25" y="32" font-size="10" font-weight="700" fill="#111111" letter-spacing="1">LIBRAIRIE</text>
+  <text x="25" y="45" font-size="7" fill="#111111">Sons originaux, libres de droits</text>
+  <rect x="25" y="70" width="4" height="4" fill="#111111"/><text x="38" y="77" font-size="9" fill="#333333">Sound FX</text>
+  <rect x="25" y="95" width="4" height="4" fill="#111111"/><text x="38" y="102" font-size="9" fill="#333333">Drums</text>
+  <rect x="25" y="120" width="4" height="4" fill="#111111"/><text x="38" y="127" font-size="9" fill="#333333">Sentences</text>
+  <rect x="25" y="145" width="4" height="4" fill="#111111"/><text x="38" y="152" font-size="9" fill="#333333">Words</text>
+  <line x1="25" y1="172" x2="225" y2="172" stroke="#dddddd" stroke-width="1"/>
+  <text x="25" y="195" font-size="8.5" fill="#666666">Pré-écoute, recherche,</text>
+  <text x="25" y="211" font-size="8.5" fill="#666666">durée affichée selon</text>
+  <text x="25" y="227" font-size="8.5" fill="#666666">le pitch</text>
+
+  <line x1="242" y1="135" x2="282" y2="135" stroke="#111111" stroke-width="1.5" marker-end="url(#so-arr)"/>
+
+  <!-- VINYLE : pathLength = 1800, chaque tiret est exprimé en ms -->
+  <circle cx="400" cy="135" r="112" fill="#111111"/>
+  <circle cx="400" cy="135" r="88" fill="none" stroke="#2a2a2a" stroke-width="28"/>
+  <g transform="rotate(-90 400 135)" fill="none" stroke-width="28">
+    <circle cx="400" cy="135" r="88" pathLength="1800" stroke="#4CB8FF" stroke-dasharray="380 1420" stroke-dashoffset="-20"/>
+    <circle cx="400" cy="135" r="88" pathLength="1800" stroke="#ffffff" stroke-dasharray="230 1570" stroke-dashoffset="-460"/>
+    <circle cx="400" cy="135" r="88" pathLength="1800" stroke="#4CB8FF" stroke-dasharray="300 1500" stroke-dashoffset="-920"/>
+    <circle cx="400" cy="135" r="88" pathLength="1800" stroke="#ffffff" stroke-dasharray="360 1440" stroke-dashoffset="-1370"/>
+  </g>
+  <g stroke="#111111" stroke-width="3">
+    <line x1="400" y1="33" x2="400" y2="77"/><line x1="502" y1="135" x2="458" y2="135"/>
+    <line x1="400" y1="237" x2="400" y2="193"/><line x1="298" y1="135" x2="342" y2="135"/>
+  </g>
+  <circle cx="400" cy="135" r="52" fill="#ffffff"/>
+  <text x="400" y="133" text-anchor="middle" font-size="15" font-weight="700" fill="#111111">1800 ms</text>
+  <text x="400" y="149" text-anchor="middle" font-size="7.5" fill="#666666">1 TOUR · 33⅓ RPM</text>
+  <text x="400" y="262" text-anchor="middle" font-size="8" fill="#666666">COMPOSITEUR · 2 à 8 slices</text>
+
+  <line x1="518" y1="135" x2="558" y2="135" stroke="#111111" stroke-width="1.5" marker-end="url(#so-arr)"/>
+
+  <!-- EXPORT -->
+  <rect x="560" y="10" width="230" height="250" fill="#111111"/>
+  <text x="575" y="32" font-size="10" font-weight="700" fill="#4CB8FF" letter-spacing="1">EXPORT</text>
+  <text x="575" y="45" font-size="7" fill="#aaaaaa">Prêt à charger dans le DVS</text>
+  <rect x="575" y="70" width="4" height="4" fill="#4CB8FF"/><text x="588" y="77" font-size="9" fill="#dddddd">WAV ou MP3</text>
+  <rect x="575" y="95" width="4" height="4" fill="#4CB8FF"/><text x="588" y="102" font-size="9" fill="#dddddd">Repères Serato intégrés</text>
+  <rect x="575" y="120" width="4" height="4" fill="#4CB8FF"/><text x="588" y="127" font-size="9" fill="#dddddd">Un tour exact,</text>
+  <text x="588" y="141" font-size="9" fill="#dddddd">sans dérive</text>
+  <line x1="575" y1="172" x2="775" y2="172" stroke="#333333" stroke-width="1"/>
+  <text x="575" y="195" font-size="8.5" fill="#aaaaaa">Serato · Traktor · Phase</text>
+</svg><figcaption>Librairie → compositeur circulaire → export prêt pour le DVS</figcaption></figure>
+    <h3 class="cs-h3">Le compositeur : une timeline qui a la forme du disque</h3>
+    <div class="cs-text"><ul class="cs-list"><li>La timeline est un vinyle : on voit où chaque son tombe sur le tour, comme on le sentira sous la main.</li><li>Boucle fixe de 1800 ms, découpée en 2 à 8 slices selon le niveau ou le tempo recherché.</li><li>Accrochage magnétique aux demi-temps, pour placer juste sans y penser.</li><li>Pitch par sample : la durée s'ajuste et les sons voisins se décalent seuls pour ne pas se chevaucher.</li><li>Utilisable au téléphone : composer dans le bus, tester le soir sur les platines.</li></ul></div>
+    <h3 class="cs-h3">La librairie : des sons écrits pour le scratch</h3>
+    <div class="cs-text"><p class="">Les mots du scratch (« fresh », « yeah », les chiffres, l'alphabet) n'appartiennent à personne. Leurs enregistrements historiques, si. J'ai donc choisi de <strong>produire les sons plutôt que de les collecter</strong>, avec des attaques franches, des voyelles tenues et une durée toujours inférieure à un tour.</p></div>
+    <h2 class="cs-h2">Générer des samples libres de droits, en local</h2>
+    <div class="cs-text"><p class="">Pour les voix, j'ai écarté les services de synthèse vocale en ligne : coût à chaque génération, conditions d'utilisation qui peuvent changer, et des droits sur le résultat qui dépendent du fournisseur. J'ai choisi <strong>Qwen3-TTS VoiceDesign</strong>, un modèle open source publié sous licence Apache 2.0, qui tourne <strong>entièrement sur mon Mac</strong>.</p><p class="">Sa particularité : on décrit une voix en texte (« voix grave et éraillée de MC des années 90 ») et le modèle la crée. Aucune voix réelle n'est clonée, aucun enregistrement existant n'est réutilisé.</p></div>
+    <figure class="cs-diagram"><svg viewBox="0 0 800 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">
+  <defs>
+    <marker id="sg-arr" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+      <polygon points="0 0, 8 3.5, 0 7" fill="#111111"/>
+    </marker>
+  </defs>
+
+  <!-- 1 Écrire -->
+  <rect x="10" y="10" width="138" height="150" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="22" y="32" font-size="11" font-weight="700" fill="#111111">ÉCRIRE</text>
+  <text x="22" y="72" font-size="26" font-weight="700" fill="#111111">246</text>
+  <text x="22" y="100" font-size="8.5" fill="#333333">mots et phrases :</text>
+  <text x="22" y="116" font-size="8.5" fill="#333333">interjections,</text>
+  <text x="22" y="132" font-size="8.5" fill="#333333">chiffres, alphabet,</text>
+  <text x="22" y="148" font-size="8.5" fill="#333333">phrases de battle</text>
+
+  <line x1="149" y1="85" x2="166" y2="85" stroke="#111111" stroke-width="1.5" marker-end="url(#sg-arr)"/>
+
+  <!-- 2 Décrire -->
+  <rect x="170" y="10" width="138" height="150" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="182" y="32" font-size="11" font-weight="700" fill="#111111">DÉCRIRE</text>
+  <text x="182" y="72" font-size="26" font-weight="700" fill="#111111">8</text>
+  <text x="182" y="100" font-size="8.5" fill="#333333">voix décrites</text>
+  <text x="182" y="116" font-size="8.5" fill="#333333">en texte : hype man,</text>
+  <text x="182" y="132" font-size="8.5" fill="#333333">MC boom bap,</text>
+  <text x="182" y="148" font-size="8.5" fill="#333333">voix rauque…</text>
+
+  <line x1="309" y1="85" x2="326" y2="85" stroke="#111111" stroke-width="1.5" marker-end="url(#sg-arr)"/>
+
+  <!-- 3 Générer -->
+  <rect x="330" y="10" width="138" height="150" fill="#4CB8FF"/>
+  <text x="342" y="32" font-size="11" font-weight="700" fill="#111111">GÉNÉRER</text>
+  <text x="342" y="72" font-size="26" font-weight="700" fill="#111111">2 850</text>
+  <text x="342" y="100" font-size="8.5" fill="#111111">prises, 3 par phrase</text>
+  <text x="342" y="116" font-size="8.5" fill="#111111">et par voix</text>
+  <text x="342" y="132" font-size="8.5" fill="#111111">Qwen3-TTS</text>
+  <text x="342" y="148" font-size="8.5" fill="#111111">VoiceDesign 1.7B</text>
+
+  <line x1="469" y1="85" x2="486" y2="85" stroke="#111111" stroke-width="1.5" marker-end="url(#sg-arr)"/>
+
+  <!-- 4 Traiter -->
+  <rect x="490" y="10" width="138" height="150" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="502" y="32" font-size="11" font-weight="700" fill="#111111">TRAITER</text>
+  <text x="502" y="72" font-size="26" font-weight="700" fill="#111111">&lt;1 tour</text>
+  <text x="502" y="100" font-size="8.5" fill="#333333">coupe au ras de</text>
+  <text x="502" y="116" font-size="8.5" fill="#333333">l'attaque,</text>
+  <text x="502" y="132" font-size="8.5" fill="#333333">normalisation,</text>
+  <text x="502" y="148" font-size="8.5" fill="#333333">mono 44,1 kHz</text>
+
+  <line x1="629" y1="85" x2="646" y2="85" stroke="#111111" stroke-width="1.5" marker-end="url(#sg-arr)"/>
+
+  <!-- 5 Trier -->
+  <rect x="650" y="10" width="140" height="150" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="662" y="32" font-size="11" font-weight="700" fill="#111111">TRIER</text>
+  <text x="662" y="72" font-size="26" font-weight="700" fill="#111111">1 / 3</text>
+  <text x="662" y="100" font-size="8.5" fill="#333333">meilleure prise</text>
+  <text x="662" y="116" font-size="8.5" fill="#333333">gardée à l'écoute,</text>
+  <text x="662" y="132" font-size="8.5" fill="#333333">testée sous</text>
+  <text x="662" y="148" font-size="8.5" fill="#333333">le vinyle</text>
+
+  <!-- Bandeau local -->
+  <rect x="10" y="180" width="252" height="60" fill="#111111"/>
+  <text x="136" y="206" text-anchor="middle" font-size="16" font-weight="700" fill="#4CB8FF">0 €</text>
+  <text x="136" y="226" text-anchor="middle" font-size="8" fill="#dddddd" letter-spacing="0.5">PAR GÉNÉRATION</text>
+  <rect x="274" y="180" width="252" height="60" fill="#111111"/>
+  <text x="400" y="206" text-anchor="middle" font-size="16" font-weight="700" fill="#4CB8FF">0 API</text>
+  <text x="400" y="226" text-anchor="middle" font-size="8" fill="#dddddd" letter-spacing="0.5">100 % LOCAL, HORS LIGNE</text>
+  <rect x="538" y="180" width="252" height="60" fill="#111111"/>
+  <text x="664" y="206" text-anchor="middle" font-size="16" font-weight="700" fill="#4CB8FF">Apache 2.0</text>
+  <text x="664" y="226" text-anchor="middle" font-size="8" fill="#dddddd" letter-spacing="0.5">USAGE COMMERCIAL AUTORISÉ</text>
+</svg><figcaption>Chaîne de production des voix, du texte écrit au sample prêt pour la librairie</figcaption></figure>
+    <div class="cs-text"><p>Pourquoi un modèle local plutôt qu'un service en ligne :</p><ul class="cs-list"><li>Gratuit : une fois le modèle téléchargé (environ 4 Go), générer 3 ou 3 000 prises coûte la même chose. On peut itérer sans compter.</li><li>Sans dépendance : pas de compte, pas de quota, pas de conditions d'utilisation qui changent. La licence Apache 2.0 autorise l'usage commercial et ne revendique aucun droit sur les sons produits.</li><li>Traçable : pour chaque son, je sais quel outil, quelle licence, quelle description de voix et quelle date. C'est ce qui permet de promettre aux utilisateurs des sons utilisables en vidéo et en création.</li></ul></div>
+    <div class="cs-text"><p class="">Les effets sonores et les percussions suivent la même logique sans aucun modèle : <strong>28 sons synthétisés par script</strong> (lasers, risers, textures, kick, snare…), en pure synthèse numérique, reproductibles à l'identique à chaque exécution.</p></div>
+    <hr class="cs-hr">
+    <div class="cs-text"><p class=""><a href="https://www.sklip.studio" target="_blank" rel="noopener">www.sklip.studio</a></p></div>
+  </article>
+
+  <a class="cs-next" href="equinox.html" style="--next-bg:#0f1a2a">
+    <div><small>Use case suivant · Equinox · Altered</small><h3>Concevoir l'écosystème phygital d'un jeu de cartes à collectionner</h3><span class="btn">Lire le use case</span></div>
+    <img src="img/equinox.jpg" alt="" loading="lazy">
+  </a>
+
+  <section class="contact" id="contact">
+    <div>
+      <h4>Écrire</h4>
+      <div class="big" id="mail">otousche@gmail.com</div>
+      <button class="copy-btn" id="copy" type="button">Copier l'adresse</button>
+    </div>
+    <div>
+      <h4>Réseau</h4>
+      <a class="big" href="https://www.linkedin.com/in/olivier-tousche-a6160b122/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+    <div>
+      <h4>Basé à</h4>
+      <div class="big">France · remote</div>
+    </div>
+  </section>
+
+  <footer><span>© 2026 Olivier Tousche</span><span>Maquette · v0</span></footer>
+</div>
+
+<dialog class="lightbox" id="lightbox"><form method="dialog"><button aria-label="Fermer"><img alt=""></button></form></dialog>
+
+<script>
+  // Lightbox: any figure image opens full screen; click or Échap closes it
+  const box = document.getElementById('lightbox'), boxImg = box.querySelector('img');
+  document.querySelectorAll('.cs-fig .zoom').forEach(b => b.addEventListener('click', () => {
+    const img = b.querySelector('img'); boxImg.src = img.src; boxImg.alt = img.alt; box.showModal();
+  }));
+
+  // Hero reel: muted autoplay, with a toggle for the sound; stays still for reduced motion
+  const reel = document.querySelector('.cs-hero video'), sound = document.querySelector('.cs-sound');
+  if (reel && matchMedia('(prefers-reduced-motion: reduce)').matches) { reel.removeAttribute('autoplay'); reel.pause(); }
+  sound?.addEventListener('click', () => {
+    reel.muted = !reel.muted; if (!reel.muted) reel.play();
+    sound.setAttribute('aria-pressed', String(!reel.muted)); sound.textContent = reel.muted ? 'Activer le son' : 'Couper le son';
+  });
+
+  // Reveal blocks as they enter the viewport, like the current site
+  const io = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.cs-body > *, .cs-split, .cs-next').forEach(el => { el.classList.add('reveal'); io.observe(el); });
+
+  // copy email
+  document.getElementById('copy').addEventListener('click', e => {
+    navigator.clipboard?.writeText('otousche@gmail.com').then(() => { e.target.textContent = 'Copié'; setTimeout(() => e.target.textContent = "Copier l'adresse", 1600); }, () => {});
+  });
+</script>
+</body>
+</html>

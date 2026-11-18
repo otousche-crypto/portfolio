@@ -361,6 +361,11 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .cs-hero { margin: 48px 0 0; border-radius: var(--radius); overflow: hidden; background: var(--hero-bg); aspect-ratio: 16 / 8; }
 .cs-hero img { display: block; width: 100%; height: 100%; object-fit: var(--hero-fit); }
 .cs-hero.contain img { padding: 4%; }
+.cs-hero.video { position: relative; aspect-ratio: 16 / 9; }
+.cs-hero video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cs-sound { position: absolute; right: 16px; bottom: 16px; font: inherit; font-size: 13px; color: #fff; padding: 8px 14px; border: 0; border-radius: 999px; cursor: pointer;
+  background: rgba(255,255,255,.14); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); transition: background .2s; }
+.cs-sound:hover { background: rgba(255,255,255,.24); }
 .cs-body { max-width: 760px; margin: 0 auto; padding: 96px 0 40px; }
 .cs-body > * + * { margin-top: 24px; }
 .cs-h2 { font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 600; margin: 96px 0 0 !important; text-wrap: balance; }
@@ -376,15 +381,20 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .cs-text p + p { margin-top: 18px; }
 .cs-text strong, .cs-list strong { color: var(--fg); font-weight: 600; }
 .cs-text em { color: var(--fg); }
-.cs-text img { display: block; width: 100%; height: auto; border-radius: 18px; margin: 16px 0; background: var(--soft); }
+.cs-text img { display: block; width: 100%; height: auto; border-radius: 18px; margin: 16px 0; }
 .cs-text a, .cs-list a { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line); }
 .cs-list { padding-left: 1.1em; }
+.cs-text p + .cs-list { margin-top: 12px; }
+.cs-diagram { margin: 40px 0 !important; padding: clamp(16px, 3vw, 32px); border: 1px solid var(--line); border-radius: 18px; overflow-x: auto; }
+.cs-diagram svg { display: block; min-width: 560px; }
+.cs-diagram figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: center; margin-top: 16px; }
 .cs-list li + li { margin-top: 6px; }
 .cs-list li::marker { color: var(--muted); }
-.cs-quote { margin: 0; padding-left: 20px; border-left: 2px solid var(--fg); }
+.cs-quote { margin: 40px 0 !important; padding-left: 24px; border-left: 2px solid var(--fg); }
+.cs-quote p { font-size: 24px; line-height: 1.4; letter-spacing: -0.015em; color: var(--fg); margin: 0; text-wrap: balance; }
 .cs-hr { border: 0; border-top: 1px solid var(--line); margin: 64px 0 !important; }
 .cs-fig { margin: 40px 0 !important; }
-.cs-fig .zoom { all: unset; display: block; width: 100%; cursor: zoom-in; border-radius: 18px; overflow: hidden; background: var(--soft); }
+.cs-fig .zoom { all: unset; display: block; width: 100%; cursor: zoom-in; border-radius: 18px; overflow: hidden; }
 .cs-fig .zoom:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
 .cs-fig img { display: block; width: 100%; height: auto; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
 .cs-fig .zoom:hover img { transform: scale(1.015); }
@@ -486,9 +496,9 @@ body { margin: 0; }
     <details class="cs-log"><summary>Historique des mises à jour<i aria-hidden="true"></i></summary><ol><li><div><b>v1.0</b><span>16 mars 2026</span></div><p>Lancement de Go Moonbound — scène 3D Terre/Lune, auth Strava, classement, page de partage, support mobile Safari</p></li><li><div><b>v1.1</b><span>17 mars 2026</span></div><p>Texture NASA Blue Marble, modals responsive, header aligné mobile/desktop, sécurité webhook Strava</p></li><li><div><b>v1.2</b><span>25 mars 2026</span></div><p>Paramètre pour masquer les autres participants, robustesse in-app browsers (LinkedIn, Instagram)</p></li><li><div><b>v1.3</b><span>1er avril 2026</span></div><p>SEO + image OG, changelog modal, CTA de partage quand un participant est introuvable dans le classement</p></li><li><div><b>v2.0</b><span>7 mai 2026</span></div><p>Sphères communautaires avec nuages de progression, podium or/argent/bronze, médailles au survol, correction du plafond de lignes PostgREST</p></li><li><div><b>v2.1</b><span>9 juin 2026</span></div><p>Menu "À propos" avec crédit design, suppression du vaisseau spatial, tracking source de trafic à l'inscription</p></li><li><div><b>v2.2</b><span>17 juin 2026</span></div><p>Analytics GA + Vercel, lien club Strava, scène 3D sur la landing page avec hero animé, favicon orange Go Moonbound</p></li><li><div><b>v2.3</b><span>30 juin 2026</span></div><p>Clic sur une sphère ou une ligne du classement affiche les stats du participant, bouton Share adaptatif, retour en un clic</p></li><li><div><b>v3.0</b><span>11 juillet 2026</span></div><p>Bouton Profil (photo, progression, streak, classement), collection de 23 badges à débloquer, récap hebdomadaire de progression par email</p></li><li><div><b>v3.1</b><span>19 juillet 2026</span></div><p>Flèches de mouvement quotidien dans le classement, objectif de dépassement dans le profil (km restants avant le voyageur suivant), paramètres du compte regroupés dans le profil</p></li><li><div><b>v3.2</b><span>19 juillet 2026</span></div><p>Badges d'invitation débloqués à 1, 5, 10 et 25 inscriptions depuis la page de partage</p></li></ol></details>
   </article>
 
-  <a class="cs-next" href="equinox.html" style="--next-bg:#0f1a2a">
-    <div><small>Use case suivant · Equinox · Altered</small><h3>Concevoir l'écosystème phygital d'un jeu de cartes à collectionner</h3><span class="btn">Lire le use case</span></div>
-    <img src="img/equinox.jpg" alt="" loading="lazy">
+  <a class="cs-next" href="sklip.html" style="--next-bg:#100e16">
+    <div><small>Use case suivant · Sklip</small><h3>Composer ses propres skip-proofs, directement dans le navigateur</h3><span class="btn">Lire le use case</span></div>
+    <img src="img/cases/sklip/composer-shot.png" alt="" loading="lazy">
   </a>
 
   <section class="contact" id="contact">
@@ -518,6 +528,14 @@ body { margin: 0; }
   document.querySelectorAll('.cs-fig .zoom').forEach(b => b.addEventListener('click', () => {
     const img = b.querySelector('img'); boxImg.src = img.src; boxImg.alt = img.alt; box.showModal();
   }));
+
+  // Hero reel: muted autoplay, with a toggle for the sound; stays still for reduced motion
+  const reel = document.querySelector('.cs-hero video'), sound = document.querySelector('.cs-sound');
+  if (reel && matchMedia('(prefers-reduced-motion: reduce)').matches) { reel.removeAttribute('autoplay'); reel.pause(); }
+  sound?.addEventListener('click', () => {
+    reel.muted = !reel.muted; if (!reel.muted) reel.play();
+    sound.setAttribute('aria-pressed', String(!reel.muted)); sound.textContent = reel.muted ? 'Activer le son' : 'Couper le son';
+  });
 
   // Reveal blocks as they enter the viewport, like the current site
   const io = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -60px 0px' });
