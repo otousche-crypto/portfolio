@@ -300,6 +300,19 @@ a { color: inherit; }
 /* ── About + contact ── */
 .about { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; padding-block: 40px 96px; }
 .about h2 { margin: 0; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 600; text-wrap: balance; }
+/* GitHub activity under the About title: a monochrome contribution calendar (snapshot of the public profile) */
+.about-head { display: flex; flex-direction: column; gap: 40px; min-width: 0; }
+.gh { display: block; text-decoration: none; color: inherit; }
+.gh-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+.gh-top b { color: var(--fg); font-weight: 500; }
+.gh-grid { display: block; width: 100%; height: auto; }
+.gh-grid text { font-family: var(--mono); font-size: 9px; fill: var(--muted); }
+.gh-legend { display: flex; align-items: center; justify-content: flex-end; gap: 3px; margin-top: 8px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.gh-legend span { margin: 0 4px; }
+.gh-legend i { --l0: #efeff1; --l1: #cfcfd4; --l2: #9a9aa2; --l3: #55555c; --l4: #111113; }
+.gh-legend i { width: 10px; height: 10px; border-radius: 2px; background: var(--l0); }
+.gh-legend i[data-l="1"] { background: var(--l1); } .gh-legend i[data-l="2"] { background: var(--l2); }
+.gh-legend i[data-l="3"] { background: var(--l3); } .gh-legend i[data-l="4"] { background: var(--l4); }
 .about p { margin: 0 0 16px; color: var(--muted); max-width: 60ch; }
 .about p b { color: var(--fg); font-weight: 500; }
 .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
@@ -493,10 +506,18 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
   </section>
 
   <section class="about" id="about">
-    <h2>10 ans à concevoir des produits. Maintenant, je les construis aussi.</h2>
+    <div class="about-head">
+      <h2>10 ans à concevoir des produits. Maintenant, je les construis aussi.</h2>
+      <a class="gh" href="https://github.com/otousche-crypto" target="_blank" rel="noopener" aria-label="Activité GitHub : 457 contributions sur les 12 derniers mois">
+        <div class="gh-top"><span><b>457</b> contributions sur GitHub, 12 derniers mois</span></div>
+        <svg class="gh-grid" role="img" aria-hidden="true"></svg>
+        <div class="gh-legend"><span>Moins</span><i data-l="0"></i><i data-l="1"></i><i data-l="2"></i><i data-l="3"></i><i data-l="4"></i><span>Plus</span></div>
+      </a>
+    </div>
     <div>
-      <p>J'articule <b>stratégie, recherche et design</b> pour transformer des irritants en produits clairs. Chez Equinox, j'ai porté le design d'Altered de la campagne Kickstarter jusqu'aux tournois internationaux.</p>
-      <p>Avec Claude Code et Cursor, je prototype et je livre mes propres produits : moins de transferts, et une intention qui ne se dilue plus entre le design et le code.</p>
+      <p>J'articule <b>stratégie, recherche et design</b> pour transformer des irritants en produits clairs.</p>
+      <p>Avec les nouveaux outils d'IA, comme Claude Code et Cursor, je prototype et je livre mes propres produits : moins de transferts, et une intention qui ne se dilue plus entre le design et le code.</p>
+      <p>Résultat : des produits <b>en production plus vite</b>, des itérations plus rapides, et plus de temps pour la <b>réflexion en amont</b>, là où se joue vraiment un produit.</p>
       <div class="tags"><span>User research</span><span>Prototyping</span><span>Product vision</span><span>User tests</span><span>Vibe coding</span></div>
     </div>
   </section>
@@ -535,6 +556,24 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 
   // Decadi recording: keep it still for reduced motion
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelectorAll('.nav-demo video').forEach(v => { v.removeAttribute('autoplay'); v.pause(); });
+
+  // GitHub calendar: one column per week (Sunday first), five grey levels
+  (() => {
+    const svg = document.querySelector('.gh-grid');
+    if (!svg) return;
+    const start = new Date('2025-11-16T12:00:00'), counts = [0,1,0,0,52,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,30,6,1,0,0,1,0,0,2,2,0,0,0,0,0,0,3,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,4,11,0,0,1,1,5,1,0,2,2,6,6,2,0,0,0,0,17,2,3,0,0,0,0,2,1,3,10,1,2,0,5,0,0,0,0,0,8,2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,9,14,77,26,0,0,1,11,1,10,5,7,0,6,1,0,3,0,0,0,5,12,12,16,12,0,0,8,6,1];
+    const C = 10, G = 3, top = 14, fills = ['#efeff1', '#cfcfd4', '#9a9aa2', '#55555c', '#111113'];
+    const level = n => n === 0 ? 0 : n < 4 ? 1 : n < 10 ? 2 : n < 20 ? 3 : 4;
+    const weeks = Math.ceil(counts.length / 7), months = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+    let out = '', lastMonth = -1;
+    counts.forEach((n, i) => {
+      const w = Math.floor(i / 7), d = i % 7, date = new Date(start); date.setDate(start.getDate() + i);
+      if (d === 0 && date.getMonth() !== lastMonth && date.getDate() <= 7 && w < weeks - 2) { lastMonth = date.getMonth(); out += `<text x="${w * (C + G)}" y="9">${months[lastMonth]}</text>`; }
+      out += `<rect x="${w * (C + G)}" y="${top + d * (C + G)}" width="${C}" height="${C}" rx="2" fill="${fills[level(n)]}"><title>${n} contribution${n > 1 ? 's' : ''} le ${date.toLocaleDateString('fr-FR')}</title></rect>`;
+    });
+    svg.setAttribute('viewBox', `0 0 ${weeks * (C + G) - G} ${top + 7 * (C + G) - G}`);
+    svg.innerHTML = out;
+  })();
 
   // Hero typewriter
   (() => {
