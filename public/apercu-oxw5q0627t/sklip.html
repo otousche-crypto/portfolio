@@ -416,6 +416,70 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .cs-fig.w-small { max-width: 50%; margin-inline: auto !important; }
 .cs-split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
 .cs-split .cs-fig { margin: 0 !important; }
+.cs-note { font-family: var(--mono); font-size: 12px; line-height: 1.6; color: var(--muted); margin: 0; }
+.bmad { margin: 40px 0 !important; padding: clamp(18px, 3vw, 28px); border: 1px solid var(--line); border-radius: 20px; display: grid; gap: 16px; }
+.bm-eye { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.bm-sources { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.bm-sources .bm-eye { margin-right: 4px; }
+.bm-chip { font-size: 13px; padding: 4px 11px; border-radius: 999px; background: var(--soft); }
+.bm-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 22px; }
+.bm-step { position: relative; border: 1px solid var(--line); border-radius: 16px; padding: 14px 14px 16px; display: flex; flex-direction: column; gap: 4px; background: var(--bg); }
+/* chevron between steps */
+.bm-step + .bm-step::before { content: ""; position: absolute; left: -15px; top: 50%; width: 7px; height: 7px; border-top: 1.5px solid var(--fg); border-right: 1.5px solid var(--fg); transform: translateY(-50%) rotate(45deg); }
+.bm-top { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; margin-bottom: 8px; }
+.bm-n { font-family: var(--mono); font-size: 12px; font-weight: 500; }
+.bm-step h5 { margin: 0; font-size: 16px; line-height: 1.2; font-weight: 600; letter-spacing: -.01em; }
+.bm-agent { font-size: 12px; color: var(--muted); }
+.bm-step ul { list-style: none; margin: 10px 0 0; padding: 10px 0 0; border-top: 1px solid var(--line); display: grid; gap: 4px; font-size: 12.5px; line-height: 1.4; color: #55555c; }
+.bm-step.build { background: var(--fg); border-color: var(--fg); color: #fff; }
+.bm-step.build .bm-eye, .bm-step.build .bm-agent { color: rgba(255,255,255,.55); }
+.bm-step.build ul { color: rgba(255,255,255,.8); border-top-color: rgba(255,255,255,.18); }
+.bm-human { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 14px; background: var(--soft); font-size: 14px; color: #55555c; }
+.bm-human svg { width: 18px; height: 18px; flex: none; color: var(--fg); }
+.bm-human b { color: var(--fg); font-weight: 600; }
+.bm-human .bm-chip { background: var(--bg); }
+.bm-big { font-size: 30px; line-height: 1; font-weight: 600; letter-spacing: -.03em; font-variant-numeric: tabular-nums; margin-bottom: 4px; }
+.bm-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.bm-chips span { font-size: 11.5px; padding: 2px 8px; border-radius: 999px; background: var(--soft); }
+.bm-vinyl { width: 52px; height: 52px; margin-bottom: 6px; }
+.bm-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.bm-stats div { background: var(--soft); border-radius: 14px; padding: 14px 16px; display: grid; gap: 2px; }
+.bm-stats b { font-size: 20px; font-weight: 600; letter-spacing: -.02em; }
+.bm-stats span { font-size: 13px; color: #55555c; }
+.bm-steps:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; border-radius: 16px; }
+.bmad figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: center; }
+.sp-carousel { position: relative; }
+.sp-nav { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 14px; }
+.sp-count { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-right: 6px; font-variant-numeric: tabular-nums; }
+.sp-nav button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: var(--bg); color: var(--fg); font-size: 16px; cursor: pointer; transition: background .2s, opacity .2s; }
+.sp-nav button:hover { background: var(--soft); }
+.sp-nav button:disabled { opacity: .35; cursor: default; background: var(--bg); }
+/* Horizontal scroll-snap carousel: about one and a half cards visible so the next one peeks in */
+.sp-grid { display: grid; grid-auto-flow: column; grid-auto-columns: 62%; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; overscroll-behavior-x: contain; scrollbar-width: none; padding-bottom: 2px; }
+.sp-grid::-webkit-scrollbar { display: none; }
+.sp-grid:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; border-radius: 24px; }
+.sp-grid > .sp { scroll-snap-align: start; }
+@media (prefers-reduced-motion: reduce) { .sp-grid { scroll-behavior: auto; } }
+.sp { background: #100E16; color: #EDEAF2; border-radius: 24px; padding: 22px; display: flex; flex-direction: column; gap: 16px; font-family: Outfit, var(--sans); }
+.sp header { display: flex; align-items: center; gap: 14px; }
+.sp-disc { width: 64px; height: 64px; flex: none; }
+.sp h4 { margin: 2px 0 0; font-size: 24px; line-height: 1.05; font-weight: 800; letter-spacing: -.01em; }
+.sp header p { margin: 2px 0 0; font-size: 14px; color: #A39DBC; }
+.sp-tag, .sp-eye { font-family: "IBM Plex Mono", var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--c); }
+.sp-eye { display: block; color: #6E6889; margin-bottom: 4px; }
+.sp-quote { margin: 0; font-size: 16px; line-height: 1.45; font-style: italic; color: #A39DBC; }
+.sp-stats { display: grid; grid-template-columns: auto 1fr; gap: 20px; padding: 12px 0; border-block: 1px solid #2C2738; }
+.sp-stats b { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.sp-stats small { font-size: 13px; font-weight: 500; color: #8A85A0; }
+.sp-gear { display: flex; flex-wrap: wrap; gap: 6px; }
+.sp-gear i { font-style: normal; font-size: 12.5px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: #221E2E; }
+.sp-job { margin: 0; background: #0C0A12; border: 1px solid #2C2738; border-radius: 16px; padding: 14px 16px; font-size: 14.5px; line-height: 1.45; color: #A39DBC; display: grid; gap: 2px; }
+.sp-job em { font-style: normal; font-weight: 600; color: var(--c); }
+.sp-pg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; }
+.sp-pg div { background: #191622; border-radius: 14px; padding: 12px 14px; font-size: 13.5px; line-height: 1.45; color: #A39DBC; }
+.sp.off { background: #191622; border: 1px dashed #2C2738; }
+.sp.off .sp-pg div { background: #221E2E; }
+.cs-note { margin-top: 14px !important; }
 .cs-log { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
 .cs-log summary { list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; cursor: pointer; font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
 .cs-log summary::-webkit-details-marker { display: none; }
@@ -450,6 +514,14 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
   .cs-split, .cs-next { grid-template-columns: 1fr; }
   .cs-fig.w-small { max-width: 100%; }
   .cs-next { padding: 28px; }
+  .sp-grid { grid-auto-columns: 86%; }
+  /* On mobile the steps become a swipeable carousel, the next card peeking in */
+  .bm-steps { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 76%; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; margin-inline: -4px; padding: 2px 4px; }
+  .bm-steps::-webkit-scrollbar { display: none; }
+  .bm-step { scroll-snap-align: start; }
+  .bm-step + .bm-step::before { display: none; }
+  .bm-stats { grid-template-columns: 1fr; }
+  .sp-pg { grid-template-columns: 1fr; }
   .cs-text p, .cs-list { font-size: 17px; }
 }
 
@@ -481,219 +553,132 @@ body { margin: 0; }
     <div class="cs-text"><p class="">Les DJs de scratch jouent sur des vinyles de contrôle reliés à un logiciel : c'est le DVS (Serato, Traktor, Phase). Ils y chargent des boucles <strong>skip-proof</strong> : le même son répété à chaque tour du disque. Si l'aiguille saute pendant un scratch, elle retombe au même endroit du son et la routine continue.</p><p class="">À 33⅓ tours par minute, un tour dure exactement <strong>1800 ms</strong>. Une boucle de 1818 ms, calée sur 33 tours, dérive de 18 ms à chaque tour. Cette contrainte physique est devenue la règle centrale du produit.</p></div>
     <h2 class="cs-h2">Méthode : le framework BMAD</h2>
     <div class="cs-text"><p class="">Seul sur le projet, j'ai utilisé <strong>BMAD</strong> (Breakthrough Method for Agile AI-Driven Development), un framework open source qui organise le travail avec l'IA comme une équipe produit : un analyste, un product manager, un architecte, un UX designer, un développeur. Chaque agent produit un livrable écrit et versionné, qui sert d'entrée au suivant.</p><p class="">L'intérêt pour moi : <strong>garder la rigueur d'une équipe sans en avoir une.</strong> Rien ne se code sans exigence écrite, aucune exigence n'existe sans décision d'architecture qui la porte, et chaque story est développée puis relue dans un contexte neuf.</p></div>
-    <figure class="cs-diagram"><svg viewBox="0 0 800 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">
-  <defs>
-    <marker id="bm-arr" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
-      <polygon points="0 0, 8 3.5, 0 7" fill="#111111"/>
-    </marker>
-  </defs>
-
-  <!-- Sources -->
-  <rect x="10" y="10" width="780" height="30" fill="#f2f2f2"/>
-  <text x="400" y="29" text-anchor="middle" font-size="9" fill="#333333" letter-spacing="0.5">SOURCES · étude de marché · audit · stratégie de lancement · code existant</text>
-
-  <!-- 1 Contexte -->
-  <rect x="10" y="60" width="138" height="130" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
-  <text x="22" y="80" font-size="8" fill="#888888" letter-spacing="1">ANALYSE</text>
-  <text x="22" y="100" font-size="11" font-weight="700" fill="#111111">CONTEXTE</text>
-  <text x="22" y="124" font-size="8.5" fill="#333333">AGENTS.md</text>
-  <text x="22" y="140" font-size="8.5" fill="#333333">règles, pièges,</text>
-  <text x="22" y="156" font-size="8.5" fill="#333333">projet brownfield</text>
-
-  <line x1="149" y1="125" x2="166" y2="125" stroke="#111111" stroke-width="1.5" marker-end="url(#bm-arr)"/>
-
-  <!-- 2 PRD -->
-  <rect x="170" y="60" width="138" height="130" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
-  <text x="182" y="80" font-size="8" fill="#888888" letter-spacing="1">PLANIFICATION</text>
-  <text x="182" y="100" font-size="11" font-weight="700" fill="#111111">PRD</text>
-  <text x="182" y="124" font-size="8.5" fill="#333333">26 exigences</text>
-  <text x="182" y="140" font-size="8.5" fill="#333333">fonctionnelles</text>
-  <text x="182" y="156" font-size="8.5" fill="#333333">6 non fonctionnelles</text>
-
-  <line x1="309" y1="125" x2="326" y2="125" stroke="#111111" stroke-width="1.5" marker-end="url(#bm-arr)"/>
-
-  <!-- 3 Architecture -->
-  <rect x="330" y="60" width="138" height="130" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
-  <text x="342" y="80" font-size="8" fill="#888888" letter-spacing="1">SOLUTIONING</text>
-  <text x="342" y="100" font-size="11" font-weight="700" fill="#111111">ARCHITECTURE</text>
-  <text x="342" y="124" font-size="8.5" fill="#333333">10 décisions</text>
-  <text x="342" y="140" font-size="8.5" fill="#333333">AD-1 … AD-10</text>
-  <text x="342" y="156" font-size="8.5" fill="#333333">schéma = code</text>
-
-  <line x1="469" y1="125" x2="486" y2="125" stroke="#111111" stroke-width="1.5" marker-end="url(#bm-arr)"/>
-
-  <!-- 4 Epics -->
-  <rect x="490" y="60" width="138" height="130" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
-  <text x="502" y="80" font-size="8" fill="#888888" letter-spacing="1">SOLUTIONING</text>
-  <text x="502" y="100" font-size="11" font-weight="700" fill="#111111">EPICS</text>
-  <text x="502" y="124" font-size="8.5" fill="#333333">5 epics</text>
-  <text x="502" y="140" font-size="8.5" fill="#333333">23 stories</text>
-  <text x="502" y="156" font-size="8.5" fill="#333333">1 sprint planifié</text>
-
-  <line x1="629" y1="125" x2="646" y2="125" stroke="#111111" stroke-width="1.5" marker-end="url(#bm-arr)"/>
-
-  <!-- 5 Build / Review -->
-  <rect x="650" y="60" width="140" height="130" fill="#4CB8FF"/>
-  <text x="662" y="80" font-size="8" fill="#111111" letter-spacing="1">IMPLÉMENTATION</text>
-  <text x="662" y="100" font-size="11" font-weight="700" fill="#111111">BUILD ⇄ REVIEW</text>
-  <text x="662" y="124" font-size="8.5" fill="#111111">1 story = 1 chat</text>
-  <text x="662" y="140" font-size="8.5" fill="#111111">revue en contexte</text>
-  <text x="662" y="156" font-size="8.5" fill="#111111">neuf, puis recette</text>
-
-  <!-- Human in the loop -->
-  <rect x="10" y="210" width="780" height="30" fill="#111111"/>
-  <text x="400" y="229" text-anchor="middle" font-size="9" fill="#4CB8FF" letter-spacing="0.5">DÉCISIONS PRODUIT, UX ET MISE EN PROD · TOUJOURS VALIDÉES PAR MOI</text>
-</svg><figcaption>Chaîne BMAD appliquée à Sklip : chaque livrable sert d'entrée au suivant</figcaption></figure>
+    <figure class="bmad">
+  <div class="bm-sources"><span class="bm-eye">Sources</span><span class="bm-chip">Étude de marché</span><span class="bm-chip">Audit</span><span class="bm-chip">Stratégie de lancement</span><span class="bm-chip">Code existant</span></div>
+  <ol class="bm-steps" style="--n:5" tabindex="0"><li class="bm-step">
+    <div class="bm-top"><span class="bm-n">01</span><span class="bm-eye">Analyse</span></div>
+    <h5>Contexte</h5><span class="bm-agent">Agent analyste</span>
+    
+    <ul><li>AGENTS.md</li><li>Règles et pièges</li><li>Projet brownfield</li></ul>
+  </li><li class="bm-step">
+    <div class="bm-top"><span class="bm-n">02</span><span class="bm-eye">Planification</span></div>
+    <h5>PRD</h5><span class="bm-agent">Agent product manager</span>
+    
+    <ul><li>26 exigences fonctionnelles</li><li>6 non fonctionnelles</li></ul>
+  </li><li class="bm-step">
+    <div class="bm-top"><span class="bm-n">03</span><span class="bm-eye">Solutioning</span></div>
+    <h5>Architecture</h5><span class="bm-agent">Agent architecte</span>
+    
+    <ul><li>10 décisions, AD-1 à AD-10</li><li>Le schéma, c'est le code</li></ul>
+  </li><li class="bm-step">
+    <div class="bm-top"><span class="bm-n">04</span><span class="bm-eye">Solutioning</span></div>
+    <h5>Epics</h5><span class="bm-agent">Agent product manager</span>
+    
+    <ul><li>5 epics</li><li>23 stories</li><li>1 sprint planifié</li></ul>
+  </li><li class="bm-step build">
+    <div class="bm-top"><span class="bm-n">05</span><span class="bm-eye">Implémentation</span></div>
+    <h5>Build ⇄ Review</h5><span class="bm-agent">Agent développeur</span>
+    
+    <ul><li>1 story = 1 chat</li><li>Revue dans un contexte neuf</li><li>Puis recette</li></ul>
+  </li></ol>
+  <div class="bm-human"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5" r="3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.5 14c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span>Décisions produit, UX et mise en production : <b>toujours validées par moi</b></span></div>
+  
+  <figcaption>Chaîne BMAD appliquée à Sklip : chaque livrable sert d'entrée au suivant</figcaption>
+</figure>
     <div class="cs-text"><p>Comment je l'ai adapté à un projet existant :</p><ul class="cs-list"><li>Projet brownfield : les agents partent de mes documents (étude de marché, audit, stratégie) et du code déjà en production, pas d'une page blanche.</li><li>La conception UX reste de mon côté : l'agent UX ne produit rien sans demande explicite, la référence est mon design system.</li><li>Les retouches rapides (texte, traduction, CSS ponctuel) sortent du cadre BMAD, pour ne pas alourdir le flux.</li><li>Toute modification du schéma de base de données passe par une migration versionnée, et rien n'est déployé en production sans mon accord.</li></ul></div>
     <h2 class="cs-h2">Problématique</h2>
     <div class="cs-text"><p class="">Pour obtenir une boucle à soi, un scratcher a aujourd'hui trois options : un disque de battle préenregistré (15 à 33 €, aucune personnalisation, tout le monde scratche les mêmes sons), un pressage sur mesure (200 à 500 €, lent, réservé aux compétiteurs) ou un logiciel audio généraliste (sans aucune notion de tour de platine). <strong>Aucune n'est à la fois personnalisable, rapide et abordable.</strong></p><p class="">S'y ajoute un problème moins visible : les sons « classiques » du scratch sont des enregistrements protégés, même sur une demi-seconde. Ils ne peuvent ni être distribués par un logiciel, ni être utilisés dans une vidéo ou une création originale.</p></div>
     <blockquote class="cs-quote"><p class="">Comment permettre à un scratcher de composer sa propre boucle skip-proof, juste au tour près, avec des sons qu'il a le droit d'utiliser, sans compétence audio ni budget de studio ?</p></blockquote>
     <div class="cs-text"><ul class="cs-list"><li>Enjeu utilisateur : une boucle qui ne saute pas et qui sonne comme lui, obtenue en minutes et non en soirées.</li><li>Enjeu produit : rendre visible une contrainte physique (1800 ms) sans demander à l'utilisateur de la calculer.</li><li>Enjeu juridique : ne distribuer que des sons dont la provenance et la licence sont documentées.</li><li>Enjeu business : gagner la confiance d'une communauté restreinte avant toute ouverture publique.</li></ul></div>
     <h2 class="cs-h2">Personae et jobs to be done</h2>
-    <div class="cs-text"><p class="">Trois profils se dégagent de l'étude. Ils partagent le même geste, mais pas le même usage de la boucle. Chaque job est écrit au format <strong>Quand… je veux… pour…</strong>, pour décrire la situation et le progrès attendu plutôt qu'une fonctionnalité.</p></div>
-    <h3 class="cs-h3">Karim, 24 ans · le compétiteur</h3>
-    <div class="cs-text"><p class="">Scratcher de battle à Lyon, il prépare une routine pour une sélection régionale DMC. Deux heures de pratique par jour. Il scratche les mêmes disques que ses adversaires, découpe ses sons au jugé et voit sa boucle dériver au bout de quelques tours.</p></div>
-    <div class="cs-text"><ul class="cs-list"><li>Quand je prépare une routine de battle, je veux composer une boucle avec des sons qui me sont propres, pour être reconnu dès la première seconde.</li><li>Quand je charge un son sous le vinyle, je veux qu'il tombe juste à chaque tour, pour ne jamais perdre le fil après un saut d'aiguille.</li></ul></div>
-    <h3 class="cs-h3">Nadia, 36 ans · l'enseignante</h3>
-    <div class="cs-text"><p class="">Professeure de scratch dans une école de DJ à Bordeaux, une trentaine d'élèves. Elle prépare un nouvel exercice chaque semaine, le soir, sans outil adapté, et ses élèves n'ont pas les mêmes disques à la maison.</p></div>
-    <div class="cs-text"><ul class="cs-list"><li>Quand un élève débute, je veux découper le tour en moins de slices, pour qu'il entende chaque attaque distinctement.</li><li>Quand le cours se termine, je veux transmettre le fichier, pour que l'élève s'entraîne sur le même support que moi.</li></ul></div>
-    <h3 class="cs-h3">Théo, 19 ans · le créateur de contenu</h3>
-    <div class="cs-text"><p class="">Portablist à Marseille, il scratche sur platine portable et publie trois vidéos courtes par semaine. Ses vidéos sont régulièrement bloquées pour des samples protégés, et les outils audio sont pensés pour un ordinateur.</p></div>
-    <div class="cs-text"><ul class="cs-list"><li>Quand je prépare une vidéo, je veux des sons dont la provenance est claire, pour que la plateforme ne la bloque pas.</li><li>Quand j'ai une idée en déplacement, je veux composer sur mon téléphone, pour ne pas la perdre.</li></ul></div>
-    <div class="cs-text"><p class=""><strong>Hors cible en v1</strong> : les DJs de mix qui ne scratchent pas, et les producteurs qui cherchent un logiciel audio complet. Les nommer évite d'ajouter des fonctions qui alourdiraient l'outil. Ces personae restent des hypothèses de travail, construites à partir de l'étude de marché et de ma pratique de DJ ; la beta sert à les confronter à de vrais utilisateurs.</p></div>
+    <div class="sp-carousel"><div class="sp-nav"><span class="sp-count" aria-live="polite">1 / 4</span><button type="button" class="sp-prev" aria-label="Persona précédent">←</button><button type="button" class="sp-next" aria-label="Persona suivant">→</button></div><div class="sp-grid" tabindex="0" aria-label="Personae, faire défiler horizontalement"><article class="sp" style="--c:#FF5470">
+  <header><svg class="sp-disc" viewBox="0 0 112 112" aria-hidden="true"><circle cx="56" cy="56" r="54" fill="#0C0A12" stroke="#2C2738"/><circle cx="56" cy="56" r="44" fill="none" stroke="#2C2738"/><circle cx="56" cy="56" r="36" fill="none" stroke="#2C2738"/><circle cx="56" cy="56" r="26" fill="#FF5470"/><text x="56" y="57" text-anchor="middle" dominant-baseline="central" font-family="Outfit, sans-serif" font-weight="800" font-size="24" fill="#0C0A12">K</text></svg><div><span class="sp-tag">Primaire · Beta fermée</span><h4>Karim</h4><p>Le compétiteur qui enseigne</p></div></header>
+  <p class="sp-quote">« En battle, si t'as les mêmes sons que tout le monde, t'as déjà perdu. Mes élèves, c'est pareil : une boucle à eux, et ils reviennent. »</p>
+  <div class="sp-stats"><div><span class="sp-eye">Budget</span><b>≈ 1 200 €<small> / an</small></b></div><div><span class="sp-eye">Setup</span><span class="sp-gear"><i>Serato</i><i>Rane</i><i>Technics</i></span></div></div>
+  <p class="sp-job"><span><em>Quand</em> je prépare une routine de battle ou un cours,</span><span><em>je veux</em> fabriquer vite des skip-proofs calées au tour de platine avec des sons à moi,</span><span><em>pour</em> les tester tout de suite sous timecode et les faire travailler à mes élèves.</span></p>
+  <div class="sp-pg"><div><span class="sp-eye">Douleur</span>Calage manuel long et approximatif (à 1818 ms, la boucle dérive de 18 ms par tour)</div><div><span class="sp-eye">Gain attendu</span>Une boucle calée en quelques minutes</div></div>
+</article><article class="sp" style="--c:#3DD68C">
+  <header><svg class="sp-disc" viewBox="0 0 112 112" aria-hidden="true"><circle cx="56" cy="56" r="54" fill="#0C0A12" stroke="#2C2738"/><circle cx="56" cy="56" r="44" fill="none" stroke="#2C2738"/><circle cx="56" cy="56" r="36" fill="none" stroke="#2C2738"/><circle cx="56" cy="56" r="26" fill="#3DD68C"/><text x="56" y="57" text-anchor="middle" dominant-baseline="central" font-family="Outfit, sans-serif" font-weight="800" font-size="24" fill="#0C0A12">I</text></svg><div><span class="sp-tag">Primaire · Beta fermée</span><h4>Inès</h4><p>La portabliste créatrice de contenu</p></div></header>
+  <p class="sp-quote">« Mon studio, c'est mon sac à dos. Si un outil ne marche pas sur mon téléphone, il n'existe pas. »</p>
+  <div class="sp-stats"><div><span class="sp-eye">Budget</span><b>≈ 600 €<small> / an</small></b></div><div><span class="sp-eye">Setup</span><span class="sp-gear"><i>Numark</i><i>Phase</i><i>Serato</i></span></div></div>
+  <p class="sp-job"><span><em>Quand</em> j'ai une idée de vidéo en déplacement,</span><span><em>je veux</em> composer et exporter une boucle depuis mon téléphone,</span><span><em>pour</em> scratcher dessus et publier dans la journée.</span></p>
+  <div class="sp-pg"><div><span class="sp-eye">Douleur</span>Préparer des sons sur mobile est un calvaire</div><div><span class="sp-eye">Gain attendu</span>Composer une boucle sur son téléphone en quelques minutes</div></div>
+</article><article class="sp" style="--c:#FFB02E">
+  <header><svg class="sp-disc" viewBox="0 0 112 112" aria-hidden="true"><circle cx="56" cy="56" r="54" fill="#0C0A12" stroke="#2C2738"/><circle cx="56" cy="56" r="44" fill="none" stroke="#2C2738"/><circle cx="56" cy="56" r="36" fill="none" stroke="#2C2738"/><circle cx="56" cy="56" r="26" fill="#FFB02E"/><text x="56" y="57" text-anchor="middle" dominant-baseline="central" font-family="Outfit, sans-serif" font-weight="800" font-size="24" fill="#0C0A12">F</text></svg><div><span class="sp-tag">Volume · Beta ouverte → lancement</span><h4>Fred</h4><p>Le scratcher passionné du soir</p></div></header>
+  <p class="sp-quote">« J'ai pas le temps d'apprendre Ableton. Je veux ouvrir un truc, poser trois sons et scratcher. »</p>
+  <div class="sp-stats"><div><span class="sp-eye">Budget</span><b>≈ 400 €<small> / an</small></b></div><div><span class="sp-eye">Setup</span><span class="sp-gear"><i>Traktor</i><i>Numark</i><i>Reloop</i></span></div></div>
+  <p class="sp-job"><span><em>Quand</em> je m'installe pour une session d'entraînement le soir,</span><span><em>je veux</em> une nouvelle boucle prête en quelques minutes,</span><span><em>pour</em> garder ma motivation et travailler mes techniques sur des sons frais.</span></p>
+  <div class="sp-pg"><div><span class="sp-eye">Douleur</span>Lassitude des mêmes sons</div><div><span class="sp-eye">Gain attendu</span>Des sons frais en 5 minutes</div></div>
+</article><article class="sp off" style="--c:#8A85A0">
+  <header><svg class="sp-disc" viewBox="0 0 112 112" aria-hidden="true"><circle cx="56" cy="56" r="54" fill="#0C0A12" stroke="#2C2738"/><circle cx="56" cy="56" r="44" fill="none" stroke="#2C2738"/><circle cx="56" cy="56" r="36" fill="none" stroke="#2C2738"/><circle cx="56" cy="56" r="26" fill="#8A85A0"/><text x="56" y="57" text-anchor="middle" dominant-baseline="central" font-family="Outfit, sans-serif" font-weight="800" font-size="24" fill="#0C0A12">B</text></svg><div><span class="sp-tag">Non-cible</span><h4>Bruno</h4><p>Le puriste vinyle sans DVS</p></div></header>
+  <p class="sp-quote">« L'idée est top, vraiment. Mais je vais pas acheter une interface et des timecodes pour ça : moi, c'est le vinyle. »</p>
+  <div class="sp-stats"><div><span class="sp-eye">Budget</span><b>≈ 900 €<small> / an</small></b></div><div><span class="sp-eye">Setup</span><span class="sp-gear"><i>Technics</i><i>Vestax</i><i>Ortofon</i></span></div></div>
+  <p class="sp-job"><span><em>Quand</em> je cherche de nouveaux sons pour scratcher,</span><span><em>je veux</em> un disque physique à poser sur ma platine,</span><span><em>pour</em> garder le geste et l'objet que j'aime.</span></p>
+  <div class="sp-pg"><div><span class="sp-eye">Douleur</span>Les disques s'usent sous le scratch</div><div><span class="sp-eye">Gain attendu</span>Trouver un disque rare</div></div>
+</article></div></div>
+<p class="cs-note">Proto-personae construits à partir de l'étude de marché, sans entretien utilisateur : citations et budgets sont des estimations, à valider pendant la beta fermée.</p>
     <h2 class="cs-h2">La solution : un compositeur et une librairie</h2>
     <div class="cs-text"><p class="">Un séquenceur sans sons utilisables ne sert à rien. Une librairie sans outil pour caler les sons au tour près non plus. <strong>J'ai conçu les deux ensemble, comme un seul produit.</strong></p></div>
-    <figure class="cs-diagram"><svg viewBox="0 0 800 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">
-  <defs>
-    <marker id="so-arr" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
-      <polygon points="0 0, 8 3.5, 0 7" fill="#111111"/>
-    </marker>
-  </defs>
-
-  <!-- LIBRAIRIE -->
-  <rect x="10" y="10" width="230" height="250" fill="#ffffff" stroke="#4CB8FF" stroke-width="1.5"/>
-  <rect x="10" y="10" width="230" height="42" fill="#4CB8FF"/>
-  <text x="25" y="32" font-size="10" font-weight="700" fill="#111111" letter-spacing="1">LIBRAIRIE</text>
-  <text x="25" y="45" font-size="7" fill="#111111">Sons originaux, libres de droits</text>
-  <rect x="25" y="70" width="4" height="4" fill="#111111"/><text x="38" y="77" font-size="9" fill="#333333">Sound FX</text>
-  <rect x="25" y="95" width="4" height="4" fill="#111111"/><text x="38" y="102" font-size="9" fill="#333333">Drums</text>
-  <rect x="25" y="120" width="4" height="4" fill="#111111"/><text x="38" y="127" font-size="9" fill="#333333">Sentences</text>
-  <rect x="25" y="145" width="4" height="4" fill="#111111"/><text x="38" y="152" font-size="9" fill="#333333">Words</text>
-  <line x1="25" y1="172" x2="225" y2="172" stroke="#dddddd" stroke-width="1"/>
-  <text x="25" y="195" font-size="8.5" fill="#666666">Pré-écoute, recherche,</text>
-  <text x="25" y="211" font-size="8.5" fill="#666666">durée affichée selon</text>
-  <text x="25" y="227" font-size="8.5" fill="#666666">le pitch</text>
-
-  <line x1="242" y1="135" x2="282" y2="135" stroke="#111111" stroke-width="1.5" marker-end="url(#so-arr)"/>
-
-  <!-- VINYLE : pathLength = 1800, chaque tiret est exprimé en ms -->
-  <circle cx="400" cy="135" r="112" fill="#111111"/>
-  <circle cx="400" cy="135" r="88" fill="none" stroke="#2a2a2a" stroke-width="28"/>
-  <g transform="rotate(-90 400 135)" fill="none" stroke-width="28">
-    <circle cx="400" cy="135" r="88" pathLength="1800" stroke="#4CB8FF" stroke-dasharray="380 1420" stroke-dashoffset="-20"/>
-    <circle cx="400" cy="135" r="88" pathLength="1800" stroke="#ffffff" stroke-dasharray="230 1570" stroke-dashoffset="-460"/>
-    <circle cx="400" cy="135" r="88" pathLength="1800" stroke="#4CB8FF" stroke-dasharray="300 1500" stroke-dashoffset="-920"/>
-    <circle cx="400" cy="135" r="88" pathLength="1800" stroke="#ffffff" stroke-dasharray="360 1440" stroke-dashoffset="-1370"/>
-  </g>
-  <g stroke="#111111" stroke-width="3">
-    <line x1="400" y1="33" x2="400" y2="77"/><line x1="502" y1="135" x2="458" y2="135"/>
-    <line x1="400" y1="237" x2="400" y2="193"/><line x1="298" y1="135" x2="342" y2="135"/>
-  </g>
-  <circle cx="400" cy="135" r="52" fill="#ffffff"/>
-  <text x="400" y="133" text-anchor="middle" font-size="15" font-weight="700" fill="#111111">1800 ms</text>
-  <text x="400" y="149" text-anchor="middle" font-size="7.5" fill="#666666">1 TOUR · 33⅓ RPM</text>
-  <text x="400" y="262" text-anchor="middle" font-size="8" fill="#666666">COMPOSITEUR · 2 à 8 slices</text>
-
-  <line x1="518" y1="135" x2="558" y2="135" stroke="#111111" stroke-width="1.5" marker-end="url(#so-arr)"/>
-
-  <!-- EXPORT -->
-  <rect x="560" y="10" width="230" height="250" fill="#111111"/>
-  <text x="575" y="32" font-size="10" font-weight="700" fill="#4CB8FF" letter-spacing="1">EXPORT</text>
-  <text x="575" y="45" font-size="7" fill="#aaaaaa">Prêt à charger dans le DVS</text>
-  <rect x="575" y="70" width="4" height="4" fill="#4CB8FF"/><text x="588" y="77" font-size="9" fill="#dddddd">WAV ou MP3</text>
-  <rect x="575" y="95" width="4" height="4" fill="#4CB8FF"/><text x="588" y="102" font-size="9" fill="#dddddd">Repères Serato intégrés</text>
-  <rect x="575" y="120" width="4" height="4" fill="#4CB8FF"/><text x="588" y="127" font-size="9" fill="#dddddd">Un tour exact,</text>
-  <text x="588" y="141" font-size="9" fill="#dddddd">sans dérive</text>
-  <line x1="575" y1="172" x2="775" y2="172" stroke="#333333" stroke-width="1"/>
-  <text x="575" y="195" font-size="8.5" fill="#aaaaaa">Serato · Traktor · Phase</text>
-</svg><figcaption>Librairie → compositeur circulaire → export prêt pour le DVS</figcaption></figure>
+    <figure class="bmad">
+  
+  <ol class="bm-steps" style="--n:3" tabindex="0"><li class="bm-step">
+    <div class="bm-top"><span class="bm-n">01</span><span class="bm-eye">Librairie</span></div>
+    <h5>Des sons à soi</h5><span class="bm-agent">Originaux, libres de droits</span>
+    <div class="bm-chips"><span>Sound FX</span><span>Drums</span><span>Sentences</span><span>Words</span></div>
+    <ul><li>Pré-écoute et recherche</li><li>Durée affichée selon le pitch</li></ul>
+  </li><li class="bm-step build">
+    <div class="bm-top"><span class="bm-n">02</span><span class="bm-eye">Compositeur</span></div>
+    <svg class="bm-vinyl" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="31" fill="#0C0A12"/><circle cx="32" cy="32" r="24" fill="none" stroke="#2C2738"/><circle cx="32" cy="32" r="17" fill="none" stroke="#2C2738"/><path d="M32 1a31 31 0 0 1 26.8 15.5" fill="none" stroke="#FF5470" stroke-width="3"/><path d="M58.8 16.5A31 31 0 0 1 47.5 58.8" fill="none" stroke="#3DD68C" stroke-width="3"/><path d="M47.5 58.8A31 31 0 0 1 1.5 37" fill="none" stroke="#4D7CFF" stroke-width="3"/><path d="M1.5 37A31 31 0 0 1 32 1" fill="none" stroke="#FFB02E" stroke-width="3"/><circle cx="32" cy="32" r="9" fill="#fff"/></svg><h5>1800 ms</h5><span class="bm-agent">1 tour à 33⅓ tours/min</span>
+    
+    <ul><li>Timeline circulaire</li><li>2 à 8 slices par tour</li></ul>
+  </li><li class="bm-step">
+    <div class="bm-top"><span class="bm-n">03</span><span class="bm-eye">Export</span></div>
+    <h5>Prêt pour le DVS</h5><span class="bm-agent">À charger tel quel</span>
+    
+    <ul><li>WAV ou MP3</li><li>Repères Serato intégrés</li><li>Un tour exact, sans dérive</li></ul>
+  </li></ol>
+  <div class="bm-human"><span class="bm-eye">Compatible</span><span class="bm-chip">Serato</span><span class="bm-chip">Traktor</span><span class="bm-chip">Phase</span></div>
+  
+  <figcaption>Librairie → compositeur circulaire → export prêt pour le DVS</figcaption>
+</figure>
     <h3 class="cs-h3">Le compositeur : une timeline qui a la forme du disque</h3>
     <div class="cs-text"><ul class="cs-list"><li>La timeline est un vinyle : on voit où chaque son tombe sur le tour, comme on le sentira sous la main.</li><li>Boucle fixe de 1800 ms, découpée en 2 à 8 slices selon le niveau ou le tempo recherché.</li><li>Accrochage magnétique aux demi-temps, pour placer juste sans y penser.</li><li>Pitch par sample : la durée s'ajuste et les sons voisins se décalent seuls pour ne pas se chevaucher.</li><li>Utilisable au téléphone : composer dans le bus, tester le soir sur les platines.</li></ul></div>
     <h3 class="cs-h3">La librairie : des sons écrits pour le scratch</h3>
     <div class="cs-text"><p class="">Les mots du scratch (« fresh », « yeah », les chiffres, l'alphabet) n'appartiennent à personne. Leurs enregistrements historiques, si. J'ai donc choisi de <strong>produire les sons plutôt que de les collecter</strong>, avec des attaques franches, des voyelles tenues et une durée toujours inférieure à un tour.</p></div>
     <h2 class="cs-h2">Générer des samples libres de droits, en local</h2>
     <div class="cs-text"><p class="">Pour les voix, j'ai écarté les services de synthèse vocale en ligne : coût à chaque génération, conditions d'utilisation qui peuvent changer, et des droits sur le résultat qui dépendent du fournisseur. J'ai choisi <strong>Qwen3-TTS VoiceDesign</strong>, un modèle open source publié sous licence Apache 2.0, qui tourne <strong>entièrement sur mon Mac</strong>.</p><p class="">Sa particularité : on décrit une voix en texte (« voix grave et éraillée de MC des années 90 ») et le modèle la crée. Aucune voix réelle n'est clonée, aucun enregistrement existant n'est réutilisé.</p></div>
-    <figure class="cs-diagram"><svg viewBox="0 0 800 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">
-  <defs>
-    <marker id="sg-arr" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
-      <polygon points="0 0, 8 3.5, 0 7" fill="#111111"/>
-    </marker>
-  </defs>
-
-  <!-- 1 Écrire -->
-  <rect x="10" y="10" width="138" height="150" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
-  <text x="22" y="32" font-size="11" font-weight="700" fill="#111111">ÉCRIRE</text>
-  <text x="22" y="72" font-size="26" font-weight="700" fill="#111111">246</text>
-  <text x="22" y="100" font-size="8.5" fill="#333333">mots et phrases :</text>
-  <text x="22" y="116" font-size="8.5" fill="#333333">interjections,</text>
-  <text x="22" y="132" font-size="8.5" fill="#333333">chiffres, alphabet,</text>
-  <text x="22" y="148" font-size="8.5" fill="#333333">phrases de battle</text>
-
-  <line x1="149" y1="85" x2="166" y2="85" stroke="#111111" stroke-width="1.5" marker-end="url(#sg-arr)"/>
-
-  <!-- 2 Décrire -->
-  <rect x="170" y="10" width="138" height="150" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
-  <text x="182" y="32" font-size="11" font-weight="700" fill="#111111">DÉCRIRE</text>
-  <text x="182" y="72" font-size="26" font-weight="700" fill="#111111">8</text>
-  <text x="182" y="100" font-size="8.5" fill="#333333">voix décrites</text>
-  <text x="182" y="116" font-size="8.5" fill="#333333">en texte : hype man,</text>
-  <text x="182" y="132" font-size="8.5" fill="#333333">MC boom bap,</text>
-  <text x="182" y="148" font-size="8.5" fill="#333333">voix rauque…</text>
-
-  <line x1="309" y1="85" x2="326" y2="85" stroke="#111111" stroke-width="1.5" marker-end="url(#sg-arr)"/>
-
-  <!-- 3 Générer -->
-  <rect x="330" y="10" width="138" height="150" fill="#4CB8FF"/>
-  <text x="342" y="32" font-size="11" font-weight="700" fill="#111111">GÉNÉRER</text>
-  <text x="342" y="72" font-size="26" font-weight="700" fill="#111111">2 850</text>
-  <text x="342" y="100" font-size="8.5" fill="#111111">prises, 3 par phrase</text>
-  <text x="342" y="116" font-size="8.5" fill="#111111">et par voix</text>
-  <text x="342" y="132" font-size="8.5" fill="#111111">Qwen3-TTS</text>
-  <text x="342" y="148" font-size="8.5" fill="#111111">VoiceDesign 1.7B</text>
-
-  <line x1="469" y1="85" x2="486" y2="85" stroke="#111111" stroke-width="1.5" marker-end="url(#sg-arr)"/>
-
-  <!-- 4 Traiter -->
-  <rect x="490" y="10" width="138" height="150" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
-  <text x="502" y="32" font-size="11" font-weight="700" fill="#111111">TRAITER</text>
-  <text x="502" y="72" font-size="26" font-weight="700" fill="#111111">&lt;1 tour</text>
-  <text x="502" y="100" font-size="8.5" fill="#333333">coupe au ras de</text>
-  <text x="502" y="116" font-size="8.5" fill="#333333">l'attaque,</text>
-  <text x="502" y="132" font-size="8.5" fill="#333333">normalisation,</text>
-  <text x="502" y="148" font-size="8.5" fill="#333333">mono 44,1 kHz</text>
-
-  <line x1="629" y1="85" x2="646" y2="85" stroke="#111111" stroke-width="1.5" marker-end="url(#sg-arr)"/>
-
-  <!-- 5 Trier -->
-  <rect x="650" y="10" width="140" height="150" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
-  <text x="662" y="32" font-size="11" font-weight="700" fill="#111111">TRIER</text>
-  <text x="662" y="72" font-size="26" font-weight="700" fill="#111111">1 / 3</text>
-  <text x="662" y="100" font-size="8.5" fill="#333333">meilleure prise</text>
-  <text x="662" y="116" font-size="8.5" fill="#333333">gardée à l'écoute,</text>
-  <text x="662" y="132" font-size="8.5" fill="#333333">testée sous</text>
-  <text x="662" y="148" font-size="8.5" fill="#333333">le vinyle</text>
-
-  <!-- Bandeau local -->
-  <rect x="10" y="180" width="252" height="60" fill="#111111"/>
-  <text x="136" y="206" text-anchor="middle" font-size="16" font-weight="700" fill="#4CB8FF">0 €</text>
-  <text x="136" y="226" text-anchor="middle" font-size="8" fill="#dddddd" letter-spacing="0.5">PAR GÉNÉRATION</text>
-  <rect x="274" y="180" width="252" height="60" fill="#111111"/>
-  <text x="400" y="206" text-anchor="middle" font-size="16" font-weight="700" fill="#4CB8FF">0 API</text>
-  <text x="400" y="226" text-anchor="middle" font-size="8" fill="#dddddd" letter-spacing="0.5">100 % LOCAL, HORS LIGNE</text>
-  <rect x="538" y="180" width="252" height="60" fill="#111111"/>
-  <text x="664" y="206" text-anchor="middle" font-size="16" font-weight="700" fill="#4CB8FF">Apache 2.0</text>
-  <text x="664" y="226" text-anchor="middle" font-size="8" fill="#dddddd" letter-spacing="0.5">USAGE COMMERCIAL AUTORISÉ</text>
-</svg><figcaption>Chaîne de production des voix, du texte écrit au sample prêt pour la librairie</figcaption></figure>
+    <figure class="bmad">
+  
+  <ol class="bm-steps" style="--n:5" tabindex="0"><li class="bm-step">
+    <div class="bm-top"><span class="bm-n">01</span><span class="bm-eye">Écrire</span></div>
+    <b class="bm-big">246</b><h5>Mots et phrases</h5>
+    
+    <ul><li>Interjections, chiffres, alphabet, phrases de battle</li></ul>
+  </li><li class="bm-step">
+    <div class="bm-top"><span class="bm-n">02</span><span class="bm-eye">Décrire</span></div>
+    <b class="bm-big">8</b><h5>Voix décrites</h5>
+    
+    <ul><li>En texte : hype man, MC boom bap, voix rauque…</li></ul>
+  </li><li class="bm-step build">
+    <div class="bm-top"><span class="bm-n">03</span><span class="bm-eye">Générer</span></div>
+    <b class="bm-big">2 850</b><h5>Prises</h5>
+    
+    <ul><li>3 par phrase et par voix</li><li>Qwen3-TTS VoiceDesign 1.7B</li></ul>
+  </li><li class="bm-step">
+    <div class="bm-top"><span class="bm-n">04</span><span class="bm-eye">Traiter</span></div>
+    <b class="bm-big">&lt; 1 tour</b><h5>Par sample</h5>
+    
+    <ul><li>Coupe au ras de l'attaque, normalisation, mono 44,1 kHz</li></ul>
+  </li><li class="bm-step">
+    <div class="bm-top"><span class="bm-n">05</span><span class="bm-eye">Trier</span></div>
+    <b class="bm-big">1 / 3</b><h5>Prise gardée</h5>
+    
+    <ul><li>Choisie à l'écoute, testée sous le vinyle</li></ul>
+  </li></ol>
+  
+  <div class="bm-stats"><div><b>0 €</b><span>par génération</span></div><div><b>0 API</b><span>100 % local, hors ligne</span></div><div><b>Apache 2.0</b><span>usage commercial autorisé</span></div></div>
+  <figcaption>Chaîne de production des voix, du texte écrit au sample prêt pour la librairie</figcaption>
+</figure>
     <div class="cs-text"><p>Pourquoi un modèle local plutôt qu'un service en ligne :</p><ul class="cs-list"><li>Gratuit : une fois le modèle téléchargé (environ 4 Go), générer 3 ou 3 000 prises coûte la même chose. On peut itérer sans compter.</li><li>Sans dépendance : pas de compte, pas de quota, pas de conditions d'utilisation qui changent. La licence Apache 2.0 autorise l'usage commercial et ne revendique aucun droit sur les sons produits.</li><li>Traçable : pour chaque son, je sais quel outil, quelle licence, quelle description de voix et quelle date. C'est ce qui permet de promettre aux utilisateurs des sons utilisables en vidéo et en création.</li></ul></div>
     <div class="cs-text"><p class="">Les effets sonores et les percussions suivent la même logique sans aucun modèle : <strong>28 sons synthétisés par script</strong> (lasers, risers, textures, kick, snare…), en pure synthèse numérique, reproductibles à l'identique à chaque exécution.</p></div>
     <hr class="cs-hr">
@@ -739,6 +724,22 @@ body { margin: 0; }
   sound?.addEventListener('click', () => {
     reel.muted = !reel.muted; if (!reel.muted) reel.play();
     sound.setAttribute('aria-pressed', String(!reel.muted)); sound.textContent = reel.muted ? 'Activer le son' : 'Couper le son';
+  });
+
+  // Persona carousel: arrows move one card, the counter follows the scroll position
+  document.querySelectorAll('.sp-carousel').forEach(c => {
+    const track = c.querySelector('.sp-grid'), cards = [...track.children], count = c.querySelector('.sp-count');
+    const prev = c.querySelector('.sp-prev'), next = c.querySelector('.sp-next');
+    const index = () => Math.round(track.scrollLeft / (cards[1].offsetLeft - cards[0].offsetLeft));
+    const sync = () => {
+      const i = index(), end = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+      count.textContent = (end ? cards.length : i + 1) + ' / ' + cards.length;
+      prev.disabled = track.scrollLeft < 4; next.disabled = end;
+    };
+    const go = d => track.scrollTo({ left: cards[Math.max(0, Math.min(cards.length - 1, index() + d))].offsetLeft - cards[0].offsetLeft });
+    prev.addEventListener('click', () => go(-1)); next.addEventListener('click', () => go(1));
+    track.addEventListener('keydown', e => { if (e.key === 'ArrowRight') { e.preventDefault(); go(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); } });
+    track.addEventListener('scroll', sync, { passive: true }); sync();
   });
 
   // Reveal blocks as they enter the viewport, like the current site
