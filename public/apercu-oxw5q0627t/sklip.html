@@ -349,12 +349,17 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 /* ── Case study pages ── */
 .cs-back { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); text-decoration: none; margin: 24px 0 40px; transition: color .2s; }
 .cs-back:hover { color: var(--fg); }
-.cs-head { max-width: 860px; }
+.cs-head h1, .cs-lede { max-width: 860px; }
 .cs-kicker { display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600; margin-bottom: 20px; }
 .cs-kicker img { width: 40px; height: 40px; border-radius: 10px; object-fit: contain; background: #000; }
 .cs-head h1 { margin: 0; font-size: clamp(34px, 5.2vw, 60px); line-height: 1.04; letter-spacing: -0.04em; font-weight: 600; text-wrap: balance; }
 .cs-lede { font-size: 20px; color: var(--muted); max-width: 46ch; margin: 20px 0 0; text-wrap: pretty; }
-.cs-meta { display: flex; flex-wrap: wrap; gap: 12px 40px; margin: 36px 0 0; padding: 0; }
+.cs-metarow { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; margin: 36px 0 0; }
+.cs-meta { display: flex; flex-wrap: wrap; gap: 12px 40px; margin: 0; padding: 0; }
+.cs-visit { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-size: 14px; font-weight: 500; padding: 11px 18px; border-radius: 999px; background: var(--fg); color: #fff; transition: transform .2s, opacity .2s; }
+.cs-visit:hover { transform: translateY(-1px); opacity: .88; }
+.cs-visit:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+.cs-visit svg { width: 12px; height: 12px; }
 .cs-meta div { display: grid; gap: 4px; }
 .cs-meta dt { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .cs-meta dd { margin: 0; font-size: 15px; }
@@ -465,7 +470,7 @@ body { margin: 0; }
     <div class="cs-kicker"><img src="img/logo-sklip.png" alt="">Sklip</div>
     <h1>Sklip — Outil de composition de skip-proofs pour DJ scratchers</h1>
     <p class="cs-lede">Outil web de composition de skip-proofs pour DJ scratchers — du constat de marché au produit testable, conçu et développé en solo.</p>
-    <dl class="cs-meta"><div><dt>Rôle</dt><dd>Product Designer &amp; Builder</dd></div><div><dt>Produit</dt><dd>Sklip Studio</dd></div><div><dt>Durée</dt><dd>2026</dd></div></dl>
+    <div class="cs-metarow"><dl class="cs-meta"><div><dt>Rôle</dt><dd>Product Designer &amp; Builder</dd></div><div><dt>Produit</dt><dd>Sklip Studio</dd></div><div><dt>Durée</dt><dd>2026</dd></div></dl><a class="cs-visit" href="https://sklip.studio" target="_blank" rel="noopener">Visiter Sklip <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></div>
   </header>
   <div class="cs-hero video" style="--hero-bg:#100e16"><video src="img/cases/sklip/reel.mp4" poster="img/cases/sklip/reel-poster.jpg" autoplay muted loop playsinline aria-label="Reel de présentation de Sklip"></video><button class="cs-sound" type="button" aria-pressed="false">Activer le son</button></div>
 
