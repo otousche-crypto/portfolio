@@ -364,9 +364,17 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .cs-meta dt { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .cs-meta dd { margin: 0; font-size: 15px; }
 .cs-hero { margin: 48px 0 0; border-radius: var(--radius); overflow: hidden; background: var(--hero-bg); aspect-ratio: 16 / 8; }
+.cs-hero.moon { background: none; }
 .cs-hero img { display: block; width: 100%; height: 100%; object-fit: var(--hero-fit); }
 .cs-hero.contain img { padding: 4%; }
 .cs-hero.video { position: relative; aspect-ratio: 16 / 9; }
+.cs-hero.devices-hero { position: relative; display: grid; place-items: center; aspect-ratio: auto; }
+.cs-hero.devices-hero.moon { background:
+    radial-gradient(38% 55% at 22% 78%, rgba(70,82,140,.32), transparent 70%),
+    radial-gradient(30% 45% at 70% 30%, rgba(60,70,125,.22), transparent 70%),
+    radial-gradient(45% 60% at 95% 95%, rgba(48,56,104,.25), transparent 70%),
+    url("img/moon-sky.jpg") center / cover, #04050c; }
+.cs-hero.devices-hero .visual { width: min(900px, 86%); padding: 64px 0 72px; }
 .cs-hero video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .cs-sound { position: absolute; right: 16px; bottom: 16px; font: inherit; font-size: 13px; color: #fff; padding: 8px 14px; border: 0; border-radius: 999px; cursor: pointer;
   background: rgba(255,255,255,.14); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); transition: background .2s; }
@@ -438,6 +446,7 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 @media (max-width: 760px) {
   .cs-body { padding-top: 64px; }
   .cs-hero { aspect-ratio: 4 / 3; }
+  .cs-hero.devices-hero .visual { width: 100%; padding: 64px 20px 36px; }
   .cs-split, .cs-next { grid-template-columns: 1fr; }
   .cs-fig.w-small { max-width: 100%; }
   .cs-next { padding: 28px; }

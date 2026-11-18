@@ -364,9 +364,17 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .cs-meta dt { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .cs-meta dd { margin: 0; font-size: 15px; }
 .cs-hero { margin: 48px 0 0; border-radius: var(--radius); overflow: hidden; background: var(--hero-bg); aspect-ratio: 16 / 8; }
+.cs-hero.moon { background: none; }
 .cs-hero img { display: block; width: 100%; height: 100%; object-fit: var(--hero-fit); }
 .cs-hero.contain img { padding: 4%; }
 .cs-hero.video { position: relative; aspect-ratio: 16 / 9; }
+.cs-hero.devices-hero { position: relative; display: grid; place-items: center; aspect-ratio: auto; }
+.cs-hero.devices-hero.moon { background:
+    radial-gradient(38% 55% at 22% 78%, rgba(70,82,140,.32), transparent 70%),
+    radial-gradient(30% 45% at 70% 30%, rgba(60,70,125,.22), transparent 70%),
+    radial-gradient(45% 60% at 95% 95%, rgba(48,56,104,.25), transparent 70%),
+    url("img/moon-sky.jpg") center / cover, #04050c; }
+.cs-hero.devices-hero .visual { width: min(900px, 86%); padding: 64px 0 72px; }
 .cs-hero video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .cs-sound { position: absolute; right: 16px; bottom: 16px; font: inherit; font-size: 13px; color: #fff; padding: 8px 14px; border: 0; border-radius: 999px; cursor: pointer;
   background: rgba(255,255,255,.14); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); transition: background .2s; }
@@ -438,6 +446,7 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 @media (max-width: 760px) {
   .cs-body { padding-top: 64px; }
   .cs-hero { aspect-ratio: 4 / 3; }
+  .cs-hero.devices-hero .visual { width: 100%; padding: 64px 20px 36px; }
   .cs-split, .cs-next { grid-template-columns: 1fr; }
   .cs-fig.w-small { max-width: 100%; }
   .cs-next { padding: 28px; }
@@ -465,7 +474,7 @@ body { margin: 0; }
     <p class="cs-lede">Go Moonbound est un side project construit en autonomie complète, de la génération du premier prompt à la mise en production, en utilisant Cursor, Claude Code, et l'API Strava.</p>
     <div class="cs-metarow"><dl class="cs-meta"><div><dt>Rôle</dt><dd>Product Builder</dd></div><div><dt>Produit</dt><dd>Go Moonbound</dd></div><div><dt>Durée</dt><dd>2 semaines</dd></div></dl><a class="cs-visit" href="https://gomoonbound.com" target="_blank" rel="noopener">Visiter GoMoonBound <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></div>
   </header>
-  <div class="cs-hero contain" style="--hero-bg:#05060f;--hero-fit:contain"><img src="img/cases/go-moonbound/hero.jpg" alt="Go MoonBound - Visualiser vos performances Strava d'une autre manière!"></div>
+  <div class="cs-hero cover" style="--hero-bg:#05060f;--hero-fit:cover"><img src="img/moon-desktop.jpg" alt="Go MoonBound - Visualiser vos performances Strava d'une autre manière!"></div>
 
   <article class="cs-body">
     <h2 class="cs-h2">Context</h2>
