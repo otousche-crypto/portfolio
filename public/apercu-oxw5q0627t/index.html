@@ -78,14 +78,24 @@ a { color: inherit; }
 .hero p strong { color: var(--fg); font-weight: 500; }
 .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
 .hero-tags span { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
-/* ASCII self-portrait: large, to the right of the title, running off the right edge of the screen (drawn on a canvas by the script) */
-html { overflow-x: clip; }
-.hero { position: relative; max-width: none; min-height: 620px; }
-.hero > :not(.ascii-me) { position: relative; z-index: 1; }
-.ascii-me { position: absolute; top: -24px; right: calc((100% - 100vw) / 2 - 90px); font-size: 13px; display: block; }
-@media (max-width: 1180px) { .ascii-me { font-size: 12px; } }
-@media (max-width: 960px) { .ascii-me { font-size: 10px; right: calc((100% - 100vw) / 2 - 70px); } }
-@media (max-width: 760px) { .ascii-me { display: none; } .hero { min-height: 0; } }
+/* ASCII self-portrait: a bust standing on the hero's floor line, to the right of the title and running off the right edge of the screen (drawn on a canvas by the script).
+   The hero takes the screen height minus enough room for the first project to peek out; the bust scales with it. */
+.hero { position: relative; max-width: none; min-height: clamp(520px, calc(100svh - 250px), 700px); display: flex; flex-direction: column; justify-content: flex-end; padding-block: 48px 64px; margin-bottom: 40px; }
+.hero::after { content: ""; position: absolute; bottom: 0; left: -100vw; right: -100vw; height: 1px; background: var(--line); }
+.hero > :not(.ascii-stand) { position: relative; z-index: 1; }
+.ascii-stand { position: absolute; bottom: 0; right: calc((100% - 100vw) / 2 - 90px); }
+.ascii-me { display: block; font-size: clamp(8px, calc((100svh - 290px) / 53), 13px); }
+@media (max-width: 1180px) { .ascii-me { font-size: clamp(8px, calc((100svh - 290px) / 53), 12px); } }
+@media (max-width: 960px) { .ascii-stand { right: calc((100% - 100vw) / 2 - 70px); } .ascii-me { font-size: clamp(8px, calc((100svh - 290px) / 53), 10px); } }
+/* Mobile: the bust comes first, on its own floor line, then the title */
+@media (max-width: 760px) {
+  .hero { min-height: 0; padding-block: 4px 32px; margin-bottom: 0; }
+  .hero::after { display: none; }
+  .ascii-stand { position: relative; order: -1; right: auto; bottom: auto; display: flex; justify-content: flex-end; margin: 0 -48px 24px 0; }
+  .ascii-stand::after { content: ""; position: absolute; bottom: 0; left: -100vw; right: -100vw; height: 1px; background: var(--line); }
+  .ascii-me { font-size: 5.6px; }
+  .hero-tags { display: none; }  /* the same skills are listed again under About */
+}
 
 .label {
   font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
@@ -451,7 +461,7 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
     <h1 aria-label="Product Designer, Ai Designer, UX Designer, Builder Designer."><span class="ln" aria-hidden="true">Product</span><span class="ln" aria-hidden="true">Designer.</span></h1>
     <p>De l'identification des irritants aux tests utilisateurs, je conçois des <strong>expériences produit</strong> et de service centrées utilisateurs, en articulant <strong>stratégie, recherche et design</strong>.</p>
     <div class="hero-tags"><span>User research</span><span>Prototyping</span><span>Product vision</span><span>User tests</span></div>
-    <canvas class="ascii-me" aria-hidden="true"></canvas>
+    <div class="ascii-stand" aria-hidden="true"><canvas class="ascii-me"></canvas></div>
     <script type="text/plain" id="ascii-art">
 
 
@@ -817,7 +827,7 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
           ox = k.dx * h * 9; oy = k.dy * h * 9;
           k.heat *= .94;
         }
-        const fade = Math.min(1, Math.max(0, (rows - 1 - k.y) / (rows * .34)));
+        const fade = 1;
         const m = Math.min(1, k.heat * 1.4);
         ctx.fillStyle = `rgba(${INK.map((v, i) => Math.round(v + (HOT[i] - v) * m)).join()},${a * fade})`;
         ctx.fillText(g, k.x * cw + ox, k.y * ch + oy);
@@ -826,7 +836,11 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
       raf = busy ? requestAnimationFrame(draw) : 0;
     };
     const wake = () => { if (!raf) raf = requestAnimationFrame(draw); };
-    const start = () => { size(); t0 = performance.now(); wake(); };
+    // The composition starts once the tab is actually visible, so it isn't missed in a background tab
+    const start = () => {
+      if (document.hidden) return addEventListener('visibilitychange', start, { once: true });
+      size(); t0 = performance.now(); wake();
+    };
     (document.fonts ? document.fonts.load('14px "Geist Mono"').catch(() => {}) : Promise.resolve()).then(start);
     addEventListener('resize', () => { size(); wake(); });
     if (!still) addEventListener('pointermove', e => {
