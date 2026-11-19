@@ -505,13 +505,15 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .sm-tools i { width: 1cqw; height: 1cqw; border-radius: .25cqw; }
 .sm-area { position: relative; flex: 1; min-height: 0; }
 .sm-view { position: absolute; inset: 0; overflow: hidden; container-type: size; }
-.macbook .mb-screen .sm-page { display: block; width: 100%; height: auto; object-fit: initial; animation: smScroll 22s cubic-bezier(.45,0,.25,1) infinite; }
+.macbook .mb-screen .sm-page { display: block; width: 100%; height: auto; object-fit: initial; animation: smScroll 12s cubic-bezier(.45,0,.25,1) infinite; }
+/* Three quick steps down to the footer, a pause, then a fast scroll back to the top */
 @keyframes smScroll {
-  0%, 8% { transform: translateY(0); }
-  30%, 38% { transform: translateY(calc((-100% + 100cqh) * .36)); }
-  58%, 66% { transform: translateY(calc((-100% + 100cqh) * .72)); }
-  84%, 90% { transform: translateY(calc(-100% + 100cqh)); }
-  100% { transform: translateY(0); }
+  0%, 10%   { transform: translateY(0); }
+  18%, 30%  { transform: translateY(calc((-100% + 100cqh) / 3)); }
+  38%, 50%  { transform: translateY(calc((-100% + 100cqh) * 2 / 3)); }
+  58%, 80%  { transform: translateY(calc(-100% + 100cqh)); }
+  86%, 100% { transform: translateY(0); }
+}
 }
 .macbook .mb-screen .sm-nav { position: absolute; z-index: 2; left: var(--nx); top: var(--ny); width: var(--nw); height: auto; object-fit: initial; filter: drop-shadow(0 6px 14px rgba(0,0,0,.18)); }
 .scrollmac:hover .sm-page { animation-play-state: paused; }
@@ -628,7 +630,7 @@ body { margin: 0; }
     <h2 class="cs-h2">Context</h2>
     <section class="cs-sec"><div class="cs-text"><p class=""><strong>Equinox est un studio indépendant développant Altered, un jeu de cartes à collectionner nouvelle génération, pensé dès l'origine comme un écosystème phygital associant cartes physiques et services digitaux avancés.</strong></p></div><figure class="showcase scrollmac">
   <div class="visual devices"><div class="macbook"><div class="lid"><div class="mb-screen sm-screen"><div class="sm-bar" aria-hidden="true"><span class="sm-dots"><i></i><i></i><i></i></span><span class="sm-nav-btns"><i></i><i></i></span><span class="sm-url"><i></i><b></b></span><span class="sm-tools"><i></i><i></i><i></i></span></div><div class="sm-area"><div class="sm-view" style="--nx:8.333%;--ny:0.556cqw;--nw:83.819%">
-    <img class="sm-page" src="img/cases/equinox-altered/howtoplay-desktop.jpg" alt="Page How to play d'Altered, version desktop" loading="lazy"><img class="sm-nav" src="img/cases/equinox-altered/howtoplay-nav.png" alt="">
+    <img class="sm-page" src="img/cases/equinox-altered/howtoplay-page.jpg" alt="Page How to play d'Altered, version desktop" loading="lazy"><img class="sm-nav" src="img/cases/equinox-altered/howtoplay-nav.png" alt="">
   </div></div></div></div><div class="base"></div></div></div>
   <figcaption>How to play · navigation desktop, barre de navigation fixe</figcaption>
 </figure><div class="cs-text"><p class="">Le projet a connu un succès majeur lors de sa campagne Kickstarter — 14 997 contributeurs ont engagé 6 213 305 €, validant fortement la proposition de valeur et donnant naissance à une communauté internationale de joueurs très engagée. Ce succès a rapidement placé l'équipe dans un contexte de forte exposition publique, avec des deadlines serrées, des enjeux de passage à l'échelle et un haut niveau d'exigence sur la qualité du produit.</p></div></section>
