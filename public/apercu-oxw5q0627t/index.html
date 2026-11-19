@@ -440,14 +440,6 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .contact h4 { font-size: 14px; font-weight: 500; }
 /* CV in the contact block: the PDF follows the site language */
 html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en { display: none; }
-
-/* FR / EN switch, last item of the header nav */
-.lang-switch { display: inline-flex; align-items: center; gap: 2px; }
-.lang-switch i { font-style: normal; color: #c4c4ca; }
-.lang-switch button { font: inherit; background: none; border: 0; padding: 0 3px; color: #8b8b93; cursor: pointer; transition: color .2s; }
-.lang-switch button:hover, .lang-switch button:focus-visible { color: var(--fg); }
-.lang-switch button[aria-pressed="true"] { color: var(--fg); font-weight: 500; }
-@media (max-width: 480px) { .top { gap: 12px; font-size: 13px; } .top nav { gap: 12px; } }
 </style>
 <style>body{margin:0}img{max-width:100%}</style>
 </head>
@@ -581,7 +573,22 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
           <div class="bar"><i></i><i></i><i></i><span>stampit</span></div>
           <div class="st-shot">
             <img src="img/stampit-landing.jpg" alt="Landing page de Stampit : Stamp everything you ship, avec le badge « Craft by Olivier Tousche » dans un téléphone">
-            <span class="st-badge no-i18n" aria-hidden="true"><span class="st-av"><img src="img/stampit/olivier.png" alt=""></span><span class="st-n">Designed by</span> <b class="st-b">Olivier Tousche</b><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 9l6-6M4 3h5v5"/></svg></span>
+            <div class="st-live no-i18n" aria-hidden="true"><style>.sp-olivierT{--sp-olivierT-fast:linear(0,.08,.24,.409,.558,.678,.77,.838,.887,.922,.947,.964,.976,.984,.989,.993,.995,.997,.998,.999,1);--sp-olivierT-attention:cubic-bezier(.4,0,.2,1);--sp-olivierT-repeat:linear}.sp-olivierT,.sp-olivierT *,.sp-olivierT *::before,.sp-olivierT *::after{box-sizing:border-box;margin:0;padding:0;border:0;font:inherit;line-height:inherit;letter-spacing:normal;text-transform:none;text-decoration:none;list-style:none;background:none;color:inherit;max-width:none;min-width:0;float:none}.sp-olivierT{--sp-olivierT-bg:#ffffff;--sp-olivierT-bd:#0000000d;--sp-olivierT-tn:#6e6e73;--sp-olivierT-tb:#000000;--sp-olivierT-ic:#6e6e73;--sp-olivierT-sh:rgba(0,0,0,.12);display:inline-flex;align-items:center;gap:6px;position:relative;vertical-align:middle;font-family:-apple-system,system-ui,"SF Pro Text","Helvetica Neue","Segoe UI",Roboto,sans-serif;font-size:15px;font-weight:400;font-style:normal;font-variant:normal;line-height:1.2;text-align:left;white-space:nowrap;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.sp-olivierT__pill{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 12px 0 4px;border-radius:18px;background:var(--sp-olivierT-bg);box-shadow:0 1px 6px rgba(0,0,0,.08);color:var(--sp-olivierT-tb);white-space:nowrap;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;outline:none;transition:box-shadow .08s var(--sp-olivierT-fast),transform .08s var(--sp-olivierT-fast)}.sp-olivierT__pill:hover{box-shadow:0 2px 12px rgba(0,0,0,.12)}@keyframes sp-olivierT-in{0%,100%{transform:none}20%,60%{transform:translateX(-3px)}40%,80%{transform:translateX(3px)}}@keyframes sp-olivierT-rp{0%{transform:translateX(-110%)}18%,100%{transform:translateX(110%)}}.sp-olivierT{animation:sp-olivierT-in .48s var(--sp-olivierT-attention) backwards}.sp-olivierT__pill{position:relative;overflow:hidden}.sp-olivierT__pill::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(105deg,transparent 30%,var(--sp-olivierT-sh) 50%,transparent 70%);transform:translateX(110%);animation:sp-olivierT-rp 5s var(--sp-olivierT-repeat) 5s infinite}.sp-olivierT__pill:hover{transform:scale(1.04)}.sp-olivierT__pill:focus-visible{outline:2px solid var(--sp-olivierT-tb);outline-offset:2px}.sp-olivierT__av{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;overflow:hidden;background:#e9e9ee}.sp-olivierT__av img{display:block;width:100%;height:100%;object-fit:cover}.sp-olivierT__n{color:var(--sp-olivierT-tn)}.sp-olivierT__b{color:var(--sp-olivierT-tb);font-weight:500}.sp-olivierT__ic{flex:none;display:block;color:var(--sp-olivierT-ic);transition:transform .08s var(--sp-olivierT-fast)}.sp-olivierT__pill:hover .sp-olivierT__ic,.sp-olivierT__pill:focus-visible .sp-olivierT__ic{transform:translate(2px,-2px)}@media (prefers-reduced-motion:reduce){.sp-olivierT__ic{transition:none}.sp-olivierT,.sp-olivierT .sp-olivierT__pill,.sp-olivierT .sp-olivierT__pill:hover{animation:none;transform:none}.sp-olivierT .sp-olivierT__pill::after{animation:none;opacity:0}.sp-olivierT .sp-olivierT__pill:hover .sp-olivierT__ic,.sp-olivierT .sp-olivierT__pill:focus-visible .sp-olivierT__ic{transform:none}}
+/* FR / EN switch, last item of the header nav */
+.lang-switch { display: inline-flex; align-items: center; gap: 2px; }
+.lang-switch i { font-style: normal; color: #c4c4ca; }
+.lang-switch button { font: inherit; background: none; border: 0; padding: 0 3px; color: #8b8b93; cursor: pointer; transition: color .2s; }
+.lang-switch button:hover, .lang-switch button:focus-visible { color: var(--fg); }
+.lang-switch button[aria-pressed="true"] { color: var(--fg); font-weight: 500; }
+@media (max-width: 480px) { .top { gap: 12px; font-size: 13px; } .top nav { gap: 12px; } }
+</style>
+<div class="sp-olivierT">
+  <a class="sp-olivierT__pill" tabindex="-1">
+    <span class="sp-olivierT__av" aria-hidden="true"><img src="img/stampit/olivier.png" alt="" width="28" height="28" decoding="async"></span>
+    <span><span class="sp-olivierT__n">Designed by</span> <span class="sp-olivierT__b">Olivier Tousche</span></span>
+    <svg class="sp-olivierT__ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+  </a>
+</div></div>
           </div>
         </div>
       </div>
@@ -905,53 +912,70 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
     setTimeout(step, 2000);
   })();
 
-  // Stampit demo badge, as on the landing: the verb is erased and retyped, then the name spins like a roulette (slowing down) and lands on a new person with their avatar
+  // Stampit: the landing's own badge snippet, run by the landing's demo cycle (useDemoCycle): the verb is erased and retyped, then the name spins like a roulette and lands on a new person with their avatar
   (() => {
-    const badge = document.querySelector('.st-badge');
-    if (!badge) return;
-    const verb = badge.querySelector('.st-n'), bold = badge.querySelector('.st-b'), av = badge.querySelector('.st-av img');
-    const VERBS = ['Designed', 'Crafted', 'Shipped', 'Built'], FIRST = 'Olivier Tousche';
+    const live = document.querySelector('.st-live'), shot = document.querySelector('.st-shot');
+    if (!live || !shot) return;
+    // Same size as the badge in the screenshot: 36 px tall natively, 68 px tall on the 2000 px wide capture
+    const fit = () => { live.style.zoom = shot.clientWidth / 2000 * 68 / 36; };
+    fit(); new ResizeObserver(fit).observe(shot);
+    const find = sel => live.querySelector(sel);
+    const VERBS = ['Designed', 'Crafted', 'Shipped', 'Built'], FIRST = 'Olivier Tousche', SUFFIX = ' by';
     const PEOPLE = [['Camille Bernard', 'camille'], ['Lucas Fontaine', 'lucas'], ['Hannah Schmidt', 'hannah'], ['Mateo Gonzalez', 'mateo'], ['Clara Hoffmann', 'clara'],
       ['Sofia Marchetti', 'sofia'], ['Jonas Lindqvist', 'jonas'], ['Amélie Rousseau', 'amelie'], ['Daniel Okafor', 'daniel'], ['Yuki Nakamura', 'yuki']];
-    const avatar = new Map(PEOPLE.map(([n, f]) => [n, `img/stampit/${f}.png`]));
-    PEOPLE.forEach(([, f]) => { new Image().src = `img/stampit/${f}.png`; });
+    const names = PEOPLE.map(p => p[0]), avatars = new Map(PEOPLE.map(([n, f]) => [n, `img/stampit/${f}.png`]));
+    for (const src of avatars.values()) new Image().src = src;
     const HOLD = 1800, TYPE = 70, ERASE = 40, SPIN = [50, 50, 55, 60, 70, 80, 95, 115, 140, 175, 220];
+    const FAST = { duration: 80, easing: 'linear(0,.08,.24,.409,.558,.678,.77,.838,.887,.922,.947,.964,.976,.984,.989,.993,.995,.997,.998,.999,1)' };
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const sleep = ms => new Promise(r => setTimeout(r, ms));
-    // The name slot is as wide as the widest name, so the badge never changes width
-    const sizeSlot = () => {
-      bold.style.width = '';
-      let w = 0;
-      for (const n of [FIRST, ...avatar.keys()]) { bold.textContent = n; w = Math.max(w, bold.offsetWidth); }
-      bold.style.width = Math.ceil(w) + 'px';
+    const sizeNameSlot = bold => {
+      if (bold.dataset.sized) return;
+      const keep = bold.textContent;
+      bold.style.display = 'inline-block';
+      let widest = 0;
+      for (const n of [FIRST, ...names]) { bold.textContent = n; widest = Math.max(widest, bold.offsetWidth); }
+      bold.textContent = keep; bold.style.width = Math.ceil(widest) + 'px'; bold.dataset.sized = '1';
     };
-    const show = (name, flick) => {
-      bold.textContent = name; av.src = avatar.get(name) || 'img/stampit/olivier.png';
-      if (flick && !reduced) bold.animate([{ transform: 'translateY(-40%)', opacity: .3 }, { transform: 'none', opacity: 1 }], { duration: 260, easing: 'cubic-bezier(.2,.9,.3,1.15)' });
+    const writeVerb = text => { const el = find('[class$="__n"]'); if (el) el.textContent = text; };
+    const showName = (name, flick) => {
+      const bold = find('[class$="__b"]'), av = find('[class$="__av"] img');
+      if (bold) {
+        sizeNameSlot(bold);
+        bold.textContent = name;
+        if (flick && !reduced) bold.animate([{ transform: 'translateY(-40%)', opacity: .3 }, { transform: 'none', opacity: 1 }], FAST);
+      }
+      if (av) av.src = avatars.get(name) || 'img/stampit/olivier.png';
     };
-    const pick = not => { const pool = [...avatar.keys()].filter(n => n !== not); return pool[Math.random() * pool.length | 0]; };
+    const pick = not => { const pool = names.filter(n => n !== not && n !== FIRST); return pool[Math.random() * pool.length | 0]; };
     const run = async () => {
       let v = 0, name = FIRST;
-      sizeSlot(); show(name, false);
-      addEventListener('resize', () => { const keep = bold.textContent; sizeSlot(); bold.textContent = keep; });
+      showName(name, false);
       for (;;) {
         await sleep(HOLD);
         const next = VERBS[(v + 1) % VERBS.length];
-        if (reduced) verb.textContent = next + ' by';
+        if (reduced) writeVerb(next + SUFFIX);
         else {
           let word = VERBS[v % VERBS.length];
-          while (word.length) { word = word.slice(0, -1); verb.textContent = word + ' by'; await sleep(ERASE); }
-          for (let k = 1; k <= next.length; k++) { verb.textContent = next.slice(0, k) + ' by'; await sleep(TYPE); }
+          while (word.length) { word = word.slice(0, -1); writeVerb(word + SUFFIX); await sleep(ERASE); }
+          for (let k = 1; k <= next.length; k++) { writeVerb(next.slice(0, k) + SUFFIX); await sleep(TYPE); }
         }
         v++;
         await sleep(HOLD);
-        if (!reduced) { let shown = name; for (const step of SPIN) { shown = pick(shown); show(shown, true); await sleep(step); } }
-        name = pick(name); show(name, true);
+        if (!reduced) { let shown = name; for (const step of SPIN) { shown = pick(shown); showName(shown, true); await sleep(step); } }
+        name = pick(name); showName(name, true);
       }
     };
-    (document.fonts ? document.fonts.ready : Promise.resolve()).then(run);
+    // Starts when the card comes into view, replaying the badge's entrance shake as on the landing
+    const io = new IntersectionObserver(es => {
+      if (!es.some(e => e.isIntersecting)) return;
+      io.disconnect();
+      const root = find('.sp-olivierT');
+      root.style.animation = 'none'; void root.offsetWidth; root.style.animation = '';
+      (document.fonts ? document.fonts.ready : Promise.resolve()).then(run);
+    }, { threshold: .5 });
+    io.observe(shot);
   })();
-
   // Sklip composer: add samples from the library, then swap their places (timeline + vinyl), looped; the disc itself stays still
   (() => {
     const stage = document.querySelector('.sk-stage');
