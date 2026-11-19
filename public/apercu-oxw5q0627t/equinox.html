@@ -481,11 +481,10 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .bm-stats span { font-size: 13px; color: #55555c; }
 .bm-steps:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; border-radius: 16px; }
 .bmad figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: center; }
-.showcase { position: relative; margin: 40px 0 !important; padding: 32px 32px 40px; border-radius: 24px; background: linear-gradient(160deg, #f4efe4, #e9e1d0); }
+.showcase { position: relative; margin: 40px 0 !important; padding: 0; background: none; }
 .showcase .devices { padding: 0 0 8px; }
 /* Scrolling page inside the MacBook: the page scrolls, the nav stays stuck at the top like on the live site */
 .scrollmac .macbook { width: 100%; margin: 0; }
-.showcase { background: none !important; padding: 0 !important; }
 .showcase.scrollmac { margin: 32px 0 !important; }
 .scrollmac figcaption { color: var(--muted); text-align: center; }
 .sm-screen { display: flex; flex-direction: column; }
@@ -590,7 +589,6 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
   .cs-fig.w-small { max-width: 100%; }
   .cs-next { padding: 28px; }
   .sp-grid { grid-auto-columns: 86%; }
-  .showcase { padding: 16px 16px 24px; }
   .showcase .devices { padding: 56px 0 0; }
   .showcase .iphone { width: 30%; min-width: 0; border-radius: 18px; padding: 4px; }
   .showcase .iphone .scr { border-radius: 14px; }
@@ -603,6 +601,49 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
   .sp-pg { grid-template-columns: 1fr; }
   .cs-text p, .cs-list { font-size: 17px; }
 }
+
+/* Rewritten case study: summary band, three phases, decision table, results */
+.eq-eye { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.eq-tldr { border: 1px solid var(--line); border-radius: 24px; padding: clamp(20px, 3.4vw, 32px); display: grid; gap: 20px; }
+.eq-keys { margin: 0; padding: 0; list-style: none; counter-reset: k; display: grid; gap: 12px; }
+.eq-keys li { counter-increment: k; position: relative; padding-left: 32px; font-size: 18px; line-height: 1.5; color: #55555c; }
+.eq-keys li::before { content: counter(k, decimal-leading-zero); position: absolute; left: 0; top: 5px; font-family: var(--mono); font-size: 12px; line-height: 1.5; color: var(--muted); }
+.eq-keys b { color: var(--fg); font-weight: 600; }
+.eq-nums, .eq-results { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 10px; }
+.eq-results { --n: 4; }
+.eq-nums div, .eq-results div { background: var(--soft); border-radius: 16px; padding: 16px 18px; display: grid; gap: 2px; align-content: start; }
+.eq-nums b, .eq-results b { font-size: 26px; line-height: 1.1; font-weight: 600; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.eq-nums span, .eq-results span { font-size: 13px; color: #55555c; }
+.eq-step { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 112px 0 0 !important; }
+.eq-step + .cs-h2 { margin-top: 10px !important; }
+.eq-phases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.eq-phases > div { border: 1px solid var(--line); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 6px; }
+.eq-phases h3 { margin: 4px 0 0; font-size: 18px; letter-spacing: -.015em; font-weight: 600; }
+.eq-phases p { margin: 0; font-size: 14.5px; line-height: 1.55; color: #55555c; }
+.eq-phases small { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--fg); }
+.eq-decision { margin: 0; border-top: 1px solid var(--line); }
+.eq-decision div { display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+.eq-decision dt { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: 4px; }
+.eq-decision dd { margin: 0; font-size: 17px; line-height: 1.6; color: #55555c; }
+.eq-decision div:nth-child(2) dd { color: var(--fg); font-weight: 500; }
+@media (max-width: 760px) {
+  .eq-nums, .eq-results, .eq-phases { grid-template-columns: 1fr 1fr; }
+  .eq-phases { grid-template-columns: 1fr; }
+  .eq-decision div { grid-template-columns: 1fr; gap: 6px; }
+  .eq-step { margin-top: 80px !important; }
+  .eq-keys li { font-size: 16.5px; }
+}
+
+/* Labels on this page: plain Geist in sentence case, no monospace caps */
+.cs-meta dt, .eq-eye, .eq-step, .eq-decision dt, .cs-next small, .contact h4, .cs-fig figcaption, .cs-sub {
+  font-family: var(--sans); text-transform: none; letter-spacing: -0.005em; font-size: 14px; font-weight: 500; color: var(--muted);
+}
+.cs-meta dt { font-size: 13px; }
+.eq-step { font-size: 15px; color: var(--fg); }
+.eq-decision dt { color: var(--fg); padding-top: 2px; font-size: 15px; }
+.eq-phases .eq-eye { font-size: 13px; }
+.eq-keys li::before { content: counter(k); font-family: var(--sans); font-size: 15px; font-weight: 600; color: var(--muted); top: 1px; }
+.cs-next small { color: rgba(255,255,255,.6); }
 
 body { margin: 0; }
 </style>
@@ -621,49 +662,73 @@ body { margin: 0; }
   <a class="cs-back" href="index.html#projets">← Tous les projets</a>
   <header class="cs-head">
     <div class="cs-kicker"><img src="img/logo-equinox-altered.png" alt="">Equinox · Altered</div>
-    <h1>Altered — Écosystème phygital pour un jeu de cartes à collectionner</h1>
-    <p class="cs-lede">Écosystème phygital pour un jeu de cartes à collectionner nouvelle génération</p>
-    <div class="cs-metarow"><dl class="cs-meta"><div><dt>Rôle</dt><dd>Senior Product Designer</dd></div><div><dt>Produit</dt><dd>Equinox</dd></div><div><dt>Durée</dt><dd>2021-2025</dd></div></dl></div>
+    <h1>Concevoir l'écosystème phygital d'Altered, de la feuille de route au paiement international</h1>
+    <p class="cs-lede">J'ai structuré le déploiement du produit en trois temps et conçu un système de paiement conforme dans plus de 15 pays.</p>
+    <div class="cs-metarow"><dl class="cs-meta"><div><dt>Rôle</dt><dd>Senior Product Designer</dd></div><div><dt>Entreprise</dt><dd>Equinox</dd></div><div><dt>Période</dt><dd>2021–2025</dd></div><div><dt>Périmètre</dt><dd>Web &amp; mobile</dd></div></dl></div>
   </header>
   <div class="cs-hero cover" style="--hero-bg:#0f1a2a;--hero-fit:cover"><img src="img/cases/equinox-altered/hero.jpg" alt="Altered — Écosystème phygital pour un jeu de cartes à collectionner"></div>
 
   <article class="cs-body">
-    <h2 class="cs-h2">Context</h2>
-    <section class="cs-sec"><div class="cs-text"><p class=""><strong>Equinox est un studio indépendant développant Altered, un jeu de cartes à collectionner nouvelle génération, pensé dès l'origine comme un écosystème phygital associant cartes physiques et services digitaux avancés.</strong></p></div><figure class="showcase scrollmac">
+    <section class="eq-tldr" aria-label="En bref">
+      <div class="eq-eye">En bref</div>
+      <ol class="eq-keys">
+        <li><b>Une feuille de route en trois temps</b>, adoptée au-delà du produit, jusqu'au marketing.</li>
+        <li><b>Un portefeuille unique pour deux flux d'argent</b>, cadré avec un cabinet d'avocats.</li>
+        <li><b>Une documentation produit</b> devenue une étape de chaque livraison.</li>
+      </ol>
+      <div class="eq-nums">
+        <div><b>6,2 M€</b><span>levés sur Kickstarter</span></div>
+        <div><b>7,8 M</b><span>cartes scannées</span></div>
+        <div><b>15+</b><span>pays couverts</span></div>
+      </div>
+    </section>
+
+    <h2 class="cs-h2">Contexte</h2>
+    <div class="cs-text"><p>Altered est un jeu de cartes à collectionner pensé comme un <strong>écosystème phygital</strong> : chaque carte physique a son double numérique. Après une campagne Kickstarter record, <strong>14 997 contributeurs pour 6,2 M€</strong>, l'équipe devait livrer vite, sous les yeux d'une communauté internationale très exigeante.</p></div>
+    <figure class="showcase scrollmac">
   <div class="visual devices"><div class="macbook"><div class="lid"><div class="mb-screen sm-screen"><div class="sm-bar" aria-hidden="true"><span class="sm-dots"><i></i><i></i><i></i></span><span class="sm-nav-btns"><i></i><i></i></span><span class="sm-url"><i></i><b></b></span><span class="sm-tools"><i></i><i></i><i></i></span></div><div class="sm-area"><div class="sm-view" style="--nx:8.333%;--ny:0.556cqw;--nw:83.819%">
     <img class="sm-page" src="img/cases/equinox-altered/howtoplay-page.jpg" alt="Page How to play d'Altered, version desktop" loading="lazy"><img class="sm-nav" src="img/cases/equinox-altered/howtoplay-nav.png" alt="">
   </div></div></div></div><div class="base"></div></div></div>
-</figure><div class="cs-text"><p class="">Le projet a connu un succès majeur lors de sa campagne Kickstarter — 14 997 contributeurs ont engagé 6 213 305 €, validant fortement la proposition de valeur et donnant naissance à une communauté internationale de joueurs très engagée. Ce succès a rapidement placé l'équipe dans un contexte de forte exposition publique, avec des deadlines serrées, des enjeux de passage à l'échelle et un haut niveau d'exigence sur la qualité du produit.</p></div></section>
-    <figure class="cs-fig w-medium"><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/kickstarter.jpg" alt="Altered Kickstarter Success" loading="lazy"></button></figure>
-    <h2 class="cs-h2">Vision produit &amp; Stratégie</h2>
-    <figure class="cs-fig w-medium"><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/plan-trois-temps.png" alt="Plan de déploiement en trois temps" loading="lazy"></button></figure>
-    <div class="cs-text"><p class="">Face à la complexité du produit et à la pression des délais, j'ai défendu un plan de déploiement en trois temps, conçu pour aligner produit, design et tech sur une vision commune de la progression des usages.</p></div>
-    <section class="cs-sec"><h3 class="cs-h3">Temps 1</h3><p class="cs-sub">Meet the Lore : Poser les fondations de l'univers et de l'identité joueur</p><div class="cs-text"><p class="">Altered est un univers riche et complexe — factions, Héros, personnages, Cartes. Avant d'activer la moindre mécanique de jeu ou logique économique, il fallait donner aux joueurs le temps et les outils pour s'y immerger, se l'approprier, et y construire leur identité.</p></div><div class="cs-split img-left"><figure class="cs-fig "><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/temps-1-meet-the-lore.jpg" alt="Temps 1 - Meet the Lore" loading="lazy"></button></figure><div class="cs-text"><ul class="cs-list "><li>Création et gestion du compte joueur</li><li>Découverte de l'univers, du lore et des factions</li><li>Premières briques de gestion de collection digitale</li><li>Revendication des cartes physiques via QR codes</li><li>Profils joueurs et éléments d'identité</li></ul></div></div></section>
+</figure>
+
+    <p class="eq-step">Décision 1</p>
+    <h2 class="cs-h2">Livrer en trois temps plutôt que tout à la fois</h2>
+    <div class="cs-text"><p>Le produit couvrait le lore, le jeu, les tournois et un marché entre joueurs. Tout lancer d'un coup aurait dispersé l'équipe et perdu les joueurs. <strong>J'ai défendu un déploiement en trois temps</strong>, où chaque étape prépare la suivante.</p></div>
+    <figure class="cs-fig "><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/plan-trois-temps.png" alt="Plan de déploiement en trois temps : Meet the Lore, Meet the Game, Meet the Market" loading="lazy"></button></figure>
+    <div class="eq-phases">
+      <div><span class="eq-eye">Temps 1 · Meet the Lore</span><h3>S'approprier l'univers</h3><p>Compte joueur, collection digitale, scan des cartes physiques, lore et factions.</p><small>Indicateur : cartes scannées</small></div>
+      <div><span class="eq-eye">Temps 2 · Meet the Game</span><h3>Jouer et se retrouver</h3><p>Outils de jeu, tournois organisés par les boutiques, fonctions sociales.</p><small>Indicateur : tournois organisés</small></div>
+      <div><span class="eq-eye">Temps 3 · Meet the Market</span><h3>Échanger en confiance</h3><p>Portefeuille, ventes entre joueurs, paiement sécurisé et conforme.</p><small>Indicateur : transactions et pays actifs</small></div>
+    </div>
     <figure class="showcase">
   <div class="visual devices"><div class="macbook"><div class="lid"><div class="mb-screen sm-screen"><div class="sm-bar" aria-hidden="true"><span class="sm-dots"><i></i><i></i><i></i></span><span class="sm-nav-btns"><i></i><i></i></span><span class="sm-url"><i></i><b></b></span><span class="sm-tools"><i></i><i></i><i></i></span></div><div class="sm-area"><div class="sm-view"><img src="img/cases/equinox-altered/factions-desktop.jpg" alt="Les Factions, version desktop" loading="lazy"></div></div></div></div><div class="base"></div></div>
   <div class="iphone"><div class="scr"><div class="ios-bar" aria-hidden="true"><span>9:41</span><i class="island"></i><span class="ind"><svg viewBox="0 0 18 11"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="6" rx="1"/><rect x="10" y="2.5" width="3" height="8.5" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2.5" y="2.5" width="18" height="7" rx="2"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" opacity=".4"/></svg></span></div><img src="img/cases/equinox-altered/factions-mobile.jpg" alt="Les Factions, version mobile" loading="lazy"></div></div></div>
-  <figcaption>Les Factions · desktop et mobile</figcaption>
 </figure>
-    <div class="cs-text"><p class="">Pour mesurer le succès de Meet the Lore, trois métriques clés. Tout d'abord, le nombre de création de compte. Ensuite, le nombre de cartes scannées — signal fort d'appropriation du produit physique — Enfin, la lecture d'articles de lore, qui indique que le joueur s'immerge dans l'univers au-delà du simple onboarding.</p></div>
-    <section class="cs-sec"><h3 class="cs-h3">Temps 2</h3><p class="cs-sub">Meet the Game : Connecter le digital au jeu et aux usages cœur</p><div class="cs-text"><p class="">L'univers approprié, le digital devait devenir un vrai prolongement du jeu — facilitant la pratique, renforçant les liens entre joueurs et donnant vie à une scène compétitive naissante.</p></div><div class="cs-split img-left"><figure class="cs-fig "><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/temps-2-meet-the-game.jpg" alt="Temps 2 - Meet the Game" loading="lazy"></button></figure><div class="cs-text"><ul class="cs-list "><li>Outils de gameplay</li><li>Gestion d'événements et de tournois</li><li>Gamification de l'expérience</li><li>Fonctionnalités sociales et communautaires</li><li>Intégration des boutiques partenaires</li><li>Optimisation des parcours pour les joueurs réguliers</li></ul></div></div></section>
-    <div class="cs-text"><p class="">Pour mesurer le succès de Meet the Game, trois métriques clés : le nombre d'événements et tournois organisés par les boutiques depuis notre plateforme, le taux d'utilisation des outils de gameplay — signal fort que le digital est devenu un vrai prolongement du jeu physique — et la fréquence de retour sur la plateforme, qui indique que les joueurs s'y retrouvent régulièrement dans leur pratique quotidienne.</p></div>
-    <section class="cs-sec"><h3 class="cs-h3">Temps 3</h3><p class="cs-sub">Meet the Market : Activer l'économie et les échanges à l'échelle</p><div class="cs-text"><p class="">Les usages installés, la communauté engagée, il était temps d'activer la dimension économique du produit — dans un cadre sécurisé, conforme à l'international, et pensé pour accompagner la croissance du projet sur le long terme.</p></div><div class="cs-split img-left"><figure class="cs-fig "><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/temps-3-meet-the-market.jpg" alt="Temps 3 - Meet the Market" loading="lazy"></button></figure><div class="cs-text"><ul class="cs-list "><li>Cagnotte intégrée et gestion des flux financiers</li><li>Échanges et transactions entre joueurs</li><li>Prise en compte des contraintes réglementaires et fiscales</li><li>Sécurisation des parcours de paiement</li><li>Services à valeur ajoutée autour de la collection</li></ul></div></div></section>
-    <div class="cs-text"><p class="">Pour mesurer le succès de Meet the Market, trois métriques clés : le volume de transactions réalisées entre joueurs, le taux d'activation de la cagnotte et les services payants — signal fort que la communauté fait confiance au système de paiement — et le nombre de pays actifs sur la plateforme, qui valide la capacité du service à absorber les contraintes réglementaires à l'international.</p></div>
-    <div class="cs-text"><p class=""><strong>Ce découpage s'est révélé structurant bien au-delà du produit : repris par l'équipe marketing pour piloter sa relation avec la communauté, il a donné une cohérence narrative à chaque livraison, canalisé les attentes des joueurs autour de jalons clairs, et accompagné la montée en puissance du projet auprès d'une communauté déjà très engagée.</strong></p></div>
-    <h2 class="cs-h2">Démarche et Méthodologie design</h2>
-    <div class="cs-text"><p class=""><em>Double diamant appliqué à un cas concret : le système de paiement.</em></p></div>
-    <figure class="cs-fig w-full"><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/double-diamant.png" alt="Schéma du double diamant" loading="lazy"></button></figure>
-    <div class="cs-text"><p class="">L'écosystème Altered repose sur deux flux financiers distincts — les transactions entre joueurs et nos services payants. Concevoir le système de paiement, c'était rendre ces mécaniques fluides et transparentes pour le joueur, tout en absorbant une complexité légale et technique réelle.</p></div>
-    <section class="cs-sec"><h3 class="cs-h3">① Explorer</h3><p class="cs-sub">Comprendre les usages et le marché</p><div class="cs-text"><p class="">Les usages installés, la communauté engagée, il était temps d'activer la dimension économique du produit — dans un cadre sécurisé, conforme à l'international, et pensé pour accompagner la croissance du projet sur le long terme.</p></div><figure class="cs-fig "><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/explorer.jpg" alt="Explorer - Comprendre les usages" loading="lazy"></button></figure><div class="cs-text"><p class="">Le projet m'a été confié via un cahier des charges rédigé par l'équipe dirigeante — posant les grandes orientations du service, ses objectifs et ses contraintes. Point de départ structurant, mais qui soulevait autant de questions qu'il n'en résolvait : nos cartes phygitales étaient-elles des biens physiques ou numériques ? Fallait-il un paiement direct ou une logique de cagnotte ? Le joueur devait-il passer par un panier ou payer au moment de l'action ? Comment la communauté percevait-elle ce type de service ?</p><p class=""><strong>Pour ancrer ces décisions dans les usages réels, j'ai mené des entretiens utilisateurs à distance et en présentiel, animé des ateliers avec l'équipe décisionnaire, et conduit un benchmark du secteur et des acteurs pure-players. Ces différentes sources ont généré des learnings terrain, regroupés et synthétisés en insights clés — eux-mêmes mis en regard de nos grands principes de design pour orienter nos choix de conception.</strong></p></div></section>
-    <section class="cs-sec"><h3 class="cs-h3">② Cadrer</h3><p class="cs-sub">Poser les fondations légales et produit</p><div class="cs-text"><p class="">Le sujet se trouvait dans un flou juridique aux conséquences directes sur notre modèle économique : la nature de nos cartes phygitales conditionnait l'ensemble de notre fiscalité et de nos obligations légales à l'international.</p></div><figure class="cs-fig "><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/cadrer.jpg" alt="Cadrer - Fondations légales" loading="lazy"></button></figure><div class="cs-text"><p class=""><strong>J'ai identifié un cabinet d'avocats spécialisé pour nous accompagner sur ces questions, et collaboré étroitement avec notre prestataire de paiement pour aligner contraintes techniques et réglementaires avec les parcours à concevoir. Dans ce contexte, j'ai utilisé le design comme outil d'aide à la décision — en produisant des livrables clairs et en animant des ateliers d'alignement avec les équipes concernées, pour aider la direction à faire des choix structurants en ayant pleinement conscience de leurs implications produit, légales et économiques.</strong></p></div></section>
-    <section class="cs-sec"><h3 class="cs-h3">③ Concevoir</h3><p class="cs-sub">Des parcours simples pour des mécanismes complexes</p><figure class="cs-fig "><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/concevoir.jpg" alt="Concevoir - Parcours simples" loading="lazy"></button></figure><div class="cs-text"><p class="">J'ai démarré par des wireframes co-construits avec l'équipe tech, pour valider la faisabilité des parcours au regard des contraintes identifiées en amont. Une fois la logique fonctionnelle stabilisée, j'ai produit des maquettes haute fidélité testées directement auprès des utilisateurs finaux — pour m'assurer que la complexité du service ne transparaissait jamais dans l'expérience joueur. Tout au long de cette phase, je me suis assuré que chaque nouvel écran respectait le design system en vigueur, réalisé par notre UI designer, garantissant la cohérence visuelle du service avec le reste de l'écosystème Altered.</p><p class=""><strong>La phase s'est conclue par une passation formelle à l'équipe tech : rédaction de la documentation fonctionnelle, traduction des choix de design en spécifications exploitables, et vérification qu'aucun angle mort ne subsistait avant le passage en développement.</strong></p></div></section>
-    <figure class="cs-fig w-full"><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/demo.gif" alt="Go Moonbound Demo" loading="lazy"></button></figure>
-    <section class="cs-sec"><h3 class="cs-h3">④ Déployer</h3><p class="cs-sub">Un service conforme, lancé dans plusieurs pays</p><figure class="cs-fig "><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/deployer.jpg" alt="Déployer - Lancement international" loading="lazy"></button></figure><div class="cs-text"><p class="">Le service a été lancé simultanément dans plusieurs pays, chacun avec ses contraintes légales spécifiques absorbées côté produit — et conçu avec suffisamment de souplesse pour intégrer de nouveaux pays en cours de route, sans refonte des parcours. Un lancement qui s'est fait malgré de nombreux imprévus gérés en temps réel : ajustements réglementaires de dernière minute, contraintes techniques non anticipées, arbitrages produit sous pression. <strong>Résultat : une expérience fluide pour le joueur, une conformité réglementaire assurée à l'international, et des frictions de paiement réduites au minimum.</strong></p><p class="">Au-delà de la rédaction de la documentation technique à destination des développeurs, j'ai maintenu un wiki produit enrichissant une base de connaissances interne partagée.</p><p class=""><img src="img/cases/equinox-altered/wiki-doc.jpg" alt="Wiki produit Altered" style="max-width: 100%; height: auto; margin: 20px 0;" /></p><p class="">Pensé comme un véritable produit interne, ce wiki centralisait les décisions, les itérations et les arbitrages réalisés tout au long du développement. Il permettait d'aligner durablement les équipes produit, design et tech autour d'une compréhension commune.</p><p class="">Chaque évolution de feature impliquait une mise à jour systématique de cette documentation, garantissant sa fiabilité et son adoption.</p><p class=""><strong>La rédaction, la structuration et la diffusion de ce contenu faisaient partie intégrante de mon rôle, jusqu'à devenir une étape clé dans la livraison des fonctionnalités.</strong></p></div></section>
-    <h2 class="cs-h2">Conclusion</h2>
-    <h3 class="cs-h3">Un produit vivant, une communauté qui ne cesse de grandir</h3>
-    <div class="cs-text"><p class="">Depuis 2021, Altered est passé par toutes les phases d'un produit ambitieux : campagne Kickstarter, première release, puis livraisons successives en suivant le plan défini. À chaque étape, le produit a tenu ses promesses — et la communauté a répondu présente.</p><p class="">Aujourd'hui, après 3 ans de développement, les chiffres parlent d'eux-mêmes :</p></div>
-    <div class="cs-text"><ul class="cs-list "><li>7 788 484 cartes scannées</li><li>15+ pays couverts</li><li>+1 000 joueurs réunis lors de tournois</li><li>Des dizaines de milliers de comptes créés</li></ul></div>
-    <div class="cs-text"><p class=""><strong>De nouveaux pays ont rejoint l'aventure, la scène compétitive s'est structurée, et le premier championnat du monde s'est tenu en juin 2025. La communauté, toujours plus active, continue de porter le projet. Aujourd'hui, la sixième extension est en cours de financement participatif — et sortira dans le courant de l'année.</strong></p></div>
+    <blockquote class="cs-quote"><p>Le marketing a repris ce découpage pour piloter sa relation avec la communauté : chaque livraison avait un récit, et les joueurs des jalons clairs.</p></blockquote>
+
+    <p class="eq-step">Décision 2</p>
+    <h2 class="cs-h2">Un paiement simple, malgré un flou juridique</h2>
+    <div class="cs-text"><p>Deux flux d'argent cohabitaient : les ventes entre joueurs et nos services payants. Et une question bloquait tout : <strong>une carte phygitale est-elle un bien physique ou numérique ?</strong> La réponse fixait notre fiscalité et nos obligations dans chaque pays.</p></div>
+    <dl class="eq-decision">
+      <div><dt>Ce que j'ai fait</dt><dd>Entretiens joueurs, ateliers avec la direction, benchmark. J'ai trouvé un cabinet d'avocats spécialisé et travaillé avec notre prestataire de paiement pour relier le droit, la technique et les parcours.</dd></div>
+      <div><dt>L'arbitrage</dt><dd>Un portefeuille unique plutôt qu'un paiement direct : il sert aux services payants comme aux ventes entre joueurs, quelle que soit la devise.</dd></div>
+      <div><dt>Le résultat</dt><dd>Un lancement simultané dans plusieurs pays, avec des parcours assez souples pour en ajouter d'autres sans refonte.</dd></div>
+    </dl>
+    <figure class="cs-fig "><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/demo.gif" alt="Prototype du portefeuille Altered sur mobile : solde, recharge et gains de ventes" loading="lazy"></button></figure>
+    <div class="cs-text"><p>Le design m'a servi d'<strong>outil de décision</strong> : des livrables clairs et des ateliers pour que la direction tranche en connaissant les conséquences produit, légales et économiques.</p></div>
+
+    <p class="eq-step">Décision 3</p>
+    <h2 class="cs-h2">La documentation comme outil d'alignement</h2>
+    <div class="cs-split"><figure class="cs-fig "><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/wiki-doc.jpg" alt="Wiki produit Altered" loading="lazy"></button></figure><div class="cs-text"><p>J'ai créé et tenu un <strong>wiki produit</strong> qui centralisait les décisions, les itérations et les arbitrages.</p><p>Chaque évolution de fonctionnalité passait par sa mise à jour : c'est devenu une étape de la livraison, et la référence commune du produit, du design et de la tech.</p></div></div>
+
+    <h2 class="cs-h2">Résultats</h2>
+    <div class="eq-results">
+      <div><b>7,8 M</b><span>cartes scannées</span></div>
+      <div><b>15+</b><span>pays couverts</span></div>
+      <div><b>1 000+</b><span>joueurs réunis en tournoi</span></div>
+      <div><b>Des dizaines de milliers</b><span>de comptes créés</span></div>
+    </div>
+    <div class="cs-text"><p>Un premier championnat du monde en juin 2025, et une sixième extension en financement participatif.</p></div>
   </article>
 
   <a class="cs-next" href="gomoonbound.html" style="--next-bg:#05060f">

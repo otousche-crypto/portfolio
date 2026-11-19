@@ -605,6 +605,91 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 }
 
 body { margin: 0; }
+
+/* Labels on this page: plain Geist in sentence case, no monospace caps */
+.cs-meta dt, .cs-sub, .cs-fig figcaption, .cs-diagram figcaption, .bmad figcaption, .showcase figcaption, .cs-note,
+.bm-eye, .bm-n, .sp-count, .cs-log summary, .cs-log li span, .cs-next small, .contact h4, .meta {
+  font-family: var(--sans); text-transform: none; letter-spacing: -0.005em;
+}
+.cs-meta dt { font-size: 13px; font-weight: 500; }
+.cs-sub { font-size: 15px; font-weight: 500; }
+.cs-fig figcaption, .cs-diagram figcaption, .bmad figcaption, .showcase figcaption, .cs-note { font-size: 13.5px; }
+.bm-eye { font-size: 12.5px; font-weight: 500; }
+.bm-step.build .bm-eye { color: rgba(255,255,255,.6); }
+.bm-n { font-size: 13px; font-weight: 600; }
+.cs-log summary { font-size: 15px; font-weight: 500; }
+.cs-log li span, .sp-count { font-size: 13px; }
+.cs-next small { font-size: 14px; font-weight: 500; }
+.contact h4 { font-size: 14px; font-weight: 500; }
+.meta { font-size: 14px; }
+/* Persona cards keep Sklip's own type (Outfit), in sentence case */
+.sp-tag, .sp-eye { font-family: Outfit, var(--sans); text-transform: none; letter-spacing: 0; font-size: 13px; font-weight: 600; }
+
+/* Mission report: Go MoonBound's live figures, in the product's night-sky colours */
+.gm-report { position: relative; overflow: hidden; border-radius: 24px; padding: clamp(20px, 3.4vw, 32px); color: #fff; display: grid; gap: 22px;
+  background: radial-gradient(40% 60% at 15% 100%, rgba(70,82,140,.35), transparent 70%), radial-gradient(35% 55% at 90% 0%, rgba(60,70,125,.28), transparent 70%), url("img/moon-sky.jpg") center / cover, #05060f; }
+.gm-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.gm-head h3 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+.gm-head span { font-size: 14px; color: rgba(255,255,255,.6); display: inline-flex; align-items: center; gap: 8px; }
+.gm-head span::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 8px #4ade80; }
+.gm-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.gm-kpis div { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 16px; display: grid; gap: 6px; align-content: start;
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.gm-kpis b { font-size: clamp(24px, 2.6vw, 30px); line-height: 1; font-weight: 600; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.gm-kpis b.hot { color: #fc6a2a; }
+.gm-kpis span { font-size: 13.5px; line-height: 1.4; color: rgba(255,255,255,.65); }
+.gm-curve p { margin: 0 0 8px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,.75); }
+.gm-chart { display: block; width: 100%; height: auto; overflow: visible; }
+.gm-chart text { font-family: var(--sans); font-size: 12px; fill: rgba(255,255,255,.45); }
+.gm-chart .gm-end { font-size: 14px; font-weight: 600; fill: #fff; }
+.gm-chart .gm-note { font-size: 12.5px; fill: #fc6a2a; font-weight: 500; }
+.gm-sub { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.75); margin-bottom: -12px; }
+.gm-kpis b.up { color: #4ade80; }
+.gm-src { margin: 0; font-size: 12.5px; line-height: 1.5; color: rgba(255,255,255,.45); }
+@media (max-width: 760px) {
+  .gm-kpis { grid-template-columns: 1fr 1fr; }
+  /* SVG text scales with the chart: bump it so it stays readable at phone width */
+  .gm-chart text { font-size: 26px; }
+  .gm-chart .gm-end { font-size: 30px; }
+  .gm-chart .gm-note { display: none; }
+}
+
+/* Success indicators: question and measure on the left, result on the right */
+.gm-ind { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); counter-reset: q; }
+.gm-ind li { counter-increment: q; display: grid; grid-template-columns: 32px minmax(0, 1fr) 220px; gap: 20px; align-items: center; padding: 24px 0; border-bottom: 1px solid var(--line); }
+.gm-ind li::before { content: counter(q); font-size: 15px; font-weight: 600; color: var(--muted); align-self: start; padding-top: 2px; }
+.gm-q h3 { margin: 0; font-size: 19px; line-height: 1.3; font-weight: 600; letter-spacing: -.015em; }
+.gm-q p { margin: 6px 0 0; font-size: 15px; line-height: 1.5; color: #55555c; }
+.gm-r { display: grid; gap: 4px; justify-items: end; text-align: right; }
+.gm-r b { font-size: 40px; line-height: 1; font-weight: 600; letter-spacing: -.04em; font-variant-numeric: tabular-nums; color: var(--fg); }
+.gm-r b.up { color: #16a34a; }
+.gm-r b { white-space: nowrap; }
+.gm-r b small { font-size: 15px; font-weight: 500; letter-spacing: 0; color: var(--muted); margin-right: 6px; }
+.gm-r span { font-size: 13.5px; line-height: 1.4; color: var(--muted); }
+.gm-ind + .cs-text { margin-top: 20px; }
+@media (max-width: 760px) {
+  .gm-ind li { grid-template-columns: 24px minmax(0, 1fr); gap: 10px 12px; }
+  .gm-r { grid-column: 2; justify-items: start; text-align: left; }
+  .gm-r b { font-size: 34px; }
+}
+
+/* Summary band, same as the Altered case study */
+.eq-eye { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.eq-tldr { border: 1px solid var(--line); border-radius: 24px; padding: clamp(20px, 3.4vw, 32px); display: grid; gap: 20px; }
+.eq-keys { margin: 0; padding: 0; list-style: none; counter-reset: k; display: grid; gap: 12px; }
+.eq-keys li { counter-increment: k; position: relative; padding-left: 32px; font-size: 18px; line-height: 1.5; color: #55555c; }
+.eq-keys li::before { content: counter(k, decimal-leading-zero); position: absolute; left: 0; top: 5px; font-family: var(--mono); font-size: 12px; line-height: 1.5; color: var(--muted); }
+.eq-keys b { color: var(--fg); font-weight: 600; }
+.eq-nums, .eq-results { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 10px; }
+.eq-results { --n: 4; }
+.eq-nums div, .eq-results div { background: var(--soft); border-radius: 16px; padding: 16px 18px; display: grid; gap: 2px; align-content: start; }
+.eq-nums b, .eq-results b { font-size: 26px; line-height: 1.1; font-weight: 600; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.eq-nums span, .eq-results span { font-size: 13px; color: #55555c; }
+@media (max-width: 760px) { .eq-nums { grid-template-columns: 1fr 1fr; } .eq-keys li { font-size: 16.5px; } }
+.eq-eye { font-family: var(--sans); text-transform: none; letter-spacing: -0.005em; font-size: 14px; font-weight: 500; color: var(--muted); }
+.eq-keys li::before { content: counter(k); font-family: var(--sans); font-size: 15px; font-weight: 600; color: var(--muted); top: 1px; }
+.eq-nums b small { font-size: 15px; font-weight: 500; letter-spacing: 0; color: var(--muted); margin-right: 5px; }
+.cs-h3.gm-ind-title { margin-top: 56px !important; }
 </style>
 </head>
 <body>
@@ -628,6 +713,20 @@ body { margin: 0; }
   <div class="cs-hero cover" style="--hero-bg:#05060f;--hero-fit:cover"><img src="img/moon-desktop.jpg" alt="Go MoonBound - Visualiser vos performances Strava d'une autre manière!"></div>
 
   <article class="cs-body">
+    <section class="eq-tldr" aria-label="En bref">
+      <div class="eq-eye">En bref</div>
+      <ol class="eq-keys">
+        <li><b>Construit seul, du premier prompt à la mise en production</b>, en 2 semaines.</li>
+        <li><b>Validé par Strava</b>, qui a ouvert son API à 999 utilisateurs.</li>
+        <li><b>11 versions publiées</b> depuis le lancement, au fil des retours des voyageurs.</li>
+      </ol>
+      <div class="eq-nums">
+        <div><b>669</b><span>voyageurs connectés à Strava</span></div>
+        <div><b><small>jusqu'à</small>23 %</b><span>des visiteurs s'inscrivent</span></div>
+        <div><b>72 %</b><span>des voyageurs actifs ce mois-ci</span></div>
+      </div>
+    </section>
+
     <h2 class="cs-h2">Context</h2>
     <div class="cs-text"><p class="">En 2026, le vibe coding apporte une nouvelle façon de travailler en tant que Product Designer.</p></div>
     <div class="cs-text"><p class="">Pendant des années, le workflow reposait sur une séparation stricte des rôles : le designer prescrit, l'ingénieur exécute. Cela engendrait de la friction — du temps perdu, de la traduction, de la perte. L'idée initiale pouvait se retrouver diluée à chaque transfert, et une attention toute particulière était nécessaire pour s'assurer que le résultat final restait aligné avec l'intention de départ.</p></div>
@@ -644,7 +743,7 @@ body { margin: 0; }
     <h2 class="cs-h2">Process</h2>
     <section class="cs-sec"><div class="cs-split img-left"><figure class="cs-fig "><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/go-moonbound/agents-claude.png" alt="Diagramme du process avec agents Claude" loading="lazy"></button></figure><div class="cs-text"><p class="">Le process repose sur deux agents Claude aux rôles distincts, activés en séquence.<br>D'abord, un agent "Senior Product Engineer" — que j'utilise en amont pour cadrer le concept, challenger mes décisions produit, structurer le PRD et anticiper les contraintes techniques. Une phase de réflexion itérative, en boucle avec la définition du concept, jusqu'à ce que le brief soit solide.<br>Ensuite, un agent "Prompt Master" — chargé de traduire ce brief en instructions précises pour Claude Code. Son rôle : formuler les prompts de façon à minimiser les allers-retours et maximiser la qualité du code généré dès la première passe.</p></div></div></section>
     <div class="cs-text"><p class="">Une fois le prompt prêt, Claude Code prend le relais et livre en local. Je teste directement le produit réel — pas une maquette, pas un prototype — et j'itère sur ce que je vois et ressens. La boucle test → ajustement → nouvelle livraison locale tourne jusqu'à ce que le produit soit prêt.</p><p class="">Le déploiement est automatisé avec Vercel, connecté au dépôt GitHub. Chaque push génère une URL de prévisualisation, ce qui me permet de tester une évolution en conditions réelles avant de la valider. Une fois la branche fusionnée sur main, la mise en production se fait automatiquement, sans intervention manuelle. Résultat : quelques minutes entre l'idée et la mise en ligne, et la possibilité de revenir à une version précédente en un clic en cas de problème.<br>Zéro handoff. Zéro ticket. De l'intention à la production, en autonomie complète.</p></div>
-    <h2 class="cs-h2">Résultats</h2>
+    <h2 class="cs-h2">Lancement</h2>
     <div class="cs-text"><p class="">Dès le premier prompt, l'effet est immédiat : une scène 3D fonctionnelle, connectée à l'API Strava, qui positionne l'utilisateur sur le trajet Terre → Lune. Pas une maquette. Un produit réel.<br>La suite : quelques sessions de debug, des ajustements d'affichage mobile, des itérations sur le rendu 3D, et l'ajout de nouvelles features au fil des retours. Achat du nom de domaine, création du repo GitHub, déploiement. En 2 semaines, <a href="https://gomoonbound.com" target="_blank" rel="noopener">https://gomoonbound.com</a> est en ligne.</p></div>
     <figure class="cs-fig w-medium"><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/go-moonbound/dashboard.jpg" alt="GoMoonbound dashboard" loading="lazy"></button></figure>
     <div class="cs-text"><p class="">Seul frein : les requirements Strava pour ouvrir l'API au-delà d'un utilisateur. J'ai créé un agent Claude dédié pour préparer le dossier de validation et respecter les exigences de la plateforme. Apres soumission du dossier, une semaine aura suffit pour avoir un retour de Strava, m'ouvrant l'API pour 999 utilisateurs. Tu peux suivre ma propre progression ici : <a href="https://gomoonbound.com/share/2a1c034f-b5a4-4dce-b6f6-1d26bcea9a10" target="_blank" rel="noopener">https://gomoonbound.com/share/2a1c034f-b5a4-4dce-b6f6-1d26bcea9a10</a></p></div>
@@ -652,6 +751,38 @@ body { margin: 0; }
     <h2 class="cs-h2">Changelog</h2>
     <div class="cs-text"><p class="">Le produit continue d'évoluer après le lancement, au fil des retours utilisateurs. Chaque version corrige un frein ou ajoute ce que l'usage réel a révélé comme manquant.</p></div>
     <details class="cs-log"><summary>Historique des mises à jour<i aria-hidden="true"></i></summary><ol><li><div><b>v1.0</b><span>16 mars 2026</span></div><p>Lancement de Go Moonbound — scène 3D Terre/Lune, auth Strava, classement, page de partage, support mobile Safari</p></li><li><div><b>v1.1</b><span>17 mars 2026</span></div><p>Texture NASA Blue Marble, modals responsive, header aligné mobile/desktop, sécurité webhook Strava</p></li><li><div><b>v1.2</b><span>25 mars 2026</span></div><p>Paramètre pour masquer les autres participants, robustesse in-app browsers (LinkedIn, Instagram)</p></li><li><div><b>v1.3</b><span>1er avril 2026</span></div><p>SEO + image OG, changelog modal, CTA de partage quand un participant est introuvable dans le classement</p></li><li><div><b>v2.0</b><span>7 mai 2026</span></div><p>Sphères communautaires avec nuages de progression, podium or/argent/bronze, médailles au survol, correction du plafond de lignes PostgREST</p></li><li><div><b>v2.1</b><span>9 juin 2026</span></div><p>Menu "À propos" avec crédit design, suppression du vaisseau spatial, tracking source de trafic à l'inscription</p></li><li><div><b>v2.2</b><span>17 juin 2026</span></div><p>Analytics GA + Vercel, lien club Strava, scène 3D sur la landing page avec hero animé, favicon orange Go Moonbound</p></li><li><div><b>v2.3</b><span>30 juin 2026</span></div><p>Clic sur une sphère ou une ligne du classement affiche les stats du participant, bouton Share adaptatif, retour en un clic</p></li><li><div><b>v3.0</b><span>11 juillet 2026</span></div><p>Bouton Profil (photo, progression, streak, classement), collection de 23 badges à débloquer, récap hebdomadaire de progression par email</p></li><li><div><b>v3.1</b><span>19 juillet 2026</span></div><p>Flèches de mouvement quotidien dans le classement, objectif de dépassement dans le profil (km restants avant le voyageur suivant), paramètres du compte regroupés dans le profil</p></li><li><div><b>v3.2</b><span>19 juillet 2026</span></div><p>Badges d'invitation débloqués à 1, 5, 10 et 25 inscriptions depuis la page de partage</p></li></ol></details>
+    <h2 class="cs-h2">Résultats</h2>
+    <section class="gm-report" aria-label="Rapport de mission">
+      <div class="gm-head"><h3>Rapport de mission</h3><span>8 mois en production</span></div>
+      <div class="gm-kpis">
+        <div><b>669</b><span>voyageurs connectés à Strava</span></div>
+        <div><b class="hot">13,7 M km</b><span>parcourus ensemble, soit 35,8 allers Terre–Lune</span></div>
+        <div><b>+227</b><span>nouveaux voyageurs sur la meilleure semaine</span></div>
+        <div><b>7</b><span>voyageurs déjà à mi-chemin de la Lune</span></div>
+      </div>
+      <div class="gm-curve"><p>Voyageurs cumulés depuis le lancement</p><svg class="gm-chart" viewBox="0 0 800 220" role="img" aria-label="Voyageurs cumulés : de 1 le 9 mars 2026 à 628 le 7 septembre, puis 669 le 19 novembre 2026">
+        <defs><linearGradient id="gmArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fc4c02" stop-opacity=".35"/><stop offset="1" stop-color="#fc4c02" stop-opacity="0"/></linearGradient></defs>
+        <line x1="8" x2="752" y1="194" y2="194" stroke="rgba(255,255,255,.12)"/>
+        <path d="M8.0,194 L8.0,193.7 L28.4,186.5 L48.8,174.2 L69.3,121.5 L89.7,120.7 L110.1,118.4 L130.5,118.1 L151.0,117.6 L171.4,116.9 L191.8,116.6 L212.2,111.2 L232.7,110.9 L253.1,110.9 L273.5,52.6 L293.9,48.5 L314.4,45.6 L334.8,43.3 L355.2,43.3 L375.6,41.5 L396.0,39.7 L416.5,39.2 L436.9,37.7 L457.3,37.7 L477.7,35.3 L498.2,34.8 L518.6,33.3 L539.0,32.5 L752.0,22.5 L752.0,194 Z" fill="url(#gmArea)"/>
+        <path d="M8.0,193.7 L28.4,186.5 L48.8,174.2 L69.3,121.5 L89.7,120.7 L110.1,118.4 L130.5,118.1 L151.0,117.6 L171.4,116.9 L191.8,116.6 L212.2,111.2 L232.7,110.9 L253.1,110.9 L273.5,52.6 L293.9,48.5 L314.4,45.6 L334.8,43.3 L355.2,43.3 L375.6,41.5 L396.0,39.7 L416.5,39.2 L436.9,37.7 L457.3,37.7 L477.7,35.3 L498.2,34.8 L518.6,33.3 L539.0,32.5" fill="none" stroke="#fc4c02" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <path d="M539.0,32.5 L752.0,22.5" fill="none" stroke="#fc4c02" stroke-width="2.5" stroke-dasharray="5 6" stroke-linecap="round"/>
+        <circle cx="752.0" cy="22.5" r="5" fill="#fc4c02" stroke="#0b0c18" stroke-width="2"/>
+        <text class="gm-end" x="762.0" y="26.5">669</text>
+        <text class="gm-note" x="265.5" y="42.6" text-anchor="end">+227 en une semaine</text>
+        <text x="75.1" y="214" text-anchor="middle">avr.</text><text x="253.1" y="214" text-anchor="middle">juin</text><text x="431.1" y="214" text-anchor="middle">août</text><text x="609.0" y="214" text-anchor="middle">oct.</text>
+      </svg></div>
+      <p class="gm-src">Relevé du 19 nov. 2026 dans la base de données Go MoonBound. Courbe hebdomadaire jusqu'au 7 sept., puis relevé direct.</p>
+    </section>
+    <h3 class="cs-h3 gm-ind-title">Indicateurs de réussite</h3>
+    <div class="cs-text"><p>Cinq questions pour savoir si le produit tient sa promesse, chacune avec l'indicateur qui y répond.</p></div>
+    <ol class="gm-ind">
+      <li><div class="gm-q"><h3>Le concept donne-t-il envie de se lancer ?</h3><p>Voyageurs qui connectent leur compte Strava</p></div><div class="gm-r"><b>669</b><span>dont +227 en une seule semaine</span></div></li>
+      <li><div class="gm-q"><h3>Les visiteurs passent-ils à l'action ?</h3><p>Nouveaux visiteurs qui connectent leur compte Strava, sur les 28 derniers jours</p></div><div class="gm-r"><b><small>jusqu'à</small>23 %</b><span>36 inscriptions pour 159 visiteurs, contre 13 % le mois d'avant</span></div></li>
+      <li><div class="gm-q"><h3>Les voyageurs restent-ils actifs ?</h3><p>Part des inscrits avant novembre dont la fusée a avancé ce mois-ci</p></div><div class="gm-r"><b>72 %</b><span>des voyageurs actifs en novembre</span></div></li>
+      <li><div class="gm-q"><h3>Le produit attire-t-il encore ?</h3><p>Inscriptions de novembre comparées à octobre, et visiteurs sur 28 jours</p></div><div class="gm-r"><b class="up">×5,5</b><span>inscriptions (33 contre 6), visiteurs +360 %</span></div></li>
+      <li><div class="gm-q"><h3>Peut-on garder le contact ?</h3><p>Voyageurs qui laissent leur email quand on le leur propose</p></div><div class="gm-r"><b>25 %</b><span>27 emails sur 107 demandes</span></div></li>
+    </ol>
+    <p class="cs-note">Relevé du 19 nov. 2026. Inscriptions, activité et emails : base de données Go MoonBound. Visiteurs : Google Analytics, du 22 oct. au 18 nov. comparé aux 28 jours précédents. Analytics ne compte pas les visiteurs qui bloquent le suivi : le taux de conversion réel est donc inférieur ou égal à 23 %.</p>
   </article>
 
   <a class="cs-next" href="sklip.html" style="--next-bg:#100e16">

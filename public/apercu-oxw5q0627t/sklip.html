@@ -605,6 +605,25 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 }
 
 body { margin: 0; }
+
+/* Labels on this page: plain Geist in sentence case, no monospace caps */
+.cs-meta dt, .cs-sub, .cs-fig figcaption, .cs-diagram figcaption, .bmad figcaption, .showcase figcaption, .cs-note,
+.bm-eye, .bm-n, .sp-count, .cs-log summary, .cs-log li span, .cs-next small, .contact h4, .meta {
+  font-family: var(--sans); text-transform: none; letter-spacing: -0.005em;
+}
+.cs-meta dt { font-size: 13px; font-weight: 500; }
+.cs-sub { font-size: 15px; font-weight: 500; }
+.cs-fig figcaption, .cs-diagram figcaption, .bmad figcaption, .showcase figcaption, .cs-note { font-size: 13.5px; }
+.bm-eye { font-size: 12.5px; font-weight: 500; }
+.bm-step.build .bm-eye { color: rgba(255,255,255,.6); }
+.bm-n { font-size: 13px; font-weight: 600; }
+.cs-log summary { font-size: 15px; font-weight: 500; }
+.cs-log li span, .sp-count { font-size: 13px; }
+.cs-next small { font-size: 14px; font-weight: 500; }
+.contact h4 { font-size: 14px; font-weight: 500; }
+.meta { font-size: 14px; }
+/* Persona cards keep Sklip's own type (Outfit), in sentence case */
+.sp-tag, .sp-eye { font-family: Outfit, var(--sans); text-transform: none; letter-spacing: 0; font-size: 13px; font-weight: 600; }
 </style>
 </head>
 <body>
