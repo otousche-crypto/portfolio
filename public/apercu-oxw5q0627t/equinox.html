@@ -656,6 +656,32 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 
 body { margin: 0; }
 
+/* Contact with the ASCII self-portrait, same as the home page */
+html { overflow-x: clip; }  /* full-bleed lines and the cropped bust never cause a sideways scroll */
+/* Contact: the details stacked on the left, the ASCII self-portrait facing them, standing on the footer line and running off the right edge (drawn on a canvas by the script) */
+#contact { position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 24px; min-height: 600px; padding-block: 56px; }
+.contact-title { margin: 0 0 8px; font-size: 14px; font-weight: 500; letter-spacing: -0.005em; }
+.contact > :not(.ascii-stand) { position: relative; z-index: 1; }
+.contact h4 { margin-bottom: 6px; }
+footer { position: relative; }
+footer::before { content: ""; position: absolute; top: 0; left: -100vw; right: -100vw; height: 1px; background: var(--line); }
+.ascii-stand { position: absolute; bottom: 0; right: calc((100% - 100vw) / 2 - 70px); }
+.ascii-me { display: block; font-size: 10.5px; }
+@media (max-width: 1180px) { .ascii-me { font-size: 9.5px; } }
+@media (max-width: 960px) { .ascii-me { font-size: 8.5px; } #contact { min-height: 500px; } }
+/* Mobile: the whole block and the footer fit in one screen, the face cropped on the right */
+@media (max-width: 760px) {
+  #contact { min-height: 0; gap: 16px; padding-block: 28px 32px; }
+  .contact-title { margin-bottom: 4px; }
+  .contact h4 { margin-bottom: 2px; font-size: 13px; }
+  .contact .big { font-size: 16px; }
+  .copy-btn { margin-top: 6px; padding: 4px 10px; font-size: 12px; }
+  .ascii-stand { right: calc((100% - 100vw) / 2 - 104px); }
+  .ascii-me { font-size: 7.4px; }
+  footer { padding-block: 16px 24px; }
+}
+.contact h4 { font-size: 14px; font-weight: 500; }
+
 /* FR / EN switch, last item of the header nav */
 .lang-switch { display: inline-flex; align-items: center; gap: 2px; }
 .lang-switch i { font-style: normal; color: #c4c4ca; }
@@ -755,6 +781,7 @@ body { margin: 0; }
   </a>
 
   <section class="contact" id="contact">
+    <h2 class="contact-title">Contact</h2>
     <div>
       <h4>Écrire</h4>
       <div class="big" id="mail">otousche@gmail.com</div>
@@ -768,6 +795,61 @@ body { margin: 0; }
       <h4>Basé à</h4>
       <div class="big">Paris · remote</div>
     </div>
+    <div class="ascii-stand" aria-hidden="true"><canvas class="ascii-me"></canvas></div>
+    <script type="text/plain" id="ascii-art">
+
+
+
+
+                       ..::::
+                  :+%@@@@@@@@@@@%*=-
+                -%@@@@@@@@@@@@@@@@@@%+:
+              :%@@@@@@@@@@@@@@@@@@@@@@@@*-.
+            :*%@@@@@@@@@@@@@@@@@@@@@@@@@@@@*.
+          .*@@@@@@@%%%@@@@@@@@@@@@@@@@@@@@@@%=
+         :%@@%@##+++=+++++*##%%%%#####%%%%%@@@#.
+        =%@#*#*=----------===+++++++++++*****%@%.
+       #@@*-----:::--:----------=========+++++*@%-
+      #@@*----::::::::::::::-----=-==========++*@@:
+     *@@*=----:::::::::::::::---==============++#@@:
+    -@@#+---:::::::::::------:--===============+*#@#
+    #@%#+-:::::::--:::::---------==============++*%@=
+   .%%#*=::::::::::::::::--------================+#@#.
+   .%#*+-:::::----::::::::-==:----=========+=====+#%%.
+   .#*=-::::--=+*****+=-::-==:-====+***######*+===+#%.
+   .*=:::::==++=++***##*+--=--=+**#%%%%##****##*+=+*#
+    +=::.:---:-==+*##%%*+=::-=++*##%%####***+++*+++#+
+    ++:...::=+++*#@@%#%%#+::-=++*#%%%#%@@@%###+++=+#-
+    =+:...:-=++--#%%#*##+=:-===+*##%#*#@@#**##*+===+
+  .:=+:...:-:::-==+****+=---===++*#####****+++++===-
+ ==:::...::--:::--===+=-----=====++***+++++=+=+===-----
+.==::::.:::--::::------:----=======+++++=========--===+=
+:=:-==:::::::--------::-::--===========+====-------=====
+.:-++-:::::::::--------:::---====++========--------=+==+
+ :=+*=::::::::::-----=:--:---=+=-=+++======--------+*+=-
+ :::==::::::::::::-===-**-==+*%%*=++++==----====--=+**+
+  :::==-::::::::::-==---===++******++===--=========*+=:
+   ..==------::::----==*###**##%%##*++===-==+++===+*=-
+     :+==+==----:-==+##%%%###%#%%%%%#**+===+++++++**-
+      =====++=---+*###**+==*#+++***###%#*+++*******-
+      :==+++=--=****+---=++===***++=++**##*++*###**.
+       +==*+==-=++***+++++++****#######****+*#####+
+       :=+**++==+++=-..::-=====++==++**###**######.
+        :+***+==*+-::::--=*******+++==+*####%%#%#:
+         .*##*=++++=:::----=++++==++++*#%%%%%%%+
+          .*#**#**#*+-:::-===+***+++*#%%%@@@%%-
+            =#%####*+--===+++******##%%%@@@@%-
+            ::*%%#**++*++*+*******#%%%%%@@@#+:
+            :::=#%%##*#**+**####*##%%%%%@%*==.
+            :.::-+*%%####*###%###%%%%%@%#+==-.
+            ..::::--+*#%%%%%%%%@@@@%%#*+===--.
+            ::::::::---==+++******++++==-----:
+           .::::::::::--:::-------===---------:.
+         .-:::::::::::::::::::-::--------:-----+:
+     .:: -:::::.:::::::::::::::::::---:::::-----+::
+    :-=..=.:::...::::::::::::::::::::::::::----==:++:
+.:. :-=. -..:::...::::::::::::::::::::::::::---+:-===-.
+</script>
   </section>
 
   <footer><span>© 2026 Olivier Tousche</span><span>Maquette · v0</span></footer>
@@ -853,6 +935,86 @@ body { margin: 0; }
   document.getElementById('copy').addEventListener('click', e => {
     navigator.clipboard?.writeText('otousche@gmail.com').then(() => { e.target.textContent = 'Copié'; setTimeout(() => e.target.textContent = "Copier l'adresse", 1600); }, () => {});
   });
+</script>
+<script>
+  // ASCII self-portrait in the footer: composes itself when it comes into view (glyphs scramble, then settle from top to bottom); under the cursor they stir, drift aside and warm to orange
+  (() => {
+    const cv = document.querySelector('.ascii-me'), src = document.getElementById('ascii-art');
+    if (!cv || !src) return;
+    const art = src.textContent.replace(/^\n+|\n+$/g, '').split('\n');
+    const rows = art.length, cols = Math.max(...art.map(l => l.length));
+    const GLYPHS = '@%#*+=-:.', INK = [38, 38, 42], HOT = [252, 76, 2], R = 70;
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const ctx = cv.getContext('2d');
+    const cells = [];
+    art.forEach((line, y) => [...line].forEach((c, x) => {
+      if (c !== ' ') cells.push({ x, y, c, at: 250 + (y / rows) * 1300 + Math.random() * 650, heat: 0, g: c });
+    }));
+    let cw = 0, ch = 0, t0 = 0, raf = 0, pointer = null;
+    const size = () => {
+      const fs = parseFloat(getComputedStyle(cv).fontSize), dpr = devicePixelRatio || 1;
+      ctx.font = `${fs}px "Geist Mono", ui-monospace, monospace`;
+      cw = ctx.measureText('M').width; ch = fs * 1.02;
+      cv.width = Math.ceil(cols * cw * dpr); cv.height = Math.ceil(rows * ch * dpr);
+      cv.style.width = cols * cw + 'px'; cv.style.height = rows * ch + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.font = `${fs}px "Geist Mono", ui-monospace, monospace`; ctx.textBaseline = 'top';
+    };
+    const draw = now => {
+      const t = still ? 1e9 : now - t0;
+      let busy = t >= 0 && t < 2600;  // t is negative until the bust has scrolled into view
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      for (const k of cells) {
+        let g = k.c, a = 1, ox = 0, oy = 0;
+        if (t < k.at) {
+          const p = 1 - (k.at - t) / 500;
+          if (p <= 0) continue;
+          a = p * .55; g = GLYPHS[Math.random() * GLYPHS.length | 0];
+        }
+        const px = (k.x + .5) * cw, py = (k.y + .5) * ch;
+        if (pointer) {
+          const dx = px - pointer.x, dy = py - pointer.y, d = Math.hypot(dx, dy);
+          if (d < R) { k.heat = Math.max(k.heat, 1 - d / R); k.dx = dx / (d || 1); k.dy = dy / (d || 1); }
+        }
+        if (k.heat > .01) {
+          busy = true;
+          const h = k.heat * k.heat;
+          if (Math.random() < h * .6) k.g = GLYPHS[Math.random() * GLYPHS.length | 0];
+          if (h > .08) g = k.g;
+          ox = k.dx * h * 9; oy = k.dy * h * 9;
+          k.heat *= .94;
+        }
+        const fade = 1;
+        const m = Math.min(1, k.heat * 1.4);
+        ctx.fillStyle = `rgba(${INK.map((v, i) => Math.round(v + (HOT[i] - v) * m)).join()},${a * fade})`;
+        ctx.fillText(g, k.x * cw + ox, k.y * ch + oy);
+      }
+      pointer = null;
+      raf = busy ? requestAnimationFrame(draw) : 0;
+    };
+    const wake = () => { if (!raf) raf = requestAnimationFrame(draw); };
+    // The composition starts once the tab is actually visible, so it isn't missed in a background tab
+    // The composition starts when the bust scrolls into view (and the tab is visible), so it plays in front of the visitor
+    const start = () => {
+      if (document.hidden) return addEventListener('visibilitychange', start, { once: true });
+      t0 = performance.now(); wake();
+    };
+    (document.fonts ? document.fonts.load('10px "Geist Mono"').catch(() => {}) : Promise.resolve()).then(() => {
+      size();
+      if (still || !('IntersectionObserver' in window)) return start();
+      t0 = Infinity;
+      const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); start(); } }, { threshold: .35 });
+      io.observe(cv);
+    });
+    addEventListener('resize', () => { size(); wake(); });
+    if (!still) addEventListener('pointermove', e => {
+      if (e.pointerType === 'touch') return;
+      const r = cv.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      if (x < -R || y < -R || x > r.width + R || y > r.height + R) return;
+      pointer = { x, y }; wake();
+    }, { passive: true });
+  })();
 </script>
 </body>
 </html>
