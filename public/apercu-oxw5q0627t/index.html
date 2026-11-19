@@ -362,7 +362,7 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 
   <section class="hero">
     <img class="avatar" src="img/avatar.png" alt="Olivier Tousche">
-    <h1 aria-label="UX Designer, Product Designer, AI Designer, Builder Designer."><span class="ln" aria-hidden="true">UX</span><span class="ln" aria-hidden="true">Designer.</span></h1>
+    <h1 aria-label="Product Designer, Ai Designer, UX Designer, Builder Designer."><span class="ln" aria-hidden="true">Product</span><span class="ln" aria-hidden="true">Designer.</span></h1>
     <p>De l'identification des irritants aux tests utilisateurs, je conçois des <strong>expériences produit</strong> et de service centrées utilisateurs, en articulant <strong>stratégie, recherche et design</strong>.</p>
     <div class="hero-tags"><span>User research</span><span>Prototyping</span><span>Product vision</span><span>User tests</span></div>
   </section>
@@ -578,7 +578,7 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
   // Hero typewriter
   (() => {
     const lines = [...document.querySelectorAll('.hero h1 .ln')];
-    const pairs = [['UX', 'Designer.'], ['Product', 'Designer.'], ['AI', 'Designer.'], ['Builder', 'Designer.']];
+    const pairs = [['Product', 'Designer.'], ['Ai', 'Designer.'], ['UX', 'Designer.'], ['Builder', 'Designer.']];
     if (!lines.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const caret = document.createElement('i'); caret.className = 'caret';
     const text = [...pairs[0]], node = lines.map(l => (l.textContent = '', l.appendChild(document.createTextNode(''))));
