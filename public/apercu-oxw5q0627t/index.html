@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Olivier Tousche Portfolio</title>
+<script>
+  // Language: ?lang= in the URL, then the visitor's saved choice, then the browser (French → fr, anything else → en)
+  (() => {
+    let l;
+    try { l = new URLSearchParams(location.search).get('lang'); if (l === 'fr' || l === 'en') localStorage.setItem('lang', l); else l = localStorage.getItem('lang'); } catch (e) {}
+    if (l !== 'fr' && l !== 'en') l = /^fr\b/i.test((navigator.languages || [])[0] || navigator.language || '') ? 'fr' : 'en';
+    document.documentElement.lang = document.documentElement.dataset.lang = l;
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Outfit:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
@@ -361,11 +370,10 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
   .card { grid-template-columns: 1fr; min-height: 0; }
   .card .text { padding: 32px 28px 8px; }
   .visual { padding: 24px 24px 32px; }
-  .equinox .text { padding-top: 220px; padding-bottom: 32px; }
-  .equinox::after { background: linear-gradient(180deg, rgba(8,14,28,0) 0%, rgba(8,14,28,.55) 35%, rgba(8,14,28,.95) 70%); }
-  .equinox .visual { position: absolute; top: 0; left: 0; right: 0; padding: 28px 28px 0; }
-  .eq-screen { border-radius: 8px; }
-  .equinox .text { padding-top: 260px; }
+  /* Same order as Go MoonBound: text first, then the screen over the key art */
+  .equinox::after { background: linear-gradient(180deg, rgba(8,14,28,.95) 0%, rgba(8,14,28,.8) 45%, rgba(8,14,28,.15) 100%); }
+  .equinox .visual { padding: 24px 24px 40px; }
+  .eq-screen { width: 100%; border-radius: 8px; }
   .card .devices { padding: 24px 24px 40px; }
   .iphone { right: 16px; bottom: 16px; border-radius: 22px; padding: 4px; }
   .iphone .scr { border-radius: 18px; }
@@ -391,10 +399,19 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .gh-top { font-size: 13px; }
 .gh-grid text { font-family: var(--sans); font-size: 9.5px; }
 .contact h4 { font-size: 14px; font-weight: 500; }
+
+/* FR / EN switch, last item of the header nav */
+.lang-switch { display: inline-flex; align-items: center; gap: 2px; }
+.lang-switch i { font-style: normal; color: #c4c4ca; }
+.lang-switch button { font: inherit; background: none; border: 0; padding: 0 3px; color: #8b8b93; cursor: pointer; transition: color .2s; }
+.lang-switch button:hover, .lang-switch button:focus-visible { color: var(--fg); }
+.lang-switch button[aria-pressed="true"] { color: var(--fg); font-weight: 500; }
+@media (max-width: 480px) { .top { gap: 12px; font-size: 13px; } .top nav { gap: 12px; } }
 </style>
 <style>body{margin:0}img{max-width:100%}</style>
 </head>
 <body>
+
 <div class="wrap">
   <header class="top">
     <a class="brand" href="#">Olivier Tousche</a>
@@ -402,6 +419,7 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
       <a href="#projets">Projets</a>
       <a href="#about">À propos</a>
       <a href="#contact">Contact</a>
+      <span class="lang-switch no-i18n" role="group" aria-label="Langue · Language"><button type="button" data-set-lang="fr" aria-pressed="true">FR</button><i aria-hidden="true">/</i><button type="button" data-set-lang="en" aria-pressed="false">EN</button></span>
     </nav>
   </header>
 
@@ -415,26 +433,6 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
   <div class="label" id="projets"><span>Projets sélectionnés</span><span>2022 — 2026</span></div>
 
   <section class="projects">
-
-    <!-- Equinox -->
-    <article class="card equinox">
-      <div class="art"><img src="img/equinox.jpg" alt="Illustration clé d'Altered : une cité fantastique vue des toits"></div>
-      <div class="text">
-        <img class="logo" src="img/logo-equinox-altered.png" alt="">
-        <h3>Equinox · Altered</h3>
-        <h2>Concevoir l'écosystème phygital d'un jeu de cartes à collectionner</h2>
-        <div class="meta">Senior Product Designer · 2021–2025</div>
-        <div class="stats">
-          <div><b>7,8 M</b><span>cartes scannées</span></div>
-          <div><b>6,2 M€</b><span>sur Kickstarter</span></div>
-          <div><b>15+</b><span>pays</span></div>
-        </div>
-        <div class="actions">
-          <a class="btn primary" href="equinox.html">Lire le use case</a>
-        </div>
-      </div>
-      <div class="visual"><div class="eq-screen"><img src="img/cases/equinox-altered/howtoplay-desktop.jpg" alt="Haut de la page How to play d'Altered, version desktop"></div></div>
-    </article>
 
     <!-- GoMoonBound -->
     <article class="card moon">
@@ -461,6 +459,26 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
         </div>
         <div class="iphone"><div class="scr"><div class="ios-bar" aria-hidden="true"><span>9:41</span><i class="island"></i><span class="ind"><svg viewBox="0 0 18 11"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="6" rx="1"/><rect x="10" y="2.5" width="3" height="8.5" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2.5" y="2.5" width="18" height="7" rx="2"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" opacity=".4"/></svg></span></div><img src="img/moon-mobile.jpg" alt="Go MoonBound sur mobile : la Terre, la Lune et le bouton Connect with Strava"></div></div>
       </div>
+    </article>
+
+    <!-- Equinox -->
+    <article class="card equinox">
+      <div class="art"><img src="img/equinox.jpg" alt="Illustration clé d'Altered : une cité fantastique vue des toits"></div>
+      <div class="text">
+        <img class="logo" src="img/logo-equinox-altered.png" alt="">
+        <h3>Equinox · Altered</h3>
+        <h2>Concevoir l'écosystème phygital d'un jeu de cartes à collectionner</h2>
+        <div class="meta">Senior Product Designer · 2021–2025</div>
+        <div class="stats">
+          <div><b>7,8 M</b><span>cartes scannées</span></div>
+          <div><b>6,2 M€</b><span>sur Kickstarter</span></div>
+          <div><b>15+</b><span>pays</span></div>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="equinox.html">Lire le use case</a>
+        </div>
+      </div>
+      <div class="visual"><div class="eq-screen"><img src="img/cases/equinox-altered/howtoplay-desktop.jpg" alt="Haut de la page How to play d'Altered, version desktop"></div></div>
     </article>
 
     <!-- Sklip -->
@@ -591,6 +609,45 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 </div>
 
 <script>
+  // FR / EN: the page is written in French; English replaces each text block from the dictionary below
+  (() => {
+    const T = {"title": "Olivier Tousche Portfolio", "text": {"Projets": "Work", "À propos": "About", "Lire le use case": "Read the case study", "Écrire": "Write", "Copier l'adresse": "Copy address", "Réseau": "Network", "Basé à": "Based in", "Maquette · v0": "Draft · v0", "Concevoir l'écosystème phygital d'un jeu de cartes à collectionner": "Designing the phygital ecosystem of a trading card game", "Transformer ses kilomètres Strava en voyage vers la Lune": "Turning your Strava miles into a trip to the Moon", "Composer ses propres skip-proofs, directement dans le navigateur": "Composing your own skip-proofs, right in the browser", "De l'identification des irritants aux tests utilisateurs, je conçois des <strong>expériences produit<\/strong> et de service centrées utilisateurs, en articulant <strong>stratégie, recherche et design<\/strong>.": "From spotting pain points to user testing, I design user-centred <strong>product experiences<\/strong> and services, bringing together <strong>strategy, research and design<\/strong>.", "Projets sélectionnés": "Selected work", "Product Builder · side project · 2 semaines": "Product Builder · side project · 2 weeks", "voyageurs": "travellers", "25 %": "25%", "d'emails récupérés": "of emails collected", "72 %": "72%", "actifs ce mois-ci": "active this month", "7,8 M": "7.8M", "cartes scannées": "cards scanned", "6,2 M€": "€6.2M", "sur Kickstarter": "on Kickstarter", "pays": "countries", "Product Designer &amp; Builder · solo · 2026": "Product Designer &amp; Builder · solo · 2026", "Visiter Sklip <svg viewBox=\"0 0 12 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M3 9l6-6M4 3h5v5\"><\/path><\/svg>": "Visit Sklip <svg viewBox=\"0 0 12 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M3 9l6-6M4 3h5v5\"><\/path><\/svg>", "Signer tout ce qu'on livre, avec un badge « Made by »": "Signing everything you ship with a “Made by” badge", "Outil web · générateur de badge &amp; prompt · 2026": "Web tool · badge &amp; prompt generator · 2026", "Visiter Stampit <svg viewBox=\"0 0 12 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M3 9l6-6M4 3h5v5\"><\/path><\/svg>": "Visit Stampit <svg viewBox=\"0 0 12 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M3 9l6-6M4 3h5v5\"><\/path><\/svg>", "Décadi": "Décadi", "Le calendrier républicain, un jour à la fois": "The French Republican calendar, one day at a time", "Webapp éphéméride · PWA · 2026": "Daily calendar web app · PWA · 2026", "Visiter decadi.vercel.app <svg viewBox=\"0 0 12 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M3 9l6-6M4 3h5v5\"><\/path><\/svg>": "Visit decadi.vercel.app <svg viewBox=\"0 0 12 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M3 9l6-6M4 3h5v5\"><\/path><\/svg>", "Fichier": "File", "Édition": "Edit", "Présentation": "View", "mar. 17 nov. 9:41": "Tue Nov 17 9:41", "10 ans à concevoir des produits. Maintenant, je les construis aussi.": "10 years designing products. Now I build them too.", "<b>457<\/b> contributions sur GitHub, 12 derniers mois": "<b>457<\/b> contributions on GitHub in the last 12 months", "Moins": "Less", "Plus": "More", "J'articule <b>stratégie, recherche et design<\/b> pour transformer des irritants en produits clairs.": "I bring together <b>strategy, research and design<\/b> to turn pain points into clear products.", "Avec les nouveaux outils d'IA, comme Claude Code et Cursor, je prototype et je livre mes propres produits : moins de transferts, et une intention qui ne se dilue plus entre le design et le code.": "With new AI tools like Claude Code and Cursor, I prototype and ship my own products: fewer handoffs, and an intent that no longer gets diluted between design and code.", "Résultat : des produits <b>en production plus vite<\/b>, des itérations plus rapides, et plus de temps pour la <b>réflexion en amont<\/b>, là où se joue vraiment un produit.": "The result: products <b>in production sooner<\/b>, faster iterations, and more time for <b>upstream thinking<\/b>, where a product is really decided.", "France · remote": "France · remote"}, "attr": {"Go MoonBound sur desktop : la Terre en 3D, la trajectoire et la Lune": "Go MoonBound on desktop: Earth in 3D, the route and the Moon", "Go MoonBound sur mobile : la Terre, la Lune et le bouton Connect with Strava": "Go MoonBound on mobile: Earth, the Moon and the Connect with Strava button", "Illustration clé d'Altered : une cité fantastique vue des toits": "Altered key art: a fantasy city seen from the rooftops", "Haut de la page How to play d'Altered, version desktop": "Top of the Altered How to play page, desktop", "Le configurateur Sklip en action : on ajoute des samples depuis la bibliothèque, puis on échange leur place sur la timeline et sur le vinyle": "The Sklip composer in action: samples are added from the library, then swapped on the timeline and on the vinyl", "Landing page de Stampit : Stamp everything you ship, avec le badge « Craft by Olivier Tousche » dans un téléphone": "Stampit landing page: Stamp everything you ship, with the “Craft by Olivier Tousche” badge on a phone", "Navigation réelle dans Décadi : de la vue Année à Brumaire, au 27 Brumaire, puis glissement au jour suivant": "Real navigation in Décadi: from the Year view to Brumaire, to 27 Brumaire, then a swipe to the next day", "Décadi sur mobile : bandeau de décade, planche de la pistache et récit du jour": "Décadi on mobile: the décade strip, the pistachio plate and the story of the day", "Activité GitHub : 457 contributions sur les 12 derniers mois": "GitHub activity: 457 contributions in the last 12 months"}};
+    const root = document.documentElement, norm = s => s.replace(/\s+/g, ' ').trim();
+    const blocks = [], attrs = [];
+    const walk = el => {
+      if (el.matches('script, style, noscript, .no-i18n')) return;
+      if ([...el.childNodes].some(n => n.nodeType === 3 && n.data.trim())) { blocks.push([el, el.innerHTML]); return; }
+      for (const c of el.children) walk(c);
+    };
+    walk(document.body);
+    document.body.querySelectorAll('[alt], [aria-label], [title]').forEach(el => ['alt', 'aria-label', 'title'].forEach(a => {
+      if (el.hasAttribute(a) && el.getAttribute(a).trim()) attrs.push([el, a, el.getAttribute(a)]);
+    }));
+    const frTitle = document.title;
+    window.__i18nKeys = () => ({ text: [...new Set(blocks.map(([, h]) => norm(h)))], attr: [...new Set(attrs.map(([, , v]) => norm(v)))], title: frTitle });
+    const apply = lang => {
+      const en = lang === 'en';
+      // Blocks without a translation are never touched, so scripted ones (typewriter, composer) keep running
+      blocks.forEach(([el, fr]) => {
+        const tr = T.text[norm(fr)];
+        if (tr === undefined) return;
+        const html = en ? tr : fr;
+        if (el.innerHTML !== html) el.innerHTML = html;
+      });
+      attrs.forEach(([el, a, fr]) => { const tr = T.attr[norm(fr)]; if (tr !== undefined) el.setAttribute(a, en ? tr : fr); });
+      document.title = en && T.title ? T.title : frTitle;
+      root.lang = root.dataset.lang = lang;
+      document.querySelectorAll('[data-set-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.setLang === lang));
+      dispatchEvent(new Event('langchange'));
+    };
+    document.querySelectorAll('[data-set-lang]').forEach(b => b.addEventListener('click', () => {
+      try { localStorage.setItem('lang', b.dataset.setLang); } catch (e) {}
+      apply(b.dataset.setLang);
+    }));
+    apply(root.dataset.lang === 'en' ? 'en' : 'fr');
+  })();
+</script>
+<script>
 
   // Whole-card click: forward to the card's primary link unless a link itself (or a text selection) was the target
   document.querySelectorAll('.card').forEach(card => {
@@ -607,22 +664,24 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelectorAll('.nav-demo video').forEach(v => { v.removeAttribute('autoplay'); v.pause(); });
 
   // GitHub calendar: one column per week (Sunday first), five grey levels
-  (() => {
-    const svg = document.querySelector('.gh-grid');
+  const ghCalendar = () => {
+    const svg = document.querySelector('.gh-grid'), en = document.documentElement.lang === 'en';
     if (!svg) return;
     const start = new Date('2025-11-16T12:00:00'), counts = [0,1,0,0,52,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,30,6,1,0,0,1,0,0,2,2,0,0,0,0,0,0,3,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,4,11,0,0,1,1,5,1,0,2,2,6,6,2,0,0,0,0,17,2,3,0,0,0,0,2,1,3,10,1,2,0,5,0,0,0,0,0,8,2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,9,14,77,26,0,0,1,11,1,10,5,7,0,6,1,0,3,0,0,0,5,12,12,16,12,0,0,8,6,1];
     const C = 10, G = 3, top = 14, fills = ['#efeff1', '#cfcfd4', '#9a9aa2', '#55555c', '#111113'];
     const level = n => n === 0 ? 0 : n < 4 ? 1 : n < 10 ? 2 : n < 20 ? 3 : 4;
-    const weeks = Math.ceil(counts.length / 7), months = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+    const weeks = Math.ceil(counts.length / 7), months = en ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] : ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
     let out = '', lastMonth = -1;
     counts.forEach((n, i) => {
       const w = Math.floor(i / 7), d = i % 7, date = new Date(start); date.setDate(start.getDate() + i);
       if (d === 0 && date.getMonth() !== lastMonth && date.getDate() <= 7 && w < weeks - 2) { lastMonth = date.getMonth(); out += `<text x="${w * (C + G)}" y="9">${months[lastMonth]}</text>`; }
-      out += `<rect x="${w * (C + G)}" y="${top + d * (C + G)}" width="${C}" height="${C}" rx="2" fill="${fills[level(n)]}"><title>${n} contribution${n > 1 ? 's' : ''} le ${date.toLocaleDateString('fr-FR')}</title></rect>`;
+      out += `<rect x="${w * (C + G)}" y="${top + d * (C + G)}" width="${C}" height="${C}" rx="2" fill="${fills[level(n)]}"><title>${n} contribution${n > 1 ? 's' : ''} ${en ? 'on' : 'le'} ${date.toLocaleDateString(en ? 'en-US' : 'fr-FR')}</title></rect>`;
     });
     svg.setAttribute('viewBox', `0 0 ${weeks * (C + G) - G} ${top + 7 * (C + G) - G}`);
     svg.innerHTML = out;
-  })();
+  };
+  ghCalendar();
+  addEventListener('langchange', ghCalendar);
 
   // Hero typewriter
   (() => {
@@ -791,5 +850,4 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
   });
 </script>
 
-</body>
-</html>
+</body></html>
