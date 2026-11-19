@@ -737,6 +737,8 @@ footer::before { content: ""; position: absolute; top: 0; left: -100vw; right: -
   footer { padding-block: 16px 24px; }
 }
 .contact h4 { font-size: 14px; font-weight: 500; }
+/* CV in the contact block: the PDF follows the site language */
+html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en { display: none; }
 
 /* FR / EN switch, last item of the header nav */
 .lang-switch { display: inline-flex; align-items: center; gap: 2px; }
@@ -872,6 +874,11 @@ footer::before { content: ""; position: absolute; top: 0; left: -100vw; right: -
     <div>
       <h4>Basé à</h4>
       <div class="big">Paris · remote</div>
+    </div>
+    <div>
+      <h4>CV</h4>
+      <a class="big cv-fr no-i18n" href="cv/Olivier_Tousche_CV-fr.pdf" download>Télécharger le PDF ↓</a>
+      <a class="big cv-en no-i18n" href="cv/Olivier_Tousche_CV-en.pdf" download>Download the PDF ↓</a>
     </div>
     <div class="ascii-stand" aria-hidden="true"><canvas class="ascii-me"></canvas></div>
     <script type="text/plain" id="ascii-art">
