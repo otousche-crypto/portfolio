@@ -690,6 +690,18 @@ body { margin: 0; }
 .eq-keys li::before { content: counter(k); font-family: var(--sans); font-size: 15px; font-weight: 600; color: var(--muted); top: 1px; }
 .eq-nums b small { font-size: 15px; font-weight: 500; letter-spacing: 0; color: var(--muted); margin-right: 5px; }
 .cs-h3.gm-ind-title { margin-top: 56px !important; }
+
+/* Story steps and role table, same as the Altered case study */
+.eq-step { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 112px 0 0 !important; }
+.eq-step + .cs-h2 { margin-top: 10px !important; }
+.eq-decision { margin: 0; border-top: 1px solid var(--line); }
+.eq-decision div { display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+.eq-decision dt { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: 4px; }
+.eq-decision dd { margin: 0; font-size: 17px; line-height: 1.6; color: #55555c; }
+.eq-step { font-family: var(--sans); text-transform: none; letter-spacing: -0.005em; font-size: 15px; font-weight: 500; color: var(--fg); }
+.eq-decision dt { font-family: var(--sans); text-transform: none; letter-spacing: -0.005em; color: var(--fg); padding-top: 2px; font-size: 15px; font-weight: 500; }
+.cs-body > .eq-nums { margin-top: 28px; }
+@media (max-width: 760px) { .eq-decision div { grid-template-columns: 1fr; gap: 6px; } .eq-step { margin-top: 80px !important; } }
 </style>
 </head>
 <body>
@@ -706,8 +718,8 @@ body { margin: 0; }
   <a class="cs-back" href="index.html#projets">← Tous les projets</a>
   <header class="cs-head">
     <div class="cs-kicker"><img src="img/logo-go-moonbound.png" alt="">GoMoonBound</div>
-    <h1>Go MoonBound - Visualiser vos performances Strava d'une autre manière!</h1>
-    <p class="cs-lede">Go Moonbound est un side project construit en autonomie complète, de la génération du premier prompt à la mise en production, en utilisant Cursor, Claude Code, et l'API Strava.</p>
+    <h1>Go MoonBound : de l'idée à la production en 2 semaines, avec une équipe d'agents IA</h1>
+    <p class="cs-lede">Un terrain d'expérimentation : orchestrer des agents IA pour construire seul un produit réel, le mettre en ligne vite et l'améliorer sur l'usage de vrais utilisateurs.</p>
     <div class="cs-metarow"><dl class="cs-meta"><div><dt>Rôle</dt><dd>Product Builder</dd></div><div><dt>Produit</dt><dd>Go Moonbound</dd></div><div><dt>Durée</dt><dd>2 semaines</dd></div></dl><a class="cs-visit" href="https://gomoonbound.com" target="_blank" rel="noopener">Visiter GoMoonBound <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></div>
   </header>
   <div class="cs-hero cover" style="--hero-bg:#05060f;--hero-fit:cover"><img src="img/moon-desktop.jpg" alt="Go MoonBound - Visualiser vos performances Strava d'une autre manière!"></div>
@@ -716,7 +728,7 @@ body { margin: 0; }
     <section class="eq-tldr" aria-label="En bref">
       <div class="eq-eye">En bref</div>
       <ol class="eq-keys">
-        <li><b>Construit seul, du premier prompt à la mise en production</b>, en 2 semaines.</li>
+        <li><b>Une équipe d'agents IA orchestrée seul</b>, du premier prompt à la mise en production en 2 semaines.</li>
         <li><b>Validé par Strava</b>, qui a ouvert son API à 999 utilisateurs.</li>
         <li><b>11 versions publiées</b> depuis le lancement, au fil des retours des voyageurs.</li>
       </ol>
@@ -727,29 +739,41 @@ body { margin: 0; }
       </div>
     </section>
 
-    <h2 class="cs-h2">Context</h2>
-    <div class="cs-text"><p class="">En 2026, le vibe coding apporte une nouvelle façon de travailler en tant que Product Designer.</p></div>
-    <div class="cs-text"><p class="">Pendant des années, le workflow reposait sur une séparation stricte des rôles : le designer prescrit, l'ingénieur exécute. Cela engendrait de la friction — du temps perdu, de la traduction, de la perte. L'idée initiale pouvait se retrouver diluée à chaque transfert, et une attention toute particulière était nécessaire pour s'assurer que le résultat final restait aligné avec l'intention de départ.</p></div>
-    <figure class="cs-fig w-full"><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/go-moonbound/workflow-iteratif.png" alt="Schéma du workflow itératif" loading="lazy"></button></figure>
-    <div class="cs-text"><p class="">Avec des outils comme Claude Code ou Cursor, ce circuit disparaît. Le designer construit lui-même, teste en local des interactions complexes, des API, des logiques métier — des choses impossibles à vraiment valider sur une maquette Figma. Les tâches répétitives à faible valeur pour le Product Designer sont confiées à des agents IA dédiés. Le temps récupéré va là où il a de la valeur : la réflexion, le cadrage, les choix qui font le produit.</p></div>
-    <figure class="cs-fig w-full"><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/go-moonbound/flow-vibecoding.png" alt="Schéma du flow Vibecoding" loading="lazy"></button></figure>
-    <div class="cs-text"><p class="">Mais ce qui change le plus, c'est la posture. On passe d'un métier de prescription à quelque chose de plus proche de la sculpture — on observe son œuvre prendre forme en direct, on teste, on ajuste au geste, on expérimente le produit réel plutôt qu'une simulation de celui-ci. L'intention et l'exécution ne font plus qu'un.</p></div>
-    <div class="cs-text"><p class="">Ce projet documente cette façon de travailler.</p></div>
-    <h2 class="cs-h2">Projet</h2>
-    <div class="cs-text"><p class="">Go Moonbound est un side project construit en autonomie complète, de la génération du premier prompt à la mise en production, en utilisant Cursor, Claude Code, et l'API Strava.</p></div>
-    <figure class="cs-fig w-full"><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/go-moonbound/outils.png" alt="Cursor + Claude Code + Strava" loading="lazy"></button></figure>
-    <div class="cs-text"><p class="">Le concept : donner de l'émotion aux chiffres bruts. 10 000 km de vélo, c'est abstrait. Voir que tu es à 2,6% du chemin vers la Lune sur une scéne 3D, c'est autre chose. Via l'API Strava, chaque activité — course, vélo, natation, marche — s'additionne et te positionne quelque part dans l'espace, sur les 384 400 km qui séparent les deux astres.</p></div>
-    <div class="cs-text"><p class="">Le défi était double. D'abord technique : connecter l'API Strava pour faire remonter des données réelles, et construire une expérience 3D interactive — impossible à vraiment valider sur une maquette Figma. Ensuite de méthode : aller vite. L'objectif n'était pas la perfection, c'était de mettre le produit entre les mains d'utilisateurs réels le plus tôt possible, pour obtenir des retours concrets et itérer.</p></div>
-    <h2 class="cs-h2">Process</h2>
-    <section class="cs-sec"><div class="cs-split img-left"><figure class="cs-fig "><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/go-moonbound/agents-claude.png" alt="Diagramme du process avec agents Claude" loading="lazy"></button></figure><div class="cs-text"><p class="">Le process repose sur deux agents Claude aux rôles distincts, activés en séquence.<br>D'abord, un agent "Senior Product Engineer" — que j'utilise en amont pour cadrer le concept, challenger mes décisions produit, structurer le PRD et anticiper les contraintes techniques. Une phase de réflexion itérative, en boucle avec la définition du concept, jusqu'à ce que le brief soit solide.<br>Ensuite, un agent "Prompt Master" — chargé de traduire ce brief en instructions précises pour Claude Code. Son rôle : formuler les prompts de façon à minimiser les allers-retours et maximiser la qualité du code généré dès la première passe.</p></div></div></section>
-    <div class="cs-text"><p class="">Une fois le prompt prêt, Claude Code prend le relais et livre en local. Je teste directement le produit réel — pas une maquette, pas un prototype — et j'itère sur ce que je vois et ressens. La boucle test → ajustement → nouvelle livraison locale tourne jusqu'à ce que le produit soit prêt.</p><p class="">Le déploiement est automatisé avec Vercel, connecté au dépôt GitHub. Chaque push génère une URL de prévisualisation, ce qui me permet de tester une évolution en conditions réelles avant de la valider. Une fois la branche fusionnée sur main, la mise en production se fait automatiquement, sans intervention manuelle. Résultat : quelques minutes entre l'idée et la mise en ligne, et la possibilité de revenir à une version précédente en un clic en cas de problème.<br>Zéro handoff. Zéro ticket. De l'intention à la production, en autonomie complète.</p></div>
-    <h2 class="cs-h2">Lancement</h2>
-    <div class="cs-text"><p class="">Dès le premier prompt, l'effet est immédiat : une scène 3D fonctionnelle, connectée à l'API Strava, qui positionne l'utilisateur sur le trajet Terre → Lune. Pas une maquette. Un produit réel.<br>La suite : quelques sessions de debug, des ajustements d'affichage mobile, des itérations sur le rendu 3D, et l'ajout de nouvelles features au fil des retours. Achat du nom de domaine, création du repo GitHub, déploiement. En 2 semaines, <a href="https://gomoonbound.com" target="_blank" rel="noopener">https://gomoonbound.com</a> est en ligne.</p></div>
-    <figure class="cs-fig w-medium"><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/go-moonbound/dashboard.jpg" alt="GoMoonbound dashboard" loading="lazy"></button></figure>
-    <div class="cs-text"><p class="">Seul frein : les requirements Strava pour ouvrir l'API au-delà d'un utilisateur. J'ai créé un agent Claude dédié pour préparer le dossier de validation et respecter les exigences de la plateforme. Apres soumission du dossier, une semaine aura suffit pour avoir un retour de Strava, m'ouvrant l'API pour 999 utilisateurs. Tu peux suivre ma propre progression ici : <a href="https://gomoonbound.com/share/2a1c034f-b5a4-4dce-b6f6-1d26bcea9a10" target="_blank" rel="noopener">https://gomoonbound.com/share/2a1c034f-b5a4-4dce-b6f6-1d26bcea9a10</a></p></div>
-    <div class="cs-text"><p class="">Le premiers utilisateurs sont déja la! et toi, où en es-tu ?  Pour le savoir, rends toi sur <a href="https://gomoonbound.com" target="_blank" rel="noopener">https://gomoonbound.com</a> !</p></div>
-    <h2 class="cs-h2">Changelog</h2>
-    <div class="cs-text"><p class="">Le produit continue d'évoluer après le lancement, au fil des retours utilisateurs. Chaque version corrige un frein ou ajoute ce que l'usage réel a révélé comme manquant.</p></div>
+    <h2 class="cs-h2">Contexte</h2>
+    <div class="cs-text"><p>Pendant des années, le travail reposait sur une séparation stricte : le designer prescrit, l'ingénieur exécute. À chaque transfert, l'intention se dilue et le temps se perd.</p></div>
+    <figure class="cs-fig w-full"><button class="zoom" type="button" aria-label="Agrandir l’image"><img src="img/cases/go-moonbound/workflow-iteratif.png" alt="Le workflow classique : maquette, transfert, développement, retours" loading="lazy"></button></figure>
+    <div class="cs-text"><p>Avec Claude Code et Cursor, ce circuit peut disparaître. <strong>Go MoonBound est l'expérience qui me permet de le vérifier</strong> : un designer peut-il construire seul un produit réel, avec des agents IA, et le faire vivre en production ?</p></div>
+    <figure class="cs-fig w-full"><button class="zoom" type="button" aria-label="Agrandir l’image"><img src="img/cases/go-moonbound/flow-vibecoding.png" alt="Le nouveau flow : intention, agents IA, produit réel, retours" loading="lazy"></button></figure>
+
+    <h2 class="cs-h2">Le produit</h2>
+    <div class="cs-text"><p>Donner de l'émotion aux chiffres bruts. 10 000 km de vélo, c'est abstrait. Se voir à 2,6 % du chemin vers la Lune dans une scène 3D, c'est autre chose. Via l'API Strava, chaque course, sortie vélo, nage ou marche s'additionne et place le voyageur sur les 384 400 km qui séparent la Terre de la Lune.</p></div>
+
+    <p class="eq-step">Expérimenter</p>
+    <h2 class="cs-h2">Tester sur du réel, pas sur une maquette</h2>
+    <div class="cs-text"><p>Une scène 3D interactive branchée sur des données Strava réelles ne se valide pas dans Figma. <strong>Je me suis fixé un seul objectif : mettre le produit entre les mains de vrais utilisateurs le plus tôt possible</strong>, puis laisser l'usage décider de la suite. La perfection pouvait attendre.</p></div>
+
+    <p class="eq-step">Orchestrer</p>
+    <h2 class="cs-h2">Des agents IA à la place d'une équipe</h2>
+    <div class="cs-text"><p>J'ai réparti le travail entre plusieurs agents Claude, chacun avec un rôle précis, activés en séquence. <strong>Je garde les décisions produit et les tests ; les agents cadrent, traduisent et exécutent.</strong></p></div>
+    <figure class="cs-fig w-full"><button class="zoom" type="button" aria-label="Agrandir l’image"><img src="img/cases/go-moonbound/agents-claude.png" alt="Le process : agents Claude en séquence, de la réflexion produit à la livraison" loading="lazy"></button></figure>
+    <dl class="eq-decision">
+      <div><dt>Senior Product Engineer</dt><dd>Challenge le concept et mes décisions, structure le PRD, anticipe les contraintes techniques. On boucle jusqu'à ce que le brief tienne.</dd></div>
+      <div><dt>Prompt Master</dt><dd>Traduit le brief en instructions précises pour Claude Code, pour limiter les allers-retours et viser juste dès la première passe.</dd></div>
+      <div><dt>Claude Code</dt><dd>Écrit et livre le code en local : scène 3D, API Strava, base de données.</dd></div>
+      <div><dt>Agent conformité</dt><dd>Prépare le dossier de validation exigé par Strava pour ouvrir l'API au-delà d'un seul utilisateur.</dd></div>
+      <div><dt>Moi</dt><dd>Fixe l'intention, arbitre, teste le produit réel et décide de ce qui part en production.</dd></div>
+    </dl>
+    <figure class="cs-fig w-full"><button class="zoom" type="button" aria-label="Agrandir l’image"><img src="img/cases/go-moonbound/outils.png" alt="Cursor, Claude Code et l’API Strava" loading="lazy"></button></figure>
+
+    <p class="eq-step">Livrer</p>
+    <h2 class="cs-h2">En production en 2 semaines</h2>
+    <div class="cs-text"><p>Dès le premier prompt, une scène 3D fonctionnelle place l'utilisateur sur le trajet Terre → Lune avec ses vraies données. Suivent quelques sessions de debug, l'affichage mobile, le rendu 3D, puis le nom de domaine et le déploiement.</p></div>
+    <figure class="cs-fig w-medium"><button class="zoom" type="button" aria-label="Agrandir l’image"><img src="img/cases/go-moonbound/dashboard.jpg" alt="Le tableau de bord Go MoonBound : la Terre, la fusée et le classement" loading="lazy"></button></figure>
+    <div class="cs-text"><p>Le déploiement est automatisé : chaque push génère une URL de test sur Vercel, chaque fusion sur main part en production, et un clic suffit pour revenir en arrière. <strong>Quelques minutes séparent une idée de sa mise en ligne.</strong></p><p>Un seul frein : l'API Strava reste limitée à un utilisateur tant que le produit n'est pas validé. Le dossier, préparé avec l'agent conformité, a obtenu une réponse en une semaine, et l'ouverture à 999 utilisateurs.</p></div>
+
+    <p class="eq-step">Itérer</p>
+    <h2 class="cs-h2">Améliorer le produit sur l'usage réel</h2>
+    <div class="cs-text"><p>Une fois en ligne, chaque version avance sur deux fronts à la fois : <strong>répondre aux besoins des voyageurs</strong>, avec le profil, les badges ou le récap hebdomadaire par email, et <strong>améliorer les performances du produit</strong>, avec un parcours robuste dans les navigateurs de LinkedIn et Instagram, un webhook Strava sécurisé ou une base de données qui tient la montée en charge.</p><p>Les deux viennent du même endroit : ce que l'usage réel révèle, et qu'aucune maquette n'aurait montré.</p></div>
     <details class="cs-log"><summary>Historique des mises à jour<i aria-hidden="true"></i></summary><ol><li><div><b>v1.0</b><span>16 mars 2026</span></div><p>Lancement de Go Moonbound — scène 3D Terre/Lune, auth Strava, classement, page de partage, support mobile Safari</p></li><li><div><b>v1.1</b><span>17 mars 2026</span></div><p>Texture NASA Blue Marble, modals responsive, header aligné mobile/desktop, sécurité webhook Strava</p></li><li><div><b>v1.2</b><span>25 mars 2026</span></div><p>Paramètre pour masquer les autres participants, robustesse in-app browsers (LinkedIn, Instagram)</p></li><li><div><b>v1.3</b><span>1er avril 2026</span></div><p>SEO + image OG, changelog modal, CTA de partage quand un participant est introuvable dans le classement</p></li><li><div><b>v2.0</b><span>7 mai 2026</span></div><p>Sphères communautaires avec nuages de progression, podium or/argent/bronze, médailles au survol, correction du plafond de lignes PostgREST</p></li><li><div><b>v2.1</b><span>9 juin 2026</span></div><p>Menu "À propos" avec crédit design, suppression du vaisseau spatial, tracking source de trafic à l'inscription</p></li><li><div><b>v2.2</b><span>17 juin 2026</span></div><p>Analytics GA + Vercel, lien club Strava, scène 3D sur la landing page avec hero animé, favicon orange Go Moonbound</p></li><li><div><b>v2.3</b><span>30 juin 2026</span></div><p>Clic sur une sphère ou une ligne du classement affiche les stats du participant, bouton Share adaptatif, retour en un clic</p></li><li><div><b>v3.0</b><span>11 juillet 2026</span></div><p>Bouton Profil (photo, progression, streak, classement), collection de 23 badges à débloquer, récap hebdomadaire de progression par email</p></li><li><div><b>v3.1</b><span>19 juillet 2026</span></div><p>Flèches de mouvement quotidien dans le classement, objectif de dépassement dans le profil (km restants avant le voyageur suivant), paramètres du compte regroupés dans le profil</p></li><li><div><b>v3.2</b><span>19 juillet 2026</span></div><p>Badges d'invitation débloqués à 1, 5, 10 et 25 inscriptions depuis la page de partage</p></li></ol></details>
     <h2 class="cs-h2">Résultats</h2>
     <section class="gm-report" aria-label="Rapport de mission">
