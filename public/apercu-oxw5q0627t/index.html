@@ -416,6 +416,12 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
   .card .devices { padding: 24px 24px 40px; }
   .iphone { right: 16px; bottom: 16px; border-radius: 22px; padding: 4px; }
   .iphone .scr { border-radius: 18px; }
+  /* Smaller phone, so it no longer climbs over the buttons above */
+  .moon .iphone { width: 100px; min-width: 0; }
+  .card .stats span { white-space: nowrap; }
+}
+@media (max-width: 480px) {
+  .card .stats { gap: 12px; justify-content: space-between; }
   .about, .contact { grid-template-columns: 1fr; gap: 28px; }
 }
 @media (max-width: 420px) {
@@ -445,6 +451,7 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
 .st-shot { position: relative; container-type: inline-size; }
 .st-shot > img { display: block; width: 100%; }
 .st-shot::before { content: ""; position: absolute; left: 37%; right: 37%; top: 53.4%; bottom: 39.2%; background: #f3f2f8; }  /* paints out the screenshot's still badge, whatever width the live one takes */
+.st-live { pointer-events: none; }  /* the thumbnail plays the cycle only: no hover effect on the badge */
 .st-live { position: absolute; left: 50%; top: 57.12%; translate: -50% -50%; }  /* centre of the screenshot's badge (1000, 714 of 2000 px); zoom set by the script */
 </style>
 <style>body{margin:0}img{max-width:100%}</style>
