@@ -440,6 +440,12 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .contact h4 { font-size: 14px; font-weight: 500; }
 /* CV in the contact block: the PDF follows the site language */
 html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en { display: none; }
+
+/* Stampit: the badge of the landing screenshot comes alive, as on stampit (verb retyped, then name and avatar spun like a roulette); sized in cqw so it sits exactly on the badge of the phone */
+.st-shot { position: relative; container-type: inline-size; }
+.st-shot > img { display: block; width: 100%; }
+.st-shot::before { content: ""; position: absolute; left: 37%; right: 37%; top: 53.4%; bottom: 39.2%; background: #f3f2f8; }  /* paints out the screenshot's still badge, whatever width the live one takes */
+.st-live { position: absolute; left: 50%; top: 57.12%; translate: -50% -50%; }  /* centre of the screenshot's badge (1000, 714 of 2000 px); zoom set by the script */
 </style>
 <style>body{margin:0}img{max-width:100%}</style>
 </head>
