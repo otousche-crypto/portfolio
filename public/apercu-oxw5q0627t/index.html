@@ -80,7 +80,7 @@ a { color: inherit; }
 .hero-tags span { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
 html { overflow-x: clip; }  /* full-bleed lines and the cropped bust never cause a sideways scroll */
 /* Contact: the details stacked on the left, the ASCII self-portrait facing them, standing on the footer line and running off the right edge (drawn on a canvas by the script) */
-.contact { position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 24px; min-height: 600px; padding-block: 56px; }
+#contact { position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 24px; min-height: 600px; padding-block: 56px; }
 .contact-title { margin: 0 0 8px; font-size: 14px; font-weight: 500; letter-spacing: -0.005em; }
 .contact > :not(.ascii-stand) { position: relative; z-index: 1; }
 .contact h4 { margin-bottom: 6px; }
@@ -89,10 +89,10 @@ footer::before { content: ""; position: absolute; top: 0; left: -100vw; right: -
 .ascii-stand { position: absolute; bottom: 0; right: calc((100% - 100vw) / 2 - 70px); }
 .ascii-me { display: block; font-size: 10.5px; }
 @media (max-width: 1180px) { .ascii-me { font-size: 9.5px; } }
-@media (max-width: 960px) { .ascii-me { font-size: 8.5px; } .contact { min-height: 500px; } }
+@media (max-width: 960px) { .ascii-me { font-size: 8.5px; } #contact { min-height: 500px; } }
 /* Mobile: the whole block and the footer fit in one screen, the face cropped on the right */
 @media (max-width: 760px) {
-  .contact { min-height: 0; gap: 16px; padding-block: 28px 32px; }
+  #contact { min-height: 0; gap: 16px; padding-block: 28px 32px; }
   .contact-title { margin-bottom: 4px; }
   .contact h4 { margin-bottom: 2px; font-size: 13px; }
   .contact .big { font-size: 16px; }
