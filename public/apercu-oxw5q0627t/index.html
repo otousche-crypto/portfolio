@@ -579,7 +579,10 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
       <div class="visual">
         <div class="browser">
           <div class="bar"><i></i><i></i><i></i><span>stampit</span></div>
-          <img src="img/stampit-landing.jpg" alt="Landing page de Stampit : Stamp everything you ship, avec le badge « Craft by Olivier Tousche » dans un téléphone">
+          <div class="st-shot">
+            <img src="img/stampit-landing.jpg" alt="Landing page de Stampit : Stamp everything you ship, avec le badge « Craft by Olivier Tousche » dans un téléphone">
+            <span class="st-badge no-i18n" aria-hidden="true"><span class="st-av"><img src="img/stampit/olivier.png" alt=""></span><span class="st-n">Designed by</span> <b class="st-b">Olivier Tousche</b><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 9l6-6M4 3h5v5"/></svg></span>
+          </div>
         </div>
       </div>
     </article>
@@ -900,6 +903,53 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
       });
     };
     setTimeout(step, 2000);
+  })();
+
+  // Stampit demo badge, as on the landing: the verb is erased and retyped, then the name spins like a roulette (slowing down) and lands on a new person with their avatar
+  (() => {
+    const badge = document.querySelector('.st-badge');
+    if (!badge) return;
+    const verb = badge.querySelector('.st-n'), bold = badge.querySelector('.st-b'), av = badge.querySelector('.st-av img');
+    const VERBS = ['Designed', 'Crafted', 'Shipped', 'Built'], FIRST = 'Olivier Tousche';
+    const PEOPLE = [['Camille Bernard', 'camille'], ['Lucas Fontaine', 'lucas'], ['Hannah Schmidt', 'hannah'], ['Mateo Gonzalez', 'mateo'], ['Clara Hoffmann', 'clara'],
+      ['Sofia Marchetti', 'sofia'], ['Jonas Lindqvist', 'jonas'], ['Amélie Rousseau', 'amelie'], ['Daniel Okafor', 'daniel'], ['Yuki Nakamura', 'yuki']];
+    const avatar = new Map(PEOPLE.map(([n, f]) => [n, `img/stampit/${f}.png`]));
+    PEOPLE.forEach(([, f]) => { new Image().src = `img/stampit/${f}.png`; });
+    const HOLD = 1800, TYPE = 70, ERASE = 40, SPIN = [50, 50, 55, 60, 70, 80, 95, 115, 140, 175, 220];
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+    // The name slot is as wide as the widest name, so the badge never changes width
+    const sizeSlot = () => {
+      bold.style.width = '';
+      let w = 0;
+      for (const n of [FIRST, ...avatar.keys()]) { bold.textContent = n; w = Math.max(w, bold.offsetWidth); }
+      bold.style.width = Math.ceil(w) + 'px';
+    };
+    const show = (name, flick) => {
+      bold.textContent = name; av.src = avatar.get(name) || 'img/stampit/olivier.png';
+      if (flick && !reduced) bold.animate([{ transform: 'translateY(-40%)', opacity: .3 }, { transform: 'none', opacity: 1 }], { duration: 260, easing: 'cubic-bezier(.2,.9,.3,1.15)' });
+    };
+    const pick = not => { const pool = [...avatar.keys()].filter(n => n !== not); return pool[Math.random() * pool.length | 0]; };
+    const run = async () => {
+      let v = 0, name = FIRST;
+      sizeSlot(); show(name, false);
+      addEventListener('resize', () => { const keep = bold.textContent; sizeSlot(); bold.textContent = keep; });
+      for (;;) {
+        await sleep(HOLD);
+        const next = VERBS[(v + 1) % VERBS.length];
+        if (reduced) verb.textContent = next + ' by';
+        else {
+          let word = VERBS[v % VERBS.length];
+          while (word.length) { word = word.slice(0, -1); verb.textContent = word + ' by'; await sleep(ERASE); }
+          for (let k = 1; k <= next.length; k++) { verb.textContent = next.slice(0, k) + ' by'; await sleep(TYPE); }
+        }
+        v++;
+        await sleep(HOLD);
+        if (!reduced) { let shown = name; for (const step of SPIN) { shown = pick(shown); show(shown, true); await sleep(step); } }
+        name = pick(name); show(name, true);
+      }
+    };
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(run);
   })();
 
   // Sklip composer: add samples from the library, then swap their places (timeline + vinyl), looped; the disc itself stays still
