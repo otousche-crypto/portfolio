@@ -448,6 +448,43 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .bm-stats span { font-size: 13px; color: #55555c; }
 .bm-steps:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; border-radius: 16px; }
 .bmad figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: center; }
+.showcase { position: relative; margin: 40px 0 !important; padding: 32px 32px 40px; border-radius: 24px; background: linear-gradient(160deg, #f4efe4, #e9e1d0); }
+.showcase .devices { padding: 0 0 8px; }
+/* Scrolling page inside the MacBook: the page scrolls, the nav stays stuck at the top like on the live site */
+.scrollmac .macbook { width: 100%; margin: 0; }
+.sm-screen { display: flex; flex-direction: column; }
+/* Discreet browser toolbar, tall enough for the webcam notch to sit inside it instead of over the page */
+.sm-bar { flex: none; position: relative; height: 4.3cqw; background: #f4f1ea; border-bottom: 1px solid rgba(0,0,0,.06); }
+.sm-screen { container-type: inline-size; }
+/* Skeleton toolbar, no text: everything sits in the lower part so the webcam notch above never overlaps it */
+.sm-bar > span { position: absolute; bottom: .75cqw; display: flex; align-items: center; gap: .5cqw; height: 1.7cqw; }
+.sm-bar i, .sm-bar b { display: block; background: #e2dccf; border-radius: 99px; }
+.sm-dots { left: 1.4cqw; }
+.sm-dots i { width: .8cqw; height: .8cqw; }
+.sm-nav-btns { left: 5.6cqw; gap: .9cqw !important; }
+.sm-nav-btns i { width: 1cqw; height: 1cqw; border-radius: .25cqw; }
+.sm-url { left: 50%; transform: translateX(-50%); width: 38cqw; padding: 0 .8cqw; border-radius: .6cqw; background: #e9e4d8; }
+.sm-url i { width: .8cqw; height: .8cqw; background: #d6cfbf; }
+.sm-url b { width: 14cqw; height: .55cqw; background: #d6cfbf; }
+.sm-tools { right: 1.4cqw; gap: .9cqw !important; }
+.sm-tools i { width: 1cqw; height: 1cqw; border-radius: .25cqw; }
+.sm-area { position: relative; flex: 1; min-height: 0; }
+.sm-view { position: absolute; inset: 0; overflow: hidden; container-type: size; }
+.macbook .mb-screen .sm-page { display: block; width: 100%; height: auto; object-fit: initial; animation: smScroll 22s cubic-bezier(.45,0,.25,1) infinite; }
+@keyframes smScroll {
+  0%, 8% { transform: translateY(0); }
+  30%, 38% { transform: translateY(calc((-100% + 100cqh) * .36)); }
+  58%, 66% { transform: translateY(calc((-100% + 100cqh) * .72)); }
+  84%, 90% { transform: translateY(calc(-100% + 100cqh)); }
+  100% { transform: translateY(0); }
+}
+.macbook .mb-screen .sm-nav { position: absolute; z-index: 2; left: var(--nx); top: var(--ny); width: var(--nw); height: auto; object-fit: initial; filter: drop-shadow(0 6px 14px rgba(0,0,0,.18)); }
+.scrollmac:hover .sm-page { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .sm-page { animation: none; } }
+.showcase .macbook .lid { box-shadow: 0 0 0 1px #2c2c31, 0 40px 80px -30px rgba(60,40,10,.45); }
+.showcase .iphone { right: 0; bottom: 0; }
+.showcase .ios-bar { background: #fffdf8; color: #111; }
+.showcase figcaption { font-family: var(--mono); font-size: 12px; color: #8a7f68; margin-top: 20px; }
 .sp-carousel { position: relative; }
 .sp-nav { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 14px; }
 .sp-count { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-right: 6px; font-variant-numeric: tabular-nums; }
@@ -515,6 +552,10 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
   .cs-fig.w-small { max-width: 100%; }
   .cs-next { padding: 28px; }
   .sp-grid { grid-auto-columns: 86%; }
+  .showcase { padding: 16px 16px 24px; }
+  .showcase .devices { padding: 56px 0 0; }
+  .showcase .iphone { width: 30%; min-width: 0; border-radius: 18px; padding: 4px; }
+  .showcase .iphone .scr { border-radius: 14px; }
   /* On mobile the steps become a swipeable carousel, the next card peeking in */
   .bm-steps { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 76%; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; margin-inline: -4px; padding: 2px 4px; }
   .bm-steps::-webkit-scrollbar { display: none; }

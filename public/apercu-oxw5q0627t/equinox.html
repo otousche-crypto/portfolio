@@ -448,6 +448,43 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .bm-stats span { font-size: 13px; color: #55555c; }
 .bm-steps:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; border-radius: 16px; }
 .bmad figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: center; }
+.showcase { position: relative; margin: 40px 0 !important; padding: 32px 32px 40px; border-radius: 24px; background: linear-gradient(160deg, #f4efe4, #e9e1d0); }
+.showcase .devices { padding: 0 0 8px; }
+/* Scrolling page inside the MacBook: the page scrolls, the nav stays stuck at the top like on the live site */
+.scrollmac .macbook { width: 100%; margin: 0; }
+.sm-screen { display: flex; flex-direction: column; }
+/* Discreet browser toolbar, tall enough for the webcam notch to sit inside it instead of over the page */
+.sm-bar { flex: none; position: relative; height: 4.3cqw; background: #f4f1ea; border-bottom: 1px solid rgba(0,0,0,.06); }
+.sm-screen { container-type: inline-size; }
+/* Skeleton toolbar, no text: everything sits in the lower part so the webcam notch above never overlaps it */
+.sm-bar > span { position: absolute; bottom: .75cqw; display: flex; align-items: center; gap: .5cqw; height: 1.7cqw; }
+.sm-bar i, .sm-bar b { display: block; background: #e2dccf; border-radius: 99px; }
+.sm-dots { left: 1.4cqw; }
+.sm-dots i { width: .8cqw; height: .8cqw; }
+.sm-nav-btns { left: 5.6cqw; gap: .9cqw !important; }
+.sm-nav-btns i { width: 1cqw; height: 1cqw; border-radius: .25cqw; }
+.sm-url { left: 50%; transform: translateX(-50%); width: 38cqw; padding: 0 .8cqw; border-radius: .6cqw; background: #e9e4d8; }
+.sm-url i { width: .8cqw; height: .8cqw; background: #d6cfbf; }
+.sm-url b { width: 14cqw; height: .55cqw; background: #d6cfbf; }
+.sm-tools { right: 1.4cqw; gap: .9cqw !important; }
+.sm-tools i { width: 1cqw; height: 1cqw; border-radius: .25cqw; }
+.sm-area { position: relative; flex: 1; min-height: 0; }
+.sm-view { position: absolute; inset: 0; overflow: hidden; container-type: size; }
+.macbook .mb-screen .sm-page { display: block; width: 100%; height: auto; object-fit: initial; animation: smScroll 22s cubic-bezier(.45,0,.25,1) infinite; }
+@keyframes smScroll {
+  0%, 8% { transform: translateY(0); }
+  30%, 38% { transform: translateY(calc((-100% + 100cqh) * .36)); }
+  58%, 66% { transform: translateY(calc((-100% + 100cqh) * .72)); }
+  84%, 90% { transform: translateY(calc(-100% + 100cqh)); }
+  100% { transform: translateY(0); }
+}
+.macbook .mb-screen .sm-nav { position: absolute; z-index: 2; left: var(--nx); top: var(--ny); width: var(--nw); height: auto; object-fit: initial; filter: drop-shadow(0 6px 14px rgba(0,0,0,.18)); }
+.scrollmac:hover .sm-page { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .sm-page { animation: none; } }
+.showcase .macbook .lid { box-shadow: 0 0 0 1px #2c2c31, 0 40px 80px -30px rgba(60,40,10,.45); }
+.showcase .iphone { right: 0; bottom: 0; }
+.showcase .ios-bar { background: #fffdf8; color: #111; }
+.showcase figcaption { font-family: var(--mono); font-size: 12px; color: #8a7f68; margin-top: 20px; }
 .sp-carousel { position: relative; }
 .sp-nav { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 14px; }
 .sp-count { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-right: 6px; font-variant-numeric: tabular-nums; }
@@ -515,6 +552,10 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
   .cs-fig.w-small { max-width: 100%; }
   .cs-next { padding: 28px; }
   .sp-grid { grid-auto-columns: 86%; }
+  .showcase { padding: 16px 16px 24px; }
+  .showcase .devices { padding: 56px 0 0; }
+  .showcase .iphone { width: 30%; min-width: 0; border-radius: 18px; padding: 4px; }
+  .showcase .iphone .scr { border-radius: 14px; }
   /* On mobile the steps become a swipeable carousel, the next card peeking in */
   .bm-steps { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 76%; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; margin-inline: -4px; padding: 2px 4px; }
   .bm-steps::-webkit-scrollbar { display: none; }
@@ -551,10 +592,21 @@ body { margin: 0; }
   <article class="cs-body">
     <h2 class="cs-h2">Context</h2>
     <section class="cs-sec"><div class="cs-text"><p class=""><strong>Equinox est un studio indépendant développant Altered, un jeu de cartes à collectionner nouvelle génération, pensé dès l'origine comme un écosystème phygital associant cartes physiques et services digitaux avancés.</strong></p></div><figure class="cs-fig "><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/kickstarter.jpg" alt="Altered Kickstarter Success" loading="lazy"></button></figure><div class="cs-text"><p class="">Le projet a connu un succès majeur lors de sa campagne Kickstarter — 14 997 contributeurs ont engagé 6 213 305 €, validant fortement la proposition de valeur et donnant naissance à une communauté internationale de joueurs très engagée. Ce succès a rapidement placé l'équipe dans un contexte de forte exposition publique, avec des deadlines serrées, des enjeux de passage à l'échelle et un haut niveau d'exigence sur la qualité du produit.</p></div></section>
+    <figure class="showcase scrollmac">
+  <div class="visual devices"><div class="macbook"><div class="lid"><div class="mb-screen sm-screen"><div class="sm-bar" aria-hidden="true"><span class="sm-dots"><i></i><i></i><i></i></span><span class="sm-nav-btns"><i></i><i></i></span><span class="sm-url"><i></i><b></b></span><span class="sm-tools"><i></i><i></i><i></i></span></div><div class="sm-area"><div class="sm-view" style="--nx:8.333%;--ny:0.556cqw;--nw:83.819%">
+    <img class="sm-page" src="img/cases/equinox-altered/howtoplay-desktop.jpg" alt="Page How to play d'Altered, version desktop" loading="lazy"><img class="sm-nav" src="img/cases/equinox-altered/howtoplay-nav.png" alt="">
+  </div></div></div></div><div class="base"></div></div></div>
+  <figcaption>How to play · navigation desktop, barre de navigation fixe</figcaption>
+</figure>
     <h2 class="cs-h2">Vision produit &amp; Stratégie</h2>
     <figure class="cs-fig w-medium"><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/plan-trois-temps.png" alt="Plan de déploiement en trois temps" loading="lazy"></button></figure>
     <div class="cs-text"><p class="">Face à la complexité du produit et à la pression des délais, j'ai défendu un plan de déploiement en trois temps, conçu pour aligner produit, design et tech sur une vision commune de la progression des usages.</p></div>
     <section class="cs-sec"><h3 class="cs-h3">Temps 1</h3><p class="cs-sub">Meet the Lore : Poser les fondations de l'univers et de l'identité joueur</p><div class="cs-text"><p class="">Altered est un univers riche et complexe — factions, Héros, personnages, Cartes. Avant d'activer la moindre mécanique de jeu ou logique économique, il fallait donner aux joueurs le temps et les outils pour s'y immerger, se l'approprier, et y construire leur identité.</p></div><div class="cs-split img-left"><figure class="cs-fig "><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/temps-1-meet-the-lore.jpg" alt="Temps 1 - Meet the Lore" loading="lazy"></button></figure><div class="cs-text"><ul class="cs-list "><li>Création et gestion du compte joueur</li><li>Découverte de l'univers, du lore et des factions</li><li>Premières briques de gestion de collection digitale</li><li>Revendication des cartes physiques via QR codes</li><li>Profils joueurs et éléments d'identité</li></ul></div></div></section>
+    <figure class="showcase">
+  <div class="visual devices"><div class="macbook"><div class="lid"><div class="mb-screen"><img src="img/cases/equinox-altered/factions-desktop.jpg" alt="Les Factions, version desktop" loading="lazy"></div></div><div class="base"></div></div>
+  <div class="iphone"><div class="scr"><div class="ios-bar" aria-hidden="true"><span>9:41</span><i class="island"></i><span class="ind"><svg viewBox="0 0 18 11"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="6" rx="1"/><rect x="10" y="2.5" width="3" height="8.5" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2.5" y="2.5" width="18" height="7" rx="2"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" opacity=".4"/></svg></span></div><img src="img/cases/equinox-altered/factions-mobile.jpg" alt="Les Factions, version mobile" loading="lazy"></div></div></div>
+  <figcaption>Les Factions · desktop et mobile</figcaption>
+</figure>
     <div class="cs-text"><p class="">Pour mesurer le succès de Meet the Lore, trois métriques clés. Tout d'abord, le nombre de création de compte. Ensuite, le nombre de cartes scannées — signal fort d'appropriation du produit physique — Enfin, la lecture d'articles de lore, qui indique que le joueur s'immerge dans l'univers au-delà du simple onboarding.</p></div>
     <section class="cs-sec"><h3 class="cs-h3">Temps 2</h3><p class="cs-sub">Meet the Game : Connecter le digital au jeu et aux usages cœur</p><div class="cs-text"><p class="">L'univers approprié, le digital devait devenir un vrai prolongement du jeu — facilitant la pratique, renforçant les liens entre joueurs et donnant vie à une scène compétitive naissante.</p></div><div class="cs-split img-left"><figure class="cs-fig "><button class="zoom" type="button" aria-label="Agrandir l'image"><img src="img/cases/equinox-altered/temps-2-meet-the-game.jpg" alt="Temps 2 - Meet the Game" loading="lazy"></button></figure><div class="cs-text"><ul class="cs-list "><li>Outils de gameplay</li><li>Gestion d'événements et de tournois</li><li>Gamification de l'expérience</li><li>Fonctionnalités sociales et communautaires</li><li>Intégration des boutiques partenaires</li><li>Optimisation des parcours pour les joueurs réguliers</li></ul></div></div></section>
     <div class="cs-text"><p class="">Pour mesurer le succès de Meet the Game, trois métriques clés : le nombre d'événements et tournois organisés par les boutiques depuis notre plateforme, le taux d'utilisation des outils de gameplay — signal fort que le digital est devenu un vrai prolongement du jeu physique — et la fréquence de retour sur la plateforme, qui indique que les joueurs s'y retrouvent régulièrement dans leur pratique quotidienne.</p></div>
