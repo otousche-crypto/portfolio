@@ -131,6 +131,37 @@ a { color: inherit; }
 .equinox .stats { display: flex; gap: 28px; margin-top: 8px; }
 .equinox .stats b { display: block; font-size: 22px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
 .equinox .stats span { font-size: 12px; color: var(--c-muted); }
+/* MacBook with a scrolling page and a stuck nav (used by the Equinox case study) */
+.equinox .visual { z-index: 2; }
+/* Home card: just the top of the How to play page, in a softly rounded frame floating over the key art */
+.eq-screen { width: 86%; aspect-ratio: 16 / 10; border-radius: 12px; overflow: hidden; background: #fff;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.14), 0 2px 6px rgba(4,10,24,.18), 0 28px 60px -18px rgba(4,10,24,.55); }
+.equinox .eq-screen img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.sm-screen { display: flex; flex-direction: column; container-type: inline-size; }
+.sm-bar { flex: none; position: relative; height: 4.3cqw; background: #f4f1ea; border-bottom: 1px solid rgba(0,0,0,.06); }
+.sm-bar > span { position: absolute; bottom: .75cqw; display: flex; align-items: center; gap: .5cqw; height: 1.7cqw; }
+.sm-bar i, .sm-bar b { display: block; background: #e2dccf; border-radius: 99px; }
+.sm-dots { left: 1.4cqw; }
+.sm-dots i { width: .8cqw; height: .8cqw; }
+.sm-nav-btns { left: 5.6cqw; gap: .9cqw !important; }
+.sm-nav-btns i { width: 1cqw; height: 1cqw; border-radius: .25cqw; }
+.sm-url { left: 50%; transform: translateX(-50%); width: 38cqw; padding: 0 .8cqw; border-radius: .6cqw; background: #e9e4d8; }
+.sm-url i { width: .8cqw; height: .8cqw; background: #d6cfbf; }
+.sm-url b { width: 14cqw; height: .55cqw; background: #d6cfbf; }
+.sm-tools { right: 1.4cqw; gap: .9cqw !important; }
+.sm-tools i { width: 1cqw; height: 1cqw; border-radius: .25cqw; }
+.sm-area { position: relative; flex: 1; min-height: 0; }
+.sm-view { position: absolute; inset: 0; overflow: hidden; container-type: size; }
+.macbook .mb-screen .sm-page { display: block; width: 100%; height: auto; object-fit: initial; animation: smScroll 22s cubic-bezier(.45,0,.25,1) infinite; }
+@keyframes smScroll {
+  0%, 8% { transform: translateY(0); }
+  30%, 38% { transform: translateY(calc((-100% + 100cqh) * .36)); }
+  58%, 66% { transform: translateY(calc((-100% + 100cqh) * .72)); }
+  84%, 90% { transform: translateY(calc(-100% + 100cqh)); }
+  100% { transform: translateY(0); }
+}
+.macbook .mb-screen .sm-nav { position: absolute; z-index: 2; left: var(--nx); top: var(--ny); width: var(--nw); height: auto; object-fit: initial; filter: drop-shadow(0 6px 14px rgba(0,0,0,.18)); }
+@media (prefers-reduced-motion: reduce) { .macbook .mb-screen .sm-page { animation: none; } }
 .equinox .logo { filter: invert(1); background: transparent; }
 
 /* GoMoonBound */
@@ -332,7 +363,9 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
   .visual { padding: 24px 24px 32px; }
   .equinox .text { padding-top: 220px; padding-bottom: 32px; }
   .equinox::after { background: linear-gradient(180deg, rgba(8,14,28,0) 0%, rgba(8,14,28,.55) 35%, rgba(8,14,28,.95) 70%); }
-  .equinox .visual { display: none; }
+  .equinox .visual { position: absolute; top: 0; left: 0; right: 0; padding: 28px 28px 0; }
+  .eq-screen { border-radius: 8px; }
+  .equinox .text { padding-top: 260px; }
   .card .devices { padding: 24px 24px 40px; }
   .iphone { right: 16px; bottom: 16px; border-radius: 22px; padding: 4px; }
   .iphone .scr { border-radius: 18px; }
@@ -452,6 +485,8 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .showcase .devices { padding: 0 0 8px; }
 /* Scrolling page inside the MacBook: the page scrolls, the nav stays stuck at the top like on the live site */
 .scrollmac .macbook { width: 100%; margin: 0; }
+.showcase.scrollmac { background: none; padding: 0; margin: 32px 0 !important; }
+.scrollmac figcaption { color: var(--muted); text-align: center; }
 .sm-screen { display: flex; flex-direction: column; }
 /* Discreet browser toolbar, tall enough for the webcam notch to sit inside it instead of over the page */
 .sm-bar { flex: none; position: relative; height: 4.3cqw; background: #f4f1ea; border-bottom: 1px solid rgba(0,0,0,.06); }
