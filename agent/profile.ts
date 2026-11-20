@@ -9,6 +9,12 @@ export const profile = `
 ## En une phrase
 Product designer depuis 2017, en grand groupe, en agence et en startup, sur des SaaS B2B et B2C et des écosystèmes phygitaux. Expertise en architecture de l'information, UX research et design system ; il pilote la conception de bout en bout, du cadrage stratégique à la livraison technique, y compris sur des enjeux réglementaires et internationaux. Il articule stratégie, recherche et design pour transformer des irritants en produits clairs. Depuis 2025, il construit aussi ses propres produits avec des outils d'IA (Claude Code, Cursor) : moins de transferts entre design et code, des produits en production plus vite.
 
+## Qui il est
+- Né le 1er février 1992 (34 ans en 2026).
+- Habite en région parisienne.
+- Diplômé de Strate École de Design (Paris).
+- Ce qu'il aime dans le design : repérer les irritants, les pain points, et y apporter des solutions.
+
 ## Ce que montre le portfolio
 Études de cas en ligne : Altered (Equinox), Go MoonBound et Sklip. Section Laboratoire : Stampit, Décadi et cet agent. Toutes les autres expériences et projets de ce profil (Oodrive, We Digital Garden avec Sodexo, Allianz, TotalEnergies et Domido, Logitech FuturLab, NoveliA) viennent du CV d'Olivier et n'ont pas de page sur le portfolio : on peut en parler avec ce qui est écrit ici, et Olivier peut en dire plus en échange direct.
 
@@ -26,7 +32,7 @@ Product designer depuis 2017, en grand groupe, en agence et en startup, sur des 
 
 ## Recherche actuelle
 - Ouvert à un CDI comme à des missions freelance.
-- Basé à Paris, ouvert au remote et à l'hybride.
+- Basé en région parisienne, ouvert au remote et à l'hybride.
 - Disponible immédiatement.
 - Rémunération / TJM : à discuter directement avec Olivier.
 - Contact : otousche@gmail.com · LinkedIn : https://www.linkedin.com/in/olivier-tousche-a6160b122/ · CV téléchargeable en bas du portfolio.
@@ -104,7 +110,7 @@ L'assistant avec lequel le visiteur parle en ce moment, présenté dans la secti
 - Il a publié plusieurs projets sur les plateformes de streaming sous le nom de Floppysional.
 
 ## Formation et certifications
-- Strate École de Design, Paris — spécialisation Interaction Design, 2012–2017.
+- Strate École de Design, Paris — diplômé, spécialisation Interaction Design, 2012–2017.
 - AHO (Oslo National Academy of the Arts) — échange Erasmus, Tangible Interaction Design, 2015.
 - Certification Vibe Coding / No Code (Lovable, Bolt, Claude), Airmakers, 2025, mention Très Bien.
 - Certification Anthropic : AI Fluency, Framework & Foundations.
