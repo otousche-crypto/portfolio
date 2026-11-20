@@ -3,6 +3,7 @@
 // exactement le même code que la production, sans serveur.
 
 import Anthropic from '@anthropic-ai/sdk';
+import { cannedAnswer } from './canned.js';
 import { MODEL, systemPrompt } from './prompt.js';
 
 export type ChatMessage = { role: 'user' | 'assistant'; content: string };
@@ -104,6 +105,14 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
   try { body = await req.json(); } catch { return json(400, 'invalid_body'); }
   const input = validate(body);
   if (typeof input === 'string') return json(input === 'invalid_body' || input === 'invalid_messages' ? 400 : input === 'conversation_ended' ? 409 : 413, input);
+  // Question suggérée au démarrage : réponse toute prête, sans modèle ni décompte de quota
+  const canned = cannedAnswer(input.messages.at(-1)!.content);
+  if (canned) {
+    await deps.store?.log({ at: new Date().toISOString(), lang: input.lang, turn: (input.messages.length + 1) / 2, question: input.messages.at(-1)!.content, answer: canned, outcome: 'canned' })
+      .catch((e) => console.error('log error', e));
+    return new Response(canned, { headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'no-store', 'x-content-type-options': 'nosniff' } });
+  }
+
   const allowed = deps.store ? await deps.store.allow(deps.visitor) : true;
   if (allowed === 'paused') return json(503, 'paused');
   if (!allowed) return json(429, 'rate_limited');
