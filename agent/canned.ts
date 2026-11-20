@@ -38,6 +38,13 @@ Son réflexe : confronter les hypothèses au réel. Avec l'IA, il construit lui-
 Ce qui l'anime : apporter des solutions originales et singulières.
 [[Ses projets de product builder ? | Comment utilise-t-il l’IA ?]]`,
 
+  'son approche du design ?': `Olivier part toujours des usages réels, et son approche se joue en trois temps.
+---
+**Comprendre** : recherche utilisateur, irritants, cadrage. **Concevoir** : parcours, prototypes et itérations, avec les équipes produit et tech. **Valider** : tests utilisateurs et retours terrain, pour sécuriser chaque décision.
+---
+Un exemple complet : l'[étude de cas Altered](https://www.oliviertousche.com/equinox.html).
+[[Son expérience en recherche UX ? | Comment utilise-t-il l’IA ?]]`,
+
   'ses projets de product builder ?': `Olivier conçoit et construit seul ses produits, avec des agents IA : [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), qui place vos sorties Strava sur la route de la Lune, et [Sklip](https://www.oliviertousche.com/sklip.html), pour les DJs de scratch.
 ---
 Dans le [Laboratoire](https://www.oliviertousche.com/#laboratoire) : Stampit, Décadi et cet agent. Et NoveliA, en bêta fermée : un système d'orchestration agentique pour co-construire un produit à plusieurs.
@@ -63,6 +70,13 @@ His reflex: test assumptions against reality. With AI, he builds the product him
 ---
 What drives him: bringing original, distinctive solutions.
 [[His product builder projects? | How does he use AI?]]`,
+
+  'his design approach?': `Olivier always starts from real usage, and his approach plays out in three steps.
+---
+**Understand**: user research, pain points, framing. **Design**: flows, prototypes and iterations, with product and tech teams. **Validate**: user tests and field feedback, to secure every decision.
+---
+A full example: the [Altered case study](https://www.oliviertousche.com/equinox.html).
+[[His UX research experience? | How does he use AI?]]`,
 
   'his product builder projects?': `Olivier designs and builds his own products solo, with AI agents: [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), which puts your Strava activities on the road to the Moon, and [Sklip](https://www.oliviertousche.com/sklip.html), for scratch DJs.
 ---
