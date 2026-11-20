@@ -420,7 +420,9 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     const T = {
       fr: {
         hello: 'Je suis l’agent IA d’Olivier : posez-moi vos questions, je tâcherai d’y répondre !',
-        suggestions: ['Son expérience en recherche UX ?', 'Comment utilise-t-il l’IA ?', 'Parlez-moi d’Altered', 'Est-il disponible ?'],
+        suggestions: ['Comment utilise-t-il l’IA ?', 'Sa vision produit ?', 'Parlez-moi d’Altered', 'Est-il disponible ?'],
+        // Fills in when the agent's own suggestions are missing or were already asked
+        more: ['Ses projets de product builder ?', 'Parlez-moi de Go MoonBound', 'Comment utilise-t-il l’IA ?', 'Sa vision produit ?', 'Son expérience en recherche UX ?', 'Parlez-moi d’Altered', 'Comment travaille-t-il ?', 'Est-il disponible ?'],
         429: 'Vous avez atteint la limite de messages pour le moment. Réessayez un peu plus tard, ou écrivez directement à Olivier : otousche@gmail.com.',
         paused: 'Je fais une pause pour aujourd’hui 😴 En attendant, écrivez directement à Olivier : otousche@gmail.com.',
         conversation_ended: 'Je me suis arrêté là 😄 Cliquez sur « Nouvelle conversation » pour repartir sur de bonnes bases.', ended: 'Conversation terminée',
@@ -431,7 +433,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       },
       en: {
         hello: 'I’m Olivier’s AI agent: ask me your questions, I’ll do my best to answer!',
-        suggestions: ['His UX research experience?', 'How does he use AI?', 'Tell me about Altered', 'Is he available?'],
+        suggestions: ['How does he use AI?', 'His product vision?', 'Tell me about Altered', 'Is he available?'],
+        more: ['His product builder projects?', 'Tell me about Go MoonBound', 'How does he use AI?', 'His product vision?', 'His UX research experience?', 'Tell me about Altered', 'How does he work?', 'Is he available?'],
         429: 'You’ve reached the message limit for now. Try again a bit later, or email Olivier directly: otousche@gmail.com.',
         paused: 'I’m taking a break for today 😴 In the meantime, email Olivier directly: otousche@gmail.com.',
         conversation_ended: 'I stopped there 😄 Click “New chat” to start afresh.', ended: 'Conversation closed',
@@ -481,6 +484,16 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     // [[FIN]] instead of suggestions: the agent has had enough of being tested and closes the conversation
     const ended = () => /\[\[\s*(FIN|END)\s*\]\]\s*$/.test(messages.at(-1)?.content || '');
     const followUps = text => /\[\[\s*(FIN|END)\s*\]\]\s*$/.test(text) ? [] : (text.match(/\[\[([^\]\n]+)\]\]\s*$/)?.[1] || '').split('|').map(x => x.trim()).filter(Boolean).slice(0, 3)
+    // Always at least two suggestions, never one the visitor already asked: the agent's own first, then the fallbacks
+    const key = s => s.toLowerCase().replace(/[’`]/g, "'").replace(/\s+/g, ' ').replace(/\s*\?\s*$/, '').trim();
+    const next = text => {
+      if (/\[\[\s*(FIN|END)\s*\]\]\s*$/.test(text)) return [];
+      const seen = new Set(messages.filter(m => m.role === 'user').map(m => key(m.content)));
+      const out = [];
+      for (const s of followUps(text)) if (!seen.has(key(s))) { seen.add(key(s)); out.push(s); }
+      for (const s of T[lang()].more) if (out.length < 2 && !seen.has(key(s))) { seen.add(key(s)); out.push(s); }
+      return out;
+    };
     const split = text => body(text).replace(/^\s*_meta:[^\n]*(\n+|$)/, '').replace(/\n-{1,3}[ \t]*$/, '').split(/\n[ \t]*-{3,}[ \t]*(?:\n|$)/);
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -553,7 +566,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       if (greeting === 'shown') add('div', 'msg bot', md(t.hello));
       if (greeting === 'typing') add('div', 'msg bot', TYPING);
       // The suggestions, one swipeable line above the composer: the starters on a fresh chat, then the agent's own follow-ups
-      showChips(messages.length ? (messages.at(-1).role === 'assistant' ? followUps(messages.at(-1).content) : []) : t.suggestions);
+      showChips(messages.length ? (messages.at(-1).role === 'assistant' ? next(messages.at(-1).content) : []) : t.suggestions);
       messages.forEach((m, i) => {
         if (m.role === 'user') return add('div', 'msg me', esc(m.content));
         split(m.content).filter(p => p.trim()).forEach(p => add('div', 'msg bot', md(p)));
@@ -643,7 +656,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
         messages.push({ role: 'assistant', content: answer });
         save();
         extras(messages.length - 1);
-        showChips(followUps(answer));
+        showChips(next(answer));
         down();
         if (ended()) await burst();
       } catch (e) {
@@ -652,6 +665,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
         // The agent says it itself, in its own bubble
         const last = bubbles.at(-1);
         (last.querySelector('.typing') ? last : add('div', 'msg bot', '')).innerHTML = md(T[lang()][e.message] || T[lang()].error);
+        if (e.message !== '429' && e.message !== 'paused') showChips(next(messages.at(-1)?.content || ''));
         down();
       }
       busy = false; update(); q.focus({ preventScroll: true });
