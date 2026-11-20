@@ -415,6 +415,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
         hello: 'Je suis l’agent IA d’Olivier : posez-moi vos questions, je tâcherai d’y répondre !',
         suggestions: ['Son expérience en recherche UX ?', 'Comment utilise-t-il l’IA ?', 'Parlez-moi d’Altered', 'Est-il disponible ?'],
         429: 'Vous avez atteint la limite de messages pour le moment. Réessayez dans une heure, ou écrivez directement à Olivier : otousche@gmail.com.',
+        conversation_ended: 'Je me suis arrêté là 😄 Cliquez sur « Nouvelle conversation » pour repartir sur de bonnes bases.', ended: 'Conversation terminée',
         conversation_too_long: 'Cette conversation a atteint sa longueur maximale. Cliquez sur « Nouvelle conversation » pour continuer, ou écrivez à Olivier : otousche@gmail.com.',
         error: 'Je ne peux pas vous répondre pour le moment, il y a un problème technique… En attendant, vous pouvez écrire à Olivier : otousche@gmail.com.',
         write: 'Écrire à Olivier', copy: 'Copier l’email', copied: 'Copié !', up: 'Réponse utile', down: 'Réponse pas utile', thanks: 'Merci pour votre retour !', caseStudy: 'Lire l’étude de cas',
@@ -423,6 +424,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
         hello: 'I’m Olivier’s AI agent: ask me your questions, I’ll do my best to answer!',
         suggestions: ['His UX research experience?', 'How does he use AI?', 'Tell me about Altered', 'Is he available?'],
         429: 'You’ve reached the message limit for now. Try again in an hour, or email Olivier directly: otousche@gmail.com.',
+        conversation_ended: 'I stopped there 😄 Click “New chat” to start afresh.', ended: 'Conversation closed',
         conversation_too_long: 'This conversation has reached its maximum length. Click “New chat” to keep going, or email Olivier: otousche@gmail.com.',
         error: 'I can’t answer you right now, there’s a technical issue… In the meantime, you can email Olivier: otousche@gmail.com.',
         write: 'Email Olivier', copy: 'Copy email', copied: 'Copied!', up: 'Helpful answer', down: 'Not helpful', thanks: 'Thanks for your feedback!', caseStudy: 'Read the case study',
@@ -465,7 +467,9 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     // The model very rarely opens with a stray "_meta: none" line: never show it
     // The answer ends with a [[Question 1 | Question 2]] line: the next suggestions, shown as buttons, never as text
     const body = text => text.replace(/\n*\s*\[\[[^\]\n]*(?:\]\]?)?\s*$/, '').replace(/\n\s*\[$/, '')
-    const followUps = text => (text.match(/\[\[([^\]\n]+)\]\]\s*$/)?.[1] || '').split('|').map(x => x.trim()).filter(Boolean).slice(0, 3)
+    // [[FIN]] instead of suggestions: the agent has had enough of being tested and closes the conversation
+    const ended = () => /\[\[\s*(FIN|END)\s*\]\]\s*$/.test(messages.at(-1)?.content || '');
+    const followUps = text => /\[\[\s*(FIN|END)\s*\]\]\s*$/.test(text) ? [] : (text.match(/\[\[([^\]\n]+)\]\]\s*$/)?.[1] || '').split('|').map(x => x.trim()).filter(Boolean).slice(0, 3)
     const split = text => body(text).replace(/^\s*_meta:[^\n]*(\n+|$)/, '').replace(/\n-{1,3}[ \t]*$/, '').split(/\n[ \t]*-{3,}[ \t]*(?:\n|$)/);
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -546,17 +550,20 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       });
       if (!pop) thread.querySelectorAll('.msg, .extras').forEach(el => el.classList.add('calm'));
       if (messages.length) down();
+      update();
     };
     const update = () => {
       const n = q.value.length;
-      send.disabled = busy || !q.value.trim();
+      q.disabled = ended();
+      q.placeholder = ended() ? T[lang()].ended : (lang() === 'en' ? q.dataset.enPlaceholder : 'Posez vos questions');
+      send.disabled = busy || ended() || !q.value.trim();
       count.textContent = n > MAX - 150 ? MAX - n : '';
       q.style.height = 'auto'; q.style.height = Math.min(q.scrollHeight, 160) + 'px';
     };
 
     async function ask(text) {
       text = text.trim().slice(0, MAX);
-      if (!text || busy) return;
+      if (!text || busy || ended()) return;
       if (greeting !== 'shown') { greeting = 'shown'; render(!messages.length); }
       busy = true; q.value = ''; update();
       chips.innerHTML = '';
@@ -613,7 +620,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     form.addEventListener('submit', e => { e.preventDefault(); ask(q.value); });
     q.addEventListener('input', update);
     q.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); ask(q.value); } });
-    document.getElementById('reset').addEventListener('click', () => { if (busy) return; messages = []; save(); render(); log.scrollTop = 0; q.focus(); });
+    document.getElementById('reset').addEventListener('click', () => { if (busy) return; messages = []; save(); render(); update(); log.scrollTop = 0; q.focus(); });
     addEventListener('langchange', () => { if (!busy) render(); });
     render(); update();
 

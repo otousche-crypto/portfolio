@@ -56,6 +56,8 @@ const FALLBACK = {
 const json = (status: number, error: string) =>
   new Response(JSON.stringify({ error }), { status, headers: { 'content-type': 'application/json' } });
 
+export const ENDED = /\[\[\s*(FIN|END)\s*\]\]\s*$/;
+
 export function validate(body: unknown): { messages: ChatMessage[]; lang: 'fr' | 'en' } | string {
   if (!body || typeof body !== 'object') return 'invalid_body';
   const { messages, lang } = body as { messages?: unknown; lang?: unknown };
@@ -69,6 +71,8 @@ export function validate(body: unknown): { messages: ChatMessage[]; lang: 'fr' |
     if (content.length > (role === 'user' ? LIMITS.userChars : LIMITS.assistantChars)) return 'message_too_long';
   }
   if (messages.length % 2 === 0) return 'invalid_messages';
+  // L'agent a clos la conversation après trop de tentatives de détournement : on ne relance pas le modèle
+  if ((messages as ChatMessage[]).some((m) => m.role === 'assistant' && ENDED.test(m.content))) return 'conversation_ended';
   if ((messages.length + 1) / 2 > LIMITS.turnsPerChat) return 'conversation_too_long';
   return {
     messages: (messages as ChatMessage[]).slice(-LIMITS.historyKept).map(({ role, content }) => ({ role, content })),
@@ -98,7 +102,7 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
   let body: unknown;
   try { body = await req.json(); } catch { return json(400, 'invalid_body'); }
   const input = validate(body);
-  if (typeof input === 'string') return json(input === 'invalid_body' || input === 'invalid_messages' ? 400 : 413, input);
+  if (typeof input === 'string') return json(input === 'invalid_body' || input === 'invalid_messages' ? 400 : input === 'conversation_ended' ? 409 : 413, input);
   if (deps.store && !(await deps.store.allow(deps.visitor))) return json(429, 'rate_limited');
 
   const { messages } = input;
