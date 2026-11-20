@@ -386,11 +386,18 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
 
     // Minimal, safe Markdown: escape first, then bold, italics, bullet lists, links and email addresses
     const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    // Only Olivier's own sites become links: a URL slipped into an answer by a visitor stays plain text
+    const HOSTS = ['www.oliviertousche.com', 'oliviertousche.com', 'gomoonbound.com', 'sklip.studio', 'stampit-tan.vercel.app', 'decadi.vercel.app', 'www.linkedin.com', 'github.com'];
+    const link = (url, label) => {
+      let host = '';
+      try { host = new URL(url.replace(/&amp;/g, '&')).hostname; } catch (e) {}
+      return HOSTS.includes(host) ? `<a href="${url}" target="_blank" rel="noopener">${label}</a>` : label;
+    };
     const inline = s => esc(s)
       .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
       .replace(/(^|[^*\w])\*(?!\s)([^*]+?)\*(?!\w)/g, '$1<i>$2</i>')
-      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
-      .replace(/(^|[\s(])(https?:\/\/[^\s<)]+[^\s<).,;:!?])/g, '$1<a href="$2" target="_blank" rel="noopener">$2</a>')
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_, label, url) => link(url, label))
+      .replace(/(^|[\s(])(https?:\/\/[^\s<)]+[^\s<).,;:!?])/g, (_, pre, url) => pre + link(url, url))
       .replace(/([\w.+-]+@[\w-]+\.[\w.-]*\w)/g, '<a href="mailto:$1">$1</a>');
     const md = text => {
       const out = []; let list = null;

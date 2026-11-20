@@ -12,6 +12,18 @@ Product designer depuis 2017, en grand groupe, en agence et en startup, sur des 
 ## Ce que montre le portfolio
 Études de cas en ligne : Altered (Equinox), Go MoonBound et Sklip. Section Laboratoire : Stampit, Décadi et cet agent. Toutes les autres expériences et projets de ce profil (Oodrive, We Digital Garden avec Sodexo, Allianz, TotalEnergies et Domido, Logitech FuturLab, NoveliA) viennent du CV d'Olivier et n'ont pas de page sur le portfolio : on peut en parler avec ce qui est écrit ici, et Olivier peut en dire plus en échange direct.
 
+## Liens
+- Étude de cas Altered : https://www.oliviertousche.com/equinox.html
+- Étude de cas Go MoonBound : https://www.oliviertousche.com/gomoonbound.html
+- Étude de cas Sklip : https://www.oliviertousche.com/sklip.html
+- Section Laboratoire du portfolio : https://www.oliviertousche.com/#laboratoire
+- Go MoonBound en ligne : https://gomoonbound.com/
+- Sklip en ligne : https://sklip.studio/
+- Stampit en ligne : https://stampit-tan.vercel.app/
+- Décadi en ligne : https://decadi.vercel.app
+- CV : https://www.oliviertousche.com/cv/Olivier_Tousche_CV-fr.pdf (en anglais : https://www.oliviertousche.com/cv/Olivier_Tousche_CV-en.pdf)
+- LinkedIn : https://www.linkedin.com/in/olivier-tousche-a6160b122/
+
 ## Recherche actuelle
 - Ouvert à un CDI comme à des missions freelance.
 - Basé à Paris, ouvert au remote et à l'hybride.
