@@ -81,7 +81,12 @@ button { font: inherit; color: inherit; }
 .msg a { text-decoration: underline; text-underline-offset: 2px; }
 .msg.bot { align-self: flex-start; background: #fff; border-top-left-radius: 6px; box-shadow: 0 1px 0 rgba(0,0,0,.03), 0 10px 26px -14px rgba(20,20,40,.2); }
 .msg.me { align-self: flex-end; background: var(--fg); color: #fff; border-top-right-radius: 6px; white-space: pre-wrap; }
-.msg.note { align-self: center; max-width: 52ch; background: none; color: var(--muted); font-size: 13.5px; text-align: center; padding: 4px 0; }
+/* Each new bubble pops out of its corner, with a slight overshoot */
+.msg { animation: pop .42s cubic-bezier(.2,.9,.3,1.25) both; transform-origin: 0 100%; }
+.msg.me { transform-origin: 100% 100%; }
+.msg.calm { animation: none; }
+@keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.6); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .msg { animation-name: fade; } @keyframes fade { from { opacity: 0; } } }
 .typing { display: inline-flex; gap: 4px; padding: 6px 0; }
 .typing i { width: 6px; height: 6px; border-radius: 50%; background: #b9b9c0; animation: blink 1.2s infinite both; }
 .typing i:nth-child(2) { animation-delay: .2s; } .typing i:nth-child(3) { animation-delay: .4s; }
@@ -407,7 +412,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       return el;
     };
     const down = () => { log.scrollTop = log.scrollHeight; };
-    const render = () => {
+    // A full redraw (language switch, reload) shows the bubbles at rest; pop = true lets them pop in
+    const render = (pop) => {
       const t = T[lang()];
       thread.innerHTML = '';
       if (greeting === 'shown') add('div', 'msg bot', md(t.hello));
@@ -423,6 +429,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
         });
       }
       messages.forEach(m => m.role === 'user' ? add('div', 'msg me', esc(m.content)) : add('div', 'msg bot', md(m.content)));
+      if (!pop) thread.querySelectorAll('.msg').forEach(el => el.classList.add('calm'));
       if (messages.length) down();
     };
     const update = () => {
@@ -435,7 +442,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     async function ask(text) {
       text = text.trim().slice(0, MAX);
       if (!text || busy) return;
-      if (greeting !== 'shown') { greeting = 'shown'; render(); }
+      if (greeting !== 'shown') { greeting = 'shown'; render(!messages.length); }
       busy = true; q.value = ''; update();
       chips.innerHTML = '';
       messages.push({ role: 'user', content: text });
@@ -462,7 +469,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       } catch (e) {
         // The question did not get an answer: drop it so the history stays question / answer pairs
         messages.pop();
-        out.className = 'msg note';
+        // The agent says it itself, in its own bubble
         out.innerHTML = md(T[lang()][e.message] || T[lang()].error);
       }
       busy = false; update(); q.focus({ preventScroll: true });
@@ -479,8 +486,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     const greet = () => {
       if (greeting !== 'waiting') return;
       if (messages.length) { greeting = 'shown'; return render(); }
-      greeting = 'typing'; render();
-      setTimeout(() => { if (greeting === 'typing') { greeting = 'shown'; if (!busy) render(); } }, 2000);
+      greeting = 'typing'; render(true);
+      setTimeout(() => { if (greeting === 'typing') { greeting = 'shown'; if (!busy) render(true); } }, 2000);
     };
     if (window.faceDone) greet(); else addEventListener('facedone', greet, { once: true });
     setTimeout(greet, 6000);  // in case the portrait never animates (hidden tab, no canvas)
