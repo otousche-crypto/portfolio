@@ -407,18 +407,19 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 /* Agent: Olivier's ASCII face speaks for him, on Stampit's light grey and dot grid */
 .agent { --c-bg: #f1f1f4; --c-fg: #0f0f12; --c-muted: rgba(15,15,18,.55); --c-pill: #0f0f12; --c-pill-fg: #fff; --c-ghost: rgba(15,15,18,.07); }
 .agent::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(15,15,18,.09) 1px, transparent 1px); background-size: 18px 18px; mask-image: radial-gradient(70% 70% at 70% 50%, #000, transparent); }
-.ag-scene { position: relative; display: flex; align-items: center; gap: 8px; width: 100%; max-width: 600px; }
-.ag-face { flex: none; margin: 0; font-family: var(--mono); font-size: 7.2px; line-height: 1.02; color: #26262a; user-select: none; }
-.ag-talk { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; font-size: 13.5px; line-height: 1.45; }
-.ag-msg { max-width: 92%; padding: 10px 14px; border-radius: 18px; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 12px 30px -12px rgba(20,20,40,.22); }
+.ag-scene { position: relative; z-index: 2; width: 100%; max-width: 560px; margin-right: 34%; }
+/* The head stands on the card's right edge, about 40% of it cropped off */
+.ag-face { position: absolute; z-index: 1; top: 50%; right: 0; translate: 40% -50%; display: block; font-size: 11px; pointer-events: none; }
+.ag-talk { display: flex; flex-direction: column; gap: 10px; font-size: 13.5px; line-height: 1.45; }
+.ag-msg { max-width: 88%; padding: 10px 14px; border-radius: 18px; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 12px 30px -12px rgba(20,20,40,.22); transition: transform .5s cubic-bezier(.2,.7,.2,1); }
 .ag-msg.bot { align-self: flex-start; background: #fff; color: #111; border-top-left-radius: 5px; }
 .ag-msg.me { align-self: flex-end; background: #0f0f12; color: #fff; border-top-right-radius: 5px; }
 .ag-input { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; padding: 7px 7px 7px 14px; border-radius: 999px; background: #fff; color: #9a9aa2; box-shadow: 0 0 0 1px rgba(15,15,18,.08); }
 .ag-input i { width: 24px; height: 24px; border-radius: 50%; background: #0f0f12; }
 .agent:hover .ag-msg.bot { transform: translateY(-2px); }
-.ag-msg { transition: transform .5s cubic-bezier(.2,.7,.2,1); }
-@media (max-width: 860px) { .ag-face { font-size: 5.4px; } .ag-talk { font-size: 13px; } }
-@media (max-width: 480px) { .ag-scene { flex-direction: column; align-items: stretch; } .ag-face { align-self: center; font-size: 5.6px; } }
+@media (max-width: 1080px) { .ag-face { font-size: 9px; } }
+/* Single column: the head moves to the bottom right corner, behind the bubbles */
+@media (max-width: 860px) { .ag-face { top: auto; bottom: 0; translate: 40% 0; font-size: 6.6px; } .ag-scene { margin-right: 0; } .agent .visual { padding-bottom: 150px; } .ag-talk { font-size: 13px; } }
 /* ── Responsive ── */
 @media (max-width: 860px) {
   .card { grid-template-columns: 1fr; min-height: 0; }
@@ -661,7 +662,6 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
       </div>
       <div class="visual">
         <div class="ag-scene" aria-hidden="true">
-          <pre class="ag-face no-i18n"></pre>
           <div class="ag-talk">
             <div class="ag-msg bot">Bonjour ! Je suis l’assistant IA d’Olivier. Que voulez-vous savoir sur son parcours ?</div>
             <div class="ag-msg me">Quelle est son expérience en recherche utilisateur ?</div>
@@ -669,6 +669,7 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
           </div>
         </div>
       </div>
+      <canvas class="ag-face" aria-hidden="true"></canvas>
     </article>
 
   </section>
@@ -850,17 +851,8 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
   ghCalendar();
   addEventListener('langchange', ghCalendar);
 
-  // Agent card: the footer's ASCII portrait, cropped to the head, gives the agent Olivier's face
-  (() => {
-    const face = document.querySelector('.ag-face'), src = document.getElementById('ascii-art');
-    if (face && src) face.textContent = src.textContent.replace(/^\n+|\n+$/g, '').split('\n').slice(0, 42).join('\n');
-  })();
-
-  // ASCII self-portrait in the footer: composes itself when it comes into view (glyphs scramble, then settle from top to bottom); under the cursor they stir, drift aside and warm to orange
-  (() => {
-    const cv = document.querySelector('.ascii-me'), src = document.getElementById('ascii-art');
-    if (!cv || !src) return;
-    const art = src.textContent.replace(/^\n+|\n+$/g, '').split('\n');
+  // ASCII self-portraits (the footer bust, and the agent card's head): each composes itself when it comes into view (glyphs scramble, then settle from top to bottom); under the cursor they stir, drift aside and warm to orange
+  const asciiPortrait = (cv, art) => {
     const rows = art.length, cols = Math.max(...art.map(l => l.length));
     const GLYPHS = '@%#*+=-:.', INK = [38, 38, 42], HOT = [252, 76, 2], R = 70;
     const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -933,6 +925,14 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
       if (x < -R || y < -R || x > r.width + R || y > r.height + R) return;
       pointer = { x, y }; wake();
     }, { passive: true });
+  };
+  (() => {
+    const src = document.getElementById('ascii-art');
+    if (!src) return;
+    const art = src.textContent.replace(/^\n+|\n+$/g, '').split('\n');
+    const bust = document.querySelector('.ascii-me'), head = document.querySelector('.ag-face');
+    if (bust) asciiPortrait(bust, art);
+    if (head) asciiPortrait(head, art.slice(0, 42));
   })();
 
   // Hero typewriter
