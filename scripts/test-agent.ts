@@ -3,7 +3,7 @@
 // sans clé API ni coût. Les évals (eval-agent.ts) testent, elles, le vrai modèle.
 
 import Anthropic from '@anthropic-ai/sdk';
-import { handleChat, replyLang, validate } from '../agent/handler';
+import { handleChat, handleFeedback, replyLang, validate, validateFeedback } from '../agent/handler';
 import { systemPrompt } from '../agent/prompt';
 
 type Params = Anthropic.MessageCreateParamsStreaming & { output_config: { effort: string } };
@@ -54,3 +54,13 @@ const long = Array.from({ length: 31 }, (_, i) => ({ role: i % 2 ? 'assistant' :
 ok('15 turns max', validate({ messages: long }) === 'conversation_too_long');
 const ok29 = validate({ messages: long.slice(0, 29) });
 ok('history trimmed to 12', typeof ok29 !== 'string' && ok29.messages.length === 12 && ok29.messages[0].role === 'assistant');
+
+const saved: Record<string, unknown>[] = [];
+const fbStore = { allow: async () => allowed, save: async (e: Record<string, unknown>) => { saved.push(e); } };
+r = await handleFeedback(req({ vote: 'up', question: 'Q', answer: 'A', lang: 'en' }), { store: fbStore, visitor: 'v' });
+ok('feedback saved anonymously', r.status === 204 && saved.length === 1 && saved[0].vote === 'up' && saved[0].lang === 'en' && !('visitor' in saved[0]));
+ok('feedback bad vote', validateFeedback({ vote: 'meh', question: 'Q', answer: 'A' }) === 'invalid_vote');
+ok('feedback long answer', validateFeedback({ vote: 'down', question: 'Q', answer: 'a'.repeat(4001) }) === 'invalid_answer');
+allowed = false;
+r = await handleFeedback(req({ vote: 'down', question: 'Q', answer: 'A' }), { store: fbStore, visitor: 'v' });
+ok('feedback rate limited', r.status === 429 && saved.length === 1); allowed = true;

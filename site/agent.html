@@ -98,6 +98,28 @@ button { font: inherit; color: inherit; }
 /* Phones: one suggestion and the start of the next */
 @media (max-width: 640px) { .chips button { max-width: calc(100vw - 84px); overflow: hidden; text-overflow: ellipsis; } }
 
+/* Under an answer: case-study cards, actions and the 👍 / 👎, fading in once the answer is complete */
+.extras { align-self: flex-start; display: flex; flex-direction: column; gap: 8px; max-width: min(600px, 88%); margin-top: -4px; animation: rise .35s ease-out both; }
+.extras.calm { animation: none; }
+@keyframes rise { from { opacity: 0; transform: translateY(4px); } }
+.case { display: flex; align-items: center; gap: 12px; width: min(340px, 100%); padding: 8px 14px 8px 8px; background: #fff; border-radius: 16px; text-decoration: none; color: inherit; box-shadow: 0 0 0 1px var(--line); transition: box-shadow .2s, transform .2s; }
+.case:hover, .case:focus-visible { box-shadow: 0 0 0 1px rgba(15,15,18,.25), 0 10px 24px -14px rgba(20,20,40,.3); transform: translateY(-1px); }
+.case img { flex: none; width: 56px; height: 56px; border-radius: 10px; object-fit: cover; background: var(--bg); }
+.case span { flex: 1; display: flex; flex-direction: column; min-width: 0; font-size: 14.5px; font-weight: 500; }
+.case small { font-size: 12.5px; font-weight: 400; color: var(--muted); }
+.case svg { flex: none; width: 12px; height: 12px; color: var(--muted); }
+.acts { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.act { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; color: #5f5f68; text-decoration: none; background: none; border: 0; padding: 6px 10px; border-radius: 999px; cursor: pointer; transition: background .2s, color .2s; }
+.act:hover, .act:focus-visible { background: rgba(15,15,18,.06); color: var(--fg); }
+.act.primary { background: var(--fg); color: #fff; }
+.act.primary:hover, .act.primary:focus-visible { background: #2a2a30; color: #fff; }
+.act svg { width: 14px; height: 14px; }
+.fb { padding: 6px; }
+.fb[aria-pressed="true"] { color: var(--fg); background: rgba(15,15,18,.08); }
+.fb:disabled { cursor: default; }
+.fb:disabled:not([aria-pressed="true"]) { opacity: .35; }
+.thanks { font-size: 12.5px; color: var(--muted); padding-left: 4px; }
+
 /* ── Composer ── */
 .dock { flex: none; padding: 10px 0 max(14px, env(safe-area-inset-bottom, 0px)); }
 .compose { display: flex; gap: 8px; align-items: flex-end; background: #fff; border-radius: 26px; padding: 6px 6px 6px 18px; box-shadow: 0 0 0 1px var(--line), 0 16px 40px -20px rgba(20,20,40,.3); }
@@ -380,6 +402,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
         429: 'Vous avez atteint la limite de messages pour le moment. Réessayez dans une heure, ou écrivez directement à Olivier : otousche@gmail.com.',
         conversation_too_long: 'Cette conversation a atteint sa longueur maximale. Cliquez sur « Nouvelle conversation » pour continuer, ou écrivez à Olivier : otousche@gmail.com.',
         error: 'Je ne peux pas vous répondre pour le moment, il y a un problème technique… En attendant, vous pouvez écrire à Olivier : otousche@gmail.com.',
+        write: 'Écrire à Olivier', copy: 'Copier l’email', copied: 'Copié !', up: 'Réponse utile', down: 'Réponse pas utile', thanks: 'Merci pour votre retour !', caseStudy: 'Lire l’étude de cas',
       },
       en: {
         hello: 'I’m Olivier’s AI agent: ask me your questions, I’ll do my best to answer!',
@@ -387,6 +410,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
         429: 'You’ve reached the message limit for now. Try again in an hour, or email Olivier directly: otousche@gmail.com.',
         conversation_too_long: 'This conversation has reached its maximum length. Click “New chat” to keep going, or email Olivier: otousche@gmail.com.',
         error: 'I can’t answer you right now, there’s a technical issue… In the meantime, you can email Olivier: otousche@gmail.com.',
+        write: 'Email Olivier', copy: 'Copy email', copied: 'Copied!', up: 'Helpful answer', down: 'Not helpful', thanks: 'Thanks for your feedback!', caseStudy: 'Read the case study',
       },
     };
 
@@ -424,7 +448,10 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
 
     // The agent splits an answer into bubbles with a line holding only ---; a separator still arriving is hidden
     // The model very rarely opens with a stray "_meta: none" line: never show it
-    const split = text => text.replace(/^\s*_meta:[^\n]*(\n+|$)/, '').replace(/\n-{1,3}[ \t]*$/, '').split(/\n[ \t]*-{3,}[ \t]*(?:\n|$)/);
+    // The answer ends with a [[Question 1 | Question 2]] line: the next suggestions, shown as buttons, never as text
+    const body = text => text.replace(/\n*\s*\[\[[^\]\n]*(?:\]\]?)?\s*$/, '').replace(/\n\s*\[$/, '')
+    const followUps = text => (text.match(/\[\[([^\]\n]+)\]\]\s*$/)?.[1] || '').split('|').map(x => x.trim()).filter(Boolean).slice(0, 3)
+    const split = text => body(text).replace(/^\s*_meta:[^\n]*(\n+|$)/, '').replace(/\n-{1,3}[ \t]*$/, '').split(/\n[ \t]*-{3,}[ \t]*(?:\n|$)/);
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     const add = (tag, cls, html) => {
@@ -434,24 +461,75 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       return el;
     };
     const down = () => { log.scrollTop = log.scrollHeight; };
+    const showChips = list => {
+      chips.innerHTML = ''; chips.scrollLeft = 0;
+      list.forEach(s => {
+        const b = document.createElement('button');
+        b.type = 'button'; b.textContent = s;
+        b.addEventListener('click', () => ask(s));
+        chips.appendChild(b);
+      });
+    };
+
+    // Turns an answer into something to act on: case-study cards for the case studies it links to,
+    // a way to write to Olivier when it gives his email, and a 👍 / 👎 sent anonymously to /api/feedback
+    const CASES = {
+      'equinox.html': { name: 'Altered', img: 'img/cases/equinox-altered/hero.jpg' },
+      'gomoonbound.html': { name: 'Go MoonBound', img: 'img/moon-desktop.jpg' },
+      'sklip.html': { name: 'Sklip', img: 'img/cases/sklip/reel-poster.jpg' },
+    };
+    const ICON = {
+      arrow: '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg>',
+      mail: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="2" y="3.5" width="12" height="9" rx="2"/><path d="M2.5 4.5 8 9l5.5-4.5"/></svg>',
+      copy: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5.5" y="5.5" width="8" height="8" rx="1.8"/><path d="M10.5 5.5V4a1.5 1.5 0 0 0-1.5-1.5H4A1.5 1.5 0 0 0 2.5 4v5A1.5 1.5 0 0 0 4 10.5h1.5"/></svg>',
+      up: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M5 7v6.5H2.5V7H5Zm0 0 2.6-4.6c.3-.5 1-.6 1.4-.2.4.3.5.8.4 1.2L8.8 6H12a1.5 1.5 0 0 1 1.5 1.8l-.9 4.5A1.5 1.5 0 0 1 11.1 13.5H5"/></svg>',
+      down: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M11 9V2.5h2.5V9H11Zm0 0-2.6 4.6c-.3.5-1 .6-1.4.2-.4-.3-.5-.8-.4-1.2L7.2 10H4a1.5 1.5 0 0 1-1.5-1.8l.9-4.5A1.5 1.5 0 0 1 4.9 2.5H11"/></svg>',
+    };
+    const extras = (i) => {
+      const t = T[lang()], m = messages[i], text = body(m.content);
+      const box = add('div', 'extras', '');
+      const pages = [...new Set([...text.matchAll(/oliviertousche\.com\/(equinox|gomoonbound|sklip)\.html/g)].map(x => x[1] + '.html'))].slice(0, 2);
+      pages.forEach(p => {
+        box.insertAdjacentHTML('beforeend', `<a class="case" href="${p}" target="_blank" rel="noopener"><img src="${CASES[p].img}" alt="" loading="lazy"><span>${CASES[p].name}<small>${t.caseStudy}</small></span>${ICON.arrow}</a>`);
+      });
+      const acts = document.createElement('div');
+      acts.className = 'acts';
+      if (/otousche@gmail\.com/.test(text)) {
+        acts.insertAdjacentHTML('beforeend', `<a class="act primary" href="mailto:otousche@gmail.com">${ICON.mail}${t.write}</a><button class="act" type="button" data-copy>${ICON.copy}<span>${t.copy}</span></button>`);
+        acts.querySelector('[data-copy]').addEventListener('click', async (e) => {
+          const label = e.currentTarget.querySelector('span');
+          try { await navigator.clipboard.writeText('otousche@gmail.com'); label.textContent = t.copied; setTimeout(() => { label.textContent = t.copy; }, 1800); } catch (err) {}
+        });
+      }
+      ['up', 'down'].forEach(v => {
+        acts.insertAdjacentHTML('beforeend', `<button class="act fb" type="button" data-vote="${v}" aria-label="${t[v]}" title="${t[v]}" aria-pressed="${m.vote === v}"${m.vote ? ' disabled' : ''}>${ICON[v]}</button>`);
+      });
+      if (m.vote) acts.insertAdjacentHTML('beforeend', `<span class="thanks">${t.thanks}</span>`);
+      acts.querySelectorAll('[data-vote]').forEach(b => b.addEventListener('click', () => {
+        if (m.vote) return;
+        m.vote = b.dataset.vote; save();
+        acts.querySelectorAll('[data-vote]').forEach(x => { x.disabled = true; x.setAttribute('aria-pressed', String(x === b)); });
+        acts.insertAdjacentHTML('beforeend', `<span class="thanks">${t.thanks}</span>`);
+        fetch('/api/feedback', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ vote: m.vote, question: messages[i - 1]?.content || '', answer: m.content, lang: lang() }) }).catch(() => {});
+      }));
+      box.appendChild(acts);
+      return box;
+    };
+
     // A full redraw (language switch, reload) shows the bubbles at rest; pop = true lets them pop in
     const render = (pop) => {
       const t = T[lang()];
       thread.innerHTML = '';
       if (greeting === 'shown') add('div', 'msg bot', md(t.hello));
       if (greeting === 'typing') add('div', 'msg bot', TYPING);
-      // The suggestions, one swipeable line above the composer, only show on a fresh chat
-      chips.innerHTML = ''; chips.scrollLeft = 0;
-      if (!messages.length) {
-        t.suggestions.forEach(s => {
-          const b = document.createElement('button');
-          b.type = 'button'; b.textContent = s;
-          b.addEventListener('click', () => ask(s));
-          chips.appendChild(b);
-        });
-      }
-      messages.forEach(m => m.role === 'user' ? add('div', 'msg me', esc(m.content)) : split(m.content).filter(p => p.trim()).forEach(p => add('div', 'msg bot', md(p))));
-      if (!pop) thread.querySelectorAll('.msg').forEach(el => el.classList.add('calm'));
+      // The suggestions, one swipeable line above the composer: the starters on a fresh chat, then the agent's own follow-ups
+      showChips(messages.length ? (messages.at(-1).role === 'assistant' ? followUps(messages.at(-1).content) : []) : t.suggestions);
+      messages.forEach((m, i) => {
+        if (m.role === 'user') return add('div', 'msg me', esc(m.content));
+        split(m.content).filter(p => p.trim()).forEach(p => add('div', 'msg bot', md(p)));
+        extras(i);
+      });
+      if (!pop) thread.querySelectorAll('.msg, .extras').forEach(el => el.classList.add('calm'));
       if (messages.length) down();
     };
     const update = () => {
@@ -503,6 +581,9 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
         bubbles.forEach((b, i) => { if (!parts[i]?.trim()) b.remove(); });
         messages.push({ role: 'assistant', content: answer });
         save();
+        extras(messages.length - 1);
+        showChips(followUps(answer));
+        down();
       } catch (e) {
         // The question did not get an answer: drop it so the history stays question / answer pairs
         messages.pop();

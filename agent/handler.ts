@@ -22,6 +22,32 @@ export interface Store {
   log(entry: Record<string, unknown>): Promise<void>;
 }
 
+// Le 👍 / 👎 sous une réponse : un vote, la question et la réponse, rien d'autre
+export interface FeedbackStore {
+  allow(visitor: string): Promise<boolean>;
+  save(entry: Record<string, unknown>): Promise<void>;
+}
+
+export function validateFeedback(body: unknown): { vote: 'up' | 'down'; question: string; answer: string; lang: 'fr' | 'en' } | string {
+  if (!body || typeof body !== 'object') return 'invalid_body';
+  const { vote, question, answer, lang } = body as Record<string, unknown>;
+  if (vote !== 'up' && vote !== 'down') return 'invalid_vote';
+  if (typeof question !== 'string' || !question.trim() || question.length > LIMITS.userChars) return 'invalid_question';
+  if (typeof answer !== 'string' || !answer.trim() || answer.length > LIMITS.assistantChars) return 'invalid_answer';
+  return { vote, question, answer, lang: lang === 'en' ? 'en' : 'fr' };
+}
+
+export async function handleFeedback(req: Request, deps: { store?: FeedbackStore; visitor: string }) {
+  if (req.method !== 'POST') return json(405, 'method_not_allowed');
+  let body: unknown;
+  try { body = await req.json(); } catch { return json(400, 'invalid_body'); }
+  const input = validateFeedback(body);
+  if (typeof input === 'string') return json(400, input);
+  if (deps.store && !(await deps.store.allow(deps.visitor))) return json(429, 'rate_limited');
+  await deps.store?.save({ at: new Date().toISOString(), ...input }).catch((e) => console.error('feedback error', e));
+  return new Response(null, { status: 204 });
+}
+
 const FALLBACK = {
   fr: 'Je préfère rester sur le parcours d’Olivier. Une question sur ses projets ou sa façon de travailler ?',
   en: 'I’d rather stay on Olivier’s background. Any question about his projects or how he works?',
