@@ -13,7 +13,7 @@ Product designer depuis 2017, en grand groupe, en agence et en startup, sur des 
 - Né le 1er février 1992 (34 ans en 2026).
 - Habite en région parisienne.
 - Diplômé de Strate École de Design (Paris).
-- Ce qu'il aime dans le design : repérer les irritants, les pain points, et y apporter des solutions.
+- Ce qu'il aime dans le design : repérer les irritants, les pain points, et y apporter des solutions originales et singulières.
 
 ## Ce que montre le portfolio
 Études de cas en ligne : Altered (Equinox), Go MoonBound et Sklip. Section Laboratoire : Stampit, Décadi et cet agent. Toutes les autres expériences et projets de ce profil (Oodrive, We Digital Garden avec Sodexo, Allianz, TotalEnergies et Domido, Logitech FuturLab, NoveliA) viennent du CV d'Olivier et n'ont pas de page sur le portfolio : on peut en parler avec ce qui est écrit ici, et Olivier peut en dire plus en échange direct.
