@@ -9,7 +9,240 @@
 // Le marqueur [IMAGE] doit être conservé identique dans les deux langues.
 // keyFigures n'est pas bilingue (composant KeyFiguresSection actuellement hors périmètre/non utilisé).
 
-import type { Experience } from '../../src/lib/content-types';
+import type { Experience, LocalizedString } from '../../src/lib/content-types';
+
+// ─── Schémas SVG (même charte que Sklip / NoveliA) ───
+// Chaque schéma est généré par une fonction qui prend les libellés d'une langue,
+// pour garder un seul tracé pour le FR et l'EN.
+
+const svgOpen = (h: number) =>
+  `<svg viewBox="0 0 800 ${h}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:'IBM Plex Mono',monospace">`;
+
+const arrowDef = (id: string) => `<defs>
+    <marker id="${id}" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+      <polygon points="0 0, 8 3.5, 0 7" fill="#111111"/>
+    </marker>
+  </defs>`;
+
+interface PlanLabels {
+  top: string;
+  phase: string;
+  measured: string;
+  bottom: string;
+  steps: Array<{ title: string; goal: [string, string]; metrics: [string, string, string] }>;
+}
+
+const planSvg = (l: PlanLabels) => {
+  const boxes = l.steps
+    .map((step, i) => {
+      const x = 10 + i * 270;
+      const accent = i === 2;
+      const fg = accent ? '#111111' : '#333333';
+      const box = accent
+        ? `<rect x="${x}" y="60" width="240" height="170" fill="#4CB8FF"/>`
+        : `<rect x="${x}" y="60" width="240" height="170" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>`;
+      const arrow =
+        i < 2
+          ? `<line x1="${x + 241}" y1="145" x2="${x + 266}" y2="145" stroke="#111111" stroke-width="1.5" marker-end="url(#pt-arr)"/>`
+          : '';
+      return `${box}
+  <text x="${x + 14}" y="80" font-size="8" fill="${accent ? '#111111' : '#888888'}" letter-spacing="1">${l.phase} ${i + 1}</text>
+  <text x="${x + 14}" y="100" font-size="12" font-weight="700" fill="#111111">${step.title}</text>
+  <text x="${x + 14}" y="120" font-size="8.5" fill="${fg}">${step.goal[0]}</text>
+  <text x="${x + 14}" y="134" font-size="8.5" fill="${fg}">${step.goal[1]}</text>
+  <line x1="${x + 14}" y1="148" x2="${x + 226}" y2="148" stroke="${accent ? '#111111' : '#dddddd'}" stroke-width="1"/>
+  <text x="${x + 14}" y="166" font-size="7.5" fill="${accent ? '#111111' : '#888888'}" letter-spacing="1">${l.measured}</text>
+  ${step.metrics
+    .map(
+      (m, j) =>
+        `<rect x="${x + 14}" y="${178 + j * 16}" width="4" height="4" fill="#111111"/><text x="${x + 26}" y="${184 + j * 16}" font-size="8.5" fill="${fg}">${m}</text>`,
+    )
+    .join('\n  ')}
+  ${arrow}`;
+    })
+    .join('\n\n  ');
+
+  return `${svgOpen(300)}
+  ${arrowDef('pt-arr')}
+  <rect x="10" y="10" width="780" height="30" fill="#f2f2f2"/>
+  <text x="400" y="29" text-anchor="middle" font-size="9" fill="#333333" letter-spacing="0.5">${l.top}</text>
+
+  ${boxes}
+
+  <rect x="10" y="255" width="780" height="30" fill="#111111"/>
+  <text x="400" y="274" text-anchor="middle" font-size="9" fill="#4CB8FF" letter-spacing="0.5">${l.bottom}</text>
+</svg>`;
+};
+
+const planTroisTemps: LocalizedString = {
+  fr: planSvg({
+    top: 'IMMERSION → PRATIQUE → ÉCONOMIE · CHAQUE TEMPS PRÉPARE LE SUIVANT',
+    phase: 'TEMPS',
+    measured: 'MESURÉ PAR',
+    bottom: 'REPRIS PAR LE MARKETING POUR RYTHMER LA RELATION AVEC LA COMMUNAUTÉ',
+    steps: [
+      {
+        title: 'MEET THE LORE',
+        goal: ["S'approprier l'univers,", "construire son identité"],
+        metrics: ['Comptes créés', 'Cartes scannées', 'Articles de lore lus'],
+      },
+      {
+        title: 'MEET THE GAME',
+        goal: ['Faire du digital un', 'prolongement du jeu'],
+        metrics: ['Événements en boutique', 'Usage des outils de jeu', 'Fréquence de retour'],
+      },
+      {
+        title: 'MEET THE MARKET',
+        goal: ["Activer l'économie,", "à l'échelle internationale"],
+        metrics: ['Volume de transactions', 'Activation cagnotte', 'Pays actifs'],
+      },
+    ],
+  }),
+  en: planSvg({
+    top: 'IMMERSION → PLAY → ECONOMY · EACH PHASE PAVES THE WAY FOR THE NEXT',
+    phase: 'PHASE',
+    measured: 'MEASURED BY',
+    bottom: 'ADOPTED BY MARKETING TO PACE THE RELATIONSHIP WITH THE COMMUNITY',
+    steps: [
+      {
+        title: 'MEET THE LORE',
+        goal: ['Embrace the universe,', 'build an identity'],
+        metrics: ['Accounts created', 'Cards scanned', 'Lore articles read'],
+      },
+      {
+        title: 'MEET THE GAME',
+        goal: ['Make digital an', 'extension of the game'],
+        metrics: ['In-store events', 'Gameplay tools usage', 'Return frequency'],
+      },
+      {
+        title: 'MEET THE MARKET',
+        goal: ['Activate the economy,', 'at international scale'],
+        metrics: ['Transaction volume', 'Wallet activation', 'Active countries'],
+      },
+    ],
+  }),
+};
+
+interface DiamondLabels {
+  problem: string;
+  solution: string;
+  steps: Array<{ title: string; lines: [string, string] }>;
+}
+
+const diamondSvg = (l: DiamondLabels) => {
+  // Deux losanges : 10→395 (problème) et 405→790 (solution), divergence puis convergence.
+  const diamond = (x0: number, x1: number, fill: string, stroke: boolean) => {
+    const mid = (x0 + x1) / 2;
+    return `<polygon points="${x0},110 ${mid},30 ${x1},110 ${mid},190" fill="${fill}"${stroke ? ' stroke="#111111" stroke-width="1.5"' : ''}/>
+  <line x1="${mid}" y1="34" x2="${mid}" y2="186" stroke="#111111" stroke-width="1.5" stroke-dasharray="4 4"/>`;
+  };
+  const centers = [118, 290, 513, 685];
+  const titles = l.steps
+    .map(
+      (s, i) =>
+        `<text x="${centers[i]}" y="96" text-anchor="middle" font-size="7.5" fill="${i < 2 ? '#888888' : '#111111'}" letter-spacing="1">${i % 2 === 0 ? '◁ ▷' : '▷ ◁'}</text>
+  <text x="${centers[i]}" y="115" text-anchor="middle" font-size="11" font-weight="700" fill="#111111">${i + 1} · ${s.title}</text>`,
+    )
+    .join('\n  ');
+  const activities = l.steps
+    .map((s, i) => {
+      const x = 10 + i * 197;
+      return `<rect x="${x}" y="210" width="188" height="50" fill="#111111"/>
+  <text x="${x + 12}" y="231" font-size="8.5" fill="#dddddd">${s.lines[0]}</text>
+  <text x="${x + 12}" y="247" font-size="8.5" fill="#dddddd">${s.lines[1]}</text>`;
+    })
+    .join('\n  ');
+
+  return `${svgOpen(270)}
+  <text x="202" y="18" text-anchor="middle" font-size="8" fill="#888888" letter-spacing="1">${l.problem}</text>
+  <text x="597" y="18" text-anchor="middle" font-size="8" fill="#888888" letter-spacing="1">${l.solution}</text>
+  ${diamond(10, 395, '#ffffff', true)}
+  ${diamond(405, 790, '#4CB8FF', false)}
+  ${titles}
+  ${activities}
+</svg>`;
+};
+
+const doubleDiamant: LocalizedString = {
+  fr: diamondSvg({
+    problem: 'LE BON PROBLÈME',
+    solution: 'LA BONNE SOLUTION',
+    steps: [
+      { title: 'EXPLORER', lines: ['Entretiens joueurs,', 'ateliers, benchmark'] },
+      { title: 'CADRER', lines: ['Cabinet juridique,', 'prestataire paiement'] },
+      { title: 'CONCEVOIR', lines: ['Wireframes, maquettes', 'HF, tests utilisateurs'] },
+      { title: 'DÉPLOYER', lines: ['Lancement multi-pays,', 'doc et wiki produit'] },
+    ],
+  }),
+  en: diamondSvg({
+    problem: 'THE RIGHT PROBLEM',
+    solution: 'THE RIGHT SOLUTION',
+    steps: [
+      { title: 'EXPLORE', lines: ['Player interviews,', 'workshops, benchmark'] },
+      { title: 'FRAME', lines: ['Law firm,', 'payment provider'] },
+      { title: 'DESIGN', lines: ['Wireframes, hi-fi', 'mockups, user tests'] },
+      { title: 'DEPLOY', lines: ['Multi-country launch,', 'docs and product wiki'] },
+    ],
+  }),
+};
+
+interface FlowsLabels {
+  flow: string;
+  p2p: [string, string, string];
+  paid: [string, string, string];
+  psp: [string, string];
+  constraints: string;
+  items: [string, string, string];
+}
+
+const fluxSvg = (l: FlowsLabels) => {
+  const lane = (y: number, n: number, [title, from, to]: [string, string, string]) => `<rect x="10" y="${y}" width="250" height="90" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="24" y="${y + 20}" font-size="8" fill="#888888" letter-spacing="1">${l.flow} ${n}</text>
+  <text x="24" y="${y + 40}" font-size="11" font-weight="700" fill="#111111">${title}</text>
+  <text x="24" y="${y + 60}" font-size="8.5" fill="#333333">${from}</text>
+  <text x="24" y="${y + 76}" font-size="8.5" fill="#333333">${to}</text>
+  <line x1="261" y1="${y + 45}" x2="296" y2="${y < 100 ? 115 : 145}" stroke="#111111" stroke-width="1.5" marker-end="url(#fx-arr)"/>`;
+
+  return `${svgOpen(230)}
+  ${arrowDef('fx-arr')}
+  ${lane(10, 1, l.p2p)}
+  ${lane(130, 2, l.paid)}
+
+  <rect x="300" y="70" width="190" height="90" fill="#111111"/>
+  <text x="395" y="110" text-anchor="middle" font-size="11" font-weight="700" fill="#4CB8FF">${l.psp[0]}</text>
+  <text x="395" y="128" text-anchor="middle" font-size="8.5" fill="#dddddd">${l.psp[1]}</text>
+
+  <line x1="491" y1="115" x2="526" y2="115" stroke="#111111" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+  <rect x="530" y="10" width="260" height="210" fill="#4CB8FF"/>
+  <text x="545" y="32" font-size="10" font-weight="700" fill="#111111" letter-spacing="1">${l.constraints}</text>
+  ${l.items
+    .map(
+      (it, i) =>
+        `<rect x="545" y="${66 + i * 50}" width="4" height="4" fill="#111111"/><text x="558" y="${72 + i * 50}" font-size="9" fill="#111111">${it}</text>`,
+    )
+    .join('\n  ')}
+</svg>`;
+};
+
+const fluxPaiement: LocalizedString = {
+  fr: fluxSvg({
+    flow: 'FLUX',
+    p2p: ['ENTRE JOUEURS', 'Échanges et transactions', 'de cartes, via la cagnotte'],
+    paid: ['SERVICES PAYANTS', 'Services à valeur ajoutée', 'autour de la collection'],
+    psp: ['PAIEMENT', 'Prestataire + cagnotte'],
+    constraints: 'ABSORBÉ CÔTÉ PRODUIT',
+    items: ['Nature des cartes phygitales', 'Fiscalité propre à chaque pays', 'Parcours de paiement sécurisés'],
+  }),
+  en: fluxSvg({
+    flow: 'FLOW',
+    p2p: ['BETWEEN PLAYERS', 'Card trading and', 'transactions, via the wallet'],
+    paid: ['PAID SERVICES', 'Value-added services', 'around the collection'],
+    psp: ['PAYMENT', 'Provider + wallet'],
+    constraints: 'ABSORBED BY THE PRODUCT',
+    items: ['Nature of phygital cards', 'Country-specific taxation', 'Secure payment journeys'],
+  }),
+};
 
 export const equinoxAltered: Experience = {
   id: 'equinox-altered',
@@ -59,21 +292,23 @@ export const equinoxAltered: Experience = {
       content: { text: { fr: 'Vision produit & Stratégie', en: 'Product Vision & Strategy' }, level: 2, alignment: 'left' },
     },
     {
-      type: 'image',
-      content: {
-        alt: { fr: 'Plan de déploiement en trois temps', en: 'Three-phase rollout plan' },
-        url: '/experiences/equinox-altered/plan-trois-temps.png',
-        width: 'medium',
-      },
-    },
-    {
       type: 'text',
       content: {
         text: {
-          fr: "Face à la complexité du produit et à la pression des délais, j'ai défendu un plan de déploiement en trois temps, conçu pour aligner produit, design et tech sur une vision commune de la progression des usages.",
-          en: "Faced with the product's complexity and tight deadlines, I championed a three-phase rollout plan, designed to align product, design and tech around a shared vision of usage progression.",
+          fr: "Face à la complexité du produit et à la pression des délais, j'ai soutenu et participé à la construction d'un plan de déploiement en trois temps, pensé pour aligner produit, design et tech sur une vision commune de la progression des usages.",
+          en: "Faced with the product's complexity and tight deadlines, I supported and helped build a three-phase rollout plan, designed to align product, design and tech around a shared vision of usage progression.",
         },
         alignment: 'left',
+      },
+    },
+    {
+      type: 'diagram',
+      content: {
+        svg: planTroisTemps,
+        caption: {
+          fr: 'Plan de déploiement en trois temps et métriques de succès de chaque temps',
+          en: 'Three-phase rollout plan and the success metrics of each phase',
+        },
       },
     },
     {
@@ -200,11 +435,13 @@ export const equinoxAltered: Experience = {
       },
     },
     {
-      type: 'image',
+      type: 'diagram',
       content: {
-        alt: { fr: 'Schéma du double diamant', en: 'Double diamond diagram' },
-        url: '/experiences/equinox-altered/double-diamant.png',
-        width: 'full',
+        svg: doubleDiamant,
+        caption: {
+          fr: 'Double diamant appliqué au système de paiement : divergence puis convergence, deux fois',
+          en: 'Double diamond applied to the payment system: diverge then converge, twice',
+        },
       },
     },
     {
@@ -215,6 +452,16 @@ export const equinoxAltered: Experience = {
           en: "The Altered ecosystem relies on two distinct financial flows — transactions between players and our paid services. Designing the payment system meant making these mechanics smooth and transparent for the player, while absorbing real legal and technical complexity.",
         },
         alignment: 'left',
+      },
+    },
+    {
+      type: 'diagram',
+      content: {
+        svg: fluxPaiement,
+        caption: {
+          fr: 'Deux flux financiers, un même socle de paiement, une complexité absorbée côté produit',
+          en: 'Two financial flows, one payment foundation, complexity absorbed by the product',
+        },
       },
     },
     {
@@ -252,6 +499,18 @@ export const equinoxAltered: Experience = {
       },
     },
     {
+      type: 'image',
+      content: {
+        alt: { fr: "Trois scénarios de parcours de paiement comparés", en: "Three payment journey scenarios compared" },
+        url: '/experiences/equinox-altered/scenarios-paiement.webp',
+        caption: {
+          fr: "Trois scénarios de parcours de paiement, avec avantages et inconvénients, pour éclairer l'arbitrage de la direction",
+          en: "Three payment journey scenarios, with pros and cons, to inform leadership's decision",
+        },
+        width: 'full',
+      },
+    },
+    {
       type: 'section_vertical',
       content: {
         heading_text: { fr: '③ Concevoir', en: '③ Design' },
@@ -264,6 +523,18 @@ export const equinoxAltered: Experience = {
           en: "I started with wireframes co-built with the tech team, to validate the feasibility of the journeys against the constraints identified upstream. Once the functional logic was stabilized, I produced high-fidelity mockups tested directly with end users — to make sure the service's complexity never showed through in the player experience. Throughout this phase, I made sure every new screen complied with the design system in place, built by our UI designer, ensuring the service's visual consistency with the rest of the Altered ecosystem.\n\n<strong>The phase concluded with a formal handoff to the tech team: writing functional documentation, translating design choices into actionable specifications, and checking that no blind spots remained before moving into development.</strong>",
         },
         text_alignment: 'left',
+      },
+    },
+    {
+      type: 'image',
+      content: {
+        alt: { fr: "Arborescence des paramètres de paiement", en: "Payment settings sitemap" },
+        url: '/experiences/equinox-altered/arborescence-paiement.png',
+        caption: {
+          fr: "Arborescence des paramètres de paiement : moyens de paiement d'un côté, cagnotte de l'autre (gains Marketplace, historique, coupons)",
+          en: "Payment settings sitemap: payment methods on one side, wallet on the other (Marketplace earnings, history, coupons)",
+        },
+        width: 'full',
       },
     },
     {

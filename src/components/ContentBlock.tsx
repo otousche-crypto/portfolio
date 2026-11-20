@@ -445,7 +445,7 @@ export default function ContentBlock({ block }: ContentBlockProps) {
     case 'diagram':
       return (
         <div className="my-8 border border-gray-200 bg-white p-4 md:p-8 overflow-x-auto">
-          <div dangerouslySetInnerHTML={{ __html: content.svg || '' }} />
+          <div dangerouslySetInnerHTML={{ __html: typeof content.svg === 'string' ? content.svg : content.svg ? t(content.svg) : '' }} />
           {content.caption && (
             <p className="text-xs uppercase tracking-wider text-gray-500 text-center mt-4">
               {t(content.caption)}

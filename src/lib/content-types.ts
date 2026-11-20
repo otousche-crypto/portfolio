@@ -109,7 +109,7 @@ export interface ContentBlockContent {
   imagePosition?: 'left' | 'right';
   items?: LocalizedString[];
   subtitle?: LocalizedString;
-  svg?: string;
+  svg?: string | LocalizedString;
   entries?: ChangelogEntry[];
 }
 
