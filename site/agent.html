@@ -412,7 +412,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     };
 
     // The agent splits an answer into bubbles with a line holding only ---; a separator still arriving is hidden
-    const split = text => text.replace(/\n-{1,3}[ \t]*$/, '').split(/\n[ \t]*-{3,}[ \t]*(?:\n|$)/);
+    // The model very rarely opens with a stray "_meta: none" line: never show it
+    const split = text => text.replace(/^\s*_meta:[^\n]*(\n+|$)/, '').replace(/\n-{1,3}[ \t]*$/, '').split(/\n[ \t]*-{3,}[ \t]*(?:\n|$)/);
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     const add = (tag, cls, html) => {
