@@ -82,6 +82,7 @@ Projets digitaux pour PME et grands comptes : ateliers de co-création, intervie
 
 ### Logitech FuturLab · UX Designer (stage) · 2017–2018 · Lausanne
 Recherche prospective au sein du laboratoire d'innovation : hearables, écouteurs connectés, assistants vocaux, tendances des réseaux sociaux.
+Sa première expérience pro, qu'il a beaucoup aimée : un travail en équipe sur des sujets de recherche. Il a notamment défini l'expérience autour des « hearables » (écouteurs connectés type AirPods), au moment où ces produits arrivaient sur le marché. Pour cela, il a imaginé et prototypé des expériences audio immersives, partagées avec les équipes qui travaillaient sur ces produits. L'objectif : structurer et partager une vision innovante autour de ces appareils.
 
 ## Projets personnels (product builder)
 
@@ -110,7 +111,7 @@ L'assistant avec lequel le visiteur parle en ce moment, présenté dans la secti
 - Il a publié plusieurs projets sur les plateformes de streaming sous le nom de Floppysional.
 
 ## Formation et certifications
-- Strate École de Design, Paris — diplômé, spécialisation Interaction Design, 2012–2017.
+- Strate École de Design, Paris — diplômé, a étudié le design d'interaction (spécialisation Interaction Design), 2012–2017.
 - AHO (Oslo National Academy of the Arts) — échange Erasmus, Tangible Interaction Design, 2015.
 - Certification Vibe Coding / No Code (Lovable, Bolt, Claude), Airmakers, 2025, mention Très Bien.
 - Certification Anthropic : AI Fluency, Framework & Foundations.
