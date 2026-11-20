@@ -429,20 +429,17 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .ag-talk { display: flex; flex-direction: column; gap: 10px; font-size: 13.5px; line-height: 1.45; }
 .ag-msg { max-width: 88%; padding: 10px 14px; border-radius: 18px; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 12px 30px -12px rgba(20,20,40,.22); transition: transform .5s cubic-bezier(.2,.7,.2,1); }
 .ag-msg.bot { align-self: flex-start; background: #fff; color: #111; border-top-left-radius: 5px; }
-.ag-input { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; padding: 7px 7px 7px 14px; border-radius: 999px; background: #fff; color: #9a9aa2; box-shadow: 0 0 0 1px rgba(15,15,18,.08); }
+.ag-input { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; padding: 6px 6px 6px 13px; border-radius: 999px; color: #9a9aa2; }
 /* Same beam as the agent page's composer: a coloured light rides the border, with a soft blurred halo */
 @property --beam { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
-.ag-input { position: relative; }
-.ag-input::before, .ag-input::after { content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none;
-  background: conic-gradient(from var(--beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent);
-  animation: beam 5s linear infinite; }
-.ag-input::before { padding: 1px; z-index: 1; opacity: .6;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
+/* The ring is the border itself (white padding-box over the beam): no mask, which some browsers fail to apply */
+.ag-input { position: relative; border: 1px solid transparent; animation: beam 5s linear infinite;
+  background: linear-gradient(#fff, #fff) padding-box, conic-gradient(from var(--beam), transparent 0 58%, #7c5cff99 70%, #ff5ca899 79%, #ffb54799 87%, #4fd1ff99 95%, transparent) border-box, linear-gradient(rgba(15,15,18,.08), rgba(15,15,18,.08)) border-box; }
 /* The halo: the same beam blurred inside a transparent 64px margin, so the blur fades out long before the box edge (Safari clips blur to that box) */
-.ag-input::after { inset: -64px; padding: 64px; background-clip: content-box; border-radius: 999px; z-index: -1; opacity: .28; filter: blur(22px); }
+.ag-input::after { content: ""; position: absolute; inset: -65px; padding: 64px; background: conic-gradient(from var(--beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent) content-box;
+  border-radius: 999px; z-index: -1; pointer-events: none; opacity: .28; filter: blur(22px); animation: beam 5s linear infinite; }
 @keyframes beam { to { --beam: 360deg; } }
-@media (prefers-reduced-motion: reduce) { .ag-input::before, .ag-input::after { animation: none; --beam: 200deg; } }
+@media (prefers-reduced-motion: reduce) { .ag-input, .ag-input::after { animation: none; --beam: 200deg; } }
 .ag-input i { width: 24px; height: 24px; border-radius: 50%; background: #0f0f12; opacity: .25; color: #fff; display: grid; place-items: center; }
 .ag-input i svg { width: 12px; height: 12px; }
 .agent:hover .ag-msg.bot { transform: translateY(-2px); }
