@@ -129,13 +129,14 @@ body { position: relative; }
 .dock .chips, .dock .compose { pointer-events: auto; }
 .compose { display: flex; gap: 8px; align-items: flex-end; border-radius: 26px; padding: 5px 5px 5px 17px; position: relative; border: 1px solid rgba(255,255,255,.85);
   box-shadow: 0 0 0 1px var(--line), 0 16px 40px -20px rgba(20,20,40,.3); }
-/* Glass: the bubbles scrolling behind show through, frosted. The blur also makes the composer its own layer,
-   so the halo below lights it softly from inside as well as around it. No mask: some browsers fail to apply them */
-.compose { background: rgba(255,255,255,.62); -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5); }
+/* Glass: a frosted pane (::before) over the halo (::after), both behind the composer. The halo glows on the
+   background around it and only shows through the glass very faintly. No mask: some browsers fail to apply them */
+.compose::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none;
+  background: rgba(255,255,255,.82); -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5); }
 @property --beam { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 /* The halo: a coloured beam, blurred inside a transparent 64px margin so the blur fades out long before the box edge (Safari clips blur to that box) */
 .compose::after { content: ""; position: absolute; inset: -65px; padding: 64px; background: conic-gradient(from var(--beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent) content-box;
-  border-radius: 999px; z-index: -1; pointer-events: none; opacity: .28; filter: blur(22px); animation: beam 5s linear infinite; transition: opacity .3s; }
+  border-radius: 999px; z-index: -2; pointer-events: none; opacity: .28; filter: blur(22px); animation: beam 5s linear infinite; transition: opacity .3s; }
 .compose:focus-within::after { opacity: .42; }
 /* The agent closes the conversation: the composer swells and bursts like a bubble */
 .dock .col { position: relative; }
