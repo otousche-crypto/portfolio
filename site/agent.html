@@ -168,6 +168,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
 .flow span { background: var(--bg); border-radius: 999px; padding: 6px 12px; }
 .flow i { font-style: normal; color: var(--muted); }
 .hood-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.hood-grid .wide { grid-column: 1 / -1; }
 .hood article { background: var(--bg); border-radius: 18px; padding: 20px; }
 .hood h3 { margin: 0 0 8px; font-size: 15.5px; letter-spacing: -0.01em; }
 .hood article p, .hood article ul { margin: 0; color: #4a4a52; font-size: 14px; }
@@ -244,6 +245,10 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       <article>
         <h3 data-en="Tested before every change">Testé avant chaque modification</h3>
         <p data-en="A suite of legitimate questions and attack attempts (prompt injection, role play, off-topic, salary…) runs against the real agent, and a second model grades each answer. A prompt change ships only if the score holds.">Une suite de questions légitimes et de tentatives d’attaque (injection de prompt, jeu de rôle, hors sujet, salaire…) tourne contre le vrai agent, et un second modèle note chaque réponse. Une modification du prompt n’est publiée que si le score tient.</p>
+      </article>
+      <article class="wide">
+        <h3 data-en="Suggestions that guide, and cost nothing">Des suggestions qui guident, et ne coûtent rien</h3>
+        <p data-en="Below every answer, suggestions offer the next step in one click: you don’t have to wonder what to ask, and the conversation stays on what matters. They have a second use: the most frequent questions have a ready-made answer, written in advance and served without calling the API. Instant, and free.">Sous chaque réponse, des suggestions proposent la suite en un clic : pas besoin de chercher quoi demander, et la conversation reste sur l’essentiel. Elles ont un second intérêt : les questions les plus fréquentes ont une réponse toute prête, rédigée à l’avance et servie sans appeler l’API. Instantanée, et gratuite.</p>
       </article>
     </div>
   </div>
