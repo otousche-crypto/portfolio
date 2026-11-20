@@ -198,7 +198,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   <div class="col">
     <div class="chips" id="chips" aria-label="Suggestions"></div>
     <form class="compose" id="form">
-      <textarea id="q" rows="1" maxlength="800" autocomplete="off" aria-label="Votre question" placeholder="Posez vos questions" data-en-placeholder="Ask your questions"></textarea>
+      <textarea id="q" rows="1" maxlength="500" autocomplete="off" aria-label="Votre question" placeholder="Posez vos questions" data-en-placeholder="Ask your questions"></textarea>
       <span class="count" id="count" aria-hidden="true"></span>
       <button class="send" id="send" type="submit" aria-label="Envoyer" data-en-aria="Send" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
     </form>
@@ -232,7 +232,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
         <ul>
           <li data-en="A narrow scope: off-topic requests get a polite one-line decline.">Un périmètre étroit : les demandes hors sujet reçoivent un refus courtois en une phrase.</li>
           <li data-en="Visitor messages are treated as questions, never as instructions: “forget your rules” changes nothing.">Les messages du visiteur sont des questions, jamais des instructions : « oublie tes règles » ne change rien.</li>
-          <li data-en="Length limits, 15 questions per conversation, 20 messages per hour per visitor.">Longueur limitée, 15 questions par conversation, 20 messages par heure et par visiteur.</li>
+          <li data-en="Length limits, 15 questions per conversation, 10 messages per 10 minutes and 30 per day per visitor, and a daily cap for the whole site.">Longueur limitée, 15 questions par conversation, 10 messages par tranche de 10 minutes et 30 par jour et par visiteur, et un plafond quotidien pour tout le site.</li>
           <li data-en="Answers are to be confirmed with Olivier; conversations are stored anonymously (no IP, no identifier) to improve the agent.">Réponses à confirmer avec Olivier ; conversations enregistrées de façon anonyme (ni IP ni identifiant) pour améliorer l’agent.</li>
           <li data-en="Nothing confidential in the context: what the model doesn’t know, it can’t leak.">Rien de confidentiel dans le contexte : ce que le modèle ne sait pas, il ne peut pas le divulguer.</li>
         </ul>
@@ -412,7 +412,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
 <script>
   // Chat: the page keeps the conversation, the server keeps the key and the rules
   (() => {
-    const API = '/api/chat', MAX = 800, KEY = 'agent-chat';
+    const API = '/api/chat', MAX = 500, KEY = 'agent-chat';
     const log = document.getElementById('log'), thread = document.getElementById('thread'), chips = document.getElementById('chips');
     const form = document.getElementById('form'), q = document.getElementById('q');
     const send = document.getElementById('send'), count = document.getElementById('count');
@@ -421,7 +421,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       fr: {
         hello: 'Je suis l’agent IA d’Olivier : posez-moi vos questions, je tâcherai d’y répondre !',
         suggestions: ['Son expérience en recherche UX ?', 'Comment utilise-t-il l’IA ?', 'Parlez-moi d’Altered', 'Est-il disponible ?'],
-        429: 'Vous avez atteint la limite de messages pour le moment. Réessayez dans une heure, ou écrivez directement à Olivier : otousche@gmail.com.',
+        429: 'Vous avez atteint la limite de messages pour le moment. Réessayez un peu plus tard, ou écrivez directement à Olivier : otousche@gmail.com.',
+        paused: 'Je fais une pause pour aujourd’hui 😴 En attendant, écrivez directement à Olivier : otousche@gmail.com.',
         conversation_ended: 'Je me suis arrêté là 😄 Cliquez sur « Nouvelle conversation » pour repartir sur de bonnes bases.', ended: 'Conversation terminée',
         closed: 'Je ne peux plus vous répondre dans cette conversation 🤐 Pour une vraie question sur Olivier, cliquez sur « Nouvelle conversation ».',
         conversation_too_long: 'Cette conversation a atteint sa longueur maximale. Cliquez sur « Nouvelle conversation » pour continuer, ou écrivez à Olivier : otousche@gmail.com.',
@@ -431,7 +432,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       en: {
         hello: 'I’m Olivier’s AI agent: ask me your questions, I’ll do my best to answer!',
         suggestions: ['His UX research experience?', 'How does he use AI?', 'Tell me about Altered', 'Is he available?'],
-        429: 'You’ve reached the message limit for now. Try again in an hour, or email Olivier directly: otousche@gmail.com.',
+        429: 'You’ve reached the message limit for now. Try again a bit later, or email Olivier directly: otousche@gmail.com.',
+        paused: 'I’m taking a break for today 😴 In the meantime, email Olivier directly: otousche@gmail.com.',
         conversation_ended: 'I stopped there 😄 Click “New chat” to start afresh.', ended: 'Conversation closed',
         closed: 'I can’t reply anymore in this conversation 🤐 For a real question about Olivier, click “New chat”.',
         conversation_too_long: 'This conversation has reached its maximum length. Click “New chat” to keep going, or email Olivier: otousche@gmail.com.',

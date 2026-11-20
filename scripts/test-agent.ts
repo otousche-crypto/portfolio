@@ -20,7 +20,7 @@ const fake = (chunks: string[], stop = 'end_turn', fail = false) => ({ messages:
   };
 } } }) as unknown as Anthropic;
 
-const logs: Record<string, unknown>[] = []; let allowed = true;
+const logs: Record<string, unknown>[] = []; let allowed: boolean | 'paused' = true;
 const store = { allow: async () => allowed, log: async (e: Record<string, unknown>) => { logs.push(e); } };
 const req = (body: unknown, method = 'POST') => new Request('http://x/api/chat', { method, body: method === 'POST' ? JSON.stringify(body) : undefined });
 const ok = (name: string, cond: boolean) => { console.log((cond ? 'PASS ' : 'FAIL ') + name); if (!cond) process.exitCode = 1; };
@@ -46,6 +46,14 @@ ok('api error message', (await r.text()).includes('otousche@gmail.com') && logs.
 allowed = false;
 r = await handleChat(req(user('x')), { client: fake(['no']), store, visitor: 'v' });
 ok('rate limited 429', r.status === 429); allowed = true;
+allowed = 'paused';
+r = await handleChat(req(user('x')), { client: fake(['no']), store, visitor: 'v' });
+ok('site cap pauses 503', r.status === 503 && (await r.json()).error === 'paused'); allowed = true;
+{
+  const long = Array.from({ length: 21 }, (_, i) => ({ role: i % 2 ? 'assistant' : 'user', content: i % 2 ? 'a'.repeat(3000) : 'q' }));
+  const v = validate({ messages: long.slice(0, 13) });
+  ok('history trimmed, starts with visitor, answers cut', typeof v !== 'string' && v.messages.length === 7 && v.messages[0].role === 'user' && v.messages.every((m) => m.content.length <= 1200));
+}
 r = await handleChat(req(null, 'GET'), { client: fake([]), visitor: 'v' });
 ok('GET 405', r.status === 405);
 ok('long message 413', validate(user('a'.repeat(801))) === 'message_too_long');
@@ -56,10 +64,10 @@ ok('empty content', validate(user('   ')) === 'invalid_messages');
 const long = Array.from({ length: 31 }, (_, i) => ({ role: i % 2 ? 'assistant' : 'user', content: 'q' }));
 ok('15 turns max', validate({ messages: long }) === 'conversation_too_long');
 const ok29 = validate({ messages: long.slice(0, 29) });
-ok('history trimmed to 12', typeof ok29 !== 'string' && ok29.messages.length === 12 && ok29.messages[0].role === 'assistant');
+ok('history trimmed to 7', typeof ok29 !== 'string' && ok29.messages.length === 7 && ok29.messages[0].role === 'user');
 
 const saved: Record<string, unknown>[] = [];
-const fbStore = { allow: async () => allowed, save: async (e: Record<string, unknown>) => { saved.push(e); } };
+const fbStore = { allow: async () => allowed === true, save: async (e: Record<string, unknown>) => { saved.push(e); } };
 r = await handleFeedback(req({ vote: 'up', question: 'Q', answer: 'A', lang: 'en' }), { store: fbStore, visitor: 'v' });
 ok('feedback saved anonymously', r.status === 204 && saved.length === 1 && saved[0].vote === 'up' && saved[0].lang === 'en' && !('visitor' in saved[0]));
 ok('feedback bad vote', validateFeedback({ vote: 'meh', question: 'Q', answer: 'A' }) === 'invalid_vote');

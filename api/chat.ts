@@ -20,15 +20,19 @@ const token = process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TO
 const redis = url && token ? new Redis({ url, token }) : null;
 
 // Un script qui boucle sur l'API ne doit pas pouvoir vider le crédit Anthropic :
-// 20 messages par heure et 50 par jour par visiteur, 200 par jour pour tout le site.
-const PER_HOUR = 20, PER_DAY = 50, SITE_PER_DAY = 200;
+// 10 messages par 10 minutes et 30 par jour par visiteur ; au-delà de 300 par jour pour tout le site,
+// l'agent se met en pause sans appeler le modèle (même si l'abus change d'IP).
+const PER_BURST = 10, PER_DAY = 30, SITE_PER_DAY = 300;
 
 const store: Store = redis ? (() => {
-  const hour = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(PER_HOUR, '1 h'), prefix: 'agent:rl' });
+  const burst = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(PER_BURST, '10 m'), prefix: 'agent:rl' });
   const day = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(PER_DAY, '1 d'), prefix: 'agent:rl-day' });
   const site = new Ratelimit({ redis, limiter: Ratelimit.fixedWindow(SITE_PER_DAY, '1 d'), prefix: 'agent:rl-site' });
   return {
-    allow: async (visitor) => (await hour.limit(visitor)).success && (await day.limit(visitor)).success && (await site.limit('all')).success,
+    allow: async (visitor) => {
+      if (!(await burst.limit(visitor)).success || !(await day.limit(visitor)).success) return false;
+      return (await site.limit('all')).success || 'paused';
+    },
     log: async (entry) => { await redis.lpush('agent:logs', JSON.stringify(entry)); await redis.ltrim('agent:logs', 0, 1999); },
   };
 })() : (() => {
@@ -40,7 +44,10 @@ const store: Store = redis ? (() => {
     list.push(now); hits.set(key, list); return true;
   };
   return {
-    allow: async (visitor) => count('site', 864e5, SITE_PER_DAY) && count(`d:${visitor}`, 864e5, PER_DAY) && count(`h:${visitor}`, 36e5, PER_HOUR),
+    allow: async (visitor) => {
+      if (!count(`b:${visitor}`, 6e5, PER_BURST) || !count(`d:${visitor}`, 864e5, PER_DAY)) return false;
+      return count('site', 864e5, SITE_PER_DAY) || 'paused';
+    },
     log: async () => {},
   };
 })();

@@ -9,16 +9,17 @@ export type ChatMessage = { role: 'user' | 'assistant'; content: string };
 
 // Limites d'entrée : un recruteur n'a pas besoin de plus, un abus si
 export const LIMITS = {
-  userChars: 800,        // longueur max d'une question
-  assistantChars: 4000,  // longueur max d'une réponse renvoyée par le client
-  historyKept: 12,       // seuls les derniers messages partent au modèle
+  userChars: 500,        // longueur max d'une question
+  assistantChars: 4000,  // au-delà, la réponse « renvoyée » par le client est forcément forgée
+  assistantKept: 1200,   // une vraie réponse fait moins de 90 mots : le reste est coupé avant le modèle
+  historyKept: 7,        // seuls les derniers messages partent au modèle (impair : on commence par le visiteur)
   turnsPerChat: 15,      // questions max par conversation
-  maxTokens: 2000,       // plafond de sortie (réflexion comprise)
+  maxTokens: 500,        // plafond de sortie : 3 bulles courtes et les suggestions
 };
 
 export interface Store {
-  // true si le visiteur peut encore envoyer un message
-  allow(visitor: string): Promise<boolean>;
+  // true si le visiteur peut encore envoyer un message, 'paused' si le plafond du site est atteint
+  allow(visitor: string): Promise<boolean | 'paused'>;
   log(entry: Record<string, unknown>): Promise<void>;
 }
 
@@ -75,7 +76,7 @@ export function validate(body: unknown): { messages: ChatMessage[]; lang: 'fr' |
   if ((messages as ChatMessage[]).some((m) => m.role === 'assistant' && ENDED.test(m.content))) return 'conversation_ended';
   if ((messages.length + 1) / 2 > LIMITS.turnsPerChat) return 'conversation_too_long';
   return {
-    messages: (messages as ChatMessage[]).slice(-LIMITS.historyKept).map(({ role, content }) => ({ role, content })),
+    messages: (messages as ChatMessage[]).slice(-LIMITS.historyKept).map(({ role, content }) => ({ role, content: role === 'assistant' ? content.slice(0, LIMITS.assistantKept) : content })),
     lang: lang === 'en' ? 'en' : 'fr',
   };
 }
@@ -103,7 +104,9 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
   try { body = await req.json(); } catch { return json(400, 'invalid_body'); }
   const input = validate(body);
   if (typeof input === 'string') return json(input === 'invalid_body' || input === 'invalid_messages' ? 400 : input === 'conversation_ended' ? 409 : 413, input);
-  if (deps.store && !(await deps.store.allow(deps.visitor))) return json(429, 'rate_limited');
+  const allowed = deps.store ? await deps.store.allow(deps.visitor) : true;
+  if (allowed === 'paused') return json(503, 'paused');
+  if (!allowed) return json(429, 'rate_limited');
 
   const { messages } = input;
   const lang = replyLang(messages.at(-1)!.content, input.lang);
