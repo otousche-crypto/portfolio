@@ -126,20 +126,16 @@ button { font: inherit; color: inherit; }
 /* Beam: a coloured glow rides around the composer's border, brighter while typing (pure CSS, no library) */
 @property --beam { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 .compose { position: relative; }
-.compose::before, .compose::after { content: ""; position: absolute; inset: -1.5px; border-radius: inherit; pointer-events: none;
+.compose::before, .compose::after { content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none;
   background: conic-gradient(from var(--beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent);
   animation: beam 5s linear infinite; transition: opacity .3s; }
-.compose::before { padding: 1.5px; z-index: 1; opacity: .8;
+.compose::before { padding: 1px; z-index: 1; opacity: .6;
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
-/* The glow is the same beam, spread 16px out and faded by a mask, not blurred: Safari clips a blur filter to a square box */
-.compose::after { inset: -16px; border-radius: 42px; z-index: -1; opacity: .4;
-  -webkit-mask: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent), linear-gradient(transparent, #000 16px, #000 calc(100% - 16px), transparent);
-  -webkit-mask-composite: source-in;
-  mask: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent), linear-gradient(transparent, #000 16px, #000 calc(100% - 16px), transparent);
-  mask-composite: intersect; }
-.compose:focus-within::before { opacity: 1; }
-.compose:focus-within::after { opacity: .6; }
+/* The halo: the same beam blurred inside a transparent 64px margin, so the blur fades out long before the box edge (Safari clips blur to that box) */
+.compose::after { inset: -64px; padding: 64px; background-clip: content-box; border-radius: 999px; z-index: -1; opacity: .28; filter: blur(22px); }
+.compose:focus-within::before { opacity: .85; }
+.compose:focus-within::after { opacity: .42; }
 @keyframes beam { to { --beam: 360deg; } }
 @media (prefers-reduced-motion: reduce) { .compose::before, .compose::after { animation: none; --beam: 200deg; } }
 .compose textarea { flex: 1; resize: none; font: inherit; font-size: 16px; line-height: 1.45; color: var(--fg); background: none; border: 0; padding: 9px 0; max-height: 160px; outline: none; scrollbar-width: none; }
