@@ -70,9 +70,9 @@ button { font: inherit; color: inherit; }
 .face { position: fixed; z-index: 0; top: 50%; right: 0; translate: 40% -50%; display: block; font-size: clamp(8px, 1.6vh, 14px); pointer-events: none; }
 /* Narrow screens: smaller, low in the corner, faded so the bubbles stay readable */
 @media (max-width: 1100px) { .face { font-size: clamp(6px, 1.2vh, 10px); opacity: .45; } }
-/* Phones: the head fills the height from the bar's separator (63px) to the bottom of the screen; 42 rows of 1.02em */
+/* Phones: the head fills the height between the bar's separator (63px) and the suggestions (dock: 124px); 42 rows of 1.02em */
 @media (max-width: 640px) {
-  .face { top: 63px; translate: 40% 0; font-size: calc((100svh - 63px) / 42.84); opacity: .5; }
+  .face { top: 63px; translate: 40% 0; font-size: calc((100svh - 63px - 124px) / 42.84); opacity: .5; }
 }
 .intro h1 { margin: 0; font-size: clamp(24px, 3.4vw, 34px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 600; text-wrap: balance; }
 .intro p { margin: -6px 0 0; color: #5f5f68; max-width: 46ch; text-wrap: pretty; }
@@ -94,7 +94,7 @@ button { font: inherit; color: inherit; }
 .chips button { flex: none; scroll-snap-align: start; white-space: nowrap; font-size: 14px; background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 9px 15px; cursor: pointer; transition: border-color .2s, transform .2s; }
 .chips button:hover, .chips button:focus-visible { border-color: rgba(15,15,18,.25); transform: translateY(-1px); }
 /* Phones: one suggestion and the start of the next */
-@media (max-width: 640px) { .chips button { width: calc(100vw - 84px); white-space: normal; text-align: left; border-radius: 18px; } }
+@media (max-width: 640px) { .chips button { max-width: calc(100vw - 84px); overflow: hidden; text-overflow: ellipsis; } }
 
 /* ── Composer ── */
 .dock { flex: none; padding: 10px 0 max(14px, env(safe-area-inset-bottom, 0px)); }
@@ -363,7 +363,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       fr: {
         title: 'Posez vos questions à mon agent',
         sub: 'Mon assistant IA répond sur mon expérience, mes projets et ma façon de travailler.',
-        suggestions: ['Quelle est son expérience en recherche utilisateur ?', 'Comment utilise-t-il l’IA pour construire des produits ?', 'Parlez-moi du projet Altered', 'Est-il disponible, et pour quel type de poste ?'],
+        suggestions: ['Son expérience en recherche UX ?', 'Comment utilise-t-il l’IA ?', 'Parlez-moi d’Altered', 'Est-il disponible ?'],
         429: 'Vous avez atteint la limite de messages pour le moment. Réessayez dans une heure, ou écrivez directement à Olivier : otousche@gmail.com.',
         conversation_too_long: 'Cette conversation a atteint sa longueur maximale. Cliquez sur « Nouvelle conversation » pour continuer, ou écrivez à Olivier : otousche@gmail.com.',
         error: 'Désolé, l’agent ne répond pas pour le moment. Vous pouvez écrire à Olivier : otousche@gmail.com.',
@@ -371,7 +371,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       en: {
         title: 'Ask my agent anything',
         sub: 'My AI assistant answers about my experience, my projects and how I work.',
-        suggestions: ['What is his user research experience?', 'How does he use AI to build products?', 'Tell me about the Altered project', 'Is he available, and for what kind of role?'],
+        suggestions: ['His UX research experience?', 'How does he use AI?', 'Tell me about Altered', 'Is he available?'],
         429: 'You’ve reached the message limit for now. Try again in an hour, or email Olivier directly: otousche@gmail.com.',
         conversation_too_long: 'This conversation has reached its maximum length. Click “New chat” to keep going, or email Olivier: otousche@gmail.com.',
         error: 'Sorry, the agent isn’t answering right now. You can email Olivier: otousche@gmail.com.',
