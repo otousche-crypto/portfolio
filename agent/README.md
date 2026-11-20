@@ -1,6 +1,6 @@
 # Agent du Laboratoire
 
-Un assistant IA qui répond aux recruteurs sur le parcours d'Olivier. Page : `public/apercu-oxw5q0627t/agent.html`, carte dans la section Laboratoire de `index.html`.
+Un assistant IA qui répond aux recruteurs sur le parcours d'Olivier. Page : `site/agent.html`, carte dans la section Laboratoire de `site/index.html`.
 
 | Fichier | Rôle |
 |---|---|

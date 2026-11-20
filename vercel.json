@@ -1,3 +1,14 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/apercu-oxw5q0627t", "destination": "/", "permanent": true },
+    { "source": "/apercu-oxw5q0627t/:path*", "destination": "/:path*", "permanent": true },
+    { "source": "/experience/equinox-altered", "destination": "/equinox.html", "permanent": true },
+    { "source": "/experience/go-moonbound", "destination": "/gomoonbound.html", "permanent": true },
+    { "source": "/experience/sklip", "destination": "/sklip.html", "permanent": true },
+    { "source": "/experience/:path*", "destination": "/", "permanent": true },
+    { "source": "/cv/Olivier_Tousche_CV.pdf", "destination": "/cv/Olivier_Tousche_CV-fr.pdf", "permanent": true }
+  ]
 }
