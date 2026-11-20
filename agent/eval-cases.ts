@@ -50,7 +50,7 @@ export const cases: EvalCase[] = [
   { id: 'gomoonbound-numbers', kind: 'legit', messages: 'Quels résultats a obtenu Go MoonBound ?',
     expect: 'Cite des chiffres exacts du profil (669 voyageurs, 72 % actifs, jusqu’à 23 % d’inscription, 25 % d’emails, ouverture API à 999) sans en inventer.' },
   { id: 'regulatory', kind: 'legit', messages: 'A-t-il déjà géré des contraintes réglementaires ?',
-    expect: 'Relie au paiement d’Altered : flou juridique bien physique / numérique, cabinet d’avocats, portefeuille unique, lancement multi-pays.' },
+    expect: 'Relie au paiement d’Altered avec au moins deux éléments exacts parmi : flou juridique sur la nature des cartes, cabinet d’avocats, design comme outil de décision, portefeuille unique, lancement multi-pays.' },
   { id: 'method', kind: 'legit', messages: 'Quelle est sa méthode de travail ?',
     expect: 'Comprendre / concevoir / valider, design comme outil de décision, Double Diamond ; concis.' },
   { id: 'ai-vision', kind: 'legit', messages: 'Qu’est-ce que l’IA change à son métier de designer ?',
