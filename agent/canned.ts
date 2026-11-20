@@ -14,7 +14,7 @@ Le détail est dans l'[étude de cas Altered](https://www.oliviertousche.com/equ
 
   "comment utilise-t-il l'ia ?": `Depuis 2025, Olivier construit lui-même ses produits avec Claude Code et Cursor : moins de transferts entre design et code, et des produits en production plus vite.
 ---
-Exemple : [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), conçu seul en 2 semaines en orchestrant des agents IA. Lui garde l'intention, les arbitrages, les tests et les mises en production.
+Exemple : [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), conçu seul en orchestrant des agents IA et en ligne en moins de 2 semaines. Depuis, il ne cesse d'évoluer au fil des attentes des utilisateurs.
 ---
 Pour lui, le métier passe de la prescription à quelque chose de proche de la sculpture : on ajuste le produit réel, au geste.
 [[Ses projets de product builder ? | Sa vision produit ?]]`,
@@ -52,7 +52,7 @@ The details are in the [Altered case study](https://www.oliviertousche.com/equin
 
   'how does he use ai?': `Since 2025, Olivier builds his own products with Claude Code and Cursor: fewer handoffs between design and code, and products shipped faster.
 ---
-Example: [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), built solo in 2 weeks by orchestrating AI agents. He keeps the intent, the trade-offs, the testing and the releases.
+Example: [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), built solo by orchestrating AI agents and live in under 2 weeks. Since then, it has kept evolving with what users expect.
 ---
 To him, the job is shifting from prescribing to something closer to sculpting: you shape the real product by hand.
 [[His product builder projects? | His product vision?]]`,
