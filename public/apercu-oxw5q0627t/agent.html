@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="robots" content="noindex, nofollow">
 <title>Agent · Olivier Tousche</title>
 <script>
@@ -18,191 +18,223 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
 <style>
-/* Same tokens as the portfolio pages; the chat sits in one rounded panel, the "under the hood" notes below it */
+/* Full-screen chat on Stampit's light grey and dot grid: a slim bar on top, the conversation in one centred column, the composer pinned at the bottom */
 :root {
-  --bg: #ffffff;
-  --fg: #111113;
-  --muted: #9a9aa2;
-  --soft: #f3f3f5;
-  --line: #e7e7ea;
+  --bg: #f1f1f4;
+  --fg: #0f0f12;
+  --muted: #8a8a92;
+  --line: rgba(15,15,18,.08);
   --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --radius: 28px;
-  --accent: #4CB8FF;
+  --col: 760px;
   color-scheme: light;
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+  display: flex; flex-direction: column; height: 100svh; overflow: hidden;
+}
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background-image: radial-gradient(rgba(15,15,18,.09) 1px, transparent 1px); background-size: 18px 18px; mask-image: radial-gradient(80% 70% at 50% 40%, #000, transparent); }
 a { color: inherit; }
-.wrap { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-@media (min-width: 720px) { .wrap { padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); } }
+button { font: inherit; color: inherit; }
 
-/* ── Top bar ── */
-.top { position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; padding-block: 20px; font-size: 14px; }
-.top::before { content: ""; position: absolute; inset: 0 calc(50% - 50vw); z-index: -1;
-  background: linear-gradient(to bottom, rgba(255,255,255,.78), rgba(255,255,255,.6));
-  -webkit-backdrop-filter: saturate(180%) blur(24px); backdrop-filter: saturate(180%) blur(24px); }
-.top nav { display: flex; gap: 20px; align-items: center; }
-.top nav a { text-decoration: none; color: #5f5f68; transition: color .2s; }
-.top nav a:hover, .top nav a:focus-visible { color: var(--fg); }
-.brand { font-weight: 600; letter-spacing: -0.01em; text-decoration: none; }
-.lang-switch { display: inline-flex; align-items: center; gap: 2px; }
+/* ── Bar ── */
+.bar { flex: none; display: flex; align-items: center; gap: 16px; padding: 14px max(16px, env(safe-area-inset-left, 0px)) 14px max(16px, env(safe-area-inset-left, 0px)); font-size: 14px; border-bottom: 1px solid var(--line); background: rgba(241,241,244,.8); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); }
+@media (min-width: 720px) { .bar { padding-inline: 28px; } }
+.back { display: grid; place-items: center; width: 34px; height: 34px; margin-left: -6px; border-radius: 50%; text-decoration: none; color: #5f5f68; transition: background .2s, color .2s; }
+.back:hover, .back:focus-visible { background: rgba(15,15,18,.06); color: var(--fg); }
+.back svg { width: 16px; height: 16px; }
+.who { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.who b { font-weight: 600; letter-spacing: -0.01em; }
+.who span { color: var(--muted); font-size: 13px; display: flex; align-items: center; gap: 6px; }
+.who span::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #34c37a; }
+.tools { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+.tool { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 7px 12px; border-radius: 999px; color: #5f5f68; cursor: pointer; font-size: 13.5px; white-space: nowrap; transition: background .2s, color .2s; }
+.tool:hover, .tool:focus-visible { background: rgba(15,15,18,.06); color: var(--fg); }
+.lang-switch { display: inline-flex; align-items: center; gap: 2px; margin-left: 6px; }
 .lang-switch i { font-style: normal; color: #c4c4ca; }
-.lang-switch button { font: inherit; background: none; border: 0; padding: 0 3px; color: #8b8b93; cursor: pointer; transition: color .2s; }
-.lang-switch button:hover, .lang-switch button:focus-visible { color: var(--fg); }
+.lang-switch button { background: none; border: 0; padding: 0 3px; color: #8b8b93; cursor: pointer; }
 .lang-switch button[aria-pressed="true"] { color: var(--fg); font-weight: 500; }
-@media (max-width: 480px) { .top { gap: 12px; font-size: 13px; } .top nav { gap: 12px; } }
+.tool svg { width: 15px; height: 15px; flex: none; }
+/* Phones: icons only, and the status line gives way to the name */
+@media (max-width: 640px) { .tool span, .who span { display: none; } .tools { gap: 0; } .tool { padding: 9px; } }
 
-/* ── Head ── */
-.cs-back { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); text-decoration: none; margin: 24px 0 40px; transition: color .2s; }
-.cs-back:hover { color: var(--fg); }
-.kicker { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; margin-bottom: 20px; }
-.kicker .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(76,184,255,.18); }
-h1 { margin: 0; max-width: 860px; font-size: clamp(34px, 5.2vw, 60px); line-height: 1.04; letter-spacing: -0.04em; font-weight: 600; text-wrap: balance; }
-.lede { font-size: 20px; color: var(--muted); max-width: 46ch; margin: 20px 0 0; text-wrap: pretty; }
-
-/* ── Chat panel ── */
-.chat { margin: 48px 0 0; border-radius: var(--radius); background: var(--soft); display: flex; flex-direction: column; min-height: 560px; max-height: min(78vh, 760px); overflow: hidden; }
-.chat-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 24px; border-bottom: 1px solid var(--line); font-size: 14px; }
-.chat-head .who { display: flex; align-items: center; gap: 10px; font-weight: 500; }
-.chat-head .who img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; background: #e2e2e6; }
-.chat-head .who span { color: var(--muted); font-weight: 400; }
-.reset { font: inherit; font-size: 13px; background: none; border: 0; color: #5f5f68; cursor: pointer; padding: 6px 0; }
-.reset:hover, .reset:focus-visible { color: var(--fg); }
-.log { flex: 1; overflow-y: auto; padding: 28px 24px 12px; display: flex; flex-direction: column; gap: 14px; scroll-behavior: smooth; }
-.msg { max-width: min(640px, 88%); padding: 12px 16px; border-radius: 20px; font-size: 15.5px; line-height: 1.55; overflow-wrap: anywhere; }
+/* ── Conversation ── */
+.log { flex: 1; overflow-y: auto; overscroll-behavior: contain; scroll-behavior: smooth; }
+.col { width: 100%; max-width: var(--col); margin: 0 auto; padding: 0 16px; }
+.thread { display: flex; flex-direction: column; gap: 14px; padding-block: 28px 20px; }
+.intro { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; padding-top: clamp(8px, 4vh, 40px); }
+.face { margin: 0; font-family: var(--mono); font-size: clamp(5px, min(1.05vh, 1.6vw), 7.6px); line-height: 1.02; color: #26262a; user-select: none; }
+.intro h1 { margin: 0; font-size: clamp(24px, 3.4vw, 34px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 600; text-wrap: balance; }
+.intro p { margin: -8px 0 0; color: #5f5f68; max-width: 46ch; text-wrap: pretty; }
+.msg { max-width: min(600px, 88%); padding: 12px 16px; border-radius: 20px; font-size: 15.5px; line-height: 1.55; overflow-wrap: anywhere; }
 .msg p { margin: 0; }
 .msg p + p, .msg ul + p, .msg p + ul { margin-top: 8px; }
 .msg ul { margin: 0; padding-left: 20px; }
 .msg a { text-decoration: underline; text-underline-offset: 2px; }
-.msg.bot { align-self: flex-start; background: #fff; border-top-left-radius: 6px; }
+.msg.bot { align-self: flex-start; background: #fff; border-top-left-radius: 6px; box-shadow: 0 1px 0 rgba(0,0,0,.03), 0 10px 26px -14px rgba(20,20,40,.2); }
 .msg.me { align-self: flex-end; background: var(--fg); color: #fff; border-top-right-radius: 6px; white-space: pre-wrap; }
-.msg.note { align-self: center; background: none; color: var(--muted); font-size: 13.5px; text-align: center; padding: 4px 0; }
+.msg.note { align-self: center; max-width: 52ch; background: none; color: var(--muted); font-size: 13.5px; text-align: center; padding: 4px 0; }
 .typing { display: inline-flex; gap: 4px; padding: 6px 0; }
 .typing i { width: 6px; height: 6px; border-radius: 50%; background: #b9b9c0; animation: blink 1.2s infinite both; }
 .typing i:nth-child(2) { animation-delay: .2s; } .typing i:nth-child(3) { animation-delay: .4s; }
 @keyframes blink { 0%, 80%, 100% { opacity: .3; } 40% { opacity: 1; } }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 24px 16px; }
-.chips button { font: inherit; font-size: 13.5px; text-align: left; background: #fff; color: var(--fg); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; cursor: pointer; transition: border-color .2s, transform .2s; }
-.chips button:hover, .chips button:focus-visible { border-color: #c4c4ca; transform: translateY(-1px); }
-.compose { display: flex; gap: 8px; align-items: flex-end; padding: 12px 16px 16px; border-top: 1px solid var(--line); background: var(--soft); }
-.compose textarea { flex: 1; resize: none; font: inherit; font-size: 16px; line-height: 1.45; color: var(--fg); background: #fff; border: 1px solid var(--line); border-radius: 22px; padding: 11px 16px; max-height: 140px; outline: none; transition: border-color .2s; }
-.compose textarea:focus { border-color: #b9b9c0; }
-.send { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--fg); color: #fff; display: grid; place-items: center; cursor: pointer; transition: opacity .2s, transform .2s; }
+.chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 6px; }
+.chips button { font-size: 14px; text-align: left; background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 9px 15px; cursor: pointer; transition: border-color .2s, transform .2s; }
+.chips button:hover, .chips button:focus-visible { border-color: rgba(15,15,18,.25); transform: translateY(-1px); }
+
+/* ── Composer ── */
+.dock { flex: none; padding: 10px 0 max(14px, env(safe-area-inset-bottom, 0px)); }
+.compose { display: flex; gap: 8px; align-items: flex-end; background: #fff; border-radius: 26px; padding: 6px 6px 6px 18px; box-shadow: 0 0 0 1px var(--line), 0 16px 40px -20px rgba(20,20,40,.3); }
+.compose textarea { flex: 1; resize: none; font: inherit; font-size: 16px; line-height: 1.45; color: var(--fg); background: none; border: 0; padding: 9px 0; max-height: 160px; outline: none; scrollbar-width: none; }
+.compose textarea::-webkit-scrollbar { display: none; }
+.send { flex: none; width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--fg); color: #fff; display: grid; place-items: center; cursor: pointer; transition: opacity .2s, transform .2s; }
 .send:hover { transform: translateY(-1px); }
-.send:disabled { opacity: .3; cursor: default; transform: none; }
+.send:disabled { opacity: .25; cursor: default; transform: none; }
 .send svg { width: 18px; height: 18px; }
-.count { font-family: var(--mono); font-size: 11px; color: var(--muted); align-self: center; min-width: 3ch; text-align: right; }
-.disclaimer { font-size: 13px; color: var(--muted); margin: 14px 4px 0; max-width: 70ch; }
+.count { font-family: var(--mono); font-size: 11px; color: var(--muted); align-self: center; }
+.disclaimer { margin: 8px 4px 0; font-size: 12px; color: var(--muted); text-align: center; }
 
-/* ── Under the hood ── */
-.label { font-size: 14px; font-weight: 500; display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 16px; border-bottom: 1px solid var(--line); margin: 96px 0 20px; }
-.label span:last-child { color: var(--muted); }
-.hood { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-.hood article { background: var(--soft); border-radius: 22px; padding: 28px; }
-.hood h3 { margin: 0 0 10px; font-size: 17px; letter-spacing: -0.01em; }
-.hood p { margin: 0; color: #4a4a52; font-size: 15px; }
-.hood ul { margin: 0; padding-left: 18px; color: #4a4a52; font-size: 15px; }
-.hood li + li { margin-top: 6px; }
-.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 20px; font-size: 14px; }
-.flow span { background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; }
+/* ── Under the hood (dialog) ── */
+dialog { width: min(760px, calc(100vw - 24px)); max-height: calc(100svh - 48px); padding: 0; border: 0; border-radius: 26px; background: #fff; color: var(--fg); box-shadow: 0 40px 80px -30px rgba(20,20,40,.45); }
+dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.hood { padding: 28px; }
+.hood-top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 18px; }
+.hood-top h2 { margin: 0; font-size: 22px; letter-spacing: -0.02em; }
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 18px; font-size: 13px; }
+.flow span { background: var(--bg); border-radius: 999px; padding: 6px 12px; }
 .flow i { font-style: normal; color: var(--muted); }
-footer { padding-block: 72px 40px; font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-
-@media (max-width: 760px) {
-  .chat { min-height: 70vh; max-height: none; height: calc(100svh - 120px); margin-top: 32px; border-radius: 22px; }
-  .chat-head { padding: 14px 16px; }
-  .log { padding: 20px 14px 8px; }
-  .chips { padding: 0 14px 12px; }
-  .compose { padding: 10px 10px 12px; }
-  .msg { max-width: 92%; }
-  .hood { grid-template-columns: 1fr; }
-  .hood article { padding: 22px; }
-}
+.hood-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.hood article { background: var(--bg); border-radius: 18px; padding: 20px; }
+.hood h3 { margin: 0 0 8px; font-size: 15.5px; letter-spacing: -0.01em; }
+.hood article p, .hood article ul { margin: 0; color: #4a4a52; font-size: 14px; }
+.hood article ul { padding-left: 18px; }
+.hood li + li { margin-top: 5px; }
+@media (max-width: 640px) { .hood { padding: 22px 18px; } .hood-grid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } .log { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
-    <a class="brand" href="index.html">Olivier Tousche</a>
-    <nav>
-      <a href="index.html#projets" data-en="Work">Projets</a>
-      <a href="index.html#about" data-en="About">À propos</a>
-      <a href="index.html#contact">Contact</a>
-      <span class="lang-switch" role="group" aria-label="Langue · Language"><button type="button" data-set-lang="fr" aria-pressed="true">FR</button><i aria-hidden="true">/</i><button type="button" data-set-lang="en" aria-pressed="false">EN</button></span>
-    </nav>
-  </header>
+<header class="bar">
+  <a class="back" href="index.html#laboratoire" aria-label="Retour au laboratoire" data-en-aria="Back to the lab"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg></a>
+  <div class="who"><b>Olivier Tousche</b><span data-en="AI agent · answers from his background">Agent IA · répond à partir de son parcours</span></div>
+  <div class="tools">
+    <button class="tool" type="button" id="hood-open" aria-label="Sous le capot" data-en-aria="Under the hood"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6.25"/><path d="M8 7.2v3.6M8 5.1v.1"/></svg><span data-en="Under the hood">Sous le capot</span></button>
+    <button class="tool" type="button" id="reset" aria-label="Nouvelle conversation" data-en-aria="New chat"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v10M3 8h10"/></svg><span data-en="New chat">Nouvelle conversation</span></button>
+    <span class="lang-switch" role="group" aria-label="Langue · Language"><button type="button" data-set-lang="fr" aria-pressed="true">FR</button><i aria-hidden="true">/</i><button type="button" data-set-lang="en" aria-pressed="false">EN</button></span>
+  </div>
+</header>
 
-  <a class="cs-back" href="index.html#laboratoire" data-en="← Back to the lab">← Retour au laboratoire</a>
-  <div class="kicker"><i class="dot" aria-hidden="true"></i><span data-en="Lab · Experiment">Laboratoire · Expérimentation</span></div>
-  <h1 data-en="Ask my agent about my background">Posez vos questions à mon agent</h1>
-  <p class="lede" data-en="An AI assistant that answers recruiters and clients about my experience, my projects and how I work. Built and shipped like a real product.">Un assistant IA qui répond aux recruteurs et aux clients sur mon expérience, mes projets et ma façon de travailler. Conçu et mis en production comme un vrai produit.</p>
+<main class="log" id="log" aria-label="Conversation">
+  <div class="col thread" id="thread" role="log" aria-live="polite"></div>
+</main>
 
-  <section class="chat" aria-label="Conversation">
-    <div class="chat-head">
-      <div class="who"><img src="img/avatar.png" alt=""><div>Agent · Olivier Tousche <span data-en="· AI">· IA</span></div></div>
-      <button class="reset" type="button" id="reset" data-en="New conversation">Nouvelle conversation</button>
-    </div>
-    <div class="log" id="log" role="log" aria-live="polite"></div>
-    <div class="chips" id="chips"></div>
+<div class="dock">
+  <div class="col">
     <form class="compose" id="form">
-      <label for="q" class="sr" hidden>Question</label>
-      <textarea id="q" rows="1" maxlength="800" autocomplete="off" placeholder="Votre question sur le parcours d'Olivier…" data-en-placeholder="Your question about Olivier's background…"></textarea>
+      <textarea id="q" rows="1" maxlength="800" autocomplete="off" aria-label="Votre question" placeholder="Posez votre question sur le parcours d'Olivier…" data-en-placeholder="Ask about Olivier's background…"></textarea>
       <span class="count" id="count" aria-hidden="true"></span>
       <button class="send" id="send" type="submit" aria-label="Envoyer" data-en-aria="Send" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
     </form>
-  </section>
-  <p class="disclaimer" data-en="Answers are generated by AI from Olivier’s background and may contain mistakes: confirm anything important with him. Questions and answers are stored anonymously (no IP, no identifier) to improve the agent.">Réponses générées par IA à partir du parcours d’Olivier : elles peuvent contenir des erreurs, à confirmer avec lui. Les questions et réponses sont enregistrées de façon anonyme (ni IP ni identifiant) pour améliorer l’agent.</p>
-
-  <div class="label"><span data-en="Under the hood">Sous le capot</span><span data-en="How it is built">Comment c’est construit</span></div>
-  <div class="flow" aria-label="Parcours d'une question">
-    <span data-en="Your question">Votre question</span><i>→</i>
-    <span data-en="Validation and rate limit">Validation et limite de débit</span><i>→</i>
-    <span data-en="Claude Haiku + profile">Claude Haiku + profil</span><i>→</i>
-    <span data-en="Streamed answer">Réponse en streaming</span><i>→</i>
-    <span data-en="Anonymous log">Log anonyme</span>
+    <p class="disclaimer" data-en="AI-generated answers, to be confirmed with Olivier. Conversations are stored anonymously (no IP, no identifier).">Réponses générées par IA, à confirmer avec Olivier. Conversations enregistrées de façon anonyme (ni IP ni identifiant).</p>
   </div>
-  <div class="hood">
-    <article>
-      <h3 data-en="One source of truth">Une seule source de vérité</h3>
-      <p data-en="The agent only knows a profile written by Olivier: experience, projects, method, what he is looking for. No RAG needed at this size: the whole profile sits in the system prompt, cached on the API side to cut cost and latency. If something is not in it, the agent says so and points to Olivier.">L’agent ne connaît qu’un profil rédigé par Olivier : expériences, projets, méthode, ce qu’il recherche. Pas besoin de RAG à cette taille : tout le profil tient dans le prompt système, mis en cache côté API pour réduire coût et latence. Ce qui n’y figure pas, l’agent dit qu’il ne le sait pas et renvoie vers Olivier.</p>
-    </article>
-    <article>
-      <h3 data-en="Guardrails in layers">Des garde-fous en couches</h3>
-      <ul>
-        <li data-en="A narrow scope: off-topic requests get a polite one-line decline.">Un périmètre étroit : les demandes hors sujet reçoivent un refus courtois en une phrase.</li>
-        <li data-en="Visitor messages are treated as questions, never as instructions: “forget your rules” changes nothing.">Les messages du visiteur sont des questions, jamais des instructions : « oublie tes règles » ne change rien.</li>
-        <li data-en="Length limits, 15 questions per conversation, 20 messages per hour per visitor.">Longueur limitée, 15 questions par conversation, 20 messages par heure et par visiteur.</li>
-        <li data-en="Nothing confidential in the context: what the model doesn’t know, it can’t leak.">Rien de confidentiel dans le contexte : ce que le modèle ne sait pas, il ne peut pas le divulguer.</li>
-      </ul>
-    </article>
-    <article>
-      <h3 data-en="A server between you and the model">Un serveur entre vous et le modèle</h3>
-      <p data-en="The page never talks to the model directly. A Vercel function holds the API key, validates every request, applies the limits and streams the answer back. Claude Haiku answers at low effort: fast, cheap, and enough for this job.">La page ne parle jamais directement au modèle. Une fonction Vercel détient la clé API, valide chaque requête, applique les limites et renvoie la réponse en streaming. Claude Haiku répond avec un effort bas : rapide, économique, et suffisant pour cet usage.</p>
-    </article>
-    <article>
-      <h3 data-en="Tested before every change">Testé avant chaque modification</h3>
-      <p data-en="A suite of legitimate questions and attack attempts (prompt injection, role play, off-topic, salary…) runs against the real agent, and a second model grades each answer. A prompt change ships only if the score holds.">Une suite de questions légitimes et de tentatives d’attaque (injection de prompt, jeu de rôle, hors sujet, salaire…) tourne contre le vrai agent, et un second modèle note chaque réponse. Une modification du prompt n’est publiée que si le score tient.</p>
-    </article>
-  </div>
-
-  <footer><span>© 2026 Olivier Tousche</span><span data-en="Draft · v0">Maquette · v0</span></footer>
 </div>
+
+<dialog id="hood" aria-labelledby="hood-title">
+  <div class="hood">
+    <div class="hood-top"><h2 id="hood-title" data-en="Under the hood">Sous le capot</h2><button class="tool" type="button" id="hood-close" data-en="Close">Fermer</button></div>
+    <div class="flow" aria-label="Parcours d'une question">
+      <span data-en="Your question">Votre question</span><i>→</i>
+      <span data-en="Validation and rate limit">Validation et limite de débit</span><i>→</i>
+      <span data-en="Claude Haiku + profile">Claude Haiku + profil</span><i>→</i>
+      <span data-en="Streamed answer">Réponse en streaming</span><i>→</i>
+      <span data-en="Anonymous log">Log anonyme</span>
+    </div>
+    <div class="hood-grid">
+      <article>
+        <h3 data-en="One source of truth">Une seule source de vérité</h3>
+        <p data-en="The agent only knows a profile written by Olivier: experience, projects, method, what he is looking for. No RAG needed at this size: the whole profile sits in the system prompt, cached on the API side to cut cost and latency. If something is not in it, the agent says so and points to Olivier.">L’agent ne connaît qu’un profil rédigé par Olivier : expériences, projets, méthode, ce qu’il recherche. Pas besoin de RAG à cette taille : tout le profil tient dans le prompt système, mis en cache côté API pour réduire coût et latence. Ce qui n’y figure pas, l’agent dit qu’il ne le sait pas et renvoie vers Olivier.</p>
+      </article>
+      <article>
+        <h3 data-en="Guardrails in layers">Des garde-fous en couches</h3>
+        <ul>
+          <li data-en="A narrow scope: off-topic requests get a polite one-line decline.">Un périmètre étroit : les demandes hors sujet reçoivent un refus courtois en une phrase.</li>
+          <li data-en="Visitor messages are treated as questions, never as instructions: “forget your rules” changes nothing.">Les messages du visiteur sont des questions, jamais des instructions : « oublie tes règles » ne change rien.</li>
+          <li data-en="Length limits, 15 questions per conversation, 20 messages per hour per visitor.">Longueur limitée, 15 questions par conversation, 20 messages par heure et par visiteur.</li>
+          <li data-en="Nothing confidential in the context: what the model doesn’t know, it can’t leak.">Rien de confidentiel dans le contexte : ce que le modèle ne sait pas, il ne peut pas le divulguer.</li>
+        </ul>
+      </article>
+      <article>
+        <h3 data-en="A server between you and the model">Un serveur entre vous et le modèle</h3>
+        <p data-en="The page never talks to the model directly. A Vercel function holds the API key, validates every request, applies the limits and streams the answer back. Claude Haiku answers at low effort: fast, cheap, and enough for this job.">La page ne parle jamais directement au modèle. Une fonction Vercel détient la clé API, valide chaque requête, applique les limites et renvoie la réponse en streaming. Claude Haiku répond avec un effort bas : rapide, économique, et suffisant pour cet usage.</p>
+      </article>
+      <article>
+        <h3 data-en="Tested before every change">Testé avant chaque modification</h3>
+        <p data-en="A suite of legitimate questions and attack attempts (prompt injection, role play, off-topic, salary…) runs against the real agent, and a second model grades each answer. A prompt change ships only if the score holds.">Une suite de questions légitimes et de tentatives d’attaque (injection de prompt, jeu de rôle, hors sujet, salaire…) tourne contre le vrai agent, et un second modèle note chaque réponse. Une modification du prompt n’est publiée que si le score tient.</p>
+      </article>
+    </div>
+  </div>
+</dialog>
+
+<!-- The same ASCII self-portrait as the portfolio footer, cropped to the head -->
+<script type="text/plain" id="ascii-face">
+                       ..::::
+                  :+%@@@@@@@@@@@%*=-
+                -%@@@@@@@@@@@@@@@@@@%+:
+              :%@@@@@@@@@@@@@@@@@@@@@@@@*-.
+            :*%@@@@@@@@@@@@@@@@@@@@@@@@@@@@*.
+          .*@@@@@@@%%%@@@@@@@@@@@@@@@@@@@@@@%=
+         :%@@%@##+++=+++++*##%%%%#####%%%%%@@@#.
+        =%@#*#*=----------===+++++++++++*****%@%.
+       #@@*-----:::--:----------=========+++++*@%-
+      #@@*----::::::::::::::-----=-==========++*@@:
+     *@@*=----:::::::::::::::---==============++#@@:
+    -@@#+---:::::::::::------:--===============+*#@#
+    #@%#+-:::::::--:::::---------==============++*%@=
+   .%%#*=::::::::::::::::--------================+#@#.
+   .%#*+-:::::----::::::::-==:----=========+=====+#%%.
+   .#*=-::::--=+*****+=-::-==:-====+***######*+===+#%.
+   .*=:::::==++=++***##*+--=--=+**#%%%%##****##*+=+*#
+    +=::.:---:-==+*##%%*+=::-=++*##%%####***+++*+++#+
+    ++:...::=+++*#@@%#%%#+::-=++*#%%%#%@@@%###+++=+#-
+    =+:...:-=++--#%%#*##+=:-===+*##%#*#@@#**##*+===+
+  .:=+:...:-:::-==+****+=---===++*#####****+++++===-
+ ==:::...::--:::--===+=-----=====++***+++++=+=+===-----
+.==::::.:::--::::------:----=======+++++=========--===+=
+:=:-==:::::::--------::-::--===========+====-------=====
+.:-++-:::::::::--------:::---====++========--------=+==+
+ :=+*=::::::::::-----=:--:---=+=-=+++======--------+*+=-
+ :::==::::::::::::-===-**-==+*%%*=++++==----====--=+**+
+  :::==-::::::::::-==---===++******++===--=========*+=:
+   ..==------::::----==*###**##%%##*++===-==+++===+*=-
+     :+==+==----:-==+##%%%###%#%%%%%#**+===+++++++**-
+      =====++=---+*###**+==*#+++***###%#*+++*******-
+      :==+++=--=****+---=++===***++=++**##*++*###**.
+       +==*+==-=++***+++++++****#######****+*#####+
+       :=+**++==+++=-..::-=====++==++**###**######.
+        :+***+==*+-::::--=*******+++==+*####%%#%#:
+         .*##*=++++=:::----=++++==++++*#%%%%%%%+
+          .*#**#**#*+-:::-===+***+++*#%%%@@@%%-
+            =#%####*+--===+++******##%%%@@@@%-
+            ::*%%#**++*++*+*******#%%%%%@@@#+:
+            :::=#%%##*#**+**####*##%%%%%@%*==.
+            :.::-+*%%####*###%###%%%%%@%#+==-.
+            ..::::--+*#%%%%%%%%@@@@%%#*+===--.
+</script>
 
 <script>
   // FR / EN: French is in the markup, English in data-en attributes
   (() => {
     const root = document.documentElement;
     const els = [...document.querySelectorAll('[data-en]')].map(el => [el, el.innerHTML]);
-    const q = document.getElementById('q'), send = document.getElementById('send');
-    const frPh = q.placeholder, frAria = send.getAttribute('aria-label'), frTitle = document.title;
+    const ph = [...document.querySelectorAll('[data-en-placeholder]')].map(el => [el, el.placeholder]);
+    const aria = [...document.querySelectorAll('[data-en-aria]')].map(el => [el, el.getAttribute('aria-label')]);
     window.applyLang = lang => {
       const en = lang === 'en';
       els.forEach(([el, fr]) => { el.innerHTML = en ? el.dataset.en : fr; });
-      q.placeholder = en ? q.dataset.enPlaceholder : frPh;
-      send.setAttribute('aria-label', en ? send.dataset.enAria : frAria);
-      document.title = en ? 'Agent · Olivier Tousche' : frTitle;
+      ph.forEach(([el, fr]) => { el.placeholder = en ? el.dataset.enPlaceholder : fr; });
+      aria.forEach(([el, fr]) => el.setAttribute('aria-label', en ? el.dataset.enAria : fr));
       root.lang = root.dataset.lang = lang;
       document.querySelectorAll('[data-set-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.setLang === lang));
       dispatchEvent(new Event('langchange'));
@@ -215,26 +247,38 @@ footer { padding-block: 72px 40px; font-size: 13px; color: var(--muted); display
   })();
 </script>
 <script>
+  // Under the hood: a native dialog, closed by its button, Escape or a click on the backdrop
+  (() => {
+    const d = document.getElementById('hood');
+    document.getElementById('hood-open').addEventListener('click', () => d.showModal());
+    document.getElementById('hood-close').addEventListener('click', () => d.close());
+    d.addEventListener('click', e => { if (e.target === d) d.close(); });
+  })();
+</script>
+<script>
   // Chat: the page keeps the conversation, the server keeps the key and the rules
   (() => {
     const API = '/api/chat', MAX = 800, KEY = 'agent-chat';
-    const log = document.getElementById('log'), chips = document.getElementById('chips');
+    const log = document.getElementById('log'), thread = document.getElementById('thread');
     const form = document.getElementById('form'), q = document.getElementById('q');
     const send = document.getElementById('send'), count = document.getElementById('count');
+    const FACE = document.getElementById('ascii-face').textContent.replace(/^\n+|\n+$/g, '');
     const lang = () => document.documentElement.lang === 'en' ? 'en' : 'fr';
     const T = {
       fr: {
-        hello: 'Bonjour ! Je suis l’assistant IA d’Olivier. Posez-moi vos questions sur son parcours, ses projets ou sa façon de travailler.',
+        title: 'Posez vos questions à mon agent',
+        sub: 'Mon assistant IA répond sur mon expérience, mes projets et ma façon de travailler.',
         suggestions: ['Quelle est son expérience en recherche utilisateur ?', 'Comment utilise-t-il l’IA pour construire des produits ?', 'Parlez-moi du projet Altered', 'Est-il disponible, et pour quel type de poste ?'],
         429: 'Vous avez atteint la limite de messages pour le moment. Réessayez dans une heure, ou écrivez directement à Olivier : otousche@gmail.com.',
         conversation_too_long: 'Cette conversation a atteint sa longueur maximale. Cliquez sur « Nouvelle conversation » pour continuer, ou écrivez à Olivier : otousche@gmail.com.',
         error: 'Désolé, l’agent ne répond pas pour le moment. Vous pouvez écrire à Olivier : otousche@gmail.com.',
       },
       en: {
-        hello: 'Hello! I’m Olivier’s AI assistant. Ask me about his background, his projects or how he works.',
+        title: 'Ask my agent anything',
+        sub: 'My AI assistant answers about my experience, my projects and how I work.',
         suggestions: ['What is his user research experience?', 'How does he use AI to build products?', 'Tell me about the Altered project', 'Is he available, and for what kind of role?'],
         429: 'You’ve reached the message limit for now. Try again in an hour, or email Olivier directly: otousche@gmail.com.',
-        conversation_too_long: 'This conversation has reached its maximum length. Click “New conversation” to keep going, or email Olivier: otousche@gmail.com.',
+        conversation_too_long: 'This conversation has reached its maximum length. Click “New chat” to keep going, or email Olivier: otousche@gmail.com.',
         error: 'Sorry, the agent isn’t answering right now. You can email Olivier: otousche@gmail.com.',
       },
     };
@@ -243,7 +287,7 @@ footer { padding-block: 72px 40px; font-size: 13px; color: var(--muted); display
     try { messages = JSON.parse(sessionStorage.getItem(KEY) || '[]'); } catch (e) {}
     const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(messages)); } catch (e) {} };
 
-    // Minimal, safe Markdown: escape first, then bold, bullet lists, links and email addresses
+    // Minimal, safe Markdown: escape first, then bold, italics, bullet lists, links and email addresses
     const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const inline = s => esc(s)
       .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
@@ -263,38 +307,48 @@ footer { padding-block: 72px 40px; font-size: 13px; color: var(--muted); display
       return out.join('');
     };
 
-    const bubble = (cls, html) => {
-      const el = document.createElement('div');
-      el.className = `msg ${cls}`; el.innerHTML = html;
-      log.appendChild(el); log.scrollTop = log.scrollHeight;
+    const add = (tag, cls, html) => {
+      const el = document.createElement(tag);
+      if (cls) el.className = cls;
+      el.innerHTML = html; thread.appendChild(el);
       return el;
     };
+    const down = () => { log.scrollTop = log.scrollHeight; };
     const render = () => {
-      log.innerHTML = '';
-      bubble('bot', md(T[lang()].hello));
-      messages.forEach(m => m.role === 'user' ? bubble('me', esc(m.content)) : bubble('bot', md(m.content)));
-      chips.innerHTML = '';
-      if (!messages.length) T[lang()].suggestions.forEach(s => {
-        const b = document.createElement('button');
-        b.type = 'button'; b.textContent = s;
-        b.addEventListener('click', () => ask(s));
-        chips.appendChild(b);
-      });
+      const t = T[lang()];
+      thread.innerHTML = '';
+      // Olivier's ASCII face greets the visitor and says it is an AI; the suggestions only show on a fresh chat
+      const intro = add('div', 'intro', `<pre class="face" aria-hidden="true">${esc(FACE)}</pre><h1>${t.title}</h1><p>${t.sub}</p>`);
+      if (!messages.length) {
+        const chips = document.createElement('div');
+        chips.className = 'chips';
+        t.suggestions.forEach(s => {
+          const b = document.createElement('button');
+          b.type = 'button'; b.textContent = s;
+          b.addEventListener('click', () => ask(s));
+          chips.appendChild(b);
+        });
+        intro.appendChild(chips);
+      }
+      messages.forEach(m => m.role === 'user' ? add('div', 'msg me', esc(m.content)) : add('div', 'msg bot', md(m.content)));
+      if (messages.length) down();
     };
     const update = () => {
       const n = q.value.length;
       send.disabled = busy || !q.value.trim();
       count.textContent = n > MAX - 150 ? MAX - n : '';
-      q.style.height = 'auto'; q.style.height = Math.min(q.scrollHeight, 140) + 'px';
+      q.style.height = 'auto'; q.style.height = Math.min(q.scrollHeight, 160) + 'px';
     };
 
     async function ask(text) {
       text = text.trim().slice(0, MAX);
       if (!text || busy) return;
-      busy = true; q.value = ''; update(); chips.innerHTML = '';
+      busy = true; q.value = ''; update();
+      thread.querySelector('.chips')?.remove();
       messages.push({ role: 'user', content: text });
-      bubble('me', esc(text));
-      const out = bubble('bot', '<span class="typing" aria-label="…"><i></i><i></i><i></i></span>');
+      add('div', 'msg me', esc(text));
+      const out = add('div', 'msg bot', '<span class="typing" aria-label="…"><i></i><i></i><i></i></span>');
+      down();
       let answer = '';
       try {
         const res = await fetch(API, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ messages, lang: lang() }) });
@@ -307,7 +361,7 @@ footer { padding-block: 72px 40px; font-size: 13px; color: var(--muted); display
           const { done, value } = await reader.read();
           if (done) break;
           answer += dec.decode(value, { stream: true });
-          out.innerHTML = md(answer); log.scrollTop = log.scrollHeight;
+          out.innerHTML = md(answer); down();
         }
         if (!answer.trim()) throw new Error('error');
         messages.push({ role: 'assistant', content: answer });
@@ -324,7 +378,7 @@ footer { padding-block: 72px 40px; font-size: 13px; color: var(--muted); display
     form.addEventListener('submit', e => { e.preventDefault(); ask(q.value); });
     q.addEventListener('input', update);
     q.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); ask(q.value); } });
-    document.getElementById('reset').addEventListener('click', () => { if (busy) return; messages = []; save(); render(); q.focus(); });
+    document.getElementById('reset').addEventListener('click', () => { if (busy) return; messages = []; save(); render(); log.scrollTop = 0; q.focus(); });
     addEventListener('langchange', () => { if (!busy) render(); });
     render(); update();
   })();
