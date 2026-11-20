@@ -93,8 +93,9 @@ button { font: inherit; color: inherit; }
 .chips { display: flex; gap: 8px; margin: 0 -16px 10px; padding: 2px 16px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent); mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent); }
 .chips::-webkit-scrollbar { display: none; }
 .chips:empty { display: none; }
-.chips button { flex: none; scroll-snap-align: start; white-space: nowrap; font-size: 14px; background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 9px 15px; cursor: pointer; transition: border-color .2s, transform .2s; }
-.chips button:hover, .chips button:focus-visible { border-color: rgba(15,15,18,.25); transform: translateY(-1px); }
+/* Dark anthracite, close to the visitor's black bubbles: a suggestion is a question they can send as is */
+.chips button { flex: none; scroll-snap-align: start; white-space: nowrap; font-size: 14px; background: #3a3b40; color: #fff; border: 0; border-radius: 999px; padding: 10px 16px; cursor: pointer; transition: background .2s, transform .2s; }
+.chips button:hover, .chips button:focus-visible { background: #2c2d31; transform: translateY(-1px); }
 /* Phones: one suggestion and the start of the next */
 @media (max-width: 640px) { .chips button { max-width: calc(100vw - 84px); overflow: hidden; text-overflow: ellipsis; } }
 
