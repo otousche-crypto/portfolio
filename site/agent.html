@@ -127,14 +127,13 @@ body { position: relative; }
 /* ── Composer ── */
 .dock { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; padding: 10px 0 max(14px, env(safe-area-inset-bottom, 0px)); pointer-events: none; }
 .dock .chips, .dock .compose { pointer-events: auto; }
-.compose { display: flex; gap: 8px; align-items: flex-end; background: #fff; border-radius: 26px; padding: 5px 5px 5px 17px; box-shadow: 0 16px 40px -20px rgba(20,20,40,.3); }
-/* Beam: a coloured glow rides around the composer's border, brighter while typing (pure CSS, no library).
-   The ring is the border itself (white padding-box over the beam): no mask, which some browsers fail to apply */
+.compose { display: flex; gap: 8px; align-items: flex-end; border-radius: 26px; padding: 5px 5px 5px 17px; position: relative; border: 1px solid rgba(255,255,255,.85);
+  box-shadow: 0 0 0 1px var(--line), 0 16px 40px -20px rgba(20,20,40,.3); }
+/* Glass: the bubbles scrolling behind show through, frosted. The blur also makes the composer its own layer,
+   so the halo below lights it softly from inside as well as around it. No mask: some browsers fail to apply them */
+.compose { background: rgba(255,255,255,.62); -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5); }
 @property --beam { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
-.compose { position: relative; border: 1px solid transparent; animation: beam 5s linear infinite;
-  background: linear-gradient(#fff, #fff) padding-box, conic-gradient(from var(--beam), transparent 0 58%, #7c5cff99 70%, #ff5ca899 79%, #ffb54799 87%, #4fd1ff99 95%, transparent) border-box, linear-gradient(var(--line), var(--line)) border-box; }
-.compose:focus-within { background: linear-gradient(#fff, #fff) padding-box, conic-gradient(from var(--beam), transparent 0 58%, #7c5cffd9 70%, #ff5ca8d9 79%, #ffb547d9 87%, #4fd1ffd9 95%, transparent) border-box, linear-gradient(var(--line), var(--line)) border-box; }
-/* The halo: the same beam blurred inside a transparent 64px margin, so the blur fades out long before the box edge (Safari clips blur to that box) */
+/* The halo: a coloured beam, blurred inside a transparent 64px margin so the blur fades out long before the box edge (Safari clips blur to that box) */
 .compose::after { content: ""; position: absolute; inset: -65px; padding: 64px; background: conic-gradient(from var(--beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent) content-box;
   border-radius: 999px; z-index: -1; pointer-events: none; opacity: .28; filter: blur(22px); animation: beam 5s linear infinite; transition: opacity .3s; }
 .compose:focus-within::after { opacity: .42; }
@@ -146,7 +145,7 @@ body { position: relative; }
 .spark { position: absolute; width: 7px; height: 7px; margin: -3.5px; border-radius: 50%; background: var(--c); pointer-events: none; animation: spark .7s cubic-bezier(.2,.7,.3,1) forwards; }
 @keyframes spark { to { transform: translate(var(--dx), var(--dy)) scale(.2); opacity: 0; } }
 @keyframes beam { to { --beam: 360deg; } }
-@media (prefers-reduced-motion: reduce) { .compose, .compose::after { animation: none; --beam: 200deg; } }
+@media (prefers-reduced-motion: reduce) { .compose::after { animation: none; --beam: 200deg; } }
 .compose textarea { flex: 1; resize: none; font: inherit; font-size: 16px; line-height: 1.45; color: var(--fg); background: none; border: 0; padding: 9px 0; max-height: 160px; outline: none; scrollbar-width: none; }
 .compose textarea::-webkit-scrollbar { display: none; }
 .send { flex: none; width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--fg); color: #fff; display: grid; place-items: center; cursor: pointer; transition: opacity .2s, transform .2s; }
