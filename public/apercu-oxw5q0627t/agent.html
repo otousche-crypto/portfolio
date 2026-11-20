@@ -70,7 +70,10 @@ button { font: inherit; color: inherit; }
 .face { position: fixed; z-index: 0; top: 50%; right: 0; translate: 40% -50%; display: block; font-size: clamp(8px, 1.6vh, 14px); pointer-events: none; }
 /* Narrow screens: smaller, low in the corner, faded so the bubbles stay readable */
 @media (max-width: 1100px) { .face { font-size: clamp(6px, 1.2vh, 10px); opacity: .45; } }
-@media (max-width: 640px) { .face { top: auto; bottom: 0; translate: 40% 0; font-size: 6.4px; opacity: .5; } }
+/* Phones: the head fills the height from the bar's separator (63px) to the bottom of the screen; 42 rows of 1.02em */
+@media (max-width: 640px) {
+  .face { top: 63px; translate: 40% 0; font-size: calc((100svh - 63px) / 42.84); opacity: .5; }
+}
 .intro h1 { margin: 0; font-size: clamp(24px, 3.4vw, 34px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 600; text-wrap: balance; }
 .intro p { margin: -6px 0 0; color: #5f5f68; max-width: 46ch; text-wrap: pretty; }
 .msg { max-width: min(600px, 88%); padding: 12px 16px; border-radius: 20px; font-size: 15.5px; line-height: 1.55; overflow-wrap: anywhere; }
@@ -90,6 +93,8 @@ button { font: inherit; color: inherit; }
 .chips:empty { display: none; }
 .chips button { flex: none; scroll-snap-align: start; white-space: nowrap; font-size: 14px; background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 9px 15px; cursor: pointer; transition: border-color .2s, transform .2s; }
 .chips button:hover, .chips button:focus-visible { border-color: rgba(15,15,18,.25); transform: translateY(-1px); }
+/* Phones: one suggestion and the start of the next */
+@media (max-width: 640px) { .chips button { width: calc(100vw - 84px); white-space: normal; text-align: left; border-radius: 18px; } }
 
 /* ── Composer ── */
 .dock { flex: none; padding: 10px 0 max(14px, env(safe-area-inset-bottom, 0px)); }
