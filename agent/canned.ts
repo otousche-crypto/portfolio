@@ -14,7 +14,7 @@ Le détail est dans l'[étude de cas Altered](https://www.oliviertousche.com/equ
 
   "comment utilise-t-il l'ia ?": `Depuis 2025, Olivier construit lui-même ses produits avec Claude Code et Cursor : moins de transferts entre design et code, et des produits en production plus vite.
 ---
-Exemple : [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), conçu seul en orchestrant des agents IA et en ligne en moins de 2 semaines. Depuis, il ne cesse d'évoluer au fil des attentes des utilisateurs.
+Exemple : [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), conçu en orchestrant des agents IA et en ligne en moins de 2 semaines. Depuis, il ne cesse d'évoluer au fil des attentes des utilisateurs.
 ---
 Pour lui, le métier passe de la prescription à quelque chose de proche de la sculpture : on ajuste le produit réel, au geste.
 [[Ses projets de product builder ? | Sa vision produit ?]]`,
@@ -45,7 +45,7 @@ Ce qui l'anime : apporter des solutions originales et singulières.
 Un exemple complet : l'[étude de cas Altered](https://www.oliviertousche.com/equinox.html).
 [[Son expérience en recherche UX ? | Comment utilise-t-il l’IA ?]]`,
 
-  'ses projets de product builder ?': `Olivier conçoit et construit seul ses produits, avec des agents IA : [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), qui place vos sorties Strava sur la route de la Lune, et [Sklip](https://www.oliviertousche.com/sklip.html), pour les DJs de scratch.
+  'ses projets de product builder ?': `Olivier conçoit et construit ses propres produits avec des agents IA : [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), qui place vos sorties Strava sur la route de la Lune, et [Sklip](https://www.oliviertousche.com/sklip.html), pour les DJs de scratch.
 ---
 Dans le [Laboratoire](https://www.oliviertousche.com/#laboratoire) : Stampit, Décadi et cet agent. Et NoveliA, en bêta fermée : un système d'orchestration agentique pour co-construire un produit à plusieurs.
 [[Parlez-moi de Go MoonBound | Pourquoi cet agent IA ?]]`,
@@ -59,7 +59,7 @@ The details are in the [Altered case study](https://www.oliviertousche.com/equin
 
   'how does he use ai?': `Since 2025, Olivier builds his own products with Claude Code and Cursor: fewer handoffs between design and code, and products shipped faster.
 ---
-Example: [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), built solo by orchestrating AI agents and live in under 2 weeks. Since then, it has kept evolving with what users expect.
+Example: [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), built by orchestrating AI agents and live in under 2 weeks. Since then, it has kept evolving with what users expect.
 ---
 To him, the job is shifting from prescribing to something closer to sculpting: you shape the real product by hand.
 [[His product builder projects? | His product vision?]]`,
@@ -78,7 +78,7 @@ What drives him: bringing original, distinctive solutions.
 A full example: the [Altered case study](https://www.oliviertousche.com/equinox.html).
 [[His UX research experience? | How does he use AI?]]`,
 
-  'his product builder projects?': `Olivier designs and builds his own products solo, with AI agents: [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), which puts your Strava activities on the road to the Moon, and [Sklip](https://www.oliviertousche.com/sklip.html), for scratch DJs.
+  'his product builder projects?': `Olivier designs and builds his own products with AI agents: [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), which puts your Strava activities on the road to the Moon, and [Sklip](https://www.oliviertousche.com/sklip.html), for scratch DJs.
 ---
 In the [Lab](https://www.oliviertousche.com/#laboratoire): Stampit, Décadi and this agent. And NoveliA, in closed beta: an agentic orchestration system to co-build a product as a team.
 [[Tell me about Go MoonBound | Why this AI agent?]]`,
