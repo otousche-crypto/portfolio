@@ -132,7 +132,12 @@ button { font: inherit; color: inherit; }
 .compose::before { padding: 1.5px; z-index: 1; opacity: .8;
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
-.compose::after { z-index: -1; filter: blur(16px); opacity: .35; }
+/* The glow is the same beam, spread 16px out and faded by a mask, not blurred: Safari clips a blur filter to a square box */
+.compose::after { inset: -16px; border-radius: 42px; z-index: -1; opacity: .4;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent), linear-gradient(transparent, #000 16px, #000 calc(100% - 16px), transparent);
+  -webkit-mask-composite: source-in;
+  mask: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent), linear-gradient(transparent, #000 16px, #000 calc(100% - 16px), transparent);
+  mask-composite: intersect; }
 .compose:focus-within::before { opacity: 1; }
 .compose:focus-within::after { opacity: .6; }
 @keyframes beam { to { --beam: 360deg; } }
