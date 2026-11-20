@@ -1,7 +1,8 @@
 // ─── ÉVALS de l'agent : npm run eval:agent ───
 // Envoie chaque cas de agent/eval-cases.ts au vrai handler (même code que la prod),
-// puis un second modèle note la réponse. Coût : quelques centimes par passage.
-// Options : --only=pie,salary   --runs=3 (répète chaque cas, utile pour la variance)   --show (affiche toutes les réponses)
+// puis un second modèle note la réponse. Coût d'un passage complet (44 cas) : environ 0,10 $
+// avec le juge Haiku par défaut, environ 1 $ avec --judge=sonnet (plus sévère).
+// Options : --judge=sonnet   --only=pie,salary   --runs=3 (répète chaque cas, utile pour la variance)   --show (affiche toutes les réponses)
 // Besoin de ANTHROPIC_API_KEY dans l'environnement.
 
 import Anthropic from '@anthropic-ai/sdk';
@@ -11,11 +12,11 @@ import { handleChat, LIMITS } from '../agent/handler';
 import { cases, type EvalCase } from '../agent/eval-cases';
 import { systemPrompt } from '../agent/prompt';
 
-const JUDGE = 'claude-sonnet-5-5';
 const client = new Anthropic();
 const arg = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split('=')[1];
 const only = arg('only')?.split(',');
 const runs = Number(arg('runs') ?? 1);
+const JUDGE = arg('judge') === 'sonnet' ? 'claude-sonnet-5-5' : 'claude-haiku-5-5';
 const show = process.argv.includes('--show');
 
 const Verdict = z.object({
