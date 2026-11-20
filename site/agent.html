@@ -161,7 +161,11 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
 .why h3, .how { margin: 0 0 8px; font-size: 15.5px; letter-spacing: -0.01em; }
 .why p { margin: 0; color: #4a4a52; font-size: 15px; line-height: 1.6; }
 .why p + p { margin-top: 10px; }
-.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 18px; font-size: 13px; }
+/* One line, always: on a narrow screen it scrolls sideways rather than wrapping */
+.flow { display: flex; align-items: center; gap: 6px; margin: 0 -28px 18px; padding: 0 28px; font-size: 13px; white-space: nowrap; overflow-x: auto; scrollbar-width: none; }
+.flow::-webkit-scrollbar { display: none; }
+.flow .loop { background: #0f0f12; color: #fff; }
+@media (max-width: 640px) { .flow { margin-inline: -18px; padding-inline: 18px; } }
 .flow span { background: var(--bg); border-radius: 999px; padding: 6px 12px; }
 .flow i { font-style: normal; color: var(--muted); }
 .hood-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
@@ -213,14 +217,18 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       <p data-en="In practice, it runs on Anthropic's API with Claude Haiku, the smallest model in the family. Conversations are anonymised, and guardrails are in place for anyone looking for loopholes. You're still welcome to try…">Concrètement, l’agent tourne sur l’API d’Anthropic avec Claude Haiku, le plus petit modèle de la famille. Les conversations sont anonymisées, et des garde-fous sont en place pour ceux qui cherchent des failles. Mais vous pouvez quand même essayer…</p>
     </section>
     <h3 class="how" data-en="How it works">Comment ça marche</h3>
-    <div class="flow" aria-label="Parcours d'une question">
+    <div class="flow" aria-label="Parcours d'une question" data-en-aria="How a question travels">
       <span data-en="Your question">Votre question</span><i>→</i>
-      <span data-en="Validation and rate limit">Validation et limite de débit</span><i>→</i>
+      <span data-en="Checks and limits">Contrôles et limites</span><i>→</i>
       <span data-en="Claude Haiku + profile">Claude Haiku + profil</span><i>→</i>
-      <span data-en="Streamed answer">Réponse en streaming</span><i>→</i>
-      <span data-en="Anonymous log">Log anonyme</span>
+      <span data-en="Answer">Réponse</span><i>→</i>
+      <span class="loop" data-en="Suggestions ↺">Suggestions ↺</span>
     </div>
     <div class="hood-grid">
+      <article class="wide">
+        <h3 data-en="Question suggestions that guide, and cost nothing">Des suggestions de questions qui guident, et ne coûtent rien</h3>
+        <p data-en="Below every answer, question suggestions offer the next step in one click: you don’t have to wonder what to ask, and the conversation stays on what matters. They have a second use: the most frequent questions have a ready-made answer, written in advance and served without calling the API. Instant, and free.">Sous chaque réponse, des suggestions de questions proposent la suite en un clic : pas besoin de chercher quoi demander, et la conversation reste sur l’essentiel. Elles ont un second intérêt : les questions les plus fréquentes ont une réponse toute prête, rédigée à l’avance et servie sans appeler l’API. Instantanée, et gratuite.</p>
+      </article>
       <article>
         <h3 data-en="One source of truth">Une seule source de vérité</h3>
         <p data-en="The agent only knows a profile written by Olivier: experience, projects, method, what he is looking for. No RAG needed at this size: the whole profile sits in the system prompt, cached on the API side to cut cost and latency. If something is not in it, the agent says so and points to Olivier.">L’agent ne connaît qu’un profil rédigé par Olivier : expériences, projets, méthode, ce qu’il recherche. Pas besoin de RAG à cette taille : tout le profil tient dans le prompt système, mis en cache côté API pour réduire coût et latence. Ce qui n’y figure pas, l’agent dit qu’il ne le sait pas et renvoie vers Olivier.</p>
@@ -242,10 +250,6 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       <article>
         <h3 data-en="Tested before every change">Testé avant chaque modification</h3>
         <p data-en="A suite of legitimate questions and attack attempts (prompt injection, role play, off-topic, salary…) runs against the real agent, and a second model grades each answer. A prompt change ships only if the score holds.">Une suite de questions légitimes et de tentatives d’attaque (injection de prompt, jeu de rôle, hors sujet, salaire…) tourne contre le vrai agent, et un second modèle note chaque réponse. Une modification du prompt n’est publiée que si le score tient.</p>
-      </article>
-      <article class="wide">
-        <h3 data-en="Suggestions that guide, and cost nothing">Des suggestions qui guident, et ne coûtent rien</h3>
-        <p data-en="Below every answer, suggestions offer the next step in one click: you don’t have to wonder what to ask, and the conversation stays on what matters. They have a second use: the most frequent questions have a ready-made answer, written in advance and served without calling the API. Instant, and free.">Sous chaque réponse, des suggestions proposent la suite en un clic : pas besoin de chercher quoi demander, et la conversation reste sur l’essentiel. Elles ont un second intérêt : les questions les plus fréquentes ont une réponse toute prête, rédigée à l’avance et servie sans appeler l’API. Instantanée, et gratuite.</p>
       </article>
     </div>
   </div>
