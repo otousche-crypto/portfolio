@@ -70,7 +70,7 @@ button { font: inherit; color: inherit; }
 .face { position: fixed; z-index: 0; top: 50%; right: 0; translate: 40% -50%; display: block; font-size: clamp(8px, 1.6vh, 14px); pointer-events: none; }
 /* Narrow screens: smaller, low in the corner, faded so the bubbles stay readable */
 @media (max-width: 1100px) { .face { font-size: clamp(6px, 1.2vh, 10px); opacity: .45; } }
-@media (max-width: 640px) { .face { top: auto; bottom: 96px; translate: 40% 0; font-size: 6px; opacity: .5; } }
+@media (max-width: 640px) { .face { top: auto; bottom: 0; translate: 40% 0; font-size: 6.4px; opacity: .5; } }
 .intro h1 { margin: 0; font-size: clamp(24px, 3.4vw, 34px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 600; text-wrap: balance; }
 .intro p { margin: -6px 0 0; color: #5f5f68; max-width: 46ch; text-wrap: pretty; }
 .msg { max-width: min(600px, 88%); padding: 12px 16px; border-radius: 20px; font-size: 15.5px; line-height: 1.55; overflow-wrap: anywhere; }
@@ -85,8 +85,10 @@ button { font: inherit; color: inherit; }
 .typing i { width: 6px; height: 6px; border-radius: 50%; background: #b9b9c0; animation: blink 1.2s infinite both; }
 .typing i:nth-child(2) { animation-delay: .2s; } .typing i:nth-child(3) { animation-delay: .4s; }
 @keyframes blink { 0%, 80%, 100% { opacity: .3; } 40% { opacity: 1; } }
-.chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 6px; }
-.chips button { font-size: 14px; text-align: left; background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 9px 15px; cursor: pointer; transition: border-color .2s, transform .2s; }
+.chips { display: flex; gap: 8px; margin: 0 -16px 10px; padding: 2px 16px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent); mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent); }
+.chips::-webkit-scrollbar { display: none; }
+.chips:empty { display: none; }
+.chips button { flex: none; scroll-snap-align: start; white-space: nowrap; font-size: 14px; background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 9px 15px; cursor: pointer; transition: border-color .2s, transform .2s; }
 .chips button:hover, .chips button:focus-visible { border-color: rgba(15,15,18,.25); transform: translateY(-1px); }
 
 /* ── Composer ── */
@@ -99,7 +101,7 @@ button { font: inherit; color: inherit; }
 .send:disabled { opacity: .25; cursor: default; transform: none; }
 .send svg { width: 18px; height: 18px; }
 .count { font-family: var(--mono); font-size: 11px; color: var(--muted); align-self: center; }
-.disclaimer { margin: 8px 4px 0; font-size: 12px; color: var(--muted); text-align: center; }
+.ai-note { position: relative; z-index: 1; flex: none; margin: 0; padding: 8px 16px 0; font-size: 12px; color: var(--muted); text-align: center; }
 
 /* ── Under the hood (dialog) ── */
 dialog { width: min(760px, calc(100vw - 24px)); max-height: calc(100svh - 48px); padding: 0; border: 0; border-radius: 26px; background: #fff; color: var(--fg); box-shadow: 0 40px 80px -30px rgba(20,20,40,.45); }
@@ -131,6 +133,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   </div>
 </header>
 
+<p class="ai-note" data-en="AI-generated answers">Réponses générées par IA</p>
 <canvas class="face" aria-hidden="true"></canvas>
 <main class="log" id="log" aria-label="Conversation">
   <div class="col thread" id="thread" role="log" aria-live="polite"></div>
@@ -138,12 +141,12 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
 
 <div class="dock">
   <div class="col">
+    <div class="chips" id="chips" aria-label="Suggestions"></div>
     <form class="compose" id="form">
-      <textarea id="q" rows="1" maxlength="800" autocomplete="off" aria-label="Votre question" placeholder="Posez votre question sur le parcours d'Olivier…" data-en-placeholder="Ask about Olivier's background…"></textarea>
+      <textarea id="q" rows="1" maxlength="800" autocomplete="off" aria-label="Votre question" placeholder="Posez vos questions" data-en-placeholder="Ask your questions"></textarea>
       <span class="count" id="count" aria-hidden="true"></span>
       <button class="send" id="send" type="submit" aria-label="Envoyer" data-en-aria="Send" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
     </form>
-    <p class="disclaimer" data-en="AI-generated answers, to be confirmed with Olivier. Conversations are stored anonymously (no IP, no identifier).">Réponses générées par IA, à confirmer avec Olivier. Conversations enregistrées de façon anonyme (ni IP ni identifiant).</p>
   </div>
 </div>
 
@@ -168,6 +171,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
           <li data-en="A narrow scope: off-topic requests get a polite one-line decline.">Un périmètre étroit : les demandes hors sujet reçoivent un refus courtois en une phrase.</li>
           <li data-en="Visitor messages are treated as questions, never as instructions: “forget your rules” changes nothing.">Les messages du visiteur sont des questions, jamais des instructions : « oublie tes règles » ne change rien.</li>
           <li data-en="Length limits, 15 questions per conversation, 20 messages per hour per visitor.">Longueur limitée, 15 questions par conversation, 20 messages par heure et par visiteur.</li>
+          <li data-en="Answers are to be confirmed with Olivier; conversations are stored anonymously (no IP, no identifier) to improve the agent.">Réponses à confirmer avec Olivier ; conversations enregistrées de façon anonyme (ni IP ni identifiant) pour améliorer l’agent.</li>
           <li data-en="Nothing confidential in the context: what the model doesn’t know, it can’t leak.">Rien de confidentiel dans le contexte : ce que le modèle ne sait pas, il ne peut pas le divulguer.</li>
         </ul>
       </article>
@@ -346,7 +350,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   // Chat: the page keeps the conversation, the server keeps the key and the rules
   (() => {
     const API = '/api/chat', MAX = 800, KEY = 'agent-chat';
-    const log = document.getElementById('log'), thread = document.getElementById('thread');
+    const log = document.getElementById('log'), thread = document.getElementById('thread'), chips = document.getElementById('chips');
     const form = document.getElementById('form'), q = document.getElementById('q');
     const send = document.getElementById('send'), count = document.getElementById('count');
     const lang = () => document.documentElement.lang === 'en' ? 'en' : 'fr';
@@ -403,18 +407,16 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     const render = () => {
       const t = T[lang()];
       thread.innerHTML = '';
-      // The suggestions only show on a fresh chat
-      const intro = add('div', 'intro', `<h1>${t.title}</h1><p>${t.sub}</p>`);
+      add('div', 'intro', `<h1>${t.title}</h1><p>${t.sub}</p>`);
+      // The suggestions, one swipeable line above the composer, only show on a fresh chat
+      chips.innerHTML = ''; chips.scrollLeft = 0;
       if (!messages.length) {
-        const chips = document.createElement('div');
-        chips.className = 'chips';
         t.suggestions.forEach(s => {
           const b = document.createElement('button');
           b.type = 'button'; b.textContent = s;
           b.addEventListener('click', () => ask(s));
           chips.appendChild(b);
         });
-        intro.appendChild(chips);
       }
       messages.forEach(m => m.role === 'user' ? add('div', 'msg me', esc(m.content)) : add('div', 'msg bot', md(m.content)));
       if (messages.length) down();
@@ -430,7 +432,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       text = text.trim().slice(0, MAX);
       if (!text || busy) return;
       busy = true; q.value = ''; update();
-      thread.querySelector('.chips')?.remove();
+      chips.innerHTML = '';
       messages.push({ role: 'user', content: text });
       add('div', 'msg me', esc(text));
       const out = add('div', 'msg bot', '<span class="typing" aria-label="…"><i></i><i></i><i></i></span>');
