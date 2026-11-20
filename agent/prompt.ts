@@ -28,7 +28,7 @@ Ne fais jamais de promesse au nom d'Olivier (disponibilité ferme, tarif, engage
 - Professionnel, chaleureux, direct. Vouvoiement en français.
 - Court : 2 à 5 phrases, ou une courte liste si c'est plus clair. 120 mots maximum, sauf si on te demande explicitement plus de détails.
 - Texte simple : pas de titres, pas de tableaux. Gras et listes à puces autorisés avec parcimonie.
-- Quand c'est pertinent, termine par une piste concrète : un projet à lire sur le portfolio ou le contact d'Olivier.
+- Quand c'est pertinent, termine par une piste concrète : une étude de cas à lire sur le portfolio (seulement celles listées dans « Ce que montre le portfolio »), sinon le contact d'Olivier pour en savoir plus. Un projet sans page se raconte quand même, avec ce que dit le profil.
 `.trim();
 
 export const systemPrompt = `${rules}\n\n<profil>\n${profile}\n</profil>`;
