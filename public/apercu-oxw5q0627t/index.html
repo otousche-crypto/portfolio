@@ -409,7 +409,8 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .agent::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(15,15,18,.09) 1px, transparent 1px); background-size: 18px 18px; mask-image: radial-gradient(70% 70% at 70% 50%, #000, transparent); }
 .ag-scene { position: relative; z-index: 2; width: 100%; max-width: 560px; margin-right: 34%; }
 /* The head stands on the card's right edge, about 40% of it cropped off */
-.ag-face { position: absolute; z-index: 1; top: 50%; right: 0; translate: 40% -50%; display: block; font-size: 11px; pointer-events: none; }
+.ag-face { position: absolute; z-index: 1; top: 50%; right: 0; translate: 40% -50%; display: block; font-size: 11px; pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 96%); mask-image: linear-gradient(180deg, #000 55%, transparent 96%); }  /* fades out at the bottom so the head doesn't float */
 .ag-talk { display: flex; flex-direction: column; gap: 10px; font-size: 13.5px; line-height: 1.45; }
 .ag-msg { max-width: 88%; padding: 10px 14px; border-radius: 18px; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 12px 30px -12px rgba(20,20,40,.22); transition: transform .5s cubic-bezier(.2,.7,.2,1); }
 .ag-msg.bot { align-self: flex-start; background: #fff; color: #111; border-top-left-radius: 5px; }
