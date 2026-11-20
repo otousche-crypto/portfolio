@@ -136,6 +136,13 @@ button { font: inherit; color: inherit; }
 .compose::after { inset: -64px; padding: 64px; background-clip: content-box; border-radius: 999px; z-index: -1; opacity: .28; filter: blur(22px); }
 .compose:focus-within::before { opacity: .85; }
 .compose:focus-within::after { opacity: .42; }
+/* The agent closes the conversation: the composer swells and bursts like a bubble */
+.dock .col { position: relative; }
+.compose.burst { animation: burst .42s cubic-bezier(.3,0,.2,1) forwards; pointer-events: none; }
+.compose.gone { display: none; }
+@keyframes burst { 40% { transform: scale(1.05); } 100% { transform: scale(1.22); opacity: 0; filter: blur(8px); } }
+.spark { position: absolute; width: 7px; height: 7px; margin: -3.5px; border-radius: 50%; background: var(--c); pointer-events: none; animation: spark .7s cubic-bezier(.2,.7,.3,1) forwards; }
+@keyframes spark { to { transform: translate(var(--dx), var(--dy)) scale(.2); opacity: 0; } }
 @keyframes beam { to { --beam: 360deg; } }
 @media (prefers-reduced-motion: reduce) { .compose::before, .compose::after { animation: none; --beam: 200deg; } }
 .compose textarea { flex: 1; resize: none; font: inherit; font-size: 16px; line-height: 1.45; color: var(--fg); background: none; border: 0; padding: 9px 0; max-height: 160px; outline: none; scrollbar-width: none; }
@@ -416,6 +423,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
         suggestions: ['Son expérience en recherche UX ?', 'Comment utilise-t-il l’IA ?', 'Parlez-moi d’Altered', 'Est-il disponible ?'],
         429: 'Vous avez atteint la limite de messages pour le moment. Réessayez dans une heure, ou écrivez directement à Olivier : otousche@gmail.com.',
         conversation_ended: 'Je me suis arrêté là 😄 Cliquez sur « Nouvelle conversation » pour repartir sur de bonnes bases.', ended: 'Conversation terminée',
+        closed: 'Je ne peux plus vous répondre dans cette conversation : chaque message coûte un peu d’argent à Olivier… et là, ça commence à chiffrer 😅 Pour une vraie question, cliquez sur « Nouvelle conversation ».',
         conversation_too_long: 'Cette conversation a atteint sa longueur maximale. Cliquez sur « Nouvelle conversation » pour continuer, ou écrivez à Olivier : otousche@gmail.com.',
         error: 'Je ne peux pas vous répondre pour le moment, il y a un problème technique… En attendant, vous pouvez écrire à Olivier : otousche@gmail.com.',
         write: 'Écrire à Olivier', copy: 'Copier l’email', copied: 'Copié !', up: 'Réponse utile', down: 'Réponse pas utile', thanks: 'Merci pour votre retour !', caseStudy: 'Lire l’étude de cas',
@@ -425,6 +433,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
         suggestions: ['His UX research experience?', 'How does he use AI?', 'Tell me about Altered', 'Is he available?'],
         429: 'You’ve reached the message limit for now. Try again in an hour, or email Olivier directly: otousche@gmail.com.',
         conversation_ended: 'I stopped there 😄 Click “New chat” to start afresh.', ended: 'Conversation closed',
+        closed: 'I can’t reply anymore in this conversation: every message costs Olivier a little money… and this is starting to add up 😅 For a real question, click “New chat”.',
         conversation_too_long: 'This conversation has reached its maximum length. Click “New chat” to keep going, or email Olivier: otousche@gmail.com.',
         error: 'I can’t answer you right now, there’s a technical issue… In the meantime, you can email Olivier: otousche@gmail.com.',
         write: 'Email Olivier', copy: 'Copy email', copied: 'Copied!', up: 'Helpful answer', down: 'Not helpful', thanks: 'Thanks for your feedback!', caseStudy: 'Read the case study',
@@ -548,6 +557,9 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
         split(m.content).filter(p => p.trim()).forEach(p => add('div', 'msg bot', md(p)));
         extras(i);
       });
+      form.classList.remove('burst');
+      form.classList.toggle('gone', ended());
+      if (ended()) add('div', 'msg bot', md(t.closed));
       if (!pop) thread.querySelectorAll('.msg, .extras').forEach(el => el.classList.add('calm'));
       if (messages.length) down();
       update();
@@ -560,6 +572,31 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       count.textContent = n > MAX - 150 ? MAX - n : '';
       q.style.height = 'auto'; q.style.height = Math.min(q.scrollHeight, 160) + 'px';
     };
+
+    // The composer bursts, then the agent explains why it stops
+    async function burst() {
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        await sleep(700);
+        const col = form.parentElement, r = form.getBoundingClientRect(), c = col.getBoundingClientRect();
+        const colors = ['#7c5cff', '#ff5ca8', '#ffb547', '#4fd1ff'];
+        for (let i = 0; i < 22; i++) {
+          const a = Math.random() * Math.PI * 2, d = 40 + Math.random() * 70;
+          const s = document.createElement('i');
+          s.className = 'spark';
+          s.style.cssText = `left:${r.left - c.left + Math.random() * r.width}px;top:${r.top - c.top + Math.random() * r.height}px;--c:${colors[i % 4]};--dx:${Math.cos(a) * d}px;--dy:${Math.sin(a) * d}px`;
+          col.appendChild(s);
+          setTimeout(() => s.remove(), 800);
+        }
+        form.classList.add('burst');
+        await sleep(450);
+      }
+      form.classList.add('gone');
+      const b = add('div', 'msg bot', TYPING);
+      down();
+      await sleep(1100);
+      b.innerHTML = md(T[lang()].closed);
+      down();
+    }
 
     async function ask(text) {
       text = text.trim().slice(0, MAX);
@@ -606,6 +643,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
         extras(messages.length - 1);
         showChips(followUps(answer));
         down();
+        if (ended()) await burst();
       } catch (e) {
         // The question did not get an answer: drop it so the history stays question / answer pairs
         messages.pop();
