@@ -20,7 +20,7 @@ Product designer depuis 2017, en grand groupe, en agence et en startup, sur des 
 - Go MoonBound en ligne : https://gomoonbound.com/
 - Sklip en ligne : https://sklip.studio/
 - Stampit en ligne : https://stampit-tan.vercel.app/
-- Décadi en ligne : https://decadi.vercel.app
+- Décadi en ligne : https://www.oliviertousche.com/decadi
 - CV : https://www.oliviertousche.com/cv/Olivier_Tousche_CV-fr.pdf (en anglais : https://www.oliviertousche.com/cv/Olivier_Tousche_CV-en.pdf)
 - LinkedIn : https://www.linkedin.com/in/olivier-tousche-a6160b122/
 
