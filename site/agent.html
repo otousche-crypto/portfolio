@@ -60,10 +60,13 @@ button { font: inherit; color: inherit; }
 @media (max-width: 640px) { .tool span, .who span { display: none; } .tools { gap: 0; } .tool { padding: 9px; } }
 
 /* ── Conversation ── */
-.log { flex: 1; overflow-y: auto; overscroll-behavior: contain; scroll-behavior: smooth; }
+/* The suggestions and the composer float over the conversation, with no backdrop: bubbles scroll behind them.
+   --dock-h (set from the dock's real height) keeps room under the last message */
+body { position: relative; }
+.log { flex: 1; overflow-y: auto; overscroll-behavior: contain; scroll-behavior: smooth; padding-bottom: var(--dock-h, 140px); }
 .col { width: 100%; max-width: var(--col); margin: 0 auto; padding: 0 16px; }
 .thread { display: flex; flex-direction: column; gap: 14px; padding-block: 24px 20px; }
-.log, .dock { position: relative; z-index: 1; }
+.log { position: relative; z-index: 1; }
 /* Olivier's ASCII head stands on the window's right edge, about 40% cropped, behind the conversation */
 .face { position: fixed; z-index: 0; top: 50%; right: 0; translate: 40% -50%; display: block; font-size: clamp(8px, 1.6vh, 14px); pointer-events: none;
   -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 96%); mask-image: linear-gradient(180deg, #000 55%, transparent 96%); }  /* fades out at the bottom so the head doesn't float */
@@ -122,7 +125,8 @@ button { font: inherit; color: inherit; }
 .thanks { font-size: 12.5px; color: var(--muted); padding-left: 4px; }
 
 /* ── Composer ── */
-.dock { flex: none; padding: 10px 0 max(14px, env(safe-area-inset-bottom, 0px)); }
+.dock { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; padding: 10px 0 max(14px, env(safe-area-inset-bottom, 0px)); pointer-events: none; }
+.dock .chips, .dock .compose { pointer-events: auto; }
 .compose { display: flex; gap: 8px; align-items: flex-end; background: #fff; border-radius: 26px; padding: 5px 5px 5px 17px; box-shadow: 0 16px 40px -20px rgba(20,20,40,.3); }
 /* Beam: a coloured glow rides around the composer's border, brighter while typing (pure CSS, no library).
    The ring is the border itself (white padding-box over the beam): no mask, which some browsers fail to apply */
@@ -511,6 +515,13 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       return el;
     };
     const down = () => { log.scrollTop = log.scrollHeight; };
+    // The floating dock's height changes (suggestions or not, a growing textarea): the conversation keeps room for it
+    const dock = document.querySelector('.dock');
+    new ResizeObserver(() => {
+      const end = log.scrollHeight - log.scrollTop - log.clientHeight < 40;
+      document.body.style.setProperty('--dock-h', dock.offsetHeight + 'px');
+      if (end) down();
+    }).observe(dock);
     const showChips = list => {
       chips.innerHTML = ''; chips.scrollLeft = 0;
       list.forEach(s => {
