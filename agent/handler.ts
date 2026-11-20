@@ -91,8 +91,8 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
         outcome = error instanceof Anthropic.APIError ? `api_${error.status}` : 'error';
         console.error('agent error', outcome, error instanceof Error ? error.message : error);
         const text = lang === 'en'
-          ? 'Sorry, I can’t answer right now. You can reach Olivier at otousche@gmail.com.'
-          : 'Désolé, je ne peux pas répondre pour le moment. Vous pouvez écrire à Olivier : otousche@gmail.com.';
+          ? 'I can’t answer you right now, there’s a technical issue… In the meantime, you can email Olivier: otousche@gmail.com.'
+          : 'Je ne peux pas vous répondre pour le moment, il y a un problème technique… En attendant, vous pouvez écrire à Olivier : otousche@gmail.com.';
         controller.enqueue(encoder.encode((answer ? '\n\n' : '') + text));
       }
       controller.close();
