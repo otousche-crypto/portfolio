@@ -10,7 +10,7 @@ import { createHash } from 'node:crypto';
 import Anthropic from '@anthropic-ai/sdk';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
-import { handleChat, type Store } from '../agent/handler';
+import { handleChat, type Store } from '../agent/handler.js';
 
 // Sans clé, le SDK refuse de démarrer : on répond 503 au lieu de faire planter la fonction
 const client = process.env.ANTHROPIC_API_KEY ? new Anthropic() : null;

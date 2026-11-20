@@ -3,7 +3,7 @@
 // Le texte doit rester identique d'une requête à l'autre : il est mis en cache
 // côté API, et le moindre caractère variable (date, id…) casserait le cache.
 
-import { profile } from './profile';
+import { profile } from './profile.js';
 
 export const MODEL = 'claude-haiku-5-5';
 

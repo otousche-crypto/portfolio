@@ -3,7 +3,7 @@
 // exactement le même code que la production, sans serveur.
 
 import Anthropic from '@anthropic-ai/sdk';
-import { MODEL, systemPrompt } from './prompt';
+import { MODEL, systemPrompt } from './prompt.js';
 
 export type ChatMessage = { role: 'user' | 'assistant'; content: string };
 
