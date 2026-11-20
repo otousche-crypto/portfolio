@@ -96,7 +96,7 @@ Outil web qui génère un badge « Made by » et le prompt pour l'intégrer, pou
 Web app éphéméride (PWA) : le calendrier républicain, un jour à la fois.
 
 ### Cet agent · 2026
-L'assistant avec lequel le visiteur parle en ce moment, présenté dans la section Laboratoire du portfolio : une démonstration de mise en production d'un LLM avec garde-fous.
+L'assistant avec lequel le visiteur parle en ce moment, présenté dans la section Laboratoire du portfolio : une démonstration de mise en production d'un LLM avec garde-fous. Pourquoi : en tant que product designer, Olivier voit l'IA entrer dans le quotidien, et la fenêtre de conversation devenir une interaction à part entière ; plutôt que d'en parler, il fait sa proposition, et cet agent lui sert de bac à sable pour produire, tester et itérer. Au-delà de l'interface, il interroge l'évolution du métier de designer : son IA sera-t-elle un jour la page d'accueil de son portfolio ? Finira-t-elle par le remplacer, et par quel chemin ? Techniquement : l'API d'Anthropic avec Claude Haiku, le plus petit modèle de la famille, des conversations anonymisées et des garde-fous contre ceux qui cherchent des failles.
 
 ## Passions
 - Vélo de route. C'est aussi l'origine de Go MoonBound, connecté à Strava.
