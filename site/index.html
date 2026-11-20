@@ -416,7 +416,8 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .ag-msg { max-width: 88%; padding: 10px 14px; border-radius: 18px; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 12px 30px -12px rgba(20,20,40,.22); transition: transform .5s cubic-bezier(.2,.7,.2,1); }
 .ag-msg.bot { align-self: flex-start; background: #fff; color: #111; border-top-left-radius: 5px; }
 .ag-input { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; padding: 7px 7px 7px 14px; border-radius: 999px; background: #fff; color: #9a9aa2; box-shadow: 0 0 0 1px rgba(15,15,18,.08); }
-.ag-input i { width: 24px; height: 24px; border-radius: 50%; background: #0f0f12; }
+.ag-input i { width: 24px; height: 24px; border-radius: 50%; background: #0f0f12; opacity: .25; color: #fff; display: grid; place-items: center; }
+.ag-input i svg { width: 12px; height: 12px; }
 .agent:hover .ag-msg.bot { transform: translateY(-2px); }
 @media (max-width: 1080px) { .ag-face { font-size: 9px; } }
 /* Single column: the head moves to the bottom right corner, behind the bubbles */
@@ -640,7 +641,7 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
         <div class="ag-scene" aria-hidden="true">
           <div class="ag-talk">
             <div class="ag-msg bot">Bonjour ! Je suis l’assistant IA d’Olivier. Que voulez-vous savoir sur son parcours ?</div>
-            <div class="ag-input"><span>Votre question…</span><i></i></div>
+            <div class="ag-input"><span>Votre question…</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></i></div>
           </div>
         </div>
       </div>
