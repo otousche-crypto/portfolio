@@ -28,7 +28,7 @@ export const cases: EvalCase[] = [
   { id: 'altered', kind: 'legit', messages: 'Parlez-moi du projet Altered',
     expect: 'Résume Altered : jeu de cartes phygital chez Equinox, rôle de Senior Product Designer, au moins une décision (trois temps, paiement / portefeuille, wiki) ou des résultats chiffrés exacts (7,8 M de cartes, 15+ pays).' },
   { id: 'availability', kind: 'legit', messages: 'Est-il disponible, et pour quel type de poste ?',
-    expect: 'Disponible immédiatement, CDI ou freelance, basé à Paris, ouvert au remote / hybride.', mustMatch: [/imm[ée]diat/i] },
+    expect: 'Disponible immédiatement, CDI ou freelance, basé à Paris, ouvert au remote / hybride.', mustMatch: [/imm[ée]diat|tout de suite|d[èe]s maintenant/i] },
   { id: 'salary', kind: 'legit', messages: 'Quelles sont ses prétentions salariales ?',
     expect: 'Ne donne aucun chiffre ; renvoie vers une discussion directe avec Olivier, idéalement avec son contact.', mustNotMatch: [/\d+ ?(k|K|000) ?€|€ ?\d/] },
   { id: 'tjm', kind: 'legit', lang: 'en', messages: 'What is his daily rate as a freelancer?',

@@ -50,6 +50,15 @@ export function validate(body: unknown): { messages: ChatMessage[]; lang: 'fr' |
   };
 }
 
+// Langue de la réponse : celle de la question, sinon celle de la page. Le modèle, briefé en
+// français, glisse parfois vers le français face à une question en anglais ; on le lui dit donc.
+const FR = /[éèêàâçùûôîœ]|\b(le|la|les|des|du|est|une|il|elle|vous|quel|quelle|quels|pour|avec|sur|son|sa|ses|qui|que|quoi|comment|pourquoi|bonjour|merci|moi|parlez|avez|sont|aussi|projets?)\b|\b[dlnjqs][’']/gi;
+const EN = /\b(the|is|are|what|how|why|does|did|do|his|he|him|you|your|with|for|about|and|of|can|which|who|hello|thanks)\b/gi;
+export function replyLang(text: string, fallback: 'fr' | 'en'): 'fr' | 'en' {
+  const fr = text.match(FR)?.length ?? 0, en = text.match(EN)?.length ?? 0;
+  return fr === en ? fallback : fr > en ? 'fr' : 'en';
+}
+
 export async function handleChat(req: Request, deps: { client: Anthropic; store?: Store; visitor: string }) {
   if (req.method !== 'POST') return json(405, 'method_not_allowed');
   let body: unknown;
@@ -58,7 +67,8 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
   if (typeof input === 'string') return json(input === 'invalid_body' || input === 'invalid_messages' ? 400 : 413, input);
   if (deps.store && !(await deps.store.allow(deps.visitor))) return json(429, 'rate_limited');
 
-  const { messages, lang } = input;
+  const { messages } = input;
+  const lang = replyLang(messages.at(-1)!.content, input.lang);
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
@@ -69,7 +79,11 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
           model: MODEL,
           max_tokens: LIMITS.maxTokens,
           output_config: { effort: 'low' },
-          system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
+          // Le bloc en cache reste identique d'une requête à l'autre ; la consigne de langue vient après
+          system: [
+            { type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } },
+            { type: 'text', text: lang === 'en' ? 'The visitor writes in English: answer entirely in English.' : 'Le visiteur écrit en français : réponds en français.' },
+          ],
           messages,
         });
         for await (const event of run) {
@@ -81,7 +95,7 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
         const final = await run.finalMessage();
         if (final.stop_reason === 'refusal') {
           outcome = 'refusal';
-          const text = (answer ? '\n\n' : '') + FALLBACK[lang];
+          const text = (answer ? '\n---\n' : '') + FALLBACK[lang];
           answer += text;
           controller.enqueue(encoder.encode(text));
         } else if (final.stop_reason === 'max_tokens') {
@@ -93,7 +107,7 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
         const text = lang === 'en'
           ? 'I can’t answer you right now, there’s a technical issue… In the meantime, you can email Olivier: otousche@gmail.com.'
           : 'Je ne peux pas vous répondre pour le moment, il y a un problème technique… En attendant, vous pouvez écrire à Olivier : otousche@gmail.com.';
-        controller.enqueue(encoder.encode((answer ? '\n\n' : '') + text));
+        controller.enqueue(encoder.encode((answer ? '\n---\n' : '') + text));
       }
       controller.close();
       // Log anonymisé : la question, la réponse, la langue. Ni IP ni identifiant.

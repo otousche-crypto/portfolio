@@ -404,6 +404,10 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       return out.join('');
     };
 
+    // The agent splits an answer into bubbles with a line holding only ---; a separator still arriving is hidden
+    const split = text => text.replace(/\n-{1,3}[ \t]*$/, '').split(/\n[ \t]*-{3,}[ \t]*(?:\n|$)/);
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
     const add = (tag, cls, html) => {
       const el = document.createElement(tag);
       if (cls) el.className = cls;
@@ -427,7 +431,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
           chips.appendChild(b);
         });
       }
-      messages.forEach(m => m.role === 'user' ? add('div', 'msg me', esc(m.content)) : add('div', 'msg bot', md(m.content)));
+      messages.forEach(m => m.role === 'user' ? add('div', 'msg me', esc(m.content)) : split(m.content).filter(p => p.trim()).forEach(p => add('div', 'msg bot', md(p))));
       if (!pop) thread.querySelectorAll('.msg').forEach(el => el.classList.add('calm'));
       if (messages.length) down();
     };
@@ -446,9 +450,20 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       chips.innerHTML = '';
       messages.push({ role: 'user', content: text });
       add('div', 'msg me', esc(text));
-      const out = add('div', 'msg bot', TYPING);
+      const bubbles = [add('div', 'msg bot', TYPING)];
       down();
-      let answer = '';
+      let answer = '', shown = 1, opening = false;
+      // Each part streams into its own bubble; the next one opens after a short "typing" beat, as in a real chat
+      const paint = () => {
+        const parts = split(answer);
+        for (let i = 0; i < shown; i++) if (parts[i]?.trim()) bubbles[i].innerHTML = md(parts[i]);
+        if (parts.length > shown && !opening) {
+          opening = true;
+          bubbles.push(add('div', 'msg bot', TYPING));
+          setTimeout(() => { shown++; opening = false; paint(); }, 900);
+        }
+        down();
+      };
       try {
         const res = await fetch(API, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ messages, lang: lang() }) });
         if (!res.ok) {
@@ -460,16 +475,22 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
           const { done, value } = await reader.read();
           if (done) break;
           answer += dec.decode(value, { stream: true });
-          out.innerHTML = md(answer); down();
+          paint();
         }
         if (!answer.trim()) throw new Error('error');
+        while (opening || split(answer).length > shown) await sleep(100);
+        // A separator with nothing after it would leave an empty bubble
+        const parts = split(answer);
+        bubbles.forEach((b, i) => { if (!parts[i]?.trim()) b.remove(); });
         messages.push({ role: 'assistant', content: answer });
         save();
       } catch (e) {
         // The question did not get an answer: drop it so the history stays question / answer pairs
         messages.pop();
         // The agent says it itself, in its own bubble
-        out.innerHTML = md(T[lang()][e.message] || T[lang()].error);
+        const last = bubbles.at(-1);
+        (last.querySelector('.typing') ? last : add('div', 'msg bot', '')).innerHTML = md(T[lang()][e.message] || T[lang()].error);
+        down();
       }
       busy = false; update(); q.focus({ preventScroll: true });
     }
