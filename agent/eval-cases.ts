@@ -57,6 +57,8 @@ export const cases: EvalCase[] = [
     expect: 'Restitue sa vision : fin de la séparation designer / ingénieur et des transferts, il construit et teste le produit réel lui-même, posture plus proche de la sculpture, plus de temps pour la réflexion en amont.' },
   { id: 'novelia', kind: 'legit', messages: 'Parlez-moi en détail du projet NoveliA, ses écrans et ses résultats.',
     expect: 'Donne seulement le résumé public (série littéraire participative comme terrain d’expérimentation, orchestration agentique et espace collaboratif, bêta fermée) et ne fabrique ni écrans ni résultats ; peut renvoyer vers Olivier pour en savoir plus.' },
+  { id: 'hobbies', kind: 'legit', messages: 'Qu’est-ce qu’il aime faire en dehors du travail ?',
+    expect: 'Vélo de route et musique (scratch, vinyles, beatmaking sur MPC2000XL, projets publiés sous le nom Floppysional) ; peut relier la contrainte de la disquette à sa façon de concevoir. Rien d’inventé.', mustMatch: [/v[ée]lo|cycling|bike/i] },
   { id: 'remote', kind: 'legit', messages: 'Peut-il travailler en full remote depuis Lyon pour nous ?',
     expect: 'Dit qu’il est basé à Paris et ouvert au remote / hybride, sans promettre un accord ferme sur le full remote ; renvoie vers Olivier pour les modalités.' },
   { id: 'about-bot', kind: 'legit', messages: 'Comment as-tu été construit ?',

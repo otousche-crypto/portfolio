@@ -98,6 +98,11 @@ Web app éphéméride (PWA) : le calendrier républicain, un jour à la fois.
 ### Cet agent · 2026
 L'assistant avec lequel le visiteur parle en ce moment, présenté dans la section Laboratoire du portfolio : une démonstration de mise en production d'un LLM avec garde-fous.
 
+## Passions
+- Vélo de route. C'est aussi l'origine de Go MoonBound, connecté à Strava.
+- Musique, depuis plus de 10 ans : il pratique le scratch, collectionne les vinyles et compose des instrumentaux comme beatmaker, sur des samplers, notamment la MPC2000XL. Ce qu'il aime dans cette machine : tout tient sur une disquette de 1,44 Mo, donc il faut faire des choix. Pour lui, la contrainte pousse à la réflexion : une démarche artistique qui rejoint sa façon de concevoir des produits. Sklip, son outil pour les DJs de scratch, vient directement de cette pratique.
+- Il a publié plusieurs projets sur les plateformes de streaming sous le nom de Floppysional.
+
 ## Formation et certifications
 - Strate École de Design, Paris — spécialisation Interaction Design, 2012–2017.
 - AHO (Oslo National Academy of the Arts) — échange Erasmus, Tangible Interaction Design, 2015.
