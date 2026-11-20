@@ -64,10 +64,15 @@ button { font: inherit; color: inherit; }
 .log { flex: 1; overflow-y: auto; overscroll-behavior: contain; scroll-behavior: smooth; }
 .col { width: 100%; max-width: var(--col); margin: 0 auto; padding: 0 16px; }
 .thread { display: flex; flex-direction: column; gap: 14px; padding-block: 28px 20px; }
-.intro { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; padding-top: clamp(8px, 4vh, 40px); }
-.face { margin: 0; font-family: var(--mono); font-size: clamp(5px, min(1.05vh, 1.6vw), 7.6px); line-height: 1.02; color: #26262a; user-select: none; }
+.intro { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; padding-top: clamp(24px, 12vh, 140px); padding-bottom: 8px; }
+.log, .dock { position: relative; z-index: 1; }
+/* Olivier's ASCII head stands on the window's right edge, about 40% cropped, behind the conversation */
+.face { position: fixed; z-index: 0; top: 50%; right: 0; translate: 40% -50%; display: block; font-size: clamp(8px, 1.6vh, 14px); pointer-events: none; }
+/* Narrow screens: smaller, low in the corner, faded so the bubbles stay readable */
+@media (max-width: 1100px) { .face { font-size: clamp(6px, 1.2vh, 10px); opacity: .45; } }
+@media (max-width: 640px) { .face { top: auto; bottom: 96px; translate: 40% 0; font-size: 6px; opacity: .5; } }
 .intro h1 { margin: 0; font-size: clamp(24px, 3.4vw, 34px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 600; text-wrap: balance; }
-.intro p { margin: -8px 0 0; color: #5f5f68; max-width: 46ch; text-wrap: pretty; }
+.intro p { margin: -6px 0 0; color: #5f5f68; max-width: 46ch; text-wrap: pretty; }
 .msg { max-width: min(600px, 88%); padding: 12px 16px; border-radius: 20px; font-size: 15.5px; line-height: 1.55; overflow-wrap: anywhere; }
 .msg p { margin: 0; }
 .msg p + p, .msg ul + p, .msg p + ul { margin-top: 8px; }
@@ -126,6 +131,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   </div>
 </header>
 
+<canvas class="face" aria-hidden="true"></canvas>
 <main class="log" id="log" aria-label="Conversation">
   <div class="col thread" id="thread" role="log" aria-live="polite"></div>
 </main>
@@ -247,6 +253,87 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   })();
 </script>
 <script>
+  // ASCII self-portraits (same code as the portfolio footer and the agent card): each composes itself when it comes into view (glyphs scramble, then settle from top to bottom); under the cursor they stir, drift aside and warm to orange
+  const asciiPortrait = (cv, art) => {
+    const rows = art.length, cols = Math.max(...art.map(l => l.length));
+    const GLYPHS = '@%#*+=-:.', INK = [38, 38, 42], HOT = [252, 76, 2], R = 70;
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const ctx = cv.getContext('2d');
+    const cells = [];
+    art.forEach((line, y) => [...line].forEach((c, x) => {
+      if (c !== ' ') cells.push({ x, y, c, at: 250 + (y / rows) * 1300 + Math.random() * 650, heat: 0, g: c });
+    }));
+    let cw = 0, ch = 0, t0 = 0, raf = 0, pointer = null;
+    const size = () => {
+      const fs = parseFloat(getComputedStyle(cv).fontSize), dpr = devicePixelRatio || 1;
+      ctx.font = `${fs}px "Geist Mono", ui-monospace, monospace`;
+      cw = ctx.measureText('M').width; ch = fs * 1.02;
+      cv.width = Math.ceil(cols * cw * dpr); cv.height = Math.ceil(rows * ch * dpr);
+      cv.style.width = cols * cw + 'px'; cv.style.height = rows * ch + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.font = `${fs}px "Geist Mono", ui-monospace, monospace`; ctx.textBaseline = 'top';
+    };
+    const draw = now => {
+      const t = still ? 1e9 : now - t0;
+      let busy = t >= 0 && t < 2600;  // t is negative until the bust has scrolled into view
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      for (const k of cells) {
+        let g = k.c, a = 1, ox = 0, oy = 0;
+        if (t < k.at) {
+          const p = 1 - (k.at - t) / 500;
+          if (p <= 0) continue;
+          a = p * .55; g = GLYPHS[Math.random() * GLYPHS.length | 0];
+        }
+        const px = (k.x + .5) * cw, py = (k.y + .5) * ch;
+        if (pointer) {
+          const dx = px - pointer.x, dy = py - pointer.y, d = Math.hypot(dx, dy);
+          if (d < R) { k.heat = Math.max(k.heat, 1 - d / R); k.dx = dx / (d || 1); k.dy = dy / (d || 1); }
+        }
+        if (k.heat > .01) {
+          busy = true;
+          const h = k.heat * k.heat;
+          if (Math.random() < h * .6) k.g = GLYPHS[Math.random() * GLYPHS.length | 0];
+          if (h > .08) g = k.g;
+          ox = k.dx * h * 9; oy = k.dy * h * 9;
+          k.heat *= .94;
+        }
+        const fade = 1;
+        const m = Math.min(1, k.heat * 1.4);
+        ctx.fillStyle = `rgba(${INK.map((v, i) => Math.round(v + (HOT[i] - v) * m)).join()},${a * fade})`;
+        ctx.fillText(g, k.x * cw + ox, k.y * ch + oy);
+      }
+      pointer = null;
+      raf = busy ? requestAnimationFrame(draw) : 0;
+    };
+    const wake = () => { if (!raf) raf = requestAnimationFrame(draw); };
+    // The composition starts once the tab is actually visible, so it isn't missed in a background tab
+    // The composition starts when the bust scrolls into view (and the tab is visible), so it plays in front of the visitor
+    const start = () => {
+      if (document.hidden) return addEventListener('visibilitychange', start, { once: true });
+      t0 = performance.now(); wake();
+    };
+    (document.fonts ? document.fonts.load('10px "Geist Mono"').catch(() => {}) : Promise.resolve()).then(() => {
+      size();
+      if (still || !('IntersectionObserver' in window)) return start();
+      t0 = Infinity;
+      const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); start(); } }, { threshold: .35 });
+      io.observe(cv);
+    });
+    addEventListener('resize', () => { size(); wake(); });
+    if (!still) addEventListener('pointermove', e => {
+      if (e.pointerType === 'touch') return;
+      const r = cv.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      if (x < -R || y < -R || x > r.width + R || y > r.height + R) return;
+      pointer = { x, y }; wake();
+    }, { passive: true });
+  };
+  (() => {
+    const src = document.getElementById('ascii-face'), cv = document.querySelector('canvas.face');
+    if (src && cv) asciiPortrait(cv, src.textContent.replace(/^\n+|\n+$/g, '').split('\n'));
+  })();
+</script>
+<script>
   // Under the hood: a native dialog, closed by its button, Escape or a click on the backdrop
   (() => {
     const d = document.getElementById('hood');
@@ -262,7 +349,6 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     const log = document.getElementById('log'), thread = document.getElementById('thread');
     const form = document.getElementById('form'), q = document.getElementById('q');
     const send = document.getElementById('send'), count = document.getElementById('count');
-    const FACE = document.getElementById('ascii-face').textContent.replace(/^\n+|\n+$/g, '');
     const lang = () => document.documentElement.lang === 'en' ? 'en' : 'fr';
     const T = {
       fr: {
@@ -317,8 +403,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     const render = () => {
       const t = T[lang()];
       thread.innerHTML = '';
-      // Olivier's ASCII face greets the visitor and says it is an AI; the suggestions only show on a fresh chat
-      const intro = add('div', 'intro', `<pre class="face" aria-hidden="true">${esc(FACE)}</pre><h1>${t.title}</h1><p>${t.sub}</p>`);
+      // The suggestions only show on a fresh chat
+      const intro = add('div', 'intro', `<h1>${t.title}</h1><p>${t.sub}</p>`);
       if (!messages.length) {
         const chips = document.createElement('div');
         chips.className = 'chips';
