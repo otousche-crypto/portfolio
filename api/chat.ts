@@ -12,7 +12,8 @@ import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import { handleChat, type Store } from '../agent/handler';
 
-const client = new Anthropic();
+// Sans clé, le SDK refuse de démarrer : on répond 503 au lieu de faire planter la fonction
+const client = process.env.ANTHROPIC_API_KEY ? new Anthropic() : null;
 
 const url = process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
 const token = process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
@@ -28,6 +29,10 @@ const store: Store | undefined = redis ? (() => {
 })() : undefined;
 
 export async function POST(req: Request) {
+  if (!client) {
+    console.error('agent not configured: ANTHROPIC_API_KEY is missing');
+    return new Response(JSON.stringify({ error: 'not_configured' }), { status: 503, headers: { 'content-type': 'application/json' } });
+  }
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
   // L'IP ne sert qu'à la limite de débit, et seulement sous forme d'empreinte
   const visitor = createHash('sha256').update(`${process.env.AGENT_SALT ?? ''}:${ip}`).digest('hex').slice(0, 32);
