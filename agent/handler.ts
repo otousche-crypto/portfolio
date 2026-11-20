@@ -85,6 +85,14 @@ export function replyLang(text: string, fallback: 'fr' | 'en'): 'fr' | 'en' {
   return fr === en ? fallback : fr > en ? 'fr' : 'en';
 }
 
+// L'âge change avec le temps : on le calcule à chaque requête plutôt que de le figer dans le profil.
+// La date de naissance reste ici, côté serveur, jamais dans le texte envoyé au modèle.
+const BIRTH = { year: 1992, month: 2, day: 1 };
+export function ageOn(now: Date) {
+  const m = now.getMonth() + 1, d = now.getDate();
+  return now.getFullYear() - BIRTH.year - (m < BIRTH.month || (m === BIRTH.month && d < BIRTH.day) ? 1 : 0);
+}
+
 export async function handleChat(req: Request, deps: { client: Anthropic; store?: Store; visitor: string }) {
   if (req.method !== 'POST') return json(405, 'method_not_allowed');
   let body: unknown;
@@ -108,7 +116,7 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
           // Le bloc en cache reste identique d'une requête à l'autre ; la consigne de langue vient après
           system: [
             { type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } },
-            { type: 'text', text: lang === 'en' ? 'The visitor writes in English: answer entirely in English.' : 'Le visiteur écrit en français : réponds en français.' },
+            { type: 'text', text: (lang === 'en' ? 'The visitor writes in English: answer entirely in English.' : 'Le visiteur écrit en français : réponds en français.') + `\nÂge d'Olivier aujourd'hui : ${ageOn(new Date())} ans.` },
           ],
           messages,
         });
