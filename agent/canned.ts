@@ -24,7 +24,7 @@ Pour lui, le métier passe de la prescription à quelque chose de proche de la s
 Résultats : 7,8 M de cartes scannées, plus de 15 pays et un premier championnat du monde en juin 2025.
 ---
 Tout est dans l'[étude de cas](https://www.oliviertousche.com/equinox.html), dont le paiement conçu malgré un flou juridique.
-[[Comment a-t-il géré le paiement ? | Son expérience en recherche UX ?]]`,
+[[Son expérience en recherche UX ? | Son approche du design ?]]`,
 
   'est-il disponible ?': `Oui, nous sommes disponibles tout de suite, en CDI comme en freelance.
 ---
@@ -92,7 +92,7 @@ Also in testing: proto-personas fed with real data (Reddit, Facebook, app stores
 Results: 7.8M cards scanned, 15+ countries and a first world championship in June 2025.
 ---
 It's all in the [case study](https://www.oliviertousche.com/equinox.html), including a payment flow designed despite legal uncertainty.
-[[How did he handle payments? | His UX research experience?]]`,
+[[His UX research experience? | His design approach?]]`,
 
   'is he available?': `Yes, we're available right away, for a permanent role or freelance.
 ---
@@ -160,8 +160,8 @@ const TABLE = new Map(Object.entries(CANNED).map(([q, a]) => [normalize(q), a]))
 // Le prompt demande à l'agent de choisir ses suggestions dans ces listes ; la page écarte toute autre suggestion.
 // Les mêmes listes figurent dans site/agent.html (T.fr.more, T.en.more) : un test vérifie qu'elles concordent.
 export const SUGGESTIONS = {
-  fr: ['Comment utilise-t-il l’IA ?', 'Sa vision produit ?', 'Son approche du design ?', 'Est-il disponible ?', 'Ses projets de product builder ?', 'Parlez-moi de Go MoonBound', 'Son expérience en recherche UX ?', 'Parlez-moi d’Altered', 'Comment a-t-il géré le paiement ?', 'Pourquoi cet agent IA ?', 'Ses passions ?'],
-  en: ['How does he use AI?', 'His product vision?', 'His design approach?', 'Is he available?', 'His product builder projects?', 'Tell me about Go MoonBound', 'His UX research experience?', 'Tell me about Altered', 'How did he handle payments?', 'Why this AI agent?', 'His passions?'],
+  fr: ['Comment utilise-t-il l’IA ?', 'Sa vision produit ?', 'Son approche du design ?', 'Est-il disponible ?', 'Ses projets de product builder ?', 'Parlez-moi de Go MoonBound', 'Son expérience en recherche UX ?', 'Parlez-moi d’Altered', 'Pourquoi cet agent IA ?'],
+  en: ['How does he use AI?', 'His product vision?', 'His design approach?', 'Is he available?', 'His product builder projects?', 'Tell me about Go MoonBound', 'His UX research experience?', 'Tell me about Altered', 'Why this AI agent?'],
 };
 
 // Les questions qui ont une réponse toute prête (pour les tests de cohérence des suggestions)
