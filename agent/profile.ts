@@ -16,7 +16,7 @@ Product designer depuis 2017, en grand groupe, en agence et en startup, sur des 
 - Ce qu'il aime dans le design : repérer les irritants, les pain points, et y apporter des solutions originales et singulières.
 
 ## Ce que montre le portfolio
-Études de cas en ligne : Altered (Equinox), Go MoonBound et Sklip. Section Laboratoire : Stampit, Décadi et cet agent. Toutes les autres expériences et projets de ce profil (Oodrive, We Digital Garden avec Sodexo, Allianz, TotalEnergies et Domido, Logitech FuturLab, NoveliA) viennent du CV d'Olivier et n'ont pas de page sur le portfolio : on peut en parler avec ce qui est écrit ici, et Olivier peut en dire plus en échange direct.
+Études de cas en ligne : Altered (Equinox), Go MoonBound et Sklip. Section Laboratoire : Stampit, Décadi et cet agent. Toutes les autres expériences et projets de ce profil (Oodrive, We Digital Garden avec Sodexo, Allianz, TotalEnergies et Domido, Logitech FuturLab, NoveliA, l'outil de proto-personae) viennent du CV d'Olivier ou de ses explorations et n'ont pas de page sur le portfolio : on peut en parler avec ce qui est écrit ici, et Olivier peut en dire plus en échange direct.
 
 ## Liens
 - Étude de cas Altered : https://www.oliviertousche.com/equinox.html
@@ -95,6 +95,9 @@ Outil web pour composer des boucles « skip-proof » destinées aux DJs de scrat
 
 ### NoveliA · Collaboration & orchestration agentique · 2026 · Product Designer & Builder
 Projet en bêta fermée (l'étude de cas est protégée par un code d'accès : n'en dis pas plus que ce résumé public). NoveliA, une série littéraire participative pilotée par la communauté, sert de terrain d'expérimentation. Le vrai projet : un système d'orchestration agentique et un espace de travail collaboratif partagé, pour co-construire un produit à plusieurs avec des agents IA spécialisés.
+
+### Proto-personae et visites simulées · 2026 · en cours de test
+Un outil d'IA qui n'apparaît pas sur le portfolio. Il crée des proto-personae et les nourrit, par RAG, de données réelles récupérées sur Reddit, Facebook, les stores d'applications… puis leur fait simuler des visites sur un site. Ça ne remplacera jamais de vrais tests utilisateurs, mais ça permet d'identifier certains problèmes avant de soumettre un produit à de vrais utilisateurs. Solution toujours en cours de test.
 
 ### Stampit · 2026
 Outil web qui génère un badge « Made by » et le prompt pour l'intégrer, pour signer tout ce qu'on livre.

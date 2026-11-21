@@ -48,6 +48,8 @@ Un exemple complet : l'[étude de cas Altered](https://www.oliviertousche.com/eq
   'ses projets de product builder ?': `Olivier conçoit et construit ses propres produits avec des agents IA : [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), qui place vos sorties Strava sur la route de la Lune, et [Sklip](https://www.oliviertousche.com/sklip.html), pour les DJs de scratch.
 ---
 Dans le [Laboratoire](https://www.oliviertousche.com/#laboratoire) : Stampit, Décadi et cet agent. Et NoveliA, en bêta fermée : un système d'orchestration agentique pour co-construire un produit à plusieurs.
+---
+En test aussi : des proto-personae nourris de vraies données (Reddit, Facebook, stores) qui simulent des visites sur un site, pour repérer des problèmes avant les vrais tests utilisateurs.
 [[Parlez-moi de Go MoonBound | Pourquoi cet agent IA ?]]`,
 
   'his ux research experience?': `Research is at the heart of his method: Olivier starts every project by understanding real usage and pain points.
@@ -81,6 +83,8 @@ A full example: the [Altered case study](https://www.oliviertousche.com/equinox.
   'his product builder projects?': `Olivier designs and builds his own products with AI agents: [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), which puts your Strava activities on the road to the Moon, and [Sklip](https://www.oliviertousche.com/sklip.html), for scratch DJs.
 ---
 In the [Lab](https://www.oliviertousche.com/#laboratoire): Stampit, Décadi and this agent. And NoveliA, in closed beta: an agentic orchestration system to co-build a product as a team.
+---
+Also in testing: proto-personas fed with real data (Reddit, Facebook, app stores) that simulate visits to a site, to catch issues before real user tests.
 [[Tell me about Go MoonBound | Why this AI agent?]]`,
 
   'tell me about altered': `Altered is a phygital trading card game: every physical card has a digital twin. From 2022 to 2025, at Equinox, Olivier led the design of all the B2B and B2C digital services.
