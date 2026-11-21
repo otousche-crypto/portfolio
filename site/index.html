@@ -494,7 +494,7 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
 .st-shot > img { display: block; width: 100%; }
 .st-shot::before { content: ""; position: absolute; left: 37%; right: 37%; top: 53.4%; bottom: 39.2%; background: #f3f2f8; }  /* paints out the screenshot's still badge, whatever width the live one takes */
 .st-live { pointer-events: none; }  /* the thumbnail plays the cycle only: no hover effect on the badge */
-.st-live { position: absolute; left: 50%; top: 57.12%; translate: -50% -50%; }  /* centre of the screenshot's badge (1000, 714 of 2000 px); zoom set by the script */
+.st-live { position: absolute; left: 50%; top: 57.12%; translate: -50% -50%; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }  /* centre of the screenshot's badge (1000, 714 of 2000 px); scale set by the script */
 </style>
 <style>body{margin:0}img{max-width:100%}</style>
 </head>
@@ -995,8 +995,9 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
   (() => {
     const live = document.querySelector('.st-live'), shot = document.querySelector('.st-shot');
     if (!live || !shot) return;
-    // Same size as the badge in the screenshot: 36 px tall natively, 68 px tall on the 2000 px wide capture
-    const fit = () => { live.style.zoom = shot.clientWidth / 2000 * 68 / 36; };
+    // Same size as the badge in the screenshot: 36 px tall natively, 68 px tall on the 2000 px wide capture.
+    // A transform, not zoom: iOS Safari scales a zoomed box but enlarges its tiny text back, so the badge overflowed the phone
+    const fit = () => { live.style.scale = shot.clientWidth / 2000 * 68 / 36; };
     fit(); new ResizeObserver(fit).observe(shot);
     const find = sel => live.querySelector(sel);
     const VERBS = ['Designed', 'Crafted', 'Shipped', 'Built'], FIRST = 'Olivier Tousche', SUFFIX = ' by';
