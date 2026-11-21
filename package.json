@@ -8,7 +8,8 @@
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json",
     "eval:agent": "tsx scripts/eval-agent.ts",
-    "test:agent": "tsx scripts/test-agent.ts"
+    "test:agent": "tsx scripts/test-agent.ts",
+    "report:agent": "tsx --env-file-if-exists=.env scripts/agent-report.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.11.0",

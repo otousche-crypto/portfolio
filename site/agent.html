@@ -473,6 +473,13 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     const TYPING = '<span class="typing" aria-label="…"><i></i><i></i><i></i></span>';
     try { messages = JSON.parse(sessionStorage.getItem(KEY) || '[]'); } catch (e) {}
     const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(messages)); } catch (e) {} };
+    // A random id per conversation, so the anonymous logs can be read conversation by conversation (never tied to a person)
+    let cid = '';
+    try { cid = sessionStorage.getItem(KEY + '-id') || ''; } catch (e) {}
+    const newCid = () => {
+      cid = (crypto.randomUUID?.() || Math.random().toString(36).slice(2) + Date.now().toString(36)).replace(/-/g, '').slice(0, 16);
+      try { sessionStorage.setItem(KEY + '-id', cid); } catch (e) {}
+    };
 
     // Minimal, safe Markdown: escape first, then bold, italics, bullet lists, links and email addresses
     const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -533,10 +540,16 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     // The floating dock's height changes (suggestions or not, a growing textarea): the conversation keeps room for it
     const dock = document.querySelector('.dock');
     new ResizeObserver(() => {
-      const end = log.scrollHeight - log.scrollTop - log.clientHeight < 40;
       document.body.style.setProperty('--dock-h', dock.offsetHeight + 'px');
-      if (end) down();
+      if (stick) down();
     }).observe(dock);
+    // Stay pinned to the latest message while the conversation grows (case-study cards and their images, the 👍 / 👎
+    // arriving after the text), unless the visitor has scrolled up to reread
+    let stick = true;
+    const near = () => log.scrollHeight - log.scrollTop - log.clientHeight < 60;
+    ['wheel', 'touchmove', 'keydown'].forEach(ev => log.addEventListener(ev, () => requestAnimationFrame(() => { stick = near(); }), { passive: true }));
+    log.addEventListener('scroll', () => { if (near()) stick = true; }, { passive: true });
+    new ResizeObserver(() => { if (stick) down(); }).observe(thread);
     const showChips = list => {
       chips.innerHTML = ''; chips.scrollLeft = 0;
       list.forEach(s => {
@@ -586,7 +599,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
         m.vote = b.dataset.vote; save();
         acts.querySelectorAll('[data-vote]').forEach(x => { x.disabled = true; x.setAttribute('aria-pressed', String(x === b)); });
         acts.insertAdjacentHTML('beforeend', `<span class="thanks">${t.thanks}</span>`);
-        fetch('/api/feedback', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ vote: m.vote, question: messages[i - 1]?.content || '', answer: m.content, lang: lang() }) }).catch(() => {});
+        fetch('/api/feedback', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ vote: m.vote, question: messages[i - 1]?.content || '', answer: m.content, lang: lang(), cid }) }).catch(() => {});
       }));
       box.appendChild(acts);
       return box;
@@ -646,7 +659,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       text = text.trim().slice(0, MAX);
       if (!text || busy || ended()) return;
       if (greeting !== 'shown') { greeting = 'shown'; render(!messages.length); }
-      busy = true; q.value = ''; update();
+      busy = true; stick = true; q.value = ''; update();
+      if (!messages.length || !cid) newCid();
       chips.innerHTML = '';
       messages.push({ role: 'user', content: text });
       add('div', 'msg me', esc(text));
@@ -665,7 +679,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
         down();
       };
       try {
-        const res = await fetch(API, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ messages, lang: lang() }) });
+        const res = await fetch(API, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ messages, lang: lang(), cid }) });
         if (!res.ok) {
           const { error } = await res.json().catch(() => ({}));
           throw new Error(res.status === 429 ? '429' : error || 'error');
@@ -718,7 +732,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     form.addEventListener('submit', e => { e.preventDefault(); ask(q.value); });
     q.addEventListener('input', update);
     q.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); ask(q.value); } });
-    document.getElementById('reset').addEventListener('click', () => { if (busy) return; messages = []; save(); render(); update(); log.scrollTop = 0; q.focus(); });
+    document.getElementById('reset').addEventListener('click', () => { if (busy) return; messages = []; cid = ''; save(); render(); update(); log.scrollTop = 0; q.focus(); });
     addEventListener('langchange', () => { if (!busy) render(); });
     render(); update();
 

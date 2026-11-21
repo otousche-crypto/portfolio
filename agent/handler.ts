@@ -30,13 +30,13 @@ export interface FeedbackStore {
   save(entry: Record<string, unknown>): Promise<void>;
 }
 
-export function validateFeedback(body: unknown): { vote: 'up' | 'down'; question: string; answer: string; lang: 'fr' | 'en' } | string {
+export function validateFeedback(body: unknown): { vote: 'up' | 'down'; question: string; answer: string; lang: 'fr' | 'en'; cid?: string } | string {
   if (!body || typeof body !== 'object') return 'invalid_body';
-  const { vote, question, answer, lang } = body as Record<string, unknown>;
+  const { vote, question, answer, lang, cid } = body as Record<string, unknown>;
   if (vote !== 'up' && vote !== 'down') return 'invalid_vote';
   if (typeof question !== 'string' || !question.trim() || question.length > LIMITS.userChars) return 'invalid_question';
   if (typeof answer !== 'string' || !answer.trim() || answer.length > LIMITS.assistantChars) return 'invalid_answer';
-  return { vote, question, answer, lang: lang === 'en' ? 'en' : 'fr' };
+  return { vote, question, answer, lang: lang === 'en' ? 'en' : 'fr', cid: cidOf(cid) };
 }
 
 export async function handleFeedback(req: Request, deps: { store?: FeedbackStore; visitor: string }) {
@@ -60,9 +60,12 @@ const json = (status: number, error: string) =>
 
 export const ENDED = /\[\[\s*(FIN|END)\s*\]\]\s*$/;
 
-export function validate(body: unknown): { messages: ChatMessage[]; lang: 'fr' | 'en' } | string {
+// Identifiant aléatoire d'une conversation, tiré par la page : il regroupe les logs, sans rien dire du visiteur
+const cidOf = (v: unknown) => (typeof v === 'string' && /^[a-z0-9]{8,40}$/i.test(v) ? v : undefined);
+
+export function validate(body: unknown): { messages: ChatMessage[]; lang: 'fr' | 'en'; cid?: string } | string {
   if (!body || typeof body !== 'object') return 'invalid_body';
-  const { messages, lang } = body as { messages?: unknown; lang?: unknown };
+  const { messages, lang, cid } = body as { messages?: unknown; lang?: unknown; cid?: unknown };
   if (!Array.isArray(messages) || messages.length === 0) return 'invalid_messages';
   for (const [i, m] of messages.entries()) {
     if (!m || typeof m !== 'object') return 'invalid_messages';
@@ -79,6 +82,7 @@ export function validate(body: unknown): { messages: ChatMessage[]; lang: 'fr' |
   return {
     messages: (messages as ChatMessage[]).slice(-LIMITS.historyKept).map(({ role, content }) => ({ role, content: role === 'assistant' ? content.slice(0, LIMITS.assistantKept) : content })),
     lang: lang === 'en' ? 'en' : 'fr',
+    cid: cidOf(cid),
   };
 }
 
@@ -108,7 +112,7 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
   // Question suggérée au démarrage : réponse toute prête, sans modèle ni décompte de quota
   const canned = cannedAnswer(input.messages.at(-1)!.content);
   if (canned) {
-    await deps.store?.log({ at: new Date().toISOString(), lang: input.lang, turn: (input.messages.length + 1) / 2, question: input.messages.at(-1)!.content, answer: canned, outcome: 'canned' })
+    await deps.store?.log({ at: new Date().toISOString(), cid: input.cid, lang: input.lang, turn: (input.messages.length + 1) / 2, question: input.messages.at(-1)!.content, answer: canned, outcome: 'canned' })
       .catch((e) => console.error('log error', e));
     return new Response(canned, { headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'no-store', 'x-content-type-options': 'nosniff' } });
   }
@@ -161,7 +165,7 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
       }
       controller.close();
       // Log anonymisé : la question, la réponse, la langue. Ni IP ni identifiant.
-      await deps.store?.log({ at: new Date().toISOString(), lang, turn: (messages.length + 1) / 2, question: messages.at(-1)!.content, answer, outcome })
+      await deps.store?.log({ at: new Date().toISOString(), cid: input.cid, lang, turn: (messages.length + 1) / 2, question: messages.at(-1)!.content, answer, outcome })
         .catch((e) => console.error('log error', e));
     },
   });

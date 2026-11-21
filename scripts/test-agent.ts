@@ -35,6 +35,11 @@ ok('detects English', replyLang('What is his daily rate as a freelancer?', 'fr')
 ok('detects French', replyLang('Est-il disponible ?', 'en') === 'fr' && replyLang('Parlez-moi d’Altered', 'en') === 'fr');
 ok('falls back to page language', replyLang('Altered ?', 'en') === 'en');
 {
+  const v = validate({ messages: [{ role: 'user', content: 'Q' }], cid: 'a1b2c3d4e5f60718' });
+  const bad = validate({ messages: [{ role: 'user', content: 'Q' }], cid: '<script>' });
+  ok('conversation id kept, junk dropped', typeof v !== 'string' && v.cid === 'a1b2c3d4e5f60718' && typeof bad !== 'string' && bad.cid === undefined);
+}
+{
   let called = false;
   const spy = { messages: { stream: () => { called = true; throw new Error('should not be called'); } } } as unknown as Anthropic;
   const res = await handleChat(req(user('Comment utilise-t-il l’IA ?')), { client: spy, store, visitor: 'v' });
