@@ -59,7 +59,7 @@ a { color: inherit; }
 /* Same hover as the agent page's tools: a soft grey pill */
 .top nav a { text-decoration: none; color: #5f5f68; padding: 6px 10px; border-radius: 999px; transition: background .2s, color .2s; }
 .top nav a:hover, .top nav a:focus-visible { color: var(--fg); background: rgba(15,15,18,.06); }
-.brand { font-weight: 600; letter-spacing: -0.01em; text-decoration: none; }
+.brand { display: flex; flex-direction: column; line-height: 1.1; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; }
 
 /* ── Hero ── */
 .hero { padding-block: 72px 96px; max-width: 980px; }
@@ -675,7 +675,7 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
 <body>
 <div class="wrap">
   <header class="top">
-    <a class="brand" href="index.html">Olivier Tousche</a>
+    <a class="brand" href="index.html"><span>Olivier</span><span>Tousche</span></a>
     <nav>
       <a href="index.html#projets">Projets</a>
       <a href="index.html#about">À propos</a>
