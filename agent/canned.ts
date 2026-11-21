@@ -10,21 +10,21 @@ const CANNED: Record<string, string> = {
 Sur Altered, il a mené des entretiens joueurs, des ateliers avec la direction et un benchmark, puis testé ses maquettes auprès des joueurs. Avant ça : focus groups et entretiens chez Oodrive, et recherche prospective sur les hearables chez Logitech FuturLab.
 ---
 Le détail est dans l'[étude de cas Altered](https://www.oliviertousche.com/equinox.html).
-[[Comment utilise-t-il l’IA ? | Sa vision produit ?]]`,
+[[Parlez-moi d’Altered | Son approche du design ?]]`,
 
   "comment utilise-t-il l'ia ?": `Depuis 2025, Olivier construit lui-même ses produits avec Claude Code et Cursor : moins de transferts entre design et code, et des produits en production plus vite.
 ---
 Exemple : [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), conçu en orchestrant des agents IA et en ligne en moins de 2 semaines. Depuis, il ne cesse d'évoluer au fil des attentes des utilisateurs.
 ---
 Pour lui, le métier passe de la prescription à quelque chose de proche de la sculpture : on ajuste le produit réel, au geste.
-[[Ses projets de product builder ? | Sa vision produit ?]]`,
+[[Parlez-moi de Go MoonBound | Sa vision produit ?]]`,
 
   "parlez-moi d'altered": `Altered est un jeu de cartes à collectionner phygital : chaque carte physique a son double numérique. De 2022 à 2025, chez Equinox, Olivier a piloté la conception de tous les services digitaux B2B et B2C.
 ---
 Résultats : 7,8 M de cartes scannées, plus de 15 pays et un premier championnat du monde en juin 2025.
 ---
 Tout est dans l'[étude de cas](https://www.oliviertousche.com/equinox.html), dont le paiement conçu malgré un flou juridique.
-[[Comment a-t-il géré le paiement ? | Comment utilise-t-il l’IA ?]]`,
+[[Comment a-t-il géré le paiement ? | Son expérience en recherche UX ?]]`,
 
   'est-il disponible ?': `Oui, nous sommes disponibles tout de suite, en CDI comme en freelance.
 ---
@@ -57,14 +57,14 @@ En test aussi : des proto-personae nourris de vraies données (Reddit, Facebook,
 On Altered, he ran player interviews, workshops with leadership and a benchmark, then tested his designs with players. Before that: focus groups and interviews at Oodrive, and foresight research on hearables at Logitech FuturLab.
 ---
 The details are in the [Altered case study](https://www.oliviertousche.com/equinox.html).
-[[How does he use AI? | His product vision?]]`,
+[[Tell me about Altered | His design approach?]]`,
 
   'how does he use ai?': `Since 2025, Olivier builds his own products with Claude Code and Cursor: fewer handoffs between design and code, and products shipped faster.
 ---
 Example: [Go MoonBound](https://www.oliviertousche.com/gomoonbound.html), built by orchestrating AI agents and live in under 2 weeks. Since then, it has kept evolving with what users expect.
 ---
 To him, the job is shifting from prescribing to something closer to sculpting: you shape the real product by hand.
-[[His product builder projects? | His product vision?]]`,
+[[Tell me about Go MoonBound | His product vision?]]`,
 
   'his product vision?': `To Olivier, design is a way to bring clarity and support decisions: make the stakes readable, align teams, turn pain points into clear products.
 ---
@@ -92,7 +92,7 @@ Also in testing: proto-personas fed with real data (Reddit, Facebook, app stores
 Results: 7.8M cards scanned, 15+ countries and a first world championship in June 2025.
 ---
 It's all in the [case study](https://www.oliviertousche.com/equinox.html), including a payment flow designed despite legal uncertainty.
-[[How did he handle payments? | How does he use AI?]]`,
+[[How did he handle payments? | His UX research experience?]]`,
 
   'is he available?': `Yes, we're available right away, for a permanent role or freelance.
 ---
@@ -103,6 +103,9 @@ Olivier is based in the Paris region, open to remote and hybrid. The easiest way
 // Même question, à la typographie près : apostrophes, espaces avant le « ? », majuscules
 const normalize = (q: string) => q.trim().toLowerCase().replace(/[’`]/g, "'").replace(/\s+/g, ' ').replace(/\s*\?$/, ' ?');
 const TABLE = new Map(Object.entries(CANNED).map(([q, a]) => [normalize(q), a]));
+
+// Les questions qui ont une réponse toute prête (pour les tests de cohérence des suggestions)
+export const cannedQuestions = () => [...TABLE.keys()];
 
 export function cannedAnswer(question: string): string | undefined {
   return TABLE.get(normalize(question));
