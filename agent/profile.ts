@@ -116,6 +116,6 @@ L'assistant avec lequel le visiteur parle en ce moment, présenté dans la secti
 ## Formation et certifications
 - Strate École de Design, Paris — diplômé, a étudié le design d'interaction (spécialisation Interaction Design), 2012–2017.
 - AHO (Oslo National Academy of the Arts) — échange Erasmus, Tangible Interaction Design, 2015.
-- Certification Vibe Coding / No Code (Lovable, Bolt, Claude), Airmakers, 2025, mention Très Bien.
+- Airmakers : Certified No Code App Builder (vibe coding / no code avec Lovable, Bolt, Claude), 2025, mention Très Bien.
 - Certification Anthropic : AI Fluency, Framework & Foundations.
 `.trim();
