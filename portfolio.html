@@ -1,0 +1,769 @@
+<meta charset="utf-8">
+<title>Olivier Tousche Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Outfit:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: one narrow column of intro text, then full-width project panels, each in its product's own colours */
+:root {
+  --bg: #ffffff;
+  --fg: #111113;
+  --muted: #9a9aa2;
+  --soft: #f3f3f5;
+  --line: #e7e7ea;
+  --pill: #111113;
+  --pill-fg: #ffffff;
+  --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --radius: 28px;
+  --accent: #4CB8FF;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--sans); font-size: 16px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased; overflow-x: clip;
+}
+a { color: inherit; }
+.wrap {
+  max-width: 1200px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 720px) { .wrap { padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); } }
+
+/* ── Top bar ── */
+/* Sticky glass bar: translucent white with a strong blur, no stroke */
+.top { position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; padding-block: 20px; font-size: 14px; }
+.top::before { content: ""; position: absolute; inset: 0 calc(50% - 50vw); z-index: -1;
+  background: linear-gradient(to bottom, rgba(255,255,255,.78), rgba(255,255,255,.6));
+  -webkit-backdrop-filter: saturate(180%) blur(24px); backdrop-filter: saturate(180%) blur(24px); }
+.top nav { display: flex; gap: 20px; }
+.top nav a { text-decoration: none; color: #5f5f68; transition: color .2s; }
+.top nav a:hover, .top nav a:focus-visible { color: var(--fg); }
+.brand { display: flex; flex-direction: column; line-height: 1.1; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; }
+
+/* ── Hero ── */
+.hero { padding-block: 72px 96px; max-width: 980px; }
+.avatar { width: 64px; height: 64px; border-radius: 50%; background: #ff6a3d; display: block; margin-bottom: 28px; }
+/* Same type as the About section: Geist, grey for the typed word, black for the fixed "Designer." */
+.hero h1 {
+  font-family: var(--sans); font-size: clamp(48px, 9vw, 112px); line-height: 1; letter-spacing: -0.045em;
+  font-weight: 600; margin: 0; color: var(--fg);
+}
+.hero h1 .ln { display: block; min-height: 1em; white-space: nowrap; }
+.hero h1 .ln:first-child { color: var(--muted); }
+/* Typewriter: types at 100ms/char, holds 2s, erases at 50ms/char; only the differing end is retyped */
+.caret { display: inline-block; width: .06em; height: .8em; margin-left: .06em; background: var(--muted); vertical-align: -.04em; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .caret { animation: none; } }
+.hero p { font-size: 18px; color: var(--muted); max-width: 56ch; margin: 36px 0 0; }
+.hero p strong { color: var(--fg); font-weight: 500; }
+.hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.hero-tags span { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
+
+.label {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted); display: flex; justify-content: space-between; align-items: baseline;
+  padding-bottom: 16px; border-bottom: 1px solid var(--line); margin-bottom: 20px;
+}
+
+/* ── Project panels ── */
+.projects { display: grid; gap: 20px; padding-bottom: 96px; }
+.card {
+  --c-bg: #eee; --c-fg: #111; --c-muted: rgba(0,0,0,.55); --c-pill: #111; --c-pill-fg: #fff; --c-ghost: rgba(0,0,0,.07);
+  position: relative; overflow: hidden; border-radius: var(--radius);
+  background: var(--c-bg); color: var(--c-fg);
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  min-height: 520px;
+}
+.card .text {
+  position: relative; z-index: 2; padding: 48px; display: flex; flex-direction: column; justify-content: center; gap: 18px; min-width: 0;
+}
+.logo { width: 40px; height: 40px; border-radius: 10px; object-fit: contain; display: block; }
+.card h3 { margin: 0; font-size: 15px; font-weight: 600; letter-spacing: .01em; }
+.card h2 { margin: 0; font-size: clamp(24px, 2.6vw, 32px); line-height: 1.12; letter-spacing: -0.025em; font-weight: 600; text-wrap: balance; }
+.meta { font-family: var(--mono); font-size: 12px; color: var(--c-muted); letter-spacing: .02em; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+  font-size: 13px; font-weight: 500; padding: 9px 15px; border-radius: 999px;
+  background: var(--c-ghost); color: var(--c-fg); transition: transform .2s, background .2s;
+}
+.btn.primary { background: var(--c-pill); color: var(--c-pill-fg); }
+.btn:hover { transform: translateY(-1px); }
+.btn:focus-visible { outline: 2px solid var(--c-fg); outline-offset: 2px; }
+.btn svg { width: 12px; height: 12px; }
+.visual { position: relative; min-width: 0; display: flex; align-items: center; justify-content: center; padding: 40px 40px 40px 0; }
+.visual img { display: block; max-width: 100%; }
+.card .visual > * { transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.card:hover .visual > * { transform: scale(1.025); }
+/* The whole card opens its primary link; other links inside keep their own target */
+.card { cursor: pointer; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+.card:hover { transform: translateY(-3px); }
+.card:hover .btn.primary { transform: translateY(-1px); }
+@media (prefers-reduced-motion: reduce) { .card, .card:hover { transform: none; } }
+
+/* browser frame */
+.browser {
+  width: 100%; border-radius: 14px; overflow: hidden; background: #000;
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.08);
+}
+.browser .bar { height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 12px; background: #1b1b1f; }
+.browser .bar i { width: 9px; height: 9px; border-radius: 50%; background: #3a3a40; display: block; }
+.browser .bar span { margin-left: 10px; font-family: var(--mono); font-size: 10.5px; color: #8b8b93; }
+.browser img { width: 100%; }
+
+/* Equinox: full-bleed key art */
+.equinox { --c-bg: #0d1626; --c-fg: #fff; --c-muted: rgba(255,255,255,.7); --c-pill: #fff; --c-pill-fg: #0d1626; --c-ghost: rgba(255,255,255,.16); }
+.equinox .art { position: absolute; inset: 0; z-index: 0; }
+.equinox .art img { width: 100%; height: 100%; object-fit: cover; object-position: 70% 40%; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+.equinox:hover .art img { transform: scale(1.03); }
+.equinox::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(8,14,28,.92) 0%, rgba(8,14,28,.7) 35%, rgba(8,14,28,0) 65%); }
+.equinox .stats { display: flex; gap: 28px; margin-top: 8px; }
+.equinox .stats b { display: block; font-size: 22px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.equinox .stats span { font-size: 12px; color: var(--c-muted); }
+/* MacBook with a scrolling page and a stuck nav (used by the Equinox case study) */
+.equinox .visual { z-index: 2; }
+/* Home card: just the top of the How to play page, in a softly rounded frame floating over the key art */
+.eq-screen { width: 86%; aspect-ratio: 16 / 10; border-radius: 12px; overflow: hidden; background: #fff;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.14), 0 2px 6px rgba(4,10,24,.18), 0 28px 60px -18px rgba(4,10,24,.55); }
+.equinox .eq-screen img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.sm-screen { display: flex; flex-direction: column; container-type: inline-size; }
+.sm-bar { flex: none; position: relative; height: 4.3cqw; background: #f4f1ea; border-bottom: 1px solid rgba(0,0,0,.06); }
+.sm-bar > span { position: absolute; bottom: .75cqw; display: flex; align-items: center; gap: .5cqw; height: 1.7cqw; }
+.sm-bar i, .sm-bar b { display: block; background: #e2dccf; border-radius: 99px; }
+.sm-dots { left: 1.4cqw; }
+.sm-dots i { width: .8cqw; height: .8cqw; }
+.sm-nav-btns { left: 5.6cqw; gap: .9cqw !important; }
+.sm-nav-btns i { width: 1cqw; height: 1cqw; border-radius: .25cqw; }
+.sm-url { left: 50%; transform: translateX(-50%); width: 38cqw; padding: 0 .8cqw; border-radius: .6cqw; background: #e9e4d8; }
+.sm-url i { width: .8cqw; height: .8cqw; background: #d6cfbf; }
+.sm-url b { width: 14cqw; height: .55cqw; background: #d6cfbf; }
+.sm-tools { right: 1.4cqw; gap: .9cqw !important; }
+.sm-tools i { width: 1cqw; height: 1cqw; border-radius: .25cqw; }
+.sm-area { position: relative; flex: 1; min-height: 0; }
+.sm-view { position: absolute; inset: 0; overflow: hidden; container-type: size; }
+.macbook .mb-screen .sm-page { display: block; width: 100%; height: auto; object-fit: initial; animation: smScroll 22s cubic-bezier(.45,0,.25,1) infinite; }
+@keyframes smScroll {
+  0%, 8% { transform: translateY(0); }
+  30%, 38% { transform: translateY(calc((-100% + 100cqh) * .36)); }
+  58%, 66% { transform: translateY(calc((-100% + 100cqh) * .72)); }
+  84%, 90% { transform: translateY(calc(-100% + 100cqh)); }
+  100% { transform: translateY(0); }
+}
+.macbook .mb-screen .sm-nav { position: absolute; z-index: 2; left: var(--nx); top: var(--ny); width: var(--nw); height: auto; object-fit: initial; filter: drop-shadow(0 6px 14px rgba(0,0,0,.18)); }
+@media (prefers-reduced-motion: reduce) { .macbook .mb-screen .sm-page { animation: none; } }
+.equinox .logo { filter: invert(1); background: transparent; }
+
+/* GoMoonBound */
+/* GoMoonBound: the app's own night sky (deep navy, faint blue nebula, scattered stars) across the whole card */
+.moon { --c-bg: #04050c; --c-fg: #fff; --c-muted: rgba(255,255,255,.6); --c-pill: #fc4c02; --c-pill-fg: #fff; --c-ghost: rgba(255,255,255,.1);
+  background:
+    radial-gradient(38% 55% at 22% 78%, rgba(70,82,140,.32), transparent 70%),
+    radial-gradient(30% 45% at 70% 30%, rgba(60,70,125,.22), transparent 70%),
+    radial-gradient(45% 60% at 95% 95%, rgba(48,56,104,.25), transparent 70%),
+    url("img/moon-sky.jpg") center / cover,
+    #04050c; }
+.moon h3 { color: #fc6a2a; letter-spacing: .14em; text-transform: uppercase; font-size: 13px; }
+.moon .stars { position: absolute; inset: 0; pointer-events: none; background-image:
+  radial-gradient(1px 1px at 20px 30px, #fffc, transparent 1.5px), radial-gradient(1px 1px at 110px 90px, #fff9, transparent 1.5px),
+  radial-gradient(1.4px 1.4px at 60px 140px, #fffb, transparent 2px), radial-gradient(1px 1px at 150px 20px, #fff7, transparent 1.5px),
+  radial-gradient(1px 1px at 45px 75px, #fff6, transparent 1.5px), radial-gradient(1.2px 1.2px at 190px 160px, #fffa, transparent 2px),
+  radial-gradient(1px 1px at 130px 200px, #fff8, transparent 1.5px), radial-gradient(1px 1px at 10px 190px, #fff5, transparent 1.5px);
+  background-size: 210px 220px; }
+.moon .stars::after { content: ""; position: absolute; inset: 0; background-image:
+  radial-gradient(1.6px 1.6px at 70px 40px, #fff, transparent 2.2px), radial-gradient(1px 1px at 250px 260px, #fff9, transparent 1.5px),
+  radial-gradient(1px 1px at 330px 120px, #fffa, transparent 1.5px), radial-gradient(1.3px 1.3px at 180px 330px, #fffc, transparent 2px);
+  background-size: 390px 370px; opacity: .8; }
+.moon .km { font-family: var(--mono); font-size: 12px; color: var(--c-muted); display: flex; align-items: center; gap: 10px; }
+.moon .km .track { flex: 1; height: 2px; background: rgba(255,255,255,.12); border-radius: 2px; position: relative; max-width: 180px; }
+.moon .km .track::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 1.1%; min-width: 6px; background: #fc4c02; border-radius: 2px; }
+
+/* Decadi */
+.decadi { --c-bg: #e9e4d8; --c-fg: #1d1a15; --c-muted: rgba(29,26,21,.6); --c-pill: #1d1a15; --c-pill-fg: #e9e4d8; --c-ghost: rgba(29,26,21,.08); }
+.decadi h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 3.2vw, 40px); letter-spacing: -0.01em; }
+.engraving { width: 46%; aspect-ratio: 1000/746; border-radius: 6px; overflow: hidden; transform: rotate(-3deg) translateX(30px); box-shadow: 0 20px 40px -18px rgba(0,0,0,.45); }
+.engraving img { width: 100%; height: 100%; object-fit: cover; }
+.phone {
+  position: relative; z-index: 1; width: 250px; flex: none; border-radius: 38px; padding: 9px; background: #1b1a17;
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,.5);
+}
+.phone .screen { border-radius: 30px; background: #fbfaf6; color: #1d1a15; padding: 18px 16px 20px; display: flex; flex-direction: column; gap: 6px; text-align: center; }
+.phone .decade { display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; font-family: var(--mono); font-size: 9px; color: #8b8577; margin-bottom: 6px; }
+.phone .decade span { padding: 4px 0; border-radius: 6px; font-variant-numeric: tabular-nums; }
+.phone .decade .on { background: #b23a26; color: #fff; }
+.phone .kicker { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: .1em; color: #8b8577; }
+.phone .date { font-family: var(--serif); font-size: 22px; line-height: 1.1; }
+.phone .plate { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: 50% 40%; mix-blend-mode: multiply; }
+.phone .day { font-family: var(--serif); font-style: italic; font-size: 30px; line-height: 1; color: #b23a26; }
+.phone .greg { font-size: 10.5px; color: #8b8577; }
+
+/* GoMoonBound devices: MacBook + iPhone */
+.card .devices { padding: 48px 48px 48px 0; }
+/* Décadi desktop: browser bar under the notch, then Mois view zooms into the 26 → Jour view, and back out, looped */
+.mb-screen.has-bar { display: grid; grid-template-rows: 3.6% 5.4% 1fr; container-type: inline-size; }
+.menubar { display: flex; align-items: center; gap: 1.6cqw; padding: 0 1.6cqw; font-size: 1.05cqw; background: #e9e8e6; color: #1c1c1e; }
+.menubar .apple { width: 1cqw; height: 1.2cqw; background: #1c1c1e; border-radius: 45% 45% 50% 50%; display: block; }
+.menubar .mb-right { margin-left: auto; }
+.stage { position: relative; overflow: hidden; min-height: 0; }
+.safari { display: flex; position: relative; align-items: center; gap: .55cqw; padding: 0 1.4cqw; background: #f1f0ee; border-bottom: 1px solid #dddbd6; }
+.safari i { width: .8cqw; height: .8cqw; border-radius: 50%; background: #d0cdc7; display: block; }
+.safari span { margin: 0 auto; font-size: 1.15cqw; color: #6b675f; background: #e4e2dd; padding: .3cqw 6cqw; border-radius: .6cqw; }
+.nav-demo { background: #fff; }
+.nav-demo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+/* Real navigation recorded on decadi.vercel.app: Année → Brumaire → 27 → swipe to the 28 → Année */
+.nav-demo video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.decadi .macbook .lid { box-shadow: 0 0 0 1px #2c2c31, 0 40px 80px -30px rgba(60,40,10,.45); }
+.macbook { position: relative; width: 92%; margin-right: 8%; }
+.macbook .lid { background: #1a1a1d; border-radius: 16px 16px 4px 4px; padding: 2.2% 2.2% 3%; box-shadow: 0 0 0 1px #2c2c31, 0 40px 80px -30px rgba(252,76,2,.25); }
+.macbook .mb-screen { position: relative; aspect-ratio: 16/10; border-radius: 6px; overflow: hidden; background: #000; }
+.macbook .mb-screen::before { content: ""; position: absolute; z-index: 1; top: 0; left: 50%; transform: translateX(-50%); width: 7%; height: 2.2%; background: #1a1a1d; border-radius: 0 0 6px 6px; }
+.macbook .mb-screen.has-bar::before { width: 9%; height: 3.6%; }
+.macbook .mb-screen img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.macbook .base { height: 14px; margin: 0 -6%; background: linear-gradient(#3a3a40, #232327 60%, #141416); border-radius: 0 0 14px 14px; position: relative; }
+.macbook .base::before { content: ""; position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 16%; height: 5px; background: #121214; border-radius: 0 0 8px 8px; }
+.iphone {
+  position: absolute; right: 40px; bottom: 28px; width: 23%; min-width: 120px; aspect-ratio: 393/852;
+  border-radius: 30px; padding: 6px; background: #1f1f23;
+  box-shadow: 0 0 0 1px #3a3a40, 0 30px 60px -15px rgba(0,0,0,.8);
+}
+.iphone .scr { height: 100%; border-radius: 24px; overflow: hidden; display: grid; grid-template-rows: auto 1fr; container-type: inline-size; }
+.iphone img { width: 100%; height: 100%; min-height: 0; object-fit: cover; object-position: center top; }
+.ios-bar { position: relative; display: flex; align-items: center; justify-content: space-between; height: 15cqw; padding: 0 8cqw 0 10cqw; font-size: 4.6cqw; font-weight: 600; }
+.ios-bar .island { position: absolute; left: 50%; top: 3cqw; transform: translateX(-50%); width: 30cqw; height: 9cqw; border-radius: 9cqw; background: #000; }
+.ios-bar .ind { display: flex; gap: 1.5cqw; align-items: center; }
+.ios-bar svg { height: 3.6cqw; fill: currentColor; }
+.moon .ios-bar { background: #04040a; color: #fff; }
+.moon .iphone img { object-position: center bottom; }
+.decadi .ios-bar { background: #fff; color: #000; }
+.decadi .iphone img { object-position: center bottom; }
+
+/* Stampit */
+.moon, .sklip { box-shadow: inset 0 0 0 1px rgba(255,255,255,.07); }
+.stampit { --c-bg: #f1f1f4; --c-fg: #0f0f12; --c-muted: rgba(15,15,18,.55); --c-pill: #0f0f12; --c-pill-fg: #fff; --c-ghost: rgba(15,15,18,.07); }
+.stampit .browser { box-shadow: 0 30px 60px -24px rgba(20,20,40,.28), 0 0 0 1px rgba(15,15,18,.08); background: #fff; }
+.stampit .browser .bar { background: #e9e9ed; }
+.stampit .browser .bar i { background: #cfcfd6; }
+.stampit .browser .bar span { color: #77777f; }
+.stampit::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(15,15,18,.09) 1px, transparent 1px); background-size: 18px 18px; mask-image: radial-gradient(70% 70% at 70% 50%, #000, transparent); }
+.stampit .visual { flex-direction: column; gap: 18px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 12px; padding: 8px 20px 8px 8px; border-radius: 999px;
+  background: #fff; color: #111; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 12px 30px -10px rgba(20,20,40,.25);
+  font-size: clamp(16px, 2vw, 24px); white-space: nowrap; text-decoration: none;
+}
+.badge img { width: 1.9em; height: 1.9em; border-radius: 50%; background: #ff6a3d; }
+.badge .by { color: #8a8a92; }
+.badge b { font-weight: 600; }
+.badge svg { width: .8em; height: .8em; margin-left: 10px; color: #8a8a92; }
+.badge.sm { font-size: 13px; transform: rotate(-4deg) translateX(-60px); opacity: .9; }
+.badge.sm.dark { background: #16161a; color: #fff; transform: rotate(3deg) translateX(80px); }
+.badge.sm.dark .by { color: #8a8a92; }
+.badge.sm.mint { background: #d9f6e6; transform: rotate(-2deg) translateX(30px); }
+.stampit .stack { display: flex; flex-direction: column; align-items: center; gap: 16px; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.stampit:hover .badge.big { transform: scale(1.04) rotate(-1deg); }
+.badge.big { transition: transform .5s cubic-bezier(.3,1.6,.5,1); }
+
+/* Sklip */
+.sklip { --c-bg: #100e16; --c-fg: #edeaf2; --c-muted: #a39dbc; --c-pill: #ff5470; --c-pill-fg: #fff; --c-ghost: #221e2e; }
+.sklip::before { content: ""; position: absolute; right: -10%; bottom: -40%; width: 70%; aspect-ratio: 1; border-radius: 50%;
+  background: repeating-radial-gradient(circle, #191622 0 2px, #100e16 2px 6px); opacity: .9; }
+.sklip .wave { display: flex; align-items: center; gap: 3px; height: 28px; }
+.sklip .wave i { width: 3px; border-radius: 2px; background: #ff5470; display: block; }
+
+/* Sklip composer, rebuilt live at 1440×900 and scaled to the browser frame */
+.sk-stage { position: relative; aspect-ratio: 1440 / 900; overflow: hidden; background: #100E16; }
+.sk-app { position: absolute; top: 0; left: 0; width: 1440px; height: 900px; transform-origin: 0 0; transform: scale(var(--k, .5));
+  background: #100E16; color: #EDEAF2; font-family: Outfit, "Geist", sans-serif; display: flex; flex-direction: column; }
+.sk-top { height: 56px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+.sk-top b { font-size: 21px; font-weight: 600; letter-spacing: -.3px; }
+.sk-dot { width: 24px; height: 24px; border-radius: 50%; background: #FF5470; display: flex; align-items: center; justify-content: center; }
+.sk-dot i { width: 8px; height: 8px; border-radius: 50%; background: #100E16; display: block; }
+.sk-avatar { width: 34px; height: 34px; border-radius: 50%; background: #B66BFF; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; }
+.sk-body { flex: 1; display: flex; gap: 16px; padding: 2px 20px 22px; min-height: 0; }
+.sk-lib { width: 312px; flex: none; background: #191622; border-radius: 24px; padding: 20px 12px; display: flex; flex-direction: column; }
+.sk-label { font: 10px "IBM Plex Mono", monospace; letter-spacing: 2px; color: #6E6889; margin: 0 8px 8px; }
+.sk-proj { font-size: 18px; font-weight: 600; margin: 0 8px 16px; }
+.sk-search { display: flex; align-items: center; gap: 9px; background: #221E2E; border-radius: 999px; padding: 11px 16px; font-size: 13px; color: #6E6889; margin: 0 8px 18px; }
+.sk-cat { display: flex; align-items: center; padding: 10px 12px; background: #221E2E; border-radius: 14px; margin-bottom: 6px; font-size: 13px; font-weight: 600; letter-spacing: .3px; }
+.sk-cat span { color: #FF5470; font-size: 10px; margin-right: 9px; }
+.sk-cat em { margin-left: auto; font: normal 12px "IBM Plex Mono", monospace; color: #6E6889; }
+.sk-cat.off { background: none; color: #8A85A0; margin: 4px 0 0; }
+.sk-cat.off span { color: #6E6889; }
+.sk-row { display: flex; align-items: center; gap: 11px; padding: 10px 12px; border-radius: 16px; margin-bottom: 4px; transition: background .25s; }
+.sk-row.on { background: #201C2B; }
+.sk-row .pl { width: 30px; height: 30px; border-radius: 50%; border: 2.5px solid var(--c); display: flex; align-items: center; justify-content: center; flex: none; }
+.sk-row .nm { flex: 1; min-width: 0; font-size: 14px; font-weight: 500; }
+.sk-row .nm small { display: flex; align-items: center; gap: 8px; margin-top: 2px; font: 11px "IBM Plex Mono", monospace; color: #6E6889; }
+.sk-row .add { width: 26px; height: 26px; border-radius: 50%; background: #221E2E; color: #A39DBC; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 600; flex: none; transition: background .3s cubic-bezier(.3,.7,.4,1), color .3s cubic-bezier(.3,.7,.4,1); }
+.sk-row.press .add { background: #FF5470; color: #fff; transition: none; }
+.sk-main { flex: 1; min-width: 0; background: #191622; border-radius: 24px; display: flex; flex-direction: column; padding: 16px 22px 20px; }
+.sk-toolbar { height: 46px; flex: none; display: flex; align-items: center; gap: 12px; }
+.sk-tl, .sk-tr { flex: 1; display: flex; align-items: center; gap: 10px; }
+.sk-tr { justify-content: flex-end; gap: 12px; }
+.sk-tc { display: flex; align-items: center; gap: 12px; }
+.sk-pill { font: 12px "IBM Plex Mono", monospace; color: #8A85A0; background: #221E2E; padding: 7px 13px; border-radius: 999px; }
+.sk-pill b { color: #EDEAF2; }
+.sk-pill.snap { color: #3DD68C; }
+.sk-sq { width: 36px; height: 36px; border-radius: 12px; background: #221E2E; display: flex; align-items: center; justify-content: center; font: 13px "IBM Plex Mono", monospace; color: #A39DBC; }
+.sk-sq i { width: 11px; height: 11px; background: #A39DBC; border-radius: 3px; display: block; }
+.sk-play { width: 48px; height: 48px; border-radius: 50%; background: #FF5470; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(255,84,112,.45); }
+.sk-time { font: 12px "IBM Plex Mono", monospace; color: #8A85A0; font-variant-numeric: tabular-nums; }
+.sk-time em { font-style: normal; color: #5C5775; }
+.sk-export { font-size: 13px; font-weight: 600; background: #3DD68C; color: #0B2218; padding: 9px 18px; border-radius: 999px; }
+.sk-wave { display: block; width: 100%; height: 100px; margin-top: 12px; flex: none; overflow: visible; }
+.sk-vinyl { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+.sk-vinyl svg { height: 100%; max-height: 520px; overflow: visible; }
+.sk-pitch { height: 36px; flex: none; display: flex; align-items: center; justify-content: center; gap: 16px; font: 11px "IBM Plex Mono", monospace; letter-spacing: 2px; color: #6E6889; }
+.sk-pitch b { font-size: 13px; letter-spacing: 0; color: #FF5470; }
+.sk-slider { width: 260px; height: 8px; background: #221E2E; border-radius: 999px; position: relative; }
+.sk-slider i { position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; border-radius: 50%; background: #FF5470; transform: translate(-50%,-50%); box-shadow: 0 3px 10px rgba(255,84,112,.5); }
+
+/* ── About + contact ── */
+.about { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; padding-block: 40px 96px; }
+.about h2 { margin: 0; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 600; text-wrap: balance; }
+/* GitHub activity under the About title: a monochrome contribution calendar (snapshot of the public profile) */
+.about-head { display: flex; flex-direction: column; gap: 40px; min-width: 0; }
+.gh { display: block; text-decoration: none; color: inherit; }
+.gh-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+.gh-top b { color: var(--fg); font-weight: 500; }
+.gh-grid { display: block; width: 100%; height: auto; }
+.gh-grid text { font-family: var(--mono); font-size: 9px; fill: var(--muted); }
+.gh-legend { display: flex; align-items: center; justify-content: flex-end; gap: 3px; margin-top: 8px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.gh-legend span { margin: 0 4px; }
+.gh-legend i { --l0: #efeff1; --l1: #cfcfd4; --l2: #9a9aa2; --l3: #55555c; --l4: #111113; }
+.gh-legend i { width: 10px; height: 10px; border-radius: 2px; background: var(--l0); }
+.gh-legend i[data-l="1"] { background: var(--l1); } .gh-legend i[data-l="2"] { background: var(--l2); }
+.gh-legend i[data-l="3"] { background: var(--l3); } .gh-legend i[data-l="4"] { background: var(--l4); }
+.about p { margin: 0 0 16px; color: var(--muted); max-width: 60ch; }
+.about p b { color: var(--fg); font-weight: 500; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.tags span { font-size: 13px; padding: 6px 12px; border-radius: 999px; background: var(--soft); }
+.contact { border-top: 1px solid var(--line); padding-block: 48px; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 32px; }
+.contact h4 { margin: 0 0 10px; font-family: var(--mono); font-size: 12px; font-weight: 400; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.contact .big { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+.contact a.big { text-decoration: none; display: inline-flex; gap: 8px; align-items: center; }
+.contact a.big:hover { text-decoration: underline; text-underline-offset: 4px; }
+.copy-btn { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer; margin-top: 10px; }
+footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .card { grid-template-columns: 1fr; min-height: 0; }
+  .card .text { padding: 32px 28px 8px; }
+  .visual { padding: 24px 24px 32px; }
+  .equinox .text { padding-top: 220px; padding-bottom: 32px; }
+  .equinox::after { background: linear-gradient(180deg, rgba(8,14,28,0) 0%, rgba(8,14,28,.55) 35%, rgba(8,14,28,.95) 70%); }
+  .equinox .visual { position: absolute; top: 0; left: 0; right: 0; padding: 28px 28px 0; }
+  .eq-screen { border-radius: 8px; }
+  .equinox .text { padding-top: 260px; }
+  .card .devices { padding: 24px 24px 40px; }
+  .iphone { right: 16px; bottom: 16px; border-radius: 22px; padding: 4px; }
+  .iphone .scr { border-radius: 18px; }
+  .about, .contact { grid-template-columns: 1fr; gap: 28px; }
+}
+@media (max-width: 420px) {
+  .phone { width: 220px; }
+  .badge { font-size: 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#"><span>Olivier</span><span>Tousche</span></a>
+    <nav>
+      <a href="#projets">Projets</a>
+      <a href="#about">À propos</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <img class="avatar" src="img/avatar.png" alt="Olivier Tousche">
+    <h1 aria-label="Product Designer, Ai Designer, UX Designer, Builder Designer."><span class="ln" aria-hidden="true">Product</span><span class="ln" aria-hidden="true">Designer.</span></h1>
+    <p>De l'identification des irritants aux tests utilisateurs, je conçois des <strong>expériences produit</strong> et de service centrées utilisateurs, en articulant <strong>stratégie, recherche et design</strong>.</p>
+    <div class="hero-tags"><span>User research</span><span>Prototyping</span><span>Product vision</span><span>User tests</span></div>
+  </section>
+
+  <div class="label" id="projets"><span>Projets sélectionnés</span><span>2022 — 2026</span></div>
+
+  <section class="projects">
+
+    <!-- Equinox -->
+    <article class="card equinox">
+      <div class="art"><img src="img/equinox.jpg" alt="Illustration clé d'Altered : une cité fantastique vue des toits"></div>
+      <div class="text">
+        <img class="logo" src="img/logo-equinox-altered.png" alt="">
+        <h3>Equinox · Altered</h3>
+        <h2>Concevoir l'écosystème phygital d'un jeu de cartes à collectionner</h2>
+        <div class="meta">Senior Product Designer · 2022–2025</div>
+        <div class="stats">
+          <div><b>7,8 M</b><span>cartes scannées</span></div>
+          <div><b>6,2 M€</b><span>sur Kickstarter</span></div>
+          <div><b>15+</b><span>pays</span></div>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="equinox.html">Lire le use case</a>
+        </div>
+      </div>
+      <div class="visual"><div class="eq-screen"><img src="img/cases/equinox-altered/howtoplay-desktop.jpg" alt="Haut de la page How to play d'Altered, version desktop"></div></div>
+    </article>
+
+    <!-- GoMoonBound -->
+    <article class="card moon">
+      <div class="stars" aria-hidden="true"></div>
+      <div class="text">
+        <img class="logo" src="img/logo-go-moonbound.png" alt="">
+        <h3>Go MoonBound</h3>
+        <h2>Transformer ses kilomètres Strava en voyage vers la Lune</h2>
+        <div class="km"><span>0 km</span><span class="track"></span><span>384 400 km</span></div>
+        <div class="meta">Product Builder · side project · 2 semaines</div>
+        <div class="actions">
+          <a class="btn primary" href="gomoonbound.html">Lire le use case</a>
+          <a class="btn" href="https://gomoonbound.com" target="_blank" rel="noopener">gomoonbound.com <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg></a>
+        </div>
+      </div>
+      <div class="visual devices">
+        <div class="macbook">
+          <div class="lid"><div class="mb-screen"><img src="img/moon-desktop.jpg" alt="Go MoonBound sur desktop : la Terre en 3D, la trajectoire et la Lune"></div></div>
+          <div class="base"></div>
+        </div>
+        <div class="iphone"><div class="scr"><div class="ios-bar" aria-hidden="true"><span>9:41</span><i class="island"></i><span class="ind"><svg viewBox="0 0 18 11"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="6" rx="1"/><rect x="10" y="2.5" width="3" height="8.5" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2.5" y="2.5" width="18" height="7" rx="2"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" opacity=".4"/></svg></span></div><img src="img/moon-mobile.jpg" alt="Go MoonBound sur mobile : la Terre, la Lune et le bouton Connect with Strava"></div></div>
+      </div>
+    </article>
+
+    <!-- Sklip -->
+    <article class="card sklip">
+      <div class="text">
+        <img class="logo" src="img/logo-sklip.png" alt="">
+        <h2>Composer ses propres skip-proofs, directement dans le navigateur</h2>
+        <div class="wave" aria-hidden="true" id="wave"></div>
+        <div class="meta">Product Designer &amp; Builder · solo · 2026</div>
+        <div class="actions">
+          <a class="btn primary" href="sklip.html">Lire le use case</a>
+          <a class="btn" href="https://sklip.studio" target="_blank" rel="noopener">Visiter Sklip <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg></a>
+        </div>
+      </div>
+      <div class="visual">
+        <div class="browser">
+          <div class="bar"><i></i><i></i><i></i><span>sklip · composer</span></div>
+          <div class="sk-stage" role="img" aria-label="Le configurateur Sklip en action : on ajoute des samples depuis la bibliothèque, puis on échange leur place sur la timeline et sur le vinyle">
+            <div class="sk-app" aria-hidden="true">
+              <div class="sk-top"><span class="sk-dot"><i></i></span><b>Sklip</b><span class="sk-avatar">M</span></div>
+              <div class="sk-body">
+                <div class="sk-lib">
+                  <div class="sk-label">PROJECT</div>
+                  <div class="sk-proj">untitled mix 03</div>
+                  <div class="sk-search"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#6E6889" stroke-width="1.6"><circle cx="6" cy="6" r="4.5"/><line x1="9.5" y1="9.5" x2="13" y2="13"/></svg>search samples…</div>
+                  <div class="sk-cat"><span>▼</span>Classic FX<em>14</em></div>
+                  <div id="skRows"></div>
+                  <div class="sk-cat off"><span>▶</span>Sentences<em>12</em></div>
+                  <div class="sk-cat off"><span>▶</span>Words<em>09</em></div>
+                </div>
+                <div class="sk-main">
+                  <div class="sk-toolbar">
+                    <div class="sk-tl"><span class="sk-pill">BPM <b>120</b></span><span class="sk-pill snap">◆ SNAP</span></div>
+                    <div class="sk-tc"><span class="sk-sq"><i></i></span><span class="sk-play"><svg width="16" height="18" viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12" fill="#fff"/></svg></span><span class="sk-sq">⟂</span></div>
+                    <div class="sk-tr"><span class="sk-time" id="skTime">0:00.00<em> / 0:01.80</em></span><span class="sk-export">Export ↓</span></div>
+                  </div>
+                  <svg id="skWave" class="sk-wave" viewBox="0 0 1028 100" preserveAspectRatio="none"></svg>
+                  <div class="sk-vinyl"><svg id="skVinyl" viewBox="0 0 600 600"></svg></div>
+                  <div class="sk-pitch"><span>PITCH</span><div class="sk-slider"><i></i></div><b>+00%</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Stampit -->
+    <article class="card stampit">
+      <div class="text">
+        <h3>Stampit</h3>
+        <h2>Signer tout ce qu'on livre, avec un badge « Made by »</h2>
+        <div class="meta">Outil web · générateur de badge &amp; prompt · 2026</div>
+        <div class="actions">
+          <a class="btn primary" href="#">Visiter Stampit <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg></a>
+        </div>
+      </div>
+      <div class="visual">
+        <div class="browser">
+          <div class="bar"><i></i><i></i><i></i><span>stampit</span></div>
+          <img src="img/stampit-landing.jpg" alt="Landing page de Stampit : Stamp everything you ship, avec le badge « Craft by Olivier Tousche » dans un téléphone">
+        </div>
+      </div>
+    </article>
+
+    <!-- Decadi -->
+    <article class="card decadi">
+      <div class="text">
+        <h3>Décadi</h3>
+        <h2>Le calendrier républicain, un jour à la fois</h2>
+        <p class="meta" style="margin:0">Webapp éphéméride · PWA · 2026</p>
+        <div class="actions">
+          <a class="btn primary" href="https://decadi.vercel.app" target="_blank" rel="noopener">Visiter decadi.vercel.app <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg></a>
+        </div>
+      </div>
+      <div class="visual devices">
+        <div class="macbook">
+          <div class="lid"><div class="mb-screen has-bar">
+            <div class="menubar" aria-hidden="true"><span class="apple"></span><b>Safari</b><span>Fichier</span><span>Édition</span><span>Présentation</span><span class="mb-right">mar. 17 nov. 9:41</span></div>
+            <div class="safari" aria-hidden="true"><i></i><i></i><i></i><span>decadi.vercel.app</span></div>
+            <div class="stage nav-demo">
+              <video src="img/decadi-nav.mp4" poster="img/decadi-annee.jpg" autoplay muted loop playsinline aria-label="Navigation réelle dans Décadi : de la vue Année à Brumaire, au 27 Brumaire, puis glissement au jour suivant"></video>
+            </div>
+          </div></div>
+          <div class="base"></div>
+        </div>
+        <div class="iphone"><div class="scr"><div class="ios-bar" aria-hidden="true"><span>9:41</span><i class="island"></i><span class="ind"><svg viewBox="0 0 18 11"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="6" rx="1"/><rect x="10" y="2.5" width="3" height="8.5" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2.5" y="2.5" width="18" height="7" rx="2"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" opacity=".4"/></svg></span></div><img src="img/decadi-mobile.jpg" alt="Décadi sur mobile : bandeau de décade, planche de la pistache et récit du jour"></div></div>
+      </div>
+    </article>
+
+
+  </section>
+
+  <section class="about" id="about">
+    <div class="about-head">
+      <h2>10 ans à concevoir des produits. Maintenant, je les construis aussi.</h2>
+      <a class="gh" href="https://github.com/otousche-crypto" target="_blank" rel="noopener" aria-label="Activité GitHub : 457 contributions sur les 12 derniers mois">
+        <div class="gh-top"><span><b>457</b> contributions sur GitHub, 12 derniers mois</span></div>
+        <svg class="gh-grid" role="img" aria-hidden="true"></svg>
+        <div class="gh-legend"><span>Moins</span><i data-l="0"></i><i data-l="1"></i><i data-l="2"></i><i data-l="3"></i><i data-l="4"></i><span>Plus</span></div>
+      </a>
+    </div>
+    <div>
+      <p>J'articule <b>stratégie, recherche et design</b> pour transformer des irritants en produits clairs.</p>
+      <p>Avec les nouveaux outils d'IA, comme Claude Code et Cursor, je prototype et je livre mes propres produits : moins de transferts, et une intention qui ne se dilue plus entre le design et le code.</p>
+      <p>Résultat : des produits <b>en production plus vite</b>, des itérations plus rapides, et plus de temps pour la <b>réflexion en amont</b>, là où se joue vraiment un produit.</p>
+      <div class="tags"><span>User research</span><span>Prototyping</span><span>Product vision</span><span>User tests</span><span>Vibe coding</span></div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div>
+      <h4>Écrire</h4>
+      <div class="big" id="mail">otousche@gmail.com</div>
+      <button class="copy-btn" id="copy" type="button">Copier l'adresse</button>
+    </div>
+    <div>
+      <h4>Réseau</h4>
+      <a class="big" href="https://www.linkedin.com/in/olivier-tousche-a6160b122/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+    <div>
+      <h4>Basé à</h4>
+      <div class="big">France · remote</div>
+    </div>
+  </section>
+
+  <footer><span>© 2026 Olivier Tousche</span><span>Maquette · v0</span></footer>
+</div>
+
+<script>
+
+  // Whole-card click: forward to the card's primary link unless a link itself (or a text selection) was the target
+  document.querySelectorAll('.card').forEach(card => {
+    const link = card.querySelector('.btn.primary');
+    if (!link) return;
+    card.addEventListener('click', e => {
+      if (e.target.closest('a') || String(getSelection())) return;
+      if (e.metaKey || e.ctrlKey || link.target === '_blank') window.open(link.href, '_blank', 'noopener');
+      else link.click();
+    });
+  });
+
+  // Decadi recording: keep it still for reduced motion
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelectorAll('.nav-demo video').forEach(v => { v.removeAttribute('autoplay'); v.pause(); });
+
+  // GitHub calendar: one column per week (Sunday first), five grey levels
+  (() => {
+    const svg = document.querySelector('.gh-grid');
+    if (!svg) return;
+    const start = new Date('2025-11-16T12:00:00'), counts = [0,1,0,0,52,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,30,6,1,0,0,1,0,0,2,2,0,0,0,0,0,0,3,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,4,11,0,0,1,1,5,1,0,2,2,6,6,2,0,0,0,0,17,2,3,0,0,0,0,2,1,3,10,1,2,0,5,0,0,0,0,0,8,2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,9,14,77,26,0,0,1,11,1,10,5,7,0,6,1,0,3,0,0,0,5,12,12,16,12,0,0,8,6,1];
+    const C = 10, G = 3, top = 14, fills = ['#efeff1', '#cfcfd4', '#9a9aa2', '#55555c', '#111113'];
+    const level = n => n === 0 ? 0 : n < 4 ? 1 : n < 10 ? 2 : n < 20 ? 3 : 4;
+    const weeks = Math.ceil(counts.length / 7), months = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+    let out = '', lastMonth = -1;
+    counts.forEach((n, i) => {
+      const w = Math.floor(i / 7), d = i % 7, date = new Date(start); date.setDate(start.getDate() + i);
+      if (d === 0 && date.getMonth() !== lastMonth && date.getDate() <= 7 && w < weeks - 2) { lastMonth = date.getMonth(); out += `<text x="${w * (C + G)}" y="9">${months[lastMonth]}</text>`; }
+      out += `<rect x="${w * (C + G)}" y="${top + d * (C + G)}" width="${C}" height="${C}" rx="2" fill="${fills[level(n)]}"><title>${n} contribution${n > 1 ? 's' : ''} le ${date.toLocaleDateString('fr-FR')}</title></rect>`;
+    });
+    svg.setAttribute('viewBox', `0 0 ${weeks * (C + G) - G} ${top + 7 * (C + G) - G}`);
+    svg.innerHTML = out;
+  })();
+
+  // Hero typewriter
+  (() => {
+    const lines = [...document.querySelectorAll('.hero h1 .ln')];
+    const pairs = [['Product', 'Designer.'], ['Ai', 'Designer.'], ['UX', 'Designer.'], ['Builder', 'Designer.']];
+    if (!lines.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const caret = document.createElement('i'); caret.className = 'caret';
+    const text = [...pairs[0]], node = lines.map(l => (l.textContent = '', l.appendChild(document.createTextNode(''))));
+    const show = n => { node[n].data = text[n]; lines[n].appendChild(caret); };
+    text.forEach((_, n) => show(n)); lines[0].appendChild(caret);
+    const common = (a, b) => { let n = 0; while (n < a.length && n < b.length && a[n] === b[n]) n++; return n; };
+    let i = 0;
+    // Erase the bottom line then the top one down to what they share with the next pair, then type top, then bottom
+    const run = (ops, done) => {
+      if (!ops.length) return done();
+      const [n, target] = ops[0];
+      if (text[n] === target) { show(n); return run(ops.slice(1), done); }
+      const erasing = target.length < text[n].length;
+      text[n] = erasing ? text[n].slice(0, -1) : target.slice(0, text[n].length + 1); show(n);
+      setTimeout(() => run(ops, done), erasing ? 50 : 100);
+    };
+    const step = () => {
+      const next = pairs[(i + 1) % pairs.length];
+      const keep = next.map((w, n) => text[n].slice(0, common(text[n], w)));
+      run([[1, keep[1]], [0, keep[0]], [0, next[0]], [1, next[1]]], () => {
+        i = (i + 1) % pairs.length; lines[0].appendChild(caret); setTimeout(step, 2000);
+      });
+    };
+    setTimeout(step, 2000);
+  })();
+
+  // Sklip composer: add samples from the library, then swap their places (timeline + vinyl), looped; the disc itself stays still
+  (() => {
+    const stage = document.querySelector('.sk-stage');
+    if (!stage) return;
+    const app = stage.querySelector('.sk-app');
+    const fit = () => app.style.setProperty('--k', stage.clientWidth / 1440);
+    fit(); new ResizeObserver(fit).observe(stage);
+
+    const TOTAL = 1800, LOOP = 10, W = 1028, H = 100;
+    const S = [
+      { n: 'Air Horn', c: '#FF5470', dur: 430, ms: '210ms', pts: '0,7 5,3 10,9 15,4 20,8 25,2 30,9 35,5 40,8 48,6' },
+      { n: 'Vinyl Brake', c: '#3DD68C', dur: 380, ms: '340ms', pts: '0,8 5,5 10,9 15,3 20,7 25,4 30,9 35,2 40,8 48,5' },
+      { n: 'Reverse Crash', c: '#FFB02E', dur: 820, ms: '180ms', pts: '0,6 5,9 10,4 15,8 20,3 25,9 30,5 35,8 40,4 48,7' },
+      { n: 'Laser Zap', c: '#4D7CFF', dur: 300, ms: '90ms', pts: '0,7 5,4 10,8 15,5 20,9 25,3 30,8 35,5 40,7 48,6' },
+      { n: 'Tape Stop', c: '#B66BFF', dur: 420, ms: '420ms', pts: '0,7 5,5 10,8 15,3 20,9 25,4 30,8 35,6 40,9 48,5' },
+    ];
+    const rowsEl = document.getElementById('skRows');
+    rowsEl.innerHTML = S.map(s => `<div class="sk-row" style="--c:${s.c}"><span class="pl"><svg width="9" height="10" viewBox="0 0 10 10"><polygon points="2,0 10,5 2,10" fill="${s.c}"/></svg></span><span class="nm">${s.n}<small><svg width="48" height="14"><polyline points="${s.pts}" fill="none" stroke="${s.c}" stroke-width="1.4" stroke-linecap="round"/></svg>${s.ms}</small></span><span class="add">+</span></div>`).join('');
+    const rows = [...rowsEl.children];
+
+    // Choreography (seconds), taken from the Sklip reel
+    const expoOut = t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+    const p3 = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const clamp = t => Math.min(1, Math.max(0, t));
+    const SNAP = .35;
+    // [sample, added at, moves: [time, from ms, to ms]]
+    const PLAN = [
+      { i: 0, at: .6,  moves: [[5.0, 0, 1200], [7.2, 1200, 820]] },
+      { i: 1, at: 1.6, moves: [[5.0, 430, 820], [7.2, 820, 1250]] },
+      { i: 2, at: 2.6, moves: [[5.0, 810, 0]] },
+    ];
+    // [grabbed sample, target sample, press time, swap time]
+    const SWAPS = [[0, 2, 4.2, 5.0], [1, 0, 6.4, 7.2]];
+    const OUT = 9.2;
+    const startAt = (p, t) => { let x = p.moves[0][1]; for (const [a, from, to] of p.moves) if (t >= a) x = from + (to - from) * p3(clamp((t - a) / SNAP)); return x; };
+    const grabbed = (i, t) => SWAPS.some(([g, , a, b]) => g === i && t >= a && t < b + SNAP * .85);
+    const targeted = (i, t) => SWAPS.some(([, k, a, b]) => k === i && t >= a + .4 && t < b + SNAP * .85);
+
+    const RAD = Math.PI / 180;
+    const amp01 = (i, s) => Math.max(.12, Math.min(1, Math.abs(.55 + .32 * Math.sin(i * .9 + s) + .18 * Math.sin(i * 2.3 + s * 1.7) + .12 * Math.sin(i * 5.1 + s))));
+    const seedOf = n => [...n].reduce((a, c) => a + c.charCodeAt(0), 0) % 17;
+    const polar = (r, d) => { const a = (d - 90) * RAD; return [300 + r * Math.cos(a), 300 + r * Math.sin(a)]; };
+    const wedge = (a0, a1, oR, iR, cr) => {
+      const span = a1 - a0, c2 = Math.min(cr, (oR - iR) / 2 - .5);
+      const rO = Math.min(c2 / oR / RAD, span / 2 - .4), rI = Math.min(c2 / iR / RAD, span / 2 - .4);
+      const [p1, p2, o1, p3] = [polar(oR, a0 + rO), polar(oR, a1 - rO), polar(oR, a1), polar(oR - c2, a1)];
+      const [p4, i1, p5, p6] = [polar(iR + c2, a1), polar(iR, a1), polar(iR, a1 - rI), polar(iR, a0 + rI)];
+      const [i0, p7, p8, o0] = [polar(iR, a0), polar(iR + c2, a0), polar(oR - c2, a0), polar(oR, a0)];
+      const lO = span - 2 * rO > 180 ? 1 : 0, lI = span - 2 * rI > 180 ? 1 : 0;
+      return `M${p1}A${oR} ${oR} 0 ${lO} 1 ${p2}Q${o1} ${p3}L${p4}Q${i1} ${p5}A${iR} ${iR} 0 ${lI} 0 ${p6}Q${i0} ${p7}L${p8}Q${o0} ${p1}Z`;
+    };
+    const deg = ms => (TOTAL - ms) / TOTAL * 360;
+
+    let grid = '';
+    for (let ms = 0; ms <= TOTAL; ms += 250) {
+      const x = ms / TOTAL * W, st = ms % 500 === 0;
+      grid += `<line x1="${x}" x2="${x}" y1="${st ? 0 : 8}" y2="${st ? H : H - 8}" stroke="${st ? '#3E384F' : '#2A2536'}" stroke-width="${st ? 1.4 : .7}"/>`;
+    }
+    const grooves = [128, 168, 208, 240].map(r => `<circle cx="300" cy="300" r="${r}" fill="none" stroke="rgba(255,255,255,.05)"/>`).join('');
+    let ticks = '';
+    for (let i = 0; i < 8; i++) {
+      const a = i * 45, beat = i % 2 === 0, [ox, oy] = polar(beat ? 258 : 248, a), [nx, ny] = polar(beat ? 90 : 98, a);
+      ticks += `<line x1="${nx.toFixed(1)}" y1="${ny.toFixed(1)}" x2="${ox.toFixed(1)}" y2="${oy.toFixed(1)}" stroke="${beat ? 'rgba(255,255,255,.6)' : 'rgba(255,255,255,.15)'}" stroke-width="${beat ? 2 : 1}"/>`;
+    }
+    const waveEl = document.getElementById('skWave'), vinylEl = document.getElementById('skVinyl'), timeEl = document.getElementById('skTime');
+
+    const draw = (t, playMs) => {
+      const blocks = [];
+      const out = 1 - clamp((t - OUT) / .3);
+      for (const p of PLAN) {
+        if (t < p.at) continue;
+        const k = clamp((t - p.at) / .3), kw = clamp((t - p.at) / SNAP);
+        blocks.push({ ...S[p.i], start: startAt(p, t), drop: -50 * (1 - expoOut(k)), pop: .7 + .3 * expoOut(kw),
+          alpha: expoOut(k) * out, wAlpha: expoOut(kw) * out, dim: grabbed(p.i, t), dash: targeted(p.i, t) });
+      }
+      blocks.sort((a, b) => a.dim - b.dim);
+      rows.forEach((r, i) => {
+        r.classList.toggle('press', PLAN.some(p => p.i === i && t >= p.at && t < p.at + .05));
+        r.classList.toggle('on', blocks.some(b => b.n === S[i].n));
+      });
+
+      // timeline
+      let wv = grid;
+      for (const b of blocks) {
+        const w = b.dur / TOTAL * W, x = b.start / TOTAL * W, y = 8 + b.drop, bh = 84, mid = y + bh / 2, cr = Math.min(3, w / 2 - 1);
+        if (w < 2) continue;
+        const n = Math.max(1, Math.floor((w - 14) / 5.4)), sd = seedOf(b.n); let d = '';
+        for (let k = 0; k < n; k++) { const bx = x + 7 + (k + .5) * ((w - 14) / n), a = amp01(k, sd) * (bh / 2 - 7) + 2; d += `M${bx.toFixed(1)} ${(mid - a).toFixed(1)}V${(mid + a).toFixed(1)}`; }
+        wv += `<g opacity="${(b.alpha * (b.dim ? .55 : 1)).toFixed(3)}"><rect x="${x}" y="${y}" width="${w}" height="${bh}" rx="${cr}" fill="${b.c}"/><path d="${d}" stroke="rgba(0,0,0,.32)" stroke-width="2.6" stroke-linecap="round"/>`
+          + (w > 60 ? `<text x="${x + cr * .7 + 6}" y="${y + 14}" fill="#fff" font-size="10" font-weight="600" font-family="Outfit, sans-serif">${b.n.toUpperCase()}</text>` : '')
+          + (b.dash ? `<rect x="${x + 1.6}" y="${y + 1.6}" width="${w - 3.2}" height="${bh - 3.2}" rx="${Math.max(2, cr - 1.6)}" fill="none" stroke="#fff" stroke-width="2.5" stroke-dasharray="7 5"/>` : '') + '</g>';
+      }
+      const px = playMs / TOTAL * W;
+      wv += `<line x1="${px}" x2="${px}" y1="2" y2="${H - 2}" stroke="#FF5470" stroke-width="2.5" stroke-linecap="round"/><circle cx="${px}" cy="5" r="5" fill="#FF5470"/>`;
+      waveEl.innerHTML = wv;
+
+      // vinyl
+      let disc = '';
+      for (const b of blocks) {
+        const a0 = deg(b.start + b.dur) + .3, a1 = deg(b.start) - .3;
+        if (a1 - a0 < 1) continue;
+        const span = a1 - a0, steps = Math.max(4, Math.floor(span / 2.6)), sd = seedOf(b.n); let d = '';
+        for (let i = 0; i <= steps; i++) { const ang = a0 + 1.5 + i / steps * (span - 3), a = amp01(i, sd) * 130, [x1, y1] = polar(100, ang), [x2, y2] = polar(104 + a, ang); d += `M${x1.toFixed(1)} ${y1.toFixed(1)}L${x2.toFixed(1)} ${y2.toFixed(1)}`; }
+        disc += `<g opacity="${(b.wAlpha * (b.dim ? .55 : 1)).toFixed(3)}" transform="translate(300 300) scale(${b.pop.toFixed(4)}) translate(-300 -300)"><path d="${wedge(a0, a1, 250, 96, 3)}" fill="${b.c}"${b.dash ? ' stroke="#fff" stroke-width="4" stroke-dasharray="10 7" stroke-linejoin="round"' : ''}/><path d="${d}" stroke="rgba(0,0,0,.32)" stroke-width="2.6" stroke-linecap="round"/></g>`;
+      }
+      vinylEl.innerHTML = `<circle cx="300" cy="300" r="250" fill="#0C0A12"/>${grooves}<g transform="rotate(${(-deg(playMs)).toFixed(2)} 300 300)">${disc}</g>${ticks}`
+        + `<circle cx="300" cy="300" r="96" fill="#0C0A12"/><circle cx="300" cy="300" r="95" fill="none" stroke="rgba(255,255,255,.06)"/><circle cx="300" cy="300" r="6" fill="#000"/>`
+        + `<line x1="300" y1="44" x2="300" y2="208" stroke="#FF5470" stroke-width="2.5" stroke-linecap="round"/><polygon points="291,28 309,28 300,43" fill="#FF5470"/><circle cx="300" cy="208" r="5" fill="#FF5470"/>`;
+
+      const s = playMs / 1000;
+      timeEl.firstChild.nodeValue = `0:${String(Math.floor(s)).padStart(2, '0')}.${String(Math.floor(playMs % 1000 / 10)).padStart(2, '0')}`;
+    };
+
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { draw(8.5, 0); return; }
+    const t0 = performance.now();
+    const tick = now => {
+      const el = (now - t0) / 1000;
+      draw(el % LOOP, 0);
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  })();
+
+  // waveform for Sklip
+  const w = document.getElementById('wave');
+  const h = [6,14,22,10,26,18,8,20,28,12,6,16,24,10,18,26,14,8,20,12,6,22,16,10];
+  h.forEach(v => { const i = document.createElement('i'); i.style.height = v + 'px'; w.appendChild(i); });
+  // copy email
+  document.getElementById('copy').addEventListener('click', e => {
+    const t = document.getElementById('mail').textContent;
+    navigator.clipboard.writeText(t).then(() => { e.target.textContent = 'Copiée'; }).catch(() => {
+      const r = document.createRange(); r.selectNodeContents(document.getElementById('mail'));
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    });
+  });
+</script>
