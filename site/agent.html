@@ -166,7 +166,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
 .hood-top h2 { margin: 0; font-size: 22px; letter-spacing: -0.02em; }
 .why { margin: 0 0 22px; }
 .why h3, .how { margin: 0 0 8px; font-size: 15.5px; letter-spacing: -0.01em; }
-.why p { margin: 0; color: #4a4a52; font-size: 15px; line-height: 1.6; }
+.why p, .how-intro { margin: 0; color: #4a4a52; font-size: 15px; line-height: 1.6; }
+.how-intro { margin-bottom: 14px; }
 .why p + p { margin-top: 10px; }
 /* One line, always: on a narrow screen it scrolls sideways rather than wrapping */
 .flow { display: flex; align-items: center; gap: 6px; margin: 0 -28px 18px; padding: 0 28px; font-size: 13px; white-space: nowrap; overflow-x: auto; scrollbar-width: none; }
@@ -221,9 +222,9 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       <h3 data-en="Why an AI agent?">Pourquoi un agent IA ?</h3>
       <p data-en="As a product designer, I see AI becoming part of everyday life, and the chat window becoming an interaction in its own right. So rather than just talking about it, I'm making my own take on it here: this agent is my sandbox to build, test and iterate.">En tant que product designer, je vois l’IA entrer dans le quotidien de chacun, et la fenêtre de conversation devenir une interaction à part entière. Plutôt que d’en parler, je fais ma proposition ici : cet agent est mon bac à sable pour produire, tester et itérer.</p>
       <p data-en="Beyond the interface, it raises a question about where my job is heading. Will my AI one day be the home page of my portfolio? Will it end up replacing me entirely? And if so, how?">Au-delà de l’interface, il interroge l’évolution de mon métier. Mon IA sera-t-elle un jour la page d’accueil de mon portfolio ? Finira-t-elle par me remplacer complètement ? Et si oui, par quel chemin ?</p>
-      <p data-en="In practice, it runs on Anthropic's API with Claude Haiku, the smallest model in the family. Conversations are anonymised, and guardrails are in place for anyone looking for loopholes. You're still welcome to try…">Concrètement, l’agent tourne sur l’API d’Anthropic avec Claude Haiku, le plus petit modèle de la famille. Les conversations sont anonymisées, et des garde-fous sont en place pour ceux qui cherchent des failles. Mais vous pouvez quand même essayer…</p>
     </section>
     <h3 class="how" data-en="How it works">Comment ça marche</h3>
+    <p class="how-intro" data-en="In practice, it runs on Anthropic's API with Claude Haiku, the smallest model in the family. Conversations are anonymised, and guardrails are in place for anyone looking for loopholes. You're still welcome to try…">Concrètement, l’agent tourne sur l’API d’Anthropic avec Claude Haiku, le plus petit modèle de la famille. Les conversations sont anonymisées, et des garde-fous sont en place pour ceux qui cherchent des failles. Mais vous pouvez quand même essayer…</p>
     <div class="flow" aria-label="Parcours d'une question" data-en-aria="How a question travels">
       <span data-en="Your question">Votre question</span><i>→</i>
       <span data-en="Checks and limits">Contrôles et limites</span><i>→</i>
@@ -233,8 +234,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     </div>
     <div class="hood-grid">
       <article class="wide">
-        <h3 data-en="Question suggestions that guide, and cost nothing">Des suggestions de questions qui guident, et ne coûtent rien</h3>
-        <p data-en="Below every answer, question suggestions offer the next step in one click: you don’t have to wonder what to ask, and the conversation stays on what matters. They have a second use: the most frequent questions have a ready-made answer, written in advance and served without calling the API. Instant, and free.">Sous chaque réponse, des suggestions de questions proposent la suite en un clic : pas besoin de chercher quoi demander, et la conversation reste sur l’essentiel. Elles ont un second intérêt : les questions les plus fréquentes ont une réponse toute prête, rédigée à l’avance et servie sans appeler l’API. Instantanée, et gratuite.</p>
+        <h3 data-en="A hybrid model">Un modèle hybride</h3>
+        <p data-en="Below every answer, suggestions offer the next question in one click. Questions you write yourself go through Anthropic’s API; the most frequent suggestions have a pre-written answer instead, served without calling it. The result: the conversation keeps flowing, instant and free, without calling on the model at every click. And if the API runs into a technical issue, you can still talk to the agent through the suggestions.">Sous chaque réponse, des suggestions proposent la question suivante en un clic. Les questions que vous rédigez vous-même passent par l’API d’Anthropic ; les suggestions les plus fréquentes, elles, ont une réponse pré-enregistrée, servie sans l’appeler. Résultat : la conversation continue, instantanée et gratuite, sans solliciter le modèle à chaque clic. Et si l’API rencontre un problème technique, on peut toujours échanger avec l’agent grâce aux suggestions.</p>
       </article>
       <article>
         <h3 data-en="One source of truth">Une seule source de vérité</h3>
