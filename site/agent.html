@@ -71,7 +71,7 @@ body { position: relative; }
 .log { position: relative; z-index: 1; }
 /* Olivier's ASCII head stands on the window's right edge, about 40% cropped, behind the conversation */
 .face { position: fixed; z-index: 0; top: 50%; right: 0; translate: 40% -50%; display: block; font-size: clamp(8px, 1.6vh, 14px); pointer-events: none;
-  -webkit-mask-image: linear-gradient(180deg, #000 62%, transparent 98%); mask-image: linear-gradient(180deg, #000 62%, transparent 98%); }  /* fades out at the bottom so the head doesn't float */
+  -webkit-mask-image: linear-gradient(180deg, #000 90%, transparent 100%); mask-image: linear-gradient(180deg, #000 90%, transparent 100%); }  /* fades out at the bottom so the head doesn't float */
 /* Narrow screens: smaller, low in the corner, faded so the bubbles stay readable */
 @media (max-width: 1100px) { .face { font-size: clamp(6px, 1.2vh, 10px); opacity: .45; } }
 /* Phones: a crisp head from 30px under the bar (63px), about three quarters of the space down to the suggestions, fading out before them; 42 rows of 1.02em */
@@ -424,31 +424,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   };
   (() => {
     const src = document.getElementById('ascii-face'), cv = document.querySelector('canvas.face');
-    // The portrait stops at the chin: a few generated rows carry it on downwards (the neck and shoulders widening,
-    // ever lighter and sparser), so it fades out gently instead of being cut. Seeded, so it is the same on every visit
-    const extend = (art, n) => {
-      let seed = 1992;
-      const rnd = () => { seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t ^= t + Math.imul(t ^ (t >>> 7), 61 | t); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-      const DENSE = '@%#*+=-:.';
-      const out = [...art];
-      for (let r = 1; r <= n; r++) {
-        const prev = out.at(-1), f = r / (n + 1);
-        let start = prev.search(/\S/), end = prev.trimEnd().length;
-        if (start < 0) break;
-        if (rnd() < .6) start = Math.max(0, start - 1);
-        if (rnd() < .6) end++;
-        let row = ' '.repeat(start);
-        for (let x = start; x < end; x++) {
-          const src = prev[Math.min(prev.length - 1, Math.max(0, x + Math.round(rnd() * 2 - 1)))] || '.';
-          let i = DENSE.indexOf(src); if (i < 0) i = DENSE.length - 1;
-          if (rnd() < .35 + f * .4) i++;
-          row += rnd() < f * .55 || i >= DENSE.length ? ' ' : DENSE[i];
-        }
-        out.push(row);
-      }
-      return out;
-    };
-    if (src && cv) window.face = asciiPortrait(cv, extend(src.textContent.replace(/^\n+|\n+$/g, '').split('\n'), 12));
+    if (src && cv) window.face = asciiPortrait(cv, src.textContent.replace(/^\n+|\n+$/g, '').split('\n'));
   })();
 </script>
 <script>
