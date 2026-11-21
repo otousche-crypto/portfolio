@@ -340,9 +340,10 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     const ctx = cv.getContext('2d');
     const cells = [];
     art.forEach((line, y) => [...line].forEach((c, x) => {
-      if (c !== ' ') cells.push({ x, y, c, at: 250 + (y / rows) * 1300 + Math.random() * 650, heat: 0, g: c });
+      // at: when the cell appears (top to bottom); out: when it vanishes, the same way in reverse (bottom to top)
+      if (c !== ' ') cells.push({ x, y, c, at: 250 + (y / rows) * 1300 + Math.random() * 650, out: 250 + ((rows - 1 - y) / rows) * 1300 + Math.random() * 650, heat: 0, g: c });
     }));
-    let cw = 0, ch = 0, t0 = 0, raf = 0, pointer = null;
+    let cw = 0, ch = 0, t0 = 0, raf = 0, pointer = null, gone = null;  // gone: when the face started to dissolve
     const size = () => {
       const fs = parseFloat(getComputedStyle(cv).fontSize), dpr = devicePixelRatio || 1;
       ctx.font = `${fs}px "Geist Mono", ui-monospace, monospace`;
@@ -355,6 +356,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     const draw = now => {
       const t = still ? 1e9 : now - t0;
       let busy = t >= 0 && t < 2600;  // t is negative until the bust has scrolled into view
+      const u = gone === null ? -1 : now - gone;
+      if (u >= 0 && u < 2600) busy = true;
       ctx.clearRect(0, 0, cv.width, cv.height);
       for (const k of cells) {
         let g = k.c, a = 1, ox = 0, oy = 0;
@@ -362,6 +365,11 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
           const p = 1 - (k.at - t) / 500;
           if (p <= 0) continue;
           a = p * .55; g = GLYPHS[Math.random() * GLYPHS.length | 0];
+        }
+        if (u >= k.out) {
+          const p = 1 - (u - k.out) / 500;
+          if (p <= 0) continue;
+          a = Math.min(a, p * .55); g = GLYPHS[Math.random() * GLYPHS.length | 0];
         }
         const px = (k.x + .5) * cw, py = (k.y + .5) * ch;
         if (pointer) {
@@ -407,10 +415,15 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       if (x < -R || y < -R || x > r.width + R || y > r.height + R) return;
       pointer = { x, y }; wake();
     }, { passive: true });
+    // The chat dissolves the face when it closes a conversation, and brings it back for a new one
+    return {
+      hide: (now = false) => { if (gone !== null) return; gone = now || still ? -1e9 : performance.now(); wake(); },
+      show: () => { if (gone === null) return; gone = null; t0 = still ? 0 : performance.now(); wake(); },
+    };
   };
   (() => {
     const src = document.getElementById('ascii-face'), cv = document.querySelector('canvas.face');
-    if (src && cv) asciiPortrait(cv, src.textContent.replace(/^\n+|\n+$/g, '').split('\n'));
+    if (src && cv) window.face = asciiPortrait(cv, src.textContent.replace(/^\n+|\n+$/g, '').split('\n'));
   })();
 </script>
 <script>
@@ -594,6 +607,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       });
       form.classList.remove('burst');
       form.classList.toggle('gone', ended());
+      if (ended()) window.face?.hide(true); else window.face?.show();
       if (!pop) thread.querySelectorAll('.msg, .extras').forEach(el => el.classList.add('calm'));
       if (messages.length) down();
       update();
@@ -607,8 +621,9 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       q.style.height = 'auto'; q.style.height = Math.min(q.scrollHeight, 160) + 'px';
     };
 
-    // The composer bursts: the agent's last line stands alone
+    // The composer bursts and the face dissolves: the agent's last line stands alone
     async function burst() {
+      window.face?.hide();
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
         await sleep(700);
         const col = form.parentElement, r = form.getBoundingClientRect(), c = col.getBoundingClientRect();
