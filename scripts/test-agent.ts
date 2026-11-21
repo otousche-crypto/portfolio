@@ -5,7 +5,8 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { ageOn, handleChat, handleFeedback, replyLang, validate, validateFeedback } from '../agent/handler';
 import { systemPrompt } from '../agent/prompt';
-import { cannedAnswer, cannedQuestions } from '../agent/canned';
+import { cannedAnswer, cannedQuestions, SUGGESTIONS } from '../agent/canned';
+import { readFileSync } from 'node:fs';
 
 type Params = Anthropic.MessageCreateParamsStreaming & { output_config: { effort: string } };
 type System = { text: string; cache_control: { type: string } }[];
@@ -36,15 +37,21 @@ ok('detects English', replyLang('What is his daily rate as a freelancer?', 'fr')
 ok('detects French', replyLang('Est-il disponible ?', 'en') === 'fr' && replyLang('Parlez-moi d’Altered', 'en') === 'fr');
 ok('falls back to page language', replyLang('Altered ?', 'en') === 'en');
 {
-  // Chaque suggestion d'une réponse toute prête mène à une vraie réponse : toute prête elle aussi, ou un sujet que le profil couvre
-  const BY_MODEL = /go moonbound|paiement|payments|cet agent|this ai agent/i;
+  // Chaque suggestion d'une réponse toute prête mène à une autre réponse toute prête
   const key = (q: string) => q.toLowerCase().replace(/[’`]/g, "'").replace(/\s*\?$/, '').trim();
   const bad = cannedQuestions().flatMap((q) => {
     const sugg = (cannedAnswer(q)!.match(/\[\[(.+)\]\]$/)?.[1] ?? '').split('|').map((x) => x.trim()).filter(Boolean);
     return sugg.length !== 2 ? [`${q}: ${sugg.length} suggestions`]
-      : sugg.filter((x) => key(x) === key(q) || (!cannedAnswer(x) && !BY_MODEL.test(x))).map((x) => `${q} → ${x}`);
+      : sugg.filter((x) => key(x) === key(q) || !cannedAnswer(x)).map((x) => `${q} → ${x}`);
   });
   ok('canned suggestions lead somewhere' + (bad.length ? ': ' + bad.join(', ') : ''), bad.length === 0);
+  // Toutes les suggestions affichables ont une réponse toute prête, et la page propose exactement celles-là
+  const page = readFileSync(new URL('../site/agent.html', import.meta.url), 'utf8');
+  const list = (lang: string) => (page.match(new RegExp(`more: \\[([^\\]]+)\\]`, 'g')) ?? [])[lang === 'fr' ? 0 : 1]?.match(/'[^']+'/g)?.map((x) => x.slice(1, -1)) ?? [];
+  const missing = [...SUGGESTIONS.fr, ...SUGGESTIONS.en].filter((q) => !cannedAnswer(q));
+  const drift = (['fr', 'en'] as const).filter((l) => [...list(l)].sort().join('|') !== [...SUGGESTIONS[l]].sort().join('|'));
+  ok('every suggestion is pre-written' + (missing.length ? ': ' + missing.join(', ') : ''), missing.length === 0);
+  ok('page fallbacks match SUGGESTIONS' + (drift.length ? ': ' + drift.join(', ') : ''), drift.length === 0);
 }
 {
   const v = validate({ messages: [{ role: 'user', content: 'Q' }], cid: 'a1b2c3d4e5f60718' });

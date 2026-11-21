@@ -98,11 +98,71 @@ It's all in the [case study](https://www.oliviertousche.com/equinox.html), inclu
 ---
 Olivier is based in the Paris region, open to remote and hybrid. The easiest way: email otousche@gmail.com or reach out on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/).
 [[His product builder projects? | His product vision?]]`,
+
+  'parlez-moi de go moonbound': `Go MoonBound transforme vos sorties Strava en voyage vers la Lune : chaque course, sortie vélo, nage ou marche vous place sur les 384 400 km entre la Terre et la Lune, dans une scène 3D.
+---
+Olivier l'a conçu avec des agents IA et mis en ligne en moins de 2 semaines. Strava l'a validé et a ouvert son API à 999 utilisateurs ; 13 versions ont suivi, au fil des retours.
+---
+Tout est dans l'[étude de cas](https://www.oliviertousche.com/gomoonbound.html).
+[[Ses projets de product builder ? | Comment utilise-t-il l’IA ?]]`,
+
+  'ses passions ?': `Le vélo de route, d'abord : c'est d'ailleurs l'origine de Go MoonBound, connecté à Strava.
+---
+Et la musique, depuis plus de 10 ans : scratch, vinyles et beatmaking sur samplers, notamment la MPC2000XL. Il publie ses prods sous le nom de Floppysional.
+---
+Sur la MPC, tout tient sur une disquette de 1,44 Mo : la contrainte oblige à faire des choix, une démarche qui rejoint sa façon de concevoir des produits.
+[[Parlez-moi de Go MoonBound | Son approche du design ?]]`,
+
+  'comment a-t-il géré le paiement ?': `Le point de départ était flou : une carte phygitale, est-ce un bien physique ou numérique ? Paiement direct ou cagnotte ? Olivier a mené le sujet en Double Diamond.
+---
+Il a trouvé un cabinet d'avocats spécialisé, travaillé avec le prestataire de paiement, et fait du design un outil de décision pour que la direction tranche en connaissant les conséquences.
+---
+Résultat : un portefeuille unique, toutes devises, lancé dans plusieurs pays à la fois. Le détail est dans l'[étude de cas Altered](https://www.oliviertousche.com/equinox.html).
+[[Son approche du design ? | Son expérience en recherche UX ?]]`,
+
+  'pourquoi cet agent ia ?': `Parce que l'IA entre dans le quotidien, et que la fenêtre de conversation devient une interaction à part entière. Plutôt que d'en parler, Olivier fait sa proposition : cet agent est son bac à sable pour produire, tester et itérer.
+---
+Il interroge aussi l'avenir du métier : son IA sera-t-elle un jour la page d'accueil de son portfolio ? Finira-t-elle par le remplacer ?
+[[Comment utilise-t-il l’IA ? | Sa vision produit ?]]`,
+
+  'tell me about go moonbound': `Go MoonBound turns your Strava activities into a trip to the Moon: every run, ride, swim or walk places you on the 384,400 km between Earth and the Moon, in a 3D scene.
+---
+Olivier built it with AI agents and shipped it in under 2 weeks. Strava approved it and opened its API to 999 users; 13 versions followed, driven by feedback.
+---
+It's all in the [case study](https://www.oliviertousche.com/gomoonbound.html).
+[[His product builder projects? | How does he use AI?]]`,
+
+  'his passions?': `Road cycling, first: it's actually where Go MoonBound comes from, connected to Strava.
+---
+And music, for over 10 years: scratching, vinyl, and beatmaking on samplers, including the MPC2000XL. He releases his beats as Floppysional.
+---
+On the MPC, everything fits on a 1.44 MB floppy disk: the constraint forces choices, an approach that echoes how he designs products.
+[[Tell me about Go MoonBound | His design approach?]]`,
+
+  'how did he handle payments?': `The starting point was blurry: is a phygital card a physical or a digital good? Direct payment or a wallet? Olivier led the topic with the Double Diamond.
+---
+He found a specialised law firm, worked with the payment provider, and used design as a decision tool so leadership could decide knowing the consequences.
+---
+The result: a single wallet, all currencies, launched in several countries at once. Details in the [Altered case study](https://www.oliviertousche.com/equinox.html).
+[[His design approach? | His UX research experience?]]`,
+
+  'why this ai agent?': `Because AI is becoming part of everyday life, and the chat window an interaction in its own right. Rather than talking about it, Olivier makes his own take: this agent is his sandbox to build, test and iterate.
+---
+It also questions where the job is heading: will his AI one day be the home page of his portfolio? Will it end up replacing him?
+[[How does he use AI? | His product vision?]]`,
 };
 
 // Même question, à la typographie près : apostrophes, espaces avant le « ? », majuscules
 const normalize = (q: string) => q.trim().toLowerCase().replace(/[’`]/g, "'").replace(/\s+/g, ' ').replace(/\s*\?$/, ' ?');
 const TABLE = new Map(Object.entries(CANNED).map(([q, a]) => [normalize(q), a]));
+
+// Les suggestions que la page peut afficher : toutes ont une réponse toute prête, donc un clic ne coûte jamais rien.
+// Le prompt demande à l'agent de choisir ses suggestions dans ces listes ; la page écarte toute autre suggestion.
+// Les mêmes listes figurent dans site/agent.html (T.fr.more, T.en.more) : un test vérifie qu'elles concordent.
+export const SUGGESTIONS = {
+  fr: ['Comment utilise-t-il l’IA ?', 'Sa vision produit ?', 'Son approche du design ?', 'Est-il disponible ?', 'Ses projets de product builder ?', 'Parlez-moi de Go MoonBound', 'Son expérience en recherche UX ?', 'Parlez-moi d’Altered', 'Comment a-t-il géré le paiement ?', 'Pourquoi cet agent IA ?', 'Ses passions ?'],
+  en: ['How does he use AI?', 'His product vision?', 'His design approach?', 'Is he available?', 'His product builder projects?', 'Tell me about Go MoonBound', 'His UX research experience?', 'Tell me about Altered', 'How did he handle payments?', 'Why this AI agent?', 'His passions?'],
+};
 
 // Les questions qui ont une réponse toute prête (pour les tests de cohérence des suggestions)
 export const cannedQuestions = () => [...TABLE.keys()];
