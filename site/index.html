@@ -69,7 +69,6 @@ a { color: inherit; }
   background: linear-gradient(to bottom, rgba(255,255,255,.78), rgba(255,255,255,.6));
   -webkit-backdrop-filter: saturate(180%) blur(24px); backdrop-filter: saturate(180%) blur(24px); }
 .top nav { display: flex; align-items: center; gap: 0; }
-.top nav .lang-switch { margin-left: 10px; }
 /* Same hover as the agent page's tools: a soft grey pill */
 .top nav a { text-decoration: none; color: #5f5f68; padding: 6px 10px; border-radius: 999px; transition: background .2s, color .2s; }
 .top nav a:hover, .top nav a:focus-visible { color: var(--fg); background: rgba(15,15,18,.06); }
@@ -508,7 +507,6 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
       <a href="#projets">Projets</a>
       <a href="#about">À propos</a>
       <a href="#contact">Contact</a>
-      <span class="lang-switch no-i18n" role="group" aria-label="Langue · Language"><button type="button" data-set-lang="fr" aria-pressed="true">FR</button><i aria-hidden="true">/</i><button type="button" data-set-lang="en" aria-pressed="false">EN</button></span>
     </nav>
   </header>
 
@@ -630,11 +628,12 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
             <div class="st-live no-i18n" aria-hidden="true"><style>.sp-olivierT{--sp-olivierT-fast:linear(0,.08,.24,.409,.558,.678,.77,.838,.887,.922,.947,.964,.976,.984,.989,.993,.995,.997,.998,.999,1);--sp-olivierT-attention:cubic-bezier(.4,0,.2,1);--sp-olivierT-repeat:linear}.sp-olivierT,.sp-olivierT *,.sp-olivierT *::before,.sp-olivierT *::after{box-sizing:border-box;margin:0;padding:0;border:0;font:inherit;line-height:inherit;letter-spacing:normal;text-transform:none;text-decoration:none;list-style:none;background:none;color:inherit;max-width:none;min-width:0;float:none}.sp-olivierT{--sp-olivierT-bg:#ffffff;--sp-olivierT-bd:#0000000d;--sp-olivierT-tn:#6e6e73;--sp-olivierT-tb:#000000;--sp-olivierT-ic:#6e6e73;--sp-olivierT-sh:rgba(0,0,0,.12);display:inline-flex;align-items:center;gap:6px;position:relative;vertical-align:middle;font-family:-apple-system,system-ui,"SF Pro Text","Helvetica Neue","Segoe UI",Roboto,sans-serif;font-size:15px;font-weight:400;font-style:normal;font-variant:normal;line-height:1.2;text-align:left;white-space:nowrap;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.sp-olivierT__pill{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 12px 0 4px;border-radius:18px;background:var(--sp-olivierT-bg);box-shadow:0 1px 6px rgba(0,0,0,.08);color:var(--sp-olivierT-tb);white-space:nowrap;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;outline:none;transition:box-shadow .08s var(--sp-olivierT-fast),transform .08s var(--sp-olivierT-fast)}.sp-olivierT__pill:hover{box-shadow:0 2px 12px rgba(0,0,0,.12)}@keyframes sp-olivierT-in{0%,100%{transform:none}20%,60%{transform:translateX(-3px)}40%,80%{transform:translateX(3px)}}@keyframes sp-olivierT-rp{0%{transform:translateX(-110%)}18%,100%{transform:translateX(110%)}}.sp-olivierT{animation:sp-olivierT-in .48s var(--sp-olivierT-attention) backwards}.sp-olivierT__pill{position:relative;overflow:hidden}.sp-olivierT__pill::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(105deg,transparent 30%,var(--sp-olivierT-sh) 50%,transparent 70%);transform:translateX(110%);animation:sp-olivierT-rp 5s var(--sp-olivierT-repeat) 5s infinite}.sp-olivierT__pill:hover{transform:scale(1.04)}.sp-olivierT__pill:focus-visible{outline:2px solid var(--sp-olivierT-tb);outline-offset:2px}.sp-olivierT__av{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;overflow:hidden;background:#e9e9ee}.sp-olivierT__av img{display:block;width:100%;height:100%;object-fit:cover}.sp-olivierT__n{color:var(--sp-olivierT-tn)}.sp-olivierT__b{color:var(--sp-olivierT-tb);font-weight:500}.sp-olivierT__ic{flex:none;display:block;color:var(--sp-olivierT-ic);transition:transform .08s var(--sp-olivierT-fast)}.sp-olivierT__pill:hover .sp-olivierT__ic,.sp-olivierT__pill:focus-visible .sp-olivierT__ic{transform:translate(2px,-2px)}@media (prefers-reduced-motion:reduce){.sp-olivierT__ic{transition:none}.sp-olivierT,.sp-olivierT .sp-olivierT__pill,.sp-olivierT .sp-olivierT__pill:hover{animation:none;transform:none}.sp-olivierT .sp-olivierT__pill::after{animation:none;opacity:0}.sp-olivierT .sp-olivierT__pill:hover .sp-olivierT__ic,.sp-olivierT .sp-olivierT__pill:focus-visible .sp-olivierT__ic{transform:none}}
 /* FR / EN switch, last item of the header nav */
 .lang-switch { display: inline-flex; align-items: center; gap: 2px; }
+.foot-end { display: inline-flex; align-items: center; gap: 16px; }
 .lang-switch i { font-style: normal; color: #c4c4ca; }
 .lang-switch button { font: inherit; background: none; border: 0; padding: 0 3px; color: #8b8b93; cursor: pointer; transition: color .2s; }
 .lang-switch button:hover, .lang-switch button:focus-visible { color: var(--fg); }
 .lang-switch button[aria-pressed="true"] { color: var(--fg); font-weight: 500; }
-@media (max-width: 480px) { .top { gap: 12px; font-size: 13px; } .top nav a { padding: 6px 6px; } .top nav .lang-switch { margin-left: 6px; } }
+@media (max-width: 480px) { .top { gap: 12px; font-size: 13px; } .top nav a { padding: 6px 6px; } }
 </style>
 <div class="sp-olivierT">
   <a class="sp-olivierT__pill" tabindex="-1">
@@ -804,7 +803,7 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
 </script>
   </section>
 
-  <footer><span>© 2026 Olivier Tousche</span><span>Maquette · v0</span></footer>
+  <footer><span>© 2026 Olivier Tousche</span><span class="foot-end"><span>Maquette · v0</span><span class="lang-switch no-i18n" role="group" aria-label="Langue · Language"><button type="button" data-set-lang="fr" aria-pressed="true">FR</button><i aria-hidden="true">/</i><button type="button" data-set-lang="en" aria-pressed="false">EN</button></span></span></footer>
 </div>
 
 <script>
