@@ -94,7 +94,7 @@ a { color: inherit; }
 .hero-tags span { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
 html { overflow-x: clip; }  /* full-bleed lines and the cropped bust never cause a sideways scroll */
 /* Contact: the details stacked on the left, the ASCII self-portrait facing them, standing on the footer line and running off the right edge (drawn on a canvas by the script) */
-section.contact { position: relative; display: flex; flex-direction: column; justify-content: flex-start; gap: 24px; min-height: 600px; padding-block: 0 56px; border-top: 0; }
+section.contact { position: relative; display: flex; flex-direction: column; justify-content: flex-start; gap: 24px; min-height: max(600px, calc(100svh - 200px)); padding-block: 0 56px; border-top: 0; }  /* tall enough for the Contact anchor to reach the top */
 .contact > :not(.ascii-stand) { position: relative; z-index: 1; }
 .contact h4 { margin-bottom: 6px; }
 footer { position: relative; }
@@ -102,10 +102,10 @@ footer::before { content: ""; position: absolute; top: 0; left: -100vw; right: -
 .ascii-stand { position: absolute; bottom: 0; right: calc((100% - 100vw) / 2 - 70px); }
 .ascii-me { display: block; font-size: 10.5px; }
 @media (max-width: 1180px) { .ascii-me { font-size: 9.5px; } }
-@media (max-width: 960px) { .ascii-me { font-size: 8.5px; } section.contact { min-height: 500px; } }
+@media (max-width: 960px) { .ascii-me { font-size: 8.5px; } section.contact { min-height: max(500px, calc(100svh - 200px)); } }
 /* Mobile: the whole block and the footer fit in one screen, the face cropped on the right */
 @media (max-width: 760px) {
-  section.contact { min-height: 0; gap: 16px; padding-block: 0 32px; }
+  section.contact { min-height: calc(100svh - 200px); gap: 16px; padding-block: 0 32px; }
   .contact h4 { margin-bottom: 2px; font-size: 13px; }
   .contact .big { font-size: 16px; }
   .copy-btn { margin-top: 6px; padding: 4px 10px; font-size: 12px; }
@@ -118,6 +118,7 @@ footer::before { content: ""; position: absolute; top: 0; left: -100vw; right: -
   font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
   color: var(--muted); display: flex; justify-content: space-between; align-items: baseline;
   padding-bottom: 16px; border-bottom: 1px solid var(--line); margin-bottom: 20px;
+  scroll-margin-top: 88px;  /* the navbar anchors land just under the sticky header */
 }
 
 /* ── Project panels ── */
