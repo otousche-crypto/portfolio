@@ -134,6 +134,7 @@ footer::before { content: ""; position: absolute; top: 0; left: -100vw; right: -
   position: relative; z-index: 2; padding: 48px; display: flex; flex-direction: column; justify-content: center; gap: 18px; min-width: 0;
 }
 .logo { width: 40px; height: 40px; border-radius: 10px; object-fit: contain; display: block; }
+.brandline { display: flex; align-items: center; gap: 12px; }  /* logo and project name side by side */
 .card h3 { margin: 0; font-size: 15px; font-weight: 600; letter-spacing: .01em; }
 .card h2 { margin: 0; font-size: clamp(24px, 2.6vw, 32px); line-height: 1.12; letter-spacing: -0.025em; font-weight: 600; text-wrap: balance; }
 .meta { font-family: var(--mono); font-size: 12px; color: var(--c-muted); letter-spacing: .02em; }
@@ -523,8 +524,7 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
     <article class="card moon">
       <div class="stars" aria-hidden="true"></div>
       <div class="text">
-        <img class="logo" src="img/logo-go-moonbound.png" alt="">
-        <h3>Go MoonBound</h3>
+        <div class="brandline"><img class="logo" src="img/logo-go-moonbound.png" alt=""><h3>Go MoonBound</h3></div>
         <h2>Transformer ses kilomètres Strava en voyage vers la Lune</h2>
         <div class="meta">Product Builder · moins de 2 semaines</div>
         <div class="stats">
@@ -550,8 +550,7 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
     <article class="card equinox">
       <div class="art"><img src="img/equinox.jpg" alt="Illustration clé d'Altered : une cité fantastique vue des toits"></div>
       <div class="text">
-        <img class="logo" src="img/logo-equinox-altered.png" alt="">
-        <h3>Equinox · Altered</h3>
+        <div class="brandline"><img class="logo" src="img/logo-equinox-altered.png" alt=""><h3>Equinox · Altered</h3></div>
         <h2>Concevoir l'écosystème phygital d'un jeu de cartes à collectionner</h2>
         <div class="meta">Senior Product Designer · 2021–2025</div>
         <div class="stats">
@@ -569,8 +568,7 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
     <!-- Sklip -->
     <article class="card sklip">
       <div class="text">
-        <img class="logo" src="img/logo-sklip.png" alt="">
-        <h3>Sklip.studio</h3>
+        <div class="brandline"><img class="logo" src="img/logo-sklip.png" alt=""><h3>Sklip.studio</h3></div>
         <h2>Concevoir facilement ses propres Scratch Tools</h2>
         <div class="wave" aria-hidden="true" id="wave"></div>
         <div class="meta">Product Designer &amp; Builder · 2026</div>
@@ -614,8 +612,7 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
     <!-- Stampit -->
     <article class="card stampit">
       <div class="text">
-        <img class="logo" src="img/logo-stampit.svg" alt="">
-        <h3>Stampit</h3>
+        <div class="brandline"><img class="logo" src="img/logo-stampit.svg" alt=""><h3>Stampit</h3></div>
         <h2>Signer tout ce qu'on livre, avec un badge « Made by »</h2>
         <div class="meta">Outil web · générateur de badge &amp; prompt · 2026</div>
         <div class="actions">
