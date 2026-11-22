@@ -93,6 +93,7 @@ a { color: inherit; }
 .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
 .hero-tags span { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
 html { overflow-x: clip; }  /* full-bleed lines and the cropped bust never cause a sideways scroll */
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }  /* the navbar anchors glide to their section */
 /* Contact: the details stacked on the left, the ASCII self-portrait facing them, standing on the footer line and running off the right edge (drawn on a canvas by the script) */
 section.contact { position: relative; display: flex; flex-direction: column; justify-content: flex-start; gap: 24px; min-height: max(600px, calc(100svh - 200px)); padding-block: 0 56px; border-top: 0; }  /* tall enough for the Contact anchor to reach the top */
 .contact > :not(.ascii-stand) { position: relative; z-index: 1; }
