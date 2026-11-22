@@ -323,8 +323,6 @@ footer::before { content: ""; position: absolute; top: 0; left: -100vw; right: -
 .sklip { --c-bg: #100e16; --c-fg: #edeaf2; --c-muted: #a39dbc; --c-pill: #ff5470; --c-pill-fg: #fff; --c-ghost: #221e2e; }
 .sklip::before { content: ""; position: absolute; right: -10%; bottom: -40%; width: 70%; aspect-ratio: 1; border-radius: 50%;
   background: repeating-radial-gradient(circle, #191622 0 2px, #100e16 2px 6px); opacity: .9; }
-.sklip .wave { display: flex; align-items: center; gap: 3px; height: 28px; }
-.sklip .wave i { width: 3px; border-radius: 2px; background: #ff5470; display: block; }
 
 /* Sklip composer, rebuilt live at 1440×900 and scaled to the browser frame */
 .sk-stage { position: relative; aspect-ratio: 1440 / 900; overflow: hidden; background: #100E16; }
@@ -570,7 +568,6 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
       <div class="text">
         <div class="brandline"><img class="logo" src="img/logo-sklip.png" alt=""><h3>Sklip</h3></div>
         <h2>Concevoir facilement ses propres Scratch Tools</h2>
-        <div class="wave" aria-hidden="true" id="wave"></div>
         <div class="meta">Product Designer &amp; Builder</div>
         <div class="actions">
           <a class="btn primary" href="sklip.html">Lire le use case</a>
@@ -1182,10 +1179,6 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
     requestAnimationFrame(tick);
   })();
 
-  // waveform for Sklip
-  const w = document.getElementById('wave');
-  const h = [6,14,22,10,26,18,8,20,28,12,6,16,24,10,18,26,14,8,20,12,6,22,16,10];
-  h.forEach(v => { const i = document.createElement('i'); i.style.height = v + 'px'; w.appendChild(i); });
   // copy email
   document.getElementById('copy').addEventListener('click', e => {
     const t = document.getElementById('mail').textContent;
