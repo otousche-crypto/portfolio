@@ -14,7 +14,7 @@ export const LIMITS = {
   assistantChars: 4000,  // au-delà, la réponse « renvoyée » par le client est forcément forgée
   assistantKept: 1200,   // une vraie réponse fait moins de 90 mots : le reste est coupé avant le modèle
   historyKept: 7,        // seuls les derniers messages partent au modèle (impair : on commence par le visiteur)
-  turnsPerChat: 15,      // questions max par conversation
+  turnsPerChat: 19,      // questions max par conversation (même chiffre dans site/agent.html, TURNS)
   // Plafond de sortie. Claude Haiku 5.5 réfléchit par défaut, et cette réflexion compte dans le plafond : à 500, elle
   // le consommait parfois en entier (réponse vide, affichée comme un problème technique) ou coupait la réponse en pleine
   // phrase. La longueur des réponses (3 bulles courtes et les suggestions) est tenue par le prompt, pas par ce plafond.
@@ -22,8 +22,9 @@ export const LIMITS = {
 };
 
 export interface Store {
-  // true si le visiteur peut encore envoyer un message, 'paused' si le plafond du site est atteint
-  allow(visitor: string): Promise<boolean | 'paused'>;
+  // true (ou le nombre de messages qu'il lui reste ensuite) si le visiteur peut encore envoyer un message,
+  // false s'il a atteint sa limite, 'paused' si le plafond du site est atteint
+  allow(visitor: string): Promise<boolean | number | 'paused'>;
   log(entry: Record<string, unknown>): Promise<void>;
 }
 
@@ -122,7 +123,9 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
 
   const allowed = deps.store ? await deps.store.allow(deps.visitor) : true;
   if (allowed === 'paused') return json(503, 'paused');
-  if (!allowed) return json(429, 'rate_limited');
+  if (allowed === false) return json(429, 'rate_limited');
+  // Ce qu'il reste au visiteur avant sa limite : la page le prévient quand il en approche
+  const left: Record<string, string> = typeof allowed === 'number' ? { 'x-agent-left': String(allowed) } : {};
 
   const { messages } = input;
   const lang = replyLang(messages.at(-1)!.content, input.lang);
@@ -173,6 +176,6 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
     },
   });
   return new Response(stream, {
-    headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'no-store', 'x-content-type-options': 'nosniff' },
+    headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', ...left },
   });
 }

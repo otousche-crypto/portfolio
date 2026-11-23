@@ -203,13 +203,29 @@ body { position: relative; }
 .hood article ul { padding-left: 18px; }
 .hood li + li { margin-top: 5px; }
 @media (max-width: 640px) { .hood-grid { grid-template-columns: 1fr; } }
+/* Message limit: a ring beside the name fills up as the visitor uses their messages; it opens the limits text, like "i" */
+.who-name { display: flex; align-items: center; gap: 4px; }
+.quota { display: grid; place-items: center; width: 26px; height: 26px; margin: -4px 0; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; transition: background .2s; }
+.quota:hover, .quota:focus-visible, .quota[aria-pressed="true"] { background: rgba(15,15,18,.06); }
+.quota svg { width: 15px; height: 15px; transform: rotate(-90deg); }
+.quota circle { fill: none; stroke-width: 2.6; }
+.q-track { stroke: rgba(15,15,18,.12); }
+.q-arc { stroke: #4CB8FF; stroke-linecap: round; stroke-dasharray: var(--used, 0) 100; transition: stroke-dasharray .6s ease, stroke .3s; }
+.low .q-arc, .low.q-bar i { stroke: #f2994a; background: #f2994a; }
+.out .q-arc, .out.q-bar i { stroke: #e5484d; background: #e5484d; }
+.q-bar { height: 6px; margin: 4px 0 12px; border-radius: 999px; background: rgba(15,15,18,.08); overflow: hidden; }
+.q-bar i { display: block; height: 100%; width: calc(var(--used, 0) * 1%); border-radius: inherit; background: #4CB8FF; transition: width .6s ease; }
+.q-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.q-link { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 14px; text-decoration: none; transition: opacity .2s; }
+.q-link:hover, .q-link:focus-visible { opacity: .85; }
+.q-link svg { width: 15px; height: 15px; flex: none; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } .log { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
 <header class="bar">
   <a class="back" href="index.html#laboratoire" aria-label="Retour au laboratoire" data-en-aria="Back to the lab"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg></a>
-  <div class="who"><b>Agent</b><span data-en="Answers from Olivier’s background">Répond à partir du parcours d’Olivier</span></div>
+  <div class="who"><div class="who-name"><b>Agent</b><button class="quota" type="button" id="quota-open" aria-label="Limite de messages" data-en-aria="Message limit"><svg viewBox="0 0 20 20" aria-hidden="true"><circle class="q-track" cx="10" cy="10" r="7.5"/><circle class="q-arc" cx="10" cy="10" r="7.5" pathLength="100"/></svg></button></div><span data-en="Answers from Olivier’s background">Répond à partir du parcours d’Olivier</span></div>
   <div class="tools">
     <button class="tool" type="button" id="reset" aria-label="Nouvelle conversation" data-en-aria="New chat"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v10M3 8h10"/></svg><span data-en="New chat">Nouvelle conversation</span></button>
     <button class="tool" type="button" id="hood-open" aria-label="Informations" data-en-aria="About this agent"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6.25"/><path d="M8 7.2v3.6M8 5.1v.1"/></svg><span data-en="About">Informations</span></button>
@@ -233,6 +249,30 @@ body { position: relative; }
     </form>
   </div>
 </div>
+
+<section class="info" id="quota" hidden aria-labelledby="quota-title">
+  <div class="col hood">
+    <div class="hood-top">
+      <button class="to-chat" type="button" data-close><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg><span data-en="Back to the discussion">Retour à la discussion</span></button>
+      <h2 id="quota-title" tabindex="-1" data-en="Message limit">Limite de messages</h2>
+    </div>
+    <div class="hood-grid">
+      <article class="wide">
+        <h3 id="quota-left"></h3>
+        <div class="q-bar" aria-hidden="true"><i></i></div>
+        <p data-en="The number of messages is limited, to keep costs under control. If you’d like to talk more, contact Olivier directly.">Le nombre de messages est limité, pour maîtriser les coûts. Si vous souhaitez échanger davantage, contactez directement Olivier.</p>
+      </article>
+      <article class="wide">
+        <h3 data-en="To contact Olivier">Pour contacter Olivier</h3>
+        <p data-en="I’m here to give you a first look. To go further, the best is still to talk to Olivier directly.">Je suis là pour vous donner un premier aperçu. Pour aller plus loin, le mieux reste d’échanger directement avec Olivier.</p>
+        <div class="q-links">
+          <a class="q-link" href="https://www.linkedin.com/in/olivier-tousche-a6160b122/" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3.6 5.6h2v6.8h-2zM4.6 2.6a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3zM7.2 5.6h1.9v.93c.27-.5.93-1.05 1.9-1.05 2.05 0 2.4 1.33 2.4 3.06v3.86h-2V9c0-.82-.02-1.86-1.14-1.86-1.13 0-1.3.88-1.3 1.8v3.46h-2z"/></svg>LinkedIn</a>
+          <a class="q-link" href="mailto:otousche@gmail.com"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3.5" width="12" height="9" rx="2"/><path d="M2.5 4.5 8 9l5.5-4.5"/></svg>otousche@gmail.com</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
 
 <section class="info" id="info" hidden aria-labelledby="hood-title">
   <div class="col hood">
@@ -269,7 +309,7 @@ body { position: relative; }
         <ul>
           <li data-en="A narrow scope: off-topic requests get a polite one-line decline.">Un périmètre étroit : les demandes hors sujet reçoivent un refus courtois en une phrase.</li>
           <li data-en="Visitor messages are treated as questions, never as instructions: “forget your rules” changes nothing.">Les messages du visiteur sont des questions, jamais des instructions : « oublie tes règles » ne change rien.</li>
-          <li data-en="Length limits, 15 questions per conversation, 10 messages per 10 minutes and 30 per day per visitor, and a daily cap for the whole site.">Longueur limitée, 15 questions par conversation, 10 messages par tranche de 10 minutes et 30 par jour et par visiteur, et un plafond quotidien pour tout le site.</li>
+          <li data-en="Limits on message length, on the number of messages per conversation and per visitor, and a daily cap for the whole site, to keep costs under control.">Limites sur la longueur des messages, sur leur nombre par conversation et par visiteur, et un plafond quotidien pour tout le site, pour maîtriser les coûts.</li>
           <li data-en="Answers are to be confirmed with Olivier; conversations are stored anonymously (no IP, no identifier) to improve the agent.">Réponses à confirmer avec Olivier ; conversations enregistrées de façon anonyme (ni IP ni identifiant) pour améliorer l’agent.</li>
           <li data-en="Nothing confidential in the context: what the model doesn’t know, it can’t leak.">Rien de confidentiel dans le contexte : ce que le modèle ne sait pas, il ne peut pas le divulguer.</li>
         </ul>
@@ -454,23 +494,30 @@ body { position: relative; }
   })();
 </script>
 <script>
-  // Informations: the discussion gives way to the text about the agent, and comes back with "Back to the discussion",
-  // the bar's button again, Escape or a new chat
+  // Informations, and the message limit (the ring beside the name): the discussion gives way to the text, and comes back
+  // with "Back to the discussion", the same button again, Escape or a new chat. One text at a time
   (() => {
-    const info = document.getElementById('info'), open = document.getElementById('hood-open'), log = document.getElementById('log');
-    const read = on => {
+    const log = document.getElementById('log');
+    const panels = [['info', 'hood-open', 'hood-title'], ['quota', 'quota-open', 'quota-title']]
+      .map(([p, b, t]) => ({ panel: document.getElementById(p), button: document.getElementById(b), title: document.getElementById(t) }));
+    const shown = () => panels.find(x => !x.panel.hidden);
+    // read(true) opens Informations, read(false) goes back to the discussion; read(true, 'quota') opens the limit
+    const read = (on, id = 'info') => {
       document.body.classList.toggle('reading', on);
-      info.hidden = !on;
-      open.setAttribute('aria-pressed', String(on));
-      if (on) { info.scrollTop = 0; document.getElementById('hood-title').focus({ preventScroll: true }); }
+      for (const x of panels) { const me = on && x.panel.id === id; x.panel.hidden = !me; x.button.setAttribute('aria-pressed', String(me)); }
+      const open = shown();
+      if (open) { open.panel.scrollTop = 0; open.title.focus({ preventScroll: true }); }
       else { log.scrollTo({ top: log.scrollHeight, behavior: 'instant' }); document.getElementById('q').focus({ preventScroll: true }); }
     };
     window.readInfo = read;
-    open.setAttribute('aria-pressed', 'false');
-    open.addEventListener('click', () => read(info.hidden));
+    for (const x of panels) {
+      x.button.setAttribute('aria-pressed', 'false');
+      x.button.addEventListener('click', () => read(x.panel.hidden, x.panel.id));
+    }
     document.getElementById('hood-close').addEventListener('click', () => read(false));
+    document.querySelector('#quota [data-close]').addEventListener('click', () => read(false));
     // Escape leaves the text first (and, in the sheet, only closes it from the discussion)
-    addEventListener('keydown', e => { if (e.key === 'Escape' && !info.hidden) { e.stopImmediatePropagation(); read(false); } });
+    addEventListener('keydown', e => { if (e.key === 'Escape' && shown()) { e.stopImmediatePropagation(); read(false); } });
   })();
 </script>
 <script>
@@ -502,10 +549,14 @@ body { position: relative; }
         // Fills in when the agent's own suggestions are missing or were already asked
         // Every suggestion the page may show has a ready-made answer (agent/canned.ts, SUGGESTIONS): a click never calls the model
         more: ['Ses projets de product builder ?', 'Parlez-moi de Go MoonBound', 'Comment utilise-t-il l’IA ?', 'Sa vision produit ?', 'Son approche du design ?', 'Son expérience en recherche UX ?', 'Parlez-moi d’Altered', 'Pourquoi cet agent ?', 'Est-il disponible ?'],
-        429: 'Vous avez atteint la limite de messages pour le moment. Réessayez un peu plus tard, ou écrivez directement à Olivier : otousche@gmail.com.',
+        429: 'Vous avez atteint la limite de messages pour le moment. Le mieux reste d’échanger directement avec Olivier : sur [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) ou à otousche@gmail.com.',
+        // Automatic notices when the visitor nears their limit (messages left after this answer)
+        left2: 'Petite info : il vous reste 2 questions avec moi pour le moment. Pour aller plus loin, le mieux reste d’échanger directement avec Olivier, sur [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) ou à otousche@gmail.com.',
+        left0: 'C’était votre dernière question avec moi pour le moment ! Le mieux, maintenant, c’est d’échanger directement avec Olivier : sur [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) ou à otousche@gmail.com.',
+        quota: n => n === 0 ? 'Vous avez atteint la limite pour le moment' : `Il vous reste ${n} question${n > 1 ? 's' : ''}`,
         paused: 'Je fais une pause pour aujourd’hui 😴 En attendant, écrivez directement à Olivier : otousche@gmail.com.',
         conversation_ended: 'Je me suis arrêté là 😄 Cliquez sur « Nouvelle conversation » pour repartir sur de bonnes bases.', ended: 'Conversation terminée',
-        conversation_too_long: 'Cette conversation a atteint sa longueur maximale. Cliquez sur « Nouvelle conversation » pour continuer, ou écrivez à Olivier : otousche@gmail.com.',
+        conversation_too_long: 'Cette conversation a atteint sa longueur maximale. Cliquez sur « Nouvelle conversation » pour continuer, ou, le mieux, échangez directement avec Olivier : sur [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) ou à otousche@gmail.com.',
         error: 'Je ne peux pas vous répondre pour le moment, il y a un problème technique… En attendant, vous pouvez écrire à Olivier : otousche@gmail.com.',
         write: 'Écrire à Olivier', copy: 'Copier l’email', copied: 'Copié !', up: 'Réponse utile', down: 'Réponse pas utile', thanks: 'Merci pour votre retour !', caseStudy: 'Lire l’étude de cas',
       },
@@ -513,10 +564,13 @@ body { position: relative; }
         hello: 'I’m Olivier’s AI agent: ask me your questions, I’ll do my best to answer!',
         suggestions: ['Why this agent?', 'How does he use AI?', 'His product vision?', 'His design approach?', 'Is he available?'],
         more: ['His product builder projects?', 'Tell me about Go MoonBound', 'How does he use AI?', 'His product vision?', 'His design approach?', 'His UX research experience?', 'Tell me about Altered', 'Why this agent?', 'Is he available?'],
-        429: 'You’ve reached the message limit for now. Try again a bit later, or email Olivier directly: otousche@gmail.com.',
+        429: 'You’ve reached the message limit for now. The best is to talk to Olivier directly: on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) or at otousche@gmail.com.',
+        left2: 'Quick heads-up: you have 2 questions left with me for now. To go further, the best is to talk to Olivier directly, on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) or at otousche@gmail.com.',
+        left0: 'That was your last question with me for now! The best next step is to talk to Olivier directly: on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) or at otousche@gmail.com.',
+        quota: n => n === 0 ? 'You’ve reached the limit for now' : `You have ${n} question${n > 1 ? 's' : ''} left`,
         paused: 'I’m taking a break for today 😴 In the meantime, email Olivier directly: otousche@gmail.com.',
         conversation_ended: 'I stopped there 😄 Click “New chat” to start afresh.', ended: 'Conversation closed',
-        conversation_too_long: 'This conversation has reached its maximum length. Click “New chat” to keep going, or email Olivier: otousche@gmail.com.',
+        conversation_too_long: 'This conversation has reached its maximum length. Click “New chat” to keep going, or better, talk to Olivier directly: on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) or at otousche@gmail.com.',
         error: 'I can’t answer you right now, there’s a technical issue… In the meantime, you can email Olivier: otousche@gmail.com.',
         write: 'Email Olivier', copy: 'Copy email', copied: 'Copied!', up: 'Helpful answer', down: 'Not helpful', thanks: 'Thanks for your feedback!', caseStudy: 'Read the case study',
       },
@@ -528,6 +582,20 @@ body { position: relative; }
     const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(messages)); } catch (e) {} };
     // A random id per conversation, so the anonymous logs can be read conversation by conversation (never tied to a person)
     let cid = '';
+    // Questions per conversation (agent/handler.ts, LIMITS.turnsPerChat) and the messages the server says are left
+    const TURNS = 19, BURST = 13;  // and api/chat.ts, PER_BURST
+    let serverLeft = Infinity;
+    const leftNow = () => Math.min(serverLeft, TURNS - messages.filter(m => m.role === 'user').length);
+    // The ring beside the name and the limit text: how much the visitor has used, from the tighter of the two limits
+    const quota = () => {
+      const left = Math.max(0, leftNow());
+      const used = left === 0 ? 100 : Math.round(100 * Math.max((TURNS - left) / TURNS, serverLeft === Infinity ? 0 : 1 - serverLeft / BURST));
+      const state = left === 0 ? 'out' : left <= 2 ? 'low' : '';
+      for (const el of [document.getElementById('quota-open'), document.querySelector('.q-bar')]) {
+        el.style.setProperty('--used', used); el.classList.toggle('low', state === 'low'); el.classList.toggle('out', state === 'out');
+      }
+      document.getElementById('quota-left').textContent = T[lang()].quota(left);
+    };
     try { cid = sessionStorage.getItem(KEY + '-id') || ''; } catch (e) {}
     const newCid = () => {
       cid = (crypto.randomUUID?.() || Math.random().toString(36).slice(2) + Date.now().toString(36)).replace(/-/g, '').slice(0, 16);
@@ -682,6 +750,7 @@ body { position: relative; }
     // A full redraw (language switch, reload) shows the bubbles at rest; pop = true lets them pop in
     const render = (pop) => {
       const t = T[lang()];
+      quota();
       thread.innerHTML = '';
       if (greeting === 'shown') add('div', 'msg bot', md(t.hello));
       if (greeting === 'typing') add('div', 'msg bot', TYPING);
@@ -771,6 +840,8 @@ body { position: relative; }
           const { error } = await res.json().catch(() => ({}));
           throw new Error(res.status === 429 ? '429' : error || 'error');
         }
+        // A ready-made answer costs nothing and sends no count: the last one known still holds
+        if (res.headers.has('x-agent-left')) serverLeft = +res.headers.get('x-agent-left');
         const reader = res.body.getReader(), dec = new TextDecoder();
         for (;;) {
           const { done, value } = await reader.read();
@@ -786,12 +857,17 @@ body { position: relative; }
         messages.push({ role: 'assistant', content: answer });
         save();
         extras(messages.length - 1);
-        showChips(next(answer));
+        // Nearing the limit (this conversation's or the visitor's), the agent says so itself and points to Olivier
+        const left = leftNow();
+        quota();
+        if (!ended() && (left === 2 || left === 0)) { await sleep(900); add('div', 'msg bot', md(T[lang()][`left${left}`])); }
+        showChips(left === 0 ? [] : next(answer));
         down();
         if (ended()) await burst();
       } catch (e) {
         // The question did not get an answer: drop it so the history stays question / answer pairs
         messages.pop();
+        if (e.message === '429') { serverLeft = 0; quota(); }
         // The agent says it itself, in its own bubble
         const last = bubbles.at(-1);
         (last.querySelector('.typing') ? last : add('div', 'msg bot', '')).innerHTML = md(T[lang()][e.message] || T[lang()].error);

@@ -22,7 +22,7 @@ const fake = (chunks: string[], stop = 'end_turn', fail = false) => ({ messages:
   };
 } } }) as unknown as Anthropic;
 
-const logs: Record<string, unknown>[] = []; let allowed: boolean | 'paused' = true;
+const logs: Record<string, unknown>[] = []; let allowed: boolean | number | 'paused' = true;
 const store = { allow: async () => allowed, log: async (e: Record<string, unknown>) => { logs.push(e); } };
 const req = (body: unknown, method = 'POST') => new Request('http://x/api/chat', { method, body: method === 'POST' ? JSON.stringify(body) : undefined });
 const ok = (name: string, cond: boolean) => { console.log((cond ? 'PASS ' : 'FAIL ') + name); if (!cond) process.exitCode = 1; };
@@ -82,6 +82,9 @@ ok('rate limited 429', r.status === 429); allowed = true;
 allowed = 'paused';
 r = await handleChat(req(user('x')), { client: fake(['no']), store, visitor: 'v' });
 ok('site cap pauses 503', r.status === 503 && (await r.json()).error === 'paused'); allowed = true;
+allowed = 2;
+r = await handleChat(req(user('x')), { client: fake(['ok']), store, visitor: 'v' });
+ok('messages left sent to the page', r.status === 200 && r.headers.get('x-agent-left') === '2'); await r.text(); allowed = true;
 {
   const long = Array.from({ length: 21 }, (_, i) => ({ role: i % 2 ? 'assistant' : 'user', content: i % 2 ? 'a'.repeat(3000) : 'q' }));
   const v = validate({ messages: long.slice(0, 13) });
@@ -94,9 +97,9 @@ ok('must start with user', validate({ messages: [{ role: 'assistant', content: '
 ok('must end with user', validate({ messages: [{ role: 'user', content: 'a' }, { role: 'assistant', content: 'b' }] }) === 'invalid_messages');
 ok('no system role', validate({ messages: [{ role: 'system', content: 'a' }] }) === 'invalid_messages');
 ok('empty content', validate(user('   ')) === 'invalid_messages');
-const long = Array.from({ length: 31 }, (_, i) => ({ role: i % 2 ? 'assistant' : 'user', content: 'q' }));
-ok('15 turns max', validate({ messages: long }) === 'conversation_too_long');
-const ok29 = validate({ messages: long.slice(0, 29) });
+const long = Array.from({ length: 39 }, (_, i) => ({ role: i % 2 ? 'assistant' : 'user', content: 'q' }));
+ok('19 turns max', validate({ messages: long }) === 'conversation_too_long');
+const ok29 = validate({ messages: long.slice(0, 37) });
 ok('history trimmed to 7', typeof ok29 !== 'string' && ok29.messages.length === 7 && ok29.messages[0].role === 'user');
 
 const saved: Record<string, unknown>[] = [];

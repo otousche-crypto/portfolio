@@ -20,9 +20,9 @@ const token = process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TO
 const redis = url && token ? new Redis({ url, token }) : null;
 
 // Un script qui boucle sur l'API ne doit pas pouvoir vider le crédit Anthropic :
-// 10 messages par 10 minutes et 30 par jour par visiteur ; au-delà de 300 par jour pour tout le site,
+// 13 messages par 10 minutes et 38 par jour par visiteur ; au-delà de 300 par jour pour tout le site,
 // l'agent se met en pause sans appeler le modèle (même si l'abus change d'IP).
-const PER_BURST = 10, PER_DAY = 30, SITE_PER_DAY = 300;
+const PER_BURST = 13, PER_DAY = 38, SITE_PER_DAY = 300;
 
 const store: Store = redis ? (() => {
   const burst = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(PER_BURST, '10 m'), prefix: 'agent:rl' });
@@ -30,23 +30,30 @@ const store: Store = redis ? (() => {
   const site = new Ratelimit({ redis, limiter: Ratelimit.fixedWindow(SITE_PER_DAY, '1 d'), prefix: 'agent:rl-site' });
   return {
     allow: async (visitor) => {
-      if (!(await burst.limit(visitor)).success || !(await day.limit(visitor)).success) return false;
-      return (await site.limit('all')).success || 'paused';
+      const b = await burst.limit(visitor);
+      if (!b.success) return false;
+      const d = await day.limit(visitor);
+      if (!d.success) return false;
+      return (await site.limit('all')).success ? Math.min(b.remaining, d.remaining) : 'paused';
     },
     log: async (entry) => { await redis.lpush('agent:logs', JSON.stringify(entry)); await redis.ltrim('agent:logs', 0, 1999); },
   };
 })() : (() => {
   // Sans Redis, mêmes plafonds tenus en mémoire : moins fiable (une instance ne voit que ses requêtes), mais jamais illimité
   const hits = new Map<string, number[]>();
+  // Le nombre de messages restants après celui-ci, ou false si la limite est atteinte
   const count = (key: string, windowMs: number, max: number) => {
     const now = Date.now(), list = (hits.get(key) ?? []).filter((t) => now - t < windowMs);
     if (list.length >= max) { hits.set(key, list); return false; }
-    list.push(now); hits.set(key, list); return true;
+    list.push(now); hits.set(key, list); return max - list.length;
   };
   return {
     allow: async (visitor) => {
-      if (!count(`b:${visitor}`, 6e5, PER_BURST) || !count(`d:${visitor}`, 864e5, PER_DAY)) return false;
-      return count('site', 864e5, SITE_PER_DAY) || 'paused';
+      const b = count(`b:${visitor}`, 6e5, PER_BURST);
+      if (b === false) return false;
+      const d = count(`d:${visitor}`, 864e5, PER_DAY);
+      if (d === false) return false;
+      return count('site', 864e5, SITE_PER_DAY) !== false ? Math.min(b, d) : 'paused';
     },
     log: async () => {},
   };
