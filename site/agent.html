@@ -373,7 +373,9 @@ body { position: relative; }
     };
     const draw = now => {
       const t = still ? 1e9 : now - t0;
-      let busy = t >= 0 && t < 2600;  // t is negative until the bust has scrolled into view
+      // t is -Infinity until the bust has scrolled into view (t0 = Infinity). Once started, the first frame can be stamped a
+      // few ms before t0 (the sheet's cue lands mid-frame): that slightly negative t must keep the loop going
+      let busy = t0 !== Infinity && t < 2600;
       const u = gone === null ? -1 : now - gone;
       if (u >= 0 && u < 2600) busy = true;
       ctx.clearRect(0, 0, cv.width, cv.height);
@@ -424,6 +426,9 @@ body { position: relative; }
       size();
       if (still || !('IntersectionObserver' in window)) return start();
       t0 = Infinity;
+      // In the sheet, its opening is the cue: an observer would judge the bust while the sheet is still clipped to the
+      // composer's size, and Safari doesn't always look again, so the face would never compose
+      if (window.sheetClosed !== undefined) return start();
       const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); start(); } }, { threshold: .35 });
       io.observe(cv);
     });
