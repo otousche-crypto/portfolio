@@ -13,8 +13,9 @@
 .agd { position: fixed; z-index: 90; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; padding: 0 48px max(16px, env(safe-area-inset-bottom, 0px)); pointer-events: none; transition: opacity .25s, translate .25s; }
 .agd.away { opacity: 0; translate: 0 8px; }
 /* It waits a beat after the page loads, then pops out of its bottom edge with an overshoot, like the agent's bubbles */
+/* No fill: an animation still applied after it ends stops the glass from blurring the page behind it */
 .agd.later { visibility: hidden; }
-.agd.in .agd-field { animation: agd-in .32s cubic-bezier(.2,.9,.3,1.35) both; transform-origin: 50% 100%; }
+.agd.in .agd-field { animation: agd-in .32s cubic-bezier(.2,.9,.3,1.35); transform-origin: 50% 100%; }
 @keyframes agd-in { from { opacity: 0; transform: translateY(10px) scale(.5); } 40% { opacity: 1; } }
 .agd-field { pointer-events: auto; position: relative; isolation: isolate; width: min(640px, 100%); display: flex; align-items: center; gap: 8px; padding: 5px 5px 5px 17px; border-radius: 26px; border: 1px solid rgba(255,255,255,.85); background: none; cursor: text; text-align: left;
   font: 16px/1.45 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #6e6e76; -webkit-font-smoothing: antialiased;
