@@ -120,9 +120,11 @@ Il a trouvé un cabinet d'avocats spécialisé, travaillé avec le prestataire d
 Résultat : un portefeuille unique, toutes devises, lancé dans plusieurs pays à la fois. Le détail est dans l'[étude de cas Altered](https://www.oliviertousche.com/equinox.html).
 [[Son approche du design ? | Son expérience en recherche UX ?]]`,
 
-  'pourquoi cet agent ia ?': `Parce que l'IA entre dans le quotidien, et que la fenêtre de conversation devient une interaction à part entière. Plutôt que d'en parler, Olivier fait sa proposition : cet agent est son bac à sable pour produire, tester et itérer.
+  'pourquoi cet agent ia ?': `Olivier m'a conçu entièrement, from scratch. Il a imaginé chaque interaction : mon ton, les questions suggérées sous mes réponses, ou le fait de pouvoir me parler depuis n'importe quelle page du site.
 ---
-Il interroge aussi l'avenir du métier : son IA sera-t-elle un jour la page d'accueil de son portfolio ? Finira-t-elle par le remplacer ?
+Pourquoi ? Parce que la fenêtre de conversation devient une interaction à part entière. Plutôt que d'en parler, il fait sa proposition : je suis son bac à sable pour produire, tester et itérer.
+---
+Pour en savoir plus, cliquez sur le « i » en haut de cette fenêtre.
 [[Comment utilise-t-il l’IA ? | Sa vision produit ?]]`,
 
   'tell me about go moonbound': `Go MoonBound turns your Strava activities into a trip to the Moon: every run, ride, swim or walk places you on the 384,400 km between Earth and the Moon, in a 3D scene.
@@ -146,9 +148,11 @@ He found a specialised law firm, worked with the payment provider, and used desi
 The result: a single wallet, all currencies, launched in several countries at once. Details in the [Altered case study](https://www.oliviertousche.com/equinox.html).
 [[His design approach? | His UX research experience?]]`,
 
-  'why this ai agent?': `Because AI is becoming part of everyday life, and the chat window an interaction in its own right. Rather than talking about it, Olivier makes his own take: this agent is his sandbox to build, test and iterate.
+  'why this ai agent?': `Olivier designed me entirely, from scratch. He imagined every interaction: my tone, the questions suggested under my answers, and being able to talk to me from any page of the site.
 ---
-It also questions where the job is heading: will his AI one day be the home page of his portfolio? Will it end up replacing him?
+Why? Because the chat window is becoming an interaction in its own right. Rather than talking about it, he makes his own take: I'm his sandbox to build, test and iterate.
+---
+To find out more, click the “i” at the top of this window.
 [[How does he use AI? | His product vision?]]`,
 };
 
