@@ -585,7 +585,10 @@ body { position: relative; }
     };
     // A closing answer ([[FIN]]) is always a single bubble
     const split = text => /\[\[\s*(FIN|END)\s*\]\]\s*$/.test(text) ? [parts(text).join('\n')] : parts(text);
-    const parts = text => body(text).replace(/^\s*_meta:[^\n]*(\n+|$)/, '').replace(/\n-{1,3}[ \t]*$/, '').split(/\n[ \t]*-{3,}[ \t]*(?:\n|$)/);
+    const parts = text => body(text).replace(/^\s*_meta:[^\n]*(\n+|$)/, '').replace(/\n(-{1,3}|~{1,3})[ \t]*$/, '').split(/\n[ \t]*(?:-{3,}|~{3,})[ \t]*(?:\n|$)/);
+    // A ~~~ separator instead of --- is a dramatic pause: the agent pretends to give in ("Sure!"), then takes its time
+    // before the next bubble. pausedBefore(text, i): part i follows a ~~~
+    const pausedBefore = (text, i) => [...body(text).matchAll(/\n[ \t]*(-{3,}|~{3,})[ \t]*(?=\n|$)/g)][i - 1]?.[1][0] === '~';
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     const add = (tag, cls, html) => {
@@ -755,7 +758,7 @@ body { position: relative; }
           const type = () => {
             if (!first) bubbles.push(add('div', 'msg bot', TYPING));
             down();
-            const wait = first ? t0 + beat(parts[0]) - performance.now() : beat(split(answer)[shown] || '');
+            const wait = first ? t0 + beat(parts[0]) - performance.now() : pausedBefore(answer, shown) ? 3500 : beat(split(answer)[shown] || '');
             setTimeout(() => { shown++; opening = false; paint(); }, Math.max(0, wait));
           };
           if (first) type(); else setTimeout(type, 500);
