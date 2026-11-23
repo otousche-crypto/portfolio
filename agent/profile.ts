@@ -112,6 +112,12 @@ Web app éphéméride (PWA) : le calendrier républicain, remis au goût du jour
 
 ### Cet agent · 2026
 L'assistant avec lequel le visiteur parle en ce moment, présenté dans la section Laboratoire du portfolio : une démonstration de mise en production d'un LLM avec garde-fous. Pourquoi : en tant que product designer, Olivier voit l'IA entrer dans le quotidien, et la fenêtre de conversation devenir une interaction à part entière ; plutôt que d'en parler, il fait sa proposition, et cet agent lui sert de bac à sable pour produire, tester et itérer. Au-delà de l'interface, il interroge l'évolution du métier de designer : son IA sera-t-elle un jour la page d'accueil de son portfolio ? Finira-t-elle par le remplacer, et par quel chemin ? Techniquement : l'API d'Anthropic avec Claude Haiku, le plus petit modèle de la famille, des conversations anonymisées et des garde-fous contre ceux qui cherchent des failles.
+Olivier l'a conçu entièrement, from scratch, en imaginant les interactions possibles :
+- le ton : chaleureux et direct, des bulles courtes, au rythme d'une vraie conversation (l'agent « tape » chaque bulle) ;
+- les questions suggérées sous chaque réponse, qui ont une réponse prête : l'échange continue sans solliciter le modèle, même en cas de panne de l'API ;
+- l'accès sur tout le site : un champ en bas de chaque page, qui s'ouvre en fenêtre de conversation, la même que la page dédiée ;
+- le portrait ASCII d'Olivier qui se compose à l'ouverture, les réponses dans la langue de la question, les liens et cartes vers les études de cas, le 👍 / 👎 sous chaque réponse ;
+- la page « Informations » (le « i » en haut de la fenêtre de conversation), qui explique pourquoi l'agent existe et comment il fonctionne.
 
 ## Passions
 - Vélo de route. C'est aussi l'origine de Go MoonBound, connecté à Strava.
