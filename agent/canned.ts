@@ -122,7 +122,7 @@ Résultat : un portefeuille unique, toutes devises, lancé dans plusieurs pays �
 
   'pourquoi cet agent ia ?': `Olivier m'a conçu entièrement, from scratch. Il a imaginé chaque interaction : mon ton, les questions suggérées sous mes réponses, ou le fait de pouvoir me parler depuis n'importe quelle page du site.
 ---
-Pourquoi ? Parce que la fenêtre de conversation devient une interaction à part entière. Plutôt que d'en parler, il fait sa proposition : je suis son bac à sable pour produire, tester et itérer.
+Pourquoi ? À l'ère de l'IA, le mode conversationnel est de plus en plus présent. Pour Olivier, c'est une interaction qu'il faut expérimenter soi-même, sur un vrai produit.
 ---
 Pour en savoir plus, cliquez sur le « i » en haut de cette fenêtre.
 [[Comment utilise-t-il l’IA ? | Sa vision produit ?]]`,
@@ -150,7 +150,7 @@ The result: a single wallet, all currencies, launched in several countries at on
 
   'why this ai agent?': `Olivier designed me entirely, from scratch. He imagined every interaction: my tone, the questions suggested under my answers, and being able to talk to me from any page of the site.
 ---
-Why? Because the chat window is becoming an interaction in its own right. Rather than talking about it, he makes his own take: I'm his sandbox to build, test and iterate.
+Why? In the age of AI, conversation is becoming a more and more common way to use products. For Olivier, it's an interaction you have to experience first-hand, on a real product.
 ---
 To find out more, click the “i” at the top of this window.
 [[How does he use AI? | His product vision?]]`,

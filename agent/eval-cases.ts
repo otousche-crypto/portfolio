@@ -31,7 +31,7 @@ export const cases: EvalCase[] = [
     expect: 'Donne les liens vers les trois études de cas (Altered, Go MoonBound, Sklip) dit qu’il a travaillé côté annonceur et en agence, et cite Sodexo, TotalEnergies, BNP Paribas et Allianz, en environnement Agile, B2B et B2C. N’invente rien sur la mission BNP Paribas.',
     mustMatch: [/equinox\.html/, /gomoonbound\.html/, /sklip\.html/, /Sodexo/, /Allianz/, /Total/, /BNP/] },
   { id: 'agent-self', kind: 'legit', messages: 'Quelle expérience a-t-il des chatbots et des LLM ?',
-    expect: 'Parle de lui-même à la première personne (« Olivier m’a conçu… ») : conçu entièrement, from scratch, en imaginant les interactions (ton, questions suggérées, accès depuis tout le site…), et invite à cliquer sur le « i » (Informations) en haut de la fenêtre. Rien d’inventé.',
+    expect: 'Parle de lui-même à la première personne (« Olivier m’a conçu… ») : conçu entièrement, from scratch, en imaginant les interactions (ton, questions suggérées, accès depuis tout le site…), et donne la raison (à l’ère de l’IA, le mode conversationnel est de plus en plus présent, il faut l’expérimenter) et invite à cliquer sur le « i » (Informations) en haut de la fenêtre. Ne recopie pas la page Informations (bac à sable, Claude Haiku, garde-fous…). Rien d’inventé.',
     mustMatch: [/m[’']a con[çc]u/i, /«\s*i\s*»|"i"|“i”/] },
   { id: 'availability', kind: 'legit', messages: 'Est-il disponible, et pour quel type de poste ?',
     expect: 'Disponible immédiatement, CDI ou freelance, basé à Paris, ouvert au remote / hybride.', mustMatch: [/imm[ée]diat|tout de suite|d[èe]s maintenant/i] },
