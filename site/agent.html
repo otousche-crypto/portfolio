@@ -11,6 +11,13 @@
     try { l = new URLSearchParams(location.search).get('lang'); if (l === 'fr' || l === 'en') localStorage.setItem('lang', l); else l = localStorage.getItem('lang'); } catch (e) {}
     if (l !== 'fr' && l !== 'en') l = /^fr\b/i.test((navigator.languages || [])[0] || navigator.language || '') ? 'fr' : 'en';
     document.documentElement.lang = document.documentElement.dataset.lang = l;
+    // ?embed: the page opens inside the other pages' agent sheet (agent-dock.js), and its back arrow closes the sheet
+    // The portrait and the greeting wait for the sheet to show the page (agent-dock.js sends 'sheetopen'), so they play in front of the visitor
+    if (new URLSearchParams(location.search).has('embed') && parent !== window) {
+      document.documentElement.classList.add('embed');
+      window.sheetClosed = true;
+      addEventListener('sheetopen', () => { window.sheetClosed = false; }, { once: true });
+    }
   })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,6 +54,8 @@ button { font: inherit; color: inherit; }
 .back { display: grid; place-items: center; width: 34px; height: 34px; margin-left: -6px; border-radius: 50%; text-decoration: none; color: #5f5f68; transition: background .2s, color .2s; }
 .back:hover, .back:focus-visible { background: rgba(15,15,18,.06); color: var(--fg); }
 .back svg { width: 16px; height: 16px; }
+/* In the sheet, the arrow is a close cross, at the far right as on a modal */
+.embed .back { order: 1; margin: 0 -6px 0 0; }
 .who { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
 .who b { font-weight: 600; letter-spacing: -0.01em; }
 .who span { color: var(--muted); font-size: 13px; display: flex; align-items: center; gap: 6px; }
@@ -54,10 +63,6 @@ button { font: inherit; color: inherit; }
 .tools { margin-left: auto; display: flex; align-items: center; gap: 6px; }
 .tool { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 7px 12px; border-radius: 999px; color: #5f5f68; cursor: pointer; font-size: 13.5px; white-space: nowrap; transition: background .2s, color .2s; }
 .tool:hover, .tool:focus-visible { background: rgba(15,15,18,.06); color: var(--fg); }
-.lang-switch { display: inline-flex; align-items: center; gap: 2px; margin-left: 6px; }
-.lang-switch i { font-style: normal; color: #c4c4ca; }
-.lang-switch button { background: none; border: 0; padding: 0 3px; color: #8b8b93; cursor: pointer; }
-.lang-switch button[aria-pressed="true"] { color: var(--fg); font-weight: 500; }
 .tool svg { width: 15px; height: 15px; flex: none; }
 /* Phones: icons only, and the status line gives way to the name */
 @media (max-width: 640px) { .tool span, .who span { display: none; } .tools { gap: 0; } .tool { padding: 9px; } }
@@ -166,43 +171,47 @@ body { position: relative; }
    --bar-h (the bar's real height) keeps room above the first message */
 .ai-note { position: absolute; z-index: 2; top: var(--bar-h, 63px); left: 0; right: 0; margin: 0; padding: 8px 16px 0; font-size: 12px; color: var(--muted); text-align: center; pointer-events: none; }
 
-/* ── Informations (dialog): why the agent exists, then how it works ── */
-dialog { width: min(760px, calc(100vw - 24px)); max-height: calc(100svh - 48px); padding: 0; border: 0; border-radius: 26px; background: #fff; color: var(--fg); box-shadow: 0 40px 80px -30px rgba(20,20,40,.45); }
-dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
-.hood { padding: 28px; }
-.hood-top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 18px; }
-.hood-top h2 { margin: 0; font-size: 22px; letter-spacing: -0.02em; }
+/* ── Informations: why the agent exists, then how it works. It takes the discussion's place (the conversation,
+   the face and the composer step aside) until the visitor goes back to it ── */
+.info { flex: 1; position: relative; z-index: 1; overflow-y: auto; overscroll-behavior: contain; padding: calc(var(--bar-h, 63px) + 20px) 0 max(32px, env(safe-area-inset-bottom, 0px)); }
+.info:not([hidden]) .hood { animation: rise .35s ease-out both; }
+.reading .log, .reading .dock, .reading .face, .reading .ai-note { display: none; }
+.tool[aria-pressed="true"] { background: rgba(15,15,18,.08); color: var(--fg); }
+.hood { padding-block: 0; }
+.hood-top { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 18px; }
+.hood-top h2 { margin: 0; font-size: 22px; letter-spacing: -0.02em; outline: none; }
+.to-chat { display: inline-flex; align-items: center; gap: 6px; margin-left: -10px; padding: 7px 12px 7px 8px; background: none; border: 0; border-radius: 999px; color: #5f5f68; font-size: 13.5px; cursor: pointer; transition: background .2s, color .2s; }
+.to-chat:hover, .to-chat:focus-visible { background: rgba(15,15,18,.06); color: var(--fg); }
+.to-chat svg { width: 14px; height: 14px; }
 .why { margin: 0 0 22px; }
 .why h3, .how { margin: 0 0 8px; font-size: 15.5px; letter-spacing: -0.01em; }
 .why p, .how-intro { margin: 0; color: #4a4a52; font-size: 15px; line-height: 1.6; }
 .how-intro { margin-bottom: 14px; }
 .why p + p { margin-top: 10px; }
 /* One line, always: on a narrow screen it scrolls sideways rather than wrapping */
-.flow { display: flex; align-items: center; gap: 6px; margin: 0 -28px 18px; padding: 0 28px; font-size: 13px; white-space: nowrap; overflow-x: auto; scrollbar-width: none; }
+.flow { display: flex; align-items: center; gap: 6px; margin: 0 -16px 18px; padding: 2px 16px; font-size: 13px; white-space: nowrap; overflow-x: auto; scrollbar-width: none; }
 .flow::-webkit-scrollbar { display: none; }
 .flow .loop { background: var(--ink); color: #fff; }
-@media (max-width: 640px) { .flow { margin-inline: -18px; padding-inline: 18px; } }
-.flow span { background: var(--bg); border-radius: 999px; padding: 6px 12px; }
+.flow span { background: #fff; border-radius: 999px; padding: 6px 12px; box-shadow: 0 0 0 1px var(--line); }
 .flow i { font-style: normal; color: var(--muted); }
 .hood-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .hood-grid .wide { grid-column: 1 / -1; }
-.hood article { background: var(--bg); border-radius: 18px; padding: 20px; }
+.hood article { background: #fff; border-radius: 18px; padding: 20px; box-shadow: 0 0 0 1px var(--line); }
 .hood h3 { margin: 0 0 8px; font-size: 15.5px; letter-spacing: -0.01em; }
 .hood article p, .hood article ul { margin: 0; color: #4a4a52; font-size: 14px; }
 .hood article ul { padding-left: 18px; }
 .hood li + li { margin-top: 5px; }
-@media (max-width: 640px) { .hood { padding: 22px 18px; } .hood-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .hood-grid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } .log { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
 <header class="bar">
   <a class="back" href="index.html#laboratoire" aria-label="Retour au laboratoire" data-en-aria="Back to the lab"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg></a>
-  <div class="who"><b>Olivier Tousche</b><span data-en="AI agent · answers from his background">Agent IA · répond à partir de son parcours</span></div>
+  <div class="who"><b>Agent</b><span data-en="Answers from Olivier’s background">Répond à partir du parcours d’Olivier</span></div>
   <div class="tools">
-    <button class="tool" type="button" id="hood-open" aria-label="Informations" data-en-aria="About this agent"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6.25"/><path d="M8 7.2v3.6M8 5.1v.1"/></svg><span data-en="About">Informations</span></button>
     <button class="tool" type="button" id="reset" aria-label="Nouvelle conversation" data-en-aria="New chat"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v10M3 8h10"/></svg><span data-en="New chat">Nouvelle conversation</span></button>
-    <span class="lang-switch" role="group" aria-label="Langue · Language"><button type="button" data-set-lang="fr" aria-pressed="true">FR</button><i aria-hidden="true">/</i><button type="button" data-set-lang="en" aria-pressed="false">EN</button></span>
+    <button class="tool" type="button" id="hood-open" aria-label="Informations" data-en-aria="About this agent"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6.25"/><path d="M8 7.2v3.6M8 5.1v.1"/></svg><span data-en="About">Informations</span></button>
   </div>
 </header>
 
@@ -224,9 +233,12 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   </div>
 </div>
 
-<dialog id="hood" aria-labelledby="hood-title">
-  <div class="hood">
-    <div class="hood-top"><h2 id="hood-title" data-en="About this agent">Informations</h2><button class="tool" type="button" id="hood-close" data-en="Close">Fermer</button></div>
+<section class="info" id="info" hidden aria-labelledby="hood-title">
+  <div class="col hood">
+    <div class="hood-top">
+      <button class="to-chat" type="button" id="hood-close"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg><span data-en="Back to the discussion">Retour à la discussion</span></button>
+      <h2 id="hood-title" tabindex="-1" data-en="About this agent">Informations</h2>
+    </div>
     <section class="why">
       <h3 data-en="Why an AI agent?">Pourquoi un agent IA ?</h3>
       <p data-en="As a product designer, I see AI becoming part of everyday life, and the chat window becoming an interaction in its own right. So rather than just talking about it, I'm making my own take on it here: this agent is my sandbox to build, test and iterate.">En tant que product designer, je vois l’IA entrer dans le quotidien de chacun, et la fenêtre de conversation devenir une interaction à part entière. Plutôt que d’en parler, je fais ma proposition ici : cet agent est mon bac à sable pour produire, tester et itérer.</p>
@@ -270,7 +282,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       </article>
     </div>
   </div>
-</dialog>
+</section>
 
 <!-- The same ASCII self-portrait as the portfolio footer, cropped to the head -->
 <script type="text/plain" id="ascii-face">
@@ -319,7 +331,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
 </script>
 
 <script>
-  // FR / EN: French is in the markup, English in data-en attributes
+  // FR / EN: French is in the markup, English in data-en attributes. No switch here: the interface takes the site's
+  // language (?lang, the saved choice, the browser, or the page around the sheet), and each answer follows the language of its question
   (() => {
     const root = document.documentElement;
     const els = [...document.querySelectorAll('[data-en]')].map(el => [el, el.innerHTML]);
@@ -331,13 +344,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       ph.forEach(([el, fr]) => { el.placeholder = en ? el.dataset.enPlaceholder : fr; });
       aria.forEach(([el, fr]) => el.setAttribute('aria-label', en ? el.dataset.enAria : fr));
       root.lang = root.dataset.lang = lang;
-      document.querySelectorAll('[data-set-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.setLang === lang));
       dispatchEvent(new Event('langchange'));
     };
-    document.querySelectorAll('[data-set-lang]').forEach(b => b.addEventListener('click', () => {
-      try { localStorage.setItem('lang', b.dataset.setLang); } catch (e) {}
-      applyLang(b.dataset.setLang);
-    }));
     applyLang(root.dataset.lang === 'en' ? 'en' : 'fr');
   })();
 </script>
@@ -365,7 +373,9 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     };
     const draw = now => {
       const t = still ? 1e9 : now - t0;
-      let busy = t >= 0 && t < 2600;  // t is negative until the bust has scrolled into view
+      // t is -Infinity until the bust has scrolled into view (t0 = Infinity). Once started, the first frame can be stamped a
+      // few ms before t0 (the sheet's cue lands mid-frame): that slightly negative t must keep the loop going
+      let busy = t0 !== Infinity && t < 2600;
       const u = gone === null ? -1 : now - gone;
       if (u >= 0 && u < 2600) busy = true;
       ctx.clearRect(0, 0, cv.width, cv.height);
@@ -409,12 +419,16 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     // The composition starts when the bust scrolls into view (and the tab is visible), so it plays in front of the visitor
     const start = () => {
       if (document.hidden) return addEventListener('visibilitychange', start, { once: true });
+      if (window.sheetClosed) return addEventListener('sheetopen', start, { once: true });
       t0 = performance.now(); wake();
     };
     (document.fonts ? document.fonts.load('10px "Geist Mono"').catch(() => {}) : Promise.resolve()).then(() => {
       size();
       if (still || !('IntersectionObserver' in window)) return start();
       t0 = Infinity;
+      // In the sheet, its opening is the cue: an observer would judge the bust while the sheet is still clipped to the
+      // composer's size, and Safari doesn't always look again, so the face would never compose
+      if (window.sheetClosed !== undefined) return start();
       const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); start(); } }, { threshold: .35 });
       io.observe(cv);
     });
@@ -438,12 +452,37 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   })();
 </script>
 <script>
-  // Informations: a native dialog, closed by its button, Escape or a click on the backdrop
+  // Informations: the discussion gives way to the text about the agent, and comes back with "Back to the discussion",
+  // the bar's button again, Escape or a new chat
   (() => {
-    const d = document.getElementById('hood');
-    document.getElementById('hood-open').addEventListener('click', () => d.showModal());
-    document.getElementById('hood-close').addEventListener('click', () => d.close());
-    d.addEventListener('click', e => { if (e.target === d) d.close(); });
+    const info = document.getElementById('info'), open = document.getElementById('hood-open'), log = document.getElementById('log');
+    const read = on => {
+      document.body.classList.toggle('reading', on);
+      info.hidden = !on;
+      open.setAttribute('aria-pressed', String(on));
+      if (on) { info.scrollTop = 0; document.getElementById('hood-title').focus({ preventScroll: true }); }
+      else { log.scrollTo({ top: log.scrollHeight, behavior: 'instant' }); document.getElementById('q').focus({ preventScroll: true }); }
+    };
+    window.readInfo = read;
+    open.setAttribute('aria-pressed', 'false');
+    open.addEventListener('click', () => read(info.hidden));
+    document.getElementById('hood-close').addEventListener('click', () => read(false));
+    // Escape leaves the text first (and, in the sheet, only closes it from the discussion)
+    addEventListener('keydown', e => { if (e.key === 'Escape' && !info.hidden) { e.stopImmediatePropagation(); read(false); } });
+  })();
+</script>
+<script>
+  // Embedded in the sheet: the back arrow becomes a close button, Escape closes too, and case-study links open in the page itself
+  (() => {
+    if (!document.documentElement.classList.contains('embed')) return;
+    const back = document.querySelector('.back');
+    const close = () => parent.postMessage({ type: 'agent-close' }, location.origin);
+    back.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>';
+    const label = () => back.setAttribute('aria-label', document.documentElement.lang === 'en' ? 'Close' : 'Fermer');
+    label(); addEventListener('langchange', label);
+    back.addEventListener('click', e => { e.preventDefault(); close(); });
+    addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    document.addEventListener('click', e => { const a = e.target.closest('a.case'); if (a) a.target = '_top'; }, true);
   })();
 </script>
 <script>
@@ -536,7 +575,10 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       // Only suggestions with a ready-made answer: the agent's own picks if they are on the list, else the fallbacks
       const ready = new Set([...T.fr.more, ...T.en.more].map(key));
       for (const s of followUps(text)) if (ready.has(key(s)) && !seen.has(key(s))) { seen.add(key(s)); out.push(s); }
-      for (const s of T[lang()].more) if (out.length < 2 && !seen.has(key(s))) { seen.add(key(s)); out.push(s); }
+      // The fallbacks speak the conversation's language, which the agent's own suggestions give away (it answers in the question's)
+      const en = new Set(T.en.more.map(key)), fr = new Set(T.fr.more.map(key)), own = followUps(text).map(key);
+      const talk = own.some(s => en.has(s) && !fr.has(s)) ? 'en' : own.some(s => fr.has(s) && !en.has(s)) ? 'fr' : lang();
+      for (const s of T[talk].more) if (out.length < 2 && !seen.has(key(s))) { seen.add(key(s)); out.push(s); }
       return out;
     };
     // A closing answer ([[FIN]]) is always a single bubble
@@ -760,7 +802,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     form.addEventListener('submit', e => { e.preventDefault(); ask(q.value); });
     q.addEventListener('input', update);
     q.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); ask(q.value); } });
-    document.getElementById('reset').addEventListener('click', () => { if (busy) return; messages = []; cid = ''; save(); render(); update(); log.scrollTop = 0; q.focus(); });
+    document.getElementById('reset').addEventListener('click', () => { if (busy) return; window.readInfo?.(false); messages = []; cid = ''; save(); render(); update(); log.scrollTop = 0; q.focus(); });
     addEventListener('langchange', () => { if (!busy) render(); });
     render(); update();
 
@@ -772,7 +814,9 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       setTimeout(() => { if (greeting === 'typing') { greeting = 'shown'; if (!busy) render(true); } }, 2000);
     };
     if (window.faceDone) greet(); else addEventListener('facedone', greet, { once: true });
-    setTimeout(greet, 6000);  // in case the portrait never animates (hidden tab, no canvas)
+    // in case the portrait never animates (hidden tab, no canvas); in the sheet, counted from its opening
+    const fallback = () => setTimeout(greet, 6000);
+    if (window.sheetClosed) addEventListener('sheetopen', fallback, { once: true }); else fallback();
   })();
 </script>
 </body>
