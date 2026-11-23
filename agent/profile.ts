@@ -10,7 +10,8 @@ export const profile = `
 Product designer depuis 2017, en grand groupe, en agence et en startup, sur des SaaS B2B et B2C et des écosystèmes phygitaux. Expertise en architecture de l'information, UX research et design system ; il pilote la conception de bout en bout, du cadrage stratégique à la livraison technique, y compris sur des enjeux réglementaires et internationaux. Il articule stratégie, recherche et design pour transformer des irritants en produits clairs. Depuis 2025, il construit aussi ses propres produits avec des outils d'IA (Claude Code, Cursor) : moins de transferts entre design et code, des produits en production plus vite.
 
 ## Références et contextes
-- Grands comptes : Sodexo, TotalEnergies et Allianz (projets menés en agence chez We Digital Garden, détaillés dans « Expériences »).
+- Côté annonceur (en interne, chez Equinox et Oodrive) comme en agence (We Digital Garden).
+- En agence, pour des clients comme Sodexo, TotalEnergies, BNP Paribas ou Allianz. Les missions Sodexo, TotalEnergies et Allianz sont détaillées dans « Expériences » ; pour BNP Paribas, le profil ne dit rien de plus : Olivier pourra en parler en échange direct.
 - Contextes : environnements Agile (Scrum), en B2B comme en B2C, en grand groupe, en agence et en startup.
 
 ## Qui il est
