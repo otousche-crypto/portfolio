@@ -199,6 +199,7 @@ body { position: relative; }
 .hood article { background: #fff; border-radius: 18px; padding: 20px; box-shadow: 0 0 0 1px var(--line); }
 .hood h3 { margin: 0 0 8px; font-size: 15.5px; letter-spacing: -0.01em; }
 .hood article p, .hood article ul { margin: 0; color: #4a4a52; font-size: 14px; }
+.hood article p + p { margin-top: 8px; }
 .hood article ul { padding-left: 18px; }
 .hood li + li { margin-top: 5px; }
 @media (max-width: 640px) { .hood-grid { grid-template-columns: 1fr; } }
@@ -256,7 +257,8 @@ body { position: relative; }
     <div class="hood-grid">
       <article class="wide">
         <h3 data-en="A hybrid model">Un modèle hybride</h3>
-        <p data-en="Below every answer, suggestions offer questions in one click. Questions you write yourself go through Anthropic’s API; the suggestions, on the other hand, have a pre-written answer. The result: the agentic experience feels continuous, while only the questions the visitor writes call on the model. A click on a suggestion keeps the conversation going without using a single token. It also keeps the conversation going when Anthropic’s API runs into a technical issue.">Sous chaque réponse, des suggestions proposent des questions en un clic. Les questions que vous rédigez vous-même passent par l’API d’Anthropic ; les suggestions, elles, ont une réponse pré-enregistrée. Résultat : l’expérience agentique semble continue, alors que seules les questions rédigées par le visiteur sollicitent le modèle. Un clic sur une suggestion, et l’échange se poursuit sans consommer de token. Cela permet aussi de continuer à échanger en cas de problème technique lié à l’API d’Anthropic.</p>
+        <p data-en="Below every answer, suggestions offer questions in one click. Questions you write yourself go through Anthropic’s API; the suggestions, on the other hand, have a pre-written answer.">Sous chaque réponse, des suggestions proposent des questions en un clic. Les questions que vous rédigez vous-même passent par l’API d’Anthropic ; les suggestions, elles, ont une réponse pré-enregistrée.</p>
+        <p data-en="<b>The result:</b> the agentic experience feels continuous, while only the questions the visitor writes call on the model. A click on a suggestion keeps the conversation going without using a single token. It also keeps the conversation going when Anthropic’s API runs into a technical issue."><b>Résultat :</b> l’expérience agentique semble continue, alors que seules les questions rédigées par le visiteur sollicitent le modèle. Un clic sur une suggestion, et l’échange se poursuit sans consommer de token. Cela permet aussi de continuer à échanger en cas de problème technique lié à l’API d’Anthropic.</p>
       </article>
       <article>
         <h3 data-en="One source of truth">Une seule source de vérité</h3>
