@@ -4,7 +4,7 @@
   if (/\/agent(\.html)?$/.test(location.pathname)) return;
   const root = document.documentElement;
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const T = { fr: { ph: 'Posez vos questions à mon agent IA', open: 'Ouvrir l’agent IA', title: 'Agent IA' }, en: { ph: 'Ask my AI agent anything', open: 'Open the AI agent', title: 'AI agent' } };
+  const T = { fr: { ph: 'Une question sur mon parcours ?', open: 'Ouvrir l’agent IA', title: 'Agent IA' }, en: { ph: 'Any question about my work?', open: 'Open the AI agent', title: 'AI agent' } };
   const lang = () => root.lang === 'en' ? 'en' : 'fr';
 
   document.head.insertAdjacentHTML('beforeend', `<style>
