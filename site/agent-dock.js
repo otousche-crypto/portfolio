@@ -28,6 +28,15 @@
 .agd-send { flex: none; width: 40px; height: 40px; border-radius: 50%; background: #2c2d32; color: #fff; display: grid; place-items: center; opacity: .25; }
 .agd-send svg { width: 18px; height: 18px; }
 .agd-space { height: 96px; }
+/* Phones: a slimmer field, closer to the bottom edge, so it hides as little of the page as possible */
+@media (max-width: 640px) {
+  .agd { padding: 0 12px max(10px, env(safe-area-inset-bottom, 0px)); }
+  .agd-field { padding: 3px 3px 3px 14px; font-size: 15px; }
+  .agd-ph { padding: 7px 0; }
+  .agd-send { width: 32px; height: 32px; }
+  .agd-send svg { width: 15px; height: 15px; }
+  .agd-space { height: 64px; }
+}
 /* The sheet: full width, a strip of the page left visible on top */
 .agd-modal { position: fixed; inset: 0; z-index: 1000; }
 .agd-modal[hidden] { display: none; }
