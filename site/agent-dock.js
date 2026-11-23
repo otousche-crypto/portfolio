@@ -72,6 +72,8 @@
   const reveal = () => {
     if (!open || !loaded) return;
     frame.animate([{ opacity: 0 }, { opacity: 1 }], { duration: still ? 0 : 260, easing: 'ease-out', fill: 'forwards' });
+    // The page is on screen: its portrait composes itself, then the agent says hello
+    agent().dispatchEvent(new (agent().Event)('sheetopen'));
     sync();
   };
 

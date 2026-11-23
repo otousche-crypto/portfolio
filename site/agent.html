@@ -12,7 +12,12 @@
     if (l !== 'fr' && l !== 'en') l = /^fr\b/i.test((navigator.languages || [])[0] || navigator.language || '') ? 'fr' : 'en';
     document.documentElement.lang = document.documentElement.dataset.lang = l;
     // ?embed: the page opens inside the other pages' agent sheet (agent-dock.js), and its back arrow closes the sheet
-    if (new URLSearchParams(location.search).has('embed') && parent !== window) document.documentElement.classList.add('embed');
+    // The portrait and the greeting wait for the sheet to show the page (agent-dock.js sends 'sheetopen'), so they play in front of the visitor
+    if (new URLSearchParams(location.search).has('embed') && parent !== window) {
+      document.documentElement.classList.add('embed');
+      window.sheetClosed = true;
+      addEventListener('sheetopen', () => { window.sheetClosed = false; }, { once: true });
+    }
   })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -411,6 +416,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     // The composition starts when the bust scrolls into view (and the tab is visible), so it plays in front of the visitor
     const start = () => {
       if (document.hidden) return addEventListener('visibilitychange', start, { once: true });
+      if (window.sheetClosed) return addEventListener('sheetopen', start, { once: true });
       t0 = performance.now(); wake();
     };
     (document.fonts ? document.fonts.load('10px "Geist Mono"').catch(() => {}) : Promise.resolve()).then(() => {
@@ -788,7 +794,9 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       setTimeout(() => { if (greeting === 'typing') { greeting = 'shown'; if (!busy) render(true); } }, 2000);
     };
     if (window.faceDone) greet(); else addEventListener('facedone', greet, { once: true });
-    setTimeout(greet, 6000);  // in case the portrait never animates (hidden tab, no canvas)
+    // in case the portrait never animates (hidden tab, no canvas); in the sheet, counted from its opening
+    const fallback = () => setTimeout(greet, 6000);
+    if (window.sheetClosed) addEventListener('sheetopen', fallback, { once: true }); else fallback();
   })();
 </script>
 </body>
