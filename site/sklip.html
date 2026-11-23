@@ -407,6 +407,7 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 .cs-meta dd { margin: 0; font-size: 15px; }
 .cs-hero { margin: 48px 0 0; border-radius: var(--radius); overflow: hidden; background: var(--hero-bg); aspect-ratio: 16 / 8; }
 .cs-hero.moon { background: none; }
+.cs-hero picture { display: contents; }
 .cs-hero img { display: block; width: 100%; height: 100%; object-fit: var(--hero-fit); }
 .cs-hero.contain img { padding: 4%; }
 .cs-hero.video { position: relative; aspect-ratio: 16 / 9; }
@@ -597,6 +598,7 @@ footer { padding-block: 24px 40px; font-size: 13px; color: var(--muted); display
 @media (max-width: 760px) {
   .cs-body { padding-top: 64px; }
   .cs-hero { aspect-ratio: 4 / 3; }
+  .cs-hero.cover { aspect-ratio: 750 / 1140; }  /* phones get sklip.studio's own mobile landing, not the desktop capture cropped at both sides */
   .cs-hero.devices-hero .visual { width: 100%; padding: 64px 20px 36px; }
   .cs-split, .cs-next { grid-template-columns: 1fr; }
   .cs-fig.w-small { max-width: 100%; }
@@ -693,7 +695,7 @@ html[data-lang="en"] .contact .cv-fr, html:not([data-lang="en"]) .contact .cv-en
     <div class="cs-metarow"><dl class="cs-meta"><div><dt>Rôle</dt><dd>Product Designer &amp; Builder</dd></div><div><dt>Produit</dt><dd>Sklip Studio</dd></div><div><dt>Durée</dt><dd>2026</dd></div><div><dt>Méthode</dt><dd><a href="#coulisses">BMAD, voir les coulisses</a></dd></div></dl><a class="cs-visit" href="https://sklip.studio/" target="_blank" rel="noopener">Sklip <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></div>
   </header>
 
-  <div class="cs-hero cover" style="--hero-bg:#100e16;--hero-fit:cover"><img src="img/cases/sklip/hero.jpg" alt="Page d'accueil de sklip.studio"></div>
+  <div class="cs-hero cover" style="--hero-bg:#100e16;--hero-fit:cover"><picture><source media="(max-width: 760px)" srcset="img/cases/sklip/hero-mobile.jpg"><img src="img/cases/sklip/hero.jpg" alt="Page d'accueil de sklip.studio"></picture></div>
 
   <article class="cs-body">
     <h2 class="cs-h2">Contexte</h2>
