@@ -63,10 +63,6 @@ button { font: inherit; color: inherit; }
 .tools { margin-left: auto; display: flex; align-items: center; gap: 6px; }
 .tool { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 7px 12px; border-radius: 999px; color: #5f5f68; cursor: pointer; font-size: 13.5px; white-space: nowrap; transition: background .2s, color .2s; }
 .tool:hover, .tool:focus-visible { background: rgba(15,15,18,.06); color: var(--fg); }
-.lang-switch { display: inline-flex; align-items: center; gap: 2px; margin-left: 6px; }
-.lang-switch i { font-style: normal; color: #c4c4ca; }
-.lang-switch button { background: none; border: 0; padding: 0 3px; color: #8b8b93; cursor: pointer; }
-.lang-switch button[aria-pressed="true"] { color: var(--fg); font-weight: 500; }
 .tool svg { width: 15px; height: 15px; flex: none; }
 /* Phones: icons only, and the status line gives way to the name */
 @media (max-width: 640px) { .tool span, .who span { display: none; } .tools { gap: 0; } .tool { padding: 9px; } }
@@ -211,7 +207,6 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   <div class="tools">
     <button class="tool" type="button" id="hood-open" aria-label="Informations" data-en-aria="About this agent"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6.25"/><path d="M8 7.2v3.6M8 5.1v.1"/></svg><span data-en="About">Informations</span></button>
     <button class="tool" type="button" id="reset" aria-label="Nouvelle conversation" data-en-aria="New chat"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v10M3 8h10"/></svg><span data-en="New chat">Nouvelle conversation</span></button>
-    <span class="lang-switch" role="group" aria-label="Langue · Language"><button type="button" data-set-lang="fr" aria-pressed="true">FR</button><i aria-hidden="true">/</i><button type="button" data-set-lang="en" aria-pressed="false">EN</button></span>
   </div>
 </header>
 
@@ -328,7 +323,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
 </script>
 
 <script>
-  // FR / EN: French is in the markup, English in data-en attributes
+  // FR / EN: French is in the markup, English in data-en attributes. No switch here: the interface takes the site's
+  // language (?lang, the saved choice, the browser, or the page around the sheet), and each answer follows the language of its question
   (() => {
     const root = document.documentElement;
     const els = [...document.querySelectorAll('[data-en]')].map(el => [el, el.innerHTML]);
@@ -340,13 +336,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       ph.forEach(([el, fr]) => { el.placeholder = en ? el.dataset.enPlaceholder : fr; });
       aria.forEach(([el, fr]) => el.setAttribute('aria-label', en ? el.dataset.enAria : fr));
       root.lang = root.dataset.lang = lang;
-      document.querySelectorAll('[data-set-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.setLang === lang));
       dispatchEvent(new Event('langchange'));
     };
-    document.querySelectorAll('[data-set-lang]').forEach(b => b.addEventListener('click', () => {
-      try { localStorage.setItem('lang', b.dataset.setLang); } catch (e) {}
-      applyLang(b.dataset.setLang);
-    }));
     applyLang(root.dataset.lang === 'en' ? 'en' : 'fr');
   })();
 </script>
@@ -560,7 +551,10 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       // Only suggestions with a ready-made answer: the agent's own picks if they are on the list, else the fallbacks
       const ready = new Set([...T.fr.more, ...T.en.more].map(key));
       for (const s of followUps(text)) if (ready.has(key(s)) && !seen.has(key(s))) { seen.add(key(s)); out.push(s); }
-      for (const s of T[lang()].more) if (out.length < 2 && !seen.has(key(s))) { seen.add(key(s)); out.push(s); }
+      // The fallbacks speak the conversation's language, which the agent's own suggestions give away (it answers in the question's)
+      const en = new Set(T.en.more.map(key)), fr = new Set(T.fr.more.map(key)), own = followUps(text).map(key);
+      const talk = own.some(s => en.has(s) && !fr.has(s)) ? 'en' : own.some(s => fr.has(s) && !en.has(s)) ? 'fr' : lang();
+      for (const s of T[talk].more) if (out.length < 2 && !seen.has(key(s))) { seen.add(key(s)); out.push(s); }
       return out;
     };
     // A closing answer ([[FIN]]) is always a single bubble
