@@ -15,7 +15,10 @@ export const LIMITS = {
   assistantKept: 1200,   // une vraie réponse fait moins de 90 mots : le reste est coupé avant le modèle
   historyKept: 7,        // seuls les derniers messages partent au modèle (impair : on commence par le visiteur)
   turnsPerChat: 15,      // questions max par conversation
-  maxTokens: 500,        // plafond de sortie : 3 bulles courtes et les suggestions
+  // Plafond de sortie. Claude Haiku 5.5 réfléchit par défaut, et cette réflexion compte dans le plafond : à 500, elle
+  // le consommait parfois en entier (réponse vide, affichée comme un problème technique) ou coupait la réponse en pleine
+  // phrase. La longueur des réponses (3 bulles courtes et les suggestions) est tenue par le prompt, pas par ce plafond.
+  maxTokens: 2000,
 };
 
 export interface Store {
