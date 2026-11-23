@@ -646,7 +646,7 @@ body { position: relative; }
     const extras = (i) => {
       const t = T[lang()], m = messages[i], text = body(m.content);
       const box = add('div', 'extras', '');
-      const pages = [...new Set([...text.matchAll(/oliviertousche\.com\/(equinox|gomoonbound|sklip)\.html/g)].map(x => x[1] + '.html'))].slice(0, 2);
+      const pages = [...new Set([...text.matchAll(/oliviertousche\.com\/(equinox|gomoonbound|sklip)\.html/g)].map(x => x[1] + '.html'))].slice(0, 3);
       pages.forEach(p => {
         box.insertAdjacentHTML('beforeend', `<a class="case" href="${p}" target="_blank" rel="noopener"><img src="${CASES[p].img}" alt="" loading="lazy"><span>${CASES[p].name}<small>${t.caseStudy}</small></span>${ICON.arrow}</a>`);
       });
