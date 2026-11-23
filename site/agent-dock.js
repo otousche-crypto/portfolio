@@ -12,6 +12,10 @@
 /* A little narrower than the content column (32px gutters, 16 on phones), so it never lines up with the images and thumbnails */
 .agd { position: fixed; z-index: 90; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; padding: 0 48px max(16px, env(safe-area-inset-bottom, 0px)); pointer-events: none; transition: opacity .25s, translate .25s; }
 .agd.away { opacity: 0; translate: 0 8px; }
+/* It waits 3 s after the page loads, then rises in with a slight overshoot, like the agent's bubbles */
+.agd.later { visibility: hidden; }
+.agd.in .agd-field { animation: agd-in .7s cubic-bezier(.2,.9,.3,1.2) both; }
+@keyframes agd-in { from { opacity: 0; transform: translateY(28px) scale(.9); filter: blur(6px); } }
 .agd-field { pointer-events: auto; position: relative; isolation: isolate; width: min(640px, 100%); display: flex; align-items: center; gap: 8px; padding: 5px 5px 5px 17px; border-radius: 26px; border: 1px solid rgba(255,255,255,.85); background: none; cursor: text; text-align: left;
   font: 16px/1.45 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #8a8a92; -webkit-font-smoothing: antialiased;
   box-shadow: 0 0 0 1px rgba(15,15,18,.08), 0 16px 40px -20px rgba(20,20,40,.3); }
@@ -44,11 +48,12 @@
 .agd-backdrop { position: absolute; inset: 0; background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
 .agd-sheet { position: absolute; left: 0; right: 0; bottom: 0; top: max(28px, 7svh); border-radius: 26px 26px 0 0; overflow: hidden; background: #f1f1f4; box-shadow: 0 -30px 80px -30px rgba(20,20,40,.45); }
 .agd-sheet iframe { display: block; width: 100%; height: 100%; border: 0; opacity: 0; }
-@media (prefers-reduced-motion: reduce) { .agd-field::after, .agd-ring { animation: none; --agd-beam: 200deg; } }
+@media (prefers-reduced-motion: reduce) { .agd-field::after, .agd-ring, .agd.in .agd-field { animation: none; --agd-beam: 200deg; } }
 </style>`);
 
   const dock = document.createElement('div');
-  dock.className = 'agd no-i18n';
+  dock.className = 'agd no-i18n later';
+  setTimeout(() => dock.classList.replace('later', 'in'), 3000);
   dock.innerHTML = `<button class="agd-field" type="button" aria-haspopup="dialog"><i class="agd-ring" aria-hidden="true"></i><span class="agd-ph"></span><span class="agd-send" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></button>`;
   const modal = document.createElement('div');
   modal.className = 'agd-modal no-i18n'; modal.hidden = true;
