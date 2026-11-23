@@ -54,6 +54,8 @@ button { font: inherit; color: inherit; }
 .back { display: grid; place-items: center; width: 34px; height: 34px; margin-left: -6px; border-radius: 50%; text-decoration: none; color: #5f5f68; transition: background .2s, color .2s; }
 .back:hover, .back:focus-visible { background: rgba(15,15,18,.06); color: var(--fg); }
 .back svg { width: 16px; height: 16px; }
+/* In the sheet, the arrow is a close cross, at the far right as on a modal */
+.embed .back { order: 1; margin: 0 -6px 0 0; }
 .who { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
 .who b { font-weight: 600; letter-spacing: -0.01em; }
 .who span { color: var(--muted); font-size: 13px; display: flex; align-items: center; gap: 6px; }
