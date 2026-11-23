@@ -50,7 +50,7 @@ Un exemple complet : l'[étude de cas Altered](https://www.oliviertousche.com/eq
 Dans le [Laboratoire](https://www.oliviertousche.com/#laboratoire) : Stampit, Décadi et cet agent. Et NoveliA, en bêta fermée : un système d'orchestration agentique pour co-construire un produit à plusieurs.
 ---
 En test aussi : des proto-personae nourris de vraies données (Reddit, Facebook, stores) qui simulent des visites sur un site, pour repérer des problèmes avant les vrais tests utilisateurs.
-[[Parlez-moi de Go MoonBound | Pourquoi cet agent IA ?]]`,
+[[Parlez-moi de Go MoonBound | Pourquoi cet agent ?]]`,
 
   'his ux research experience?': `Research is at the heart of his method: Olivier starts every project by understanding real usage and pain points.
 ---
@@ -85,7 +85,7 @@ A full example: the [Altered case study](https://www.oliviertousche.com/equinox.
 In the [Lab](https://www.oliviertousche.com/#laboratoire): Stampit, Décadi and this agent. And NoveliA, in closed beta: an agentic orchestration system to co-build a product as a team.
 ---
 Also in testing: proto-personas fed with real data (Reddit, Facebook, app stores) that simulate visits to a site, to catch issues before real user tests.
-[[Tell me about Go MoonBound | Why this AI agent?]]`,
+[[Tell me about Go MoonBound | Why this agent?]]`,
 
   'tell me about altered': `Altered is a phygital trading card game: every physical card has a digital twin. From 2022 to 2025, at Equinox, Olivier led the design of all the B2B and B2C digital services.
 ---
@@ -120,7 +120,7 @@ Il a trouvé un cabinet d'avocats spécialisé, travaillé avec le prestataire d
 Résultat : un portefeuille unique, toutes devises, lancé dans plusieurs pays à la fois. Le détail est dans l'[étude de cas Altered](https://www.oliviertousche.com/equinox.html).
 [[Son approche du design ? | Son expérience en recherche UX ?]]`,
 
-  'pourquoi cet agent ia ?': `Olivier m'a conçu entièrement, from scratch. Il a imaginé chaque interaction : mon ton, les questions suggérées sous mes réponses, ou le fait de pouvoir me parler depuis n'importe quelle page du site.
+  'pourquoi cet agent ?': `Olivier m'a conçu entièrement, from scratch. Il a imaginé chaque interaction : mon ton, les questions suggérées sous mes réponses, ou le fait de pouvoir me parler depuis n'importe quelle page du site.
 ---
 Pourquoi ? À l'ère de l'IA, le mode conversationnel est de plus en plus présent. Pour Olivier, c'est une interaction qu'il faut expérimenter soi-même, sur un vrai produit.
 ---
@@ -148,7 +148,7 @@ He found a specialised law firm, worked with the payment provider, and used desi
 The result: a single wallet, all currencies, launched in several countries at once. Details in the [Altered case study](https://www.oliviertousche.com/equinox.html).
 [[His design approach? | His UX research experience?]]`,
 
-  'why this ai agent?': `Olivier designed me entirely, from scratch. He imagined every interaction: my tone, the questions suggested under my answers, and being able to talk to me from any page of the site.
+  'why this agent?': `Olivier designed me entirely, from scratch. He imagined every interaction: my tone, the questions suggested under my answers, and being able to talk to me from any page of the site.
 ---
 Why? In the age of AI, conversation is becoming a more and more common way to use products. For Olivier, it's an interaction you have to experience first-hand, on a real product.
 ---
@@ -164,8 +164,8 @@ const TABLE = new Map(Object.entries(CANNED).map(([q, a]) => [normalize(q), a]))
 // Le prompt demande à l'agent de choisir ses suggestions dans ces listes ; la page écarte toute autre suggestion.
 // Les mêmes listes figurent dans site/agent.html (T.fr.more, T.en.more) : un test vérifie qu'elles concordent.
 export const SUGGESTIONS = {
-  fr: ['Comment utilise-t-il l’IA ?', 'Sa vision produit ?', 'Son approche du design ?', 'Est-il disponible ?', 'Ses projets de product builder ?', 'Parlez-moi de Go MoonBound', 'Son expérience en recherche UX ?', 'Parlez-moi d’Altered', 'Pourquoi cet agent IA ?'],
-  en: ['How does he use AI?', 'His product vision?', 'His design approach?', 'Is he available?', 'His product builder projects?', 'Tell me about Go MoonBound', 'His UX research experience?', 'Tell me about Altered', 'Why this AI agent?'],
+  fr: ['Comment utilise-t-il l’IA ?', 'Sa vision produit ?', 'Son approche du design ?', 'Est-il disponible ?', 'Ses projets de product builder ?', 'Parlez-moi de Go MoonBound', 'Son expérience en recherche UX ?', 'Parlez-moi d’Altered', 'Pourquoi cet agent ?'],
+  en: ['How does he use AI?', 'His product vision?', 'His design approach?', 'Is he available?', 'His product builder projects?', 'Tell me about Go MoonBound', 'His UX research experience?', 'Tell me about Altered', 'Why this agent?'],
 };
 
 // Les questions qui ont une réponse toute prête (pour les tests de cohérence des suggestions)
