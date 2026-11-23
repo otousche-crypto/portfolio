@@ -14,7 +14,7 @@ export const LIMITS = {
   assistantChars: 4000,  // au-delà, la réponse « renvoyée » par le client est forcément forgée
   assistantKept: 1200,   // une vraie réponse fait moins de 90 mots : le reste est coupé avant le modèle
   historyKept: 7,        // seuls les derniers messages partent au modèle (impair : on commence par le visiteur)
-  turnsPerChat: 19,      // questions max par conversation (même chiffre dans site/agent.html, TURNS)
+  turnsPerChat: 29,      // questions max par conversation (même chiffre dans site/agent.html, TURNS)
   // Plafond de sortie. Claude Haiku 5.5 réfléchit par défaut, et cette réflexion compte dans le plafond : à 500, elle
   // le consommait parfois en entier (réponse vide, affichée comme un problème technique) ou coupait la réponse en pleine
   // phrase. La longueur des réponses (3 bulles courtes et les suggestions) est tenue par le prompt, pas par ce plafond.
@@ -165,8 +165,8 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
         outcome = error instanceof Anthropic.APIError ? `api_${error.status}` : 'error';
         console.error('agent error', outcome, error instanceof Error ? error.message : error);
         const text = lang === 'en'
-          ? 'I can’t answer you right now, there’s a technical issue… In the meantime, you can email Olivier: otousche@gmail.com.'
-          : 'Je ne peux pas vous répondre pour le moment, il y a un problème technique… En attendant, vous pouvez écrire à Olivier : otousche@gmail.com.';
+          ? 'I can’t answer you right now, there’s a technical issue… In the meantime, you can reach Olivier at otousche@gmail.com or on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/).'
+          : 'Je ne peux pas vous répondre pour le moment, il y a un problème technique… En attendant, vous pouvez joindre Olivier à otousche@gmail.com ou sur [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/).';
         controller.enqueue(encoder.encode((answer ? '\n---\n' : '') + text));
       }
       controller.close();

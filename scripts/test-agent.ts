@@ -97,9 +97,9 @@ ok('must start with user', validate({ messages: [{ role: 'assistant', content: '
 ok('must end with user', validate({ messages: [{ role: 'user', content: 'a' }, { role: 'assistant', content: 'b' }] }) === 'invalid_messages');
 ok('no system role', validate({ messages: [{ role: 'system', content: 'a' }] }) === 'invalid_messages');
 ok('empty content', validate(user('   ')) === 'invalid_messages');
-const long = Array.from({ length: 39 }, (_, i) => ({ role: i % 2 ? 'assistant' : 'user', content: 'q' }));
-ok('19 turns max', validate({ messages: long }) === 'conversation_too_long');
-const ok29 = validate({ messages: long.slice(0, 37) });
+const long = Array.from({ length: 59 }, (_, i) => ({ role: i % 2 ? 'assistant' : 'user', content: 'q' }));
+ok('29 turns max', validate({ messages: long }) === 'conversation_too_long');
+const ok29 = validate({ messages: long.slice(0, 57) });
 ok('history trimmed to 7', typeof ok29 !== 'string' && ok29.messages.length === 7 && ok29.messages[0].role === 'user');
 
 const saved: Record<string, unknown>[] = [];

@@ -554,10 +554,10 @@ body { position: relative; }
         left2: 'Petite info : il vous reste 2 questions avec moi pour le moment. Pour aller plus loin, le mieux reste d’échanger directement avec Olivier, sur [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) ou à otousche@gmail.com.',
         left0: 'C’était votre dernière question avec moi pour le moment ! Le mieux, maintenant, c’est d’échanger directement avec Olivier : sur [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) ou à otousche@gmail.com.',
         quota: pct => `${pct} % de crédits restants`,
-        paused: 'Je fais une pause pour aujourd’hui 😴 En attendant, écrivez directement à Olivier : otousche@gmail.com.',
+        paused: 'Je fais une pause pour aujourd’hui 😴 En attendant, échangez directement avec Olivier : à otousche@gmail.com ou sur [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/).',
         conversation_ended: 'Je me suis arrêté là 😄 Cliquez sur « Nouvelle conversation » pour repartir sur de bonnes bases.', ended: 'Conversation terminée',
         conversation_too_long: 'Cette conversation a atteint sa longueur maximale. Cliquez sur « Nouvelle conversation » pour continuer, ou, le mieux, échangez directement avec Olivier : sur [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) ou à otousche@gmail.com.',
-        error: 'Je ne peux pas vous répondre pour le moment, il y a un problème technique… En attendant, vous pouvez écrire à Olivier : otousche@gmail.com.',
+        error: 'Je ne peux pas vous répondre pour le moment, il y a un problème technique… En attendant, vous pouvez joindre Olivier à otousche@gmail.com ou sur [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/).',
         write: 'Écrire à Olivier', copy: 'Copier l’email', copied: 'Copié !', up: 'Réponse utile', down: 'Réponse pas utile', thanks: 'Merci pour votre retour !', caseStudy: 'Lire l’étude de cas',
       },
       en: {
@@ -568,10 +568,10 @@ body { position: relative; }
         left2: 'Quick heads-up: you have 2 questions left with me for now. To go further, the best is to talk to Olivier directly, on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) or at otousche@gmail.com.',
         left0: 'That was your last question with me for now! The best next step is to talk to Olivier directly: on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) or at otousche@gmail.com.',
         quota: pct => `${pct}% of credits left`,
-        paused: 'I’m taking a break for today 😴 In the meantime, email Olivier directly: otousche@gmail.com.',
+        paused: 'I’m taking a break for today 😴 In the meantime, reach Olivier directly: at otousche@gmail.com or on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/).',
         conversation_ended: 'I stopped there 😄 Click “New chat” to start afresh.', ended: 'Conversation closed',
         conversation_too_long: 'This conversation has reached its maximum length. Click “New chat” to keep going, or better, talk to Olivier directly: on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) or at otousche@gmail.com.',
-        error: 'I can’t answer you right now, there’s a technical issue… In the meantime, you can email Olivier: otousche@gmail.com.',
+        error: 'I can’t answer you right now, there’s a technical issue… In the meantime, you can reach Olivier at otousche@gmail.com or on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/).',
         write: 'Email Olivier', copy: 'Copy email', copied: 'Copied!', up: 'Helpful answer', down: 'Not helpful', thanks: 'Thanks for your feedback!', caseStudy: 'Read the case study',
       },
     };
@@ -583,7 +583,7 @@ body { position: relative; }
     // A random id per conversation, so the anonymous logs can be read conversation by conversation (never tied to a person)
     let cid = '';
     // Questions per conversation (agent/handler.ts, LIMITS.turnsPerChat) and the messages the server says are left
-    const TURNS = 19, BURST = 13;  // and api/chat.ts, PER_BURST
+    const TURNS = 29, BURST = 20;  // and api/chat.ts, PER_BURST
     let serverLeft = Infinity;
     const leftNow = () => Math.min(serverLeft, TURNS - messages.filter(m => m.role === 'user').length);
     // The ring beside the name and the limit text: how much the visitor has used, from the tighter of the two limits
@@ -710,6 +710,7 @@ body { position: relative; }
       'sklip.html': { name: 'Sklip', img: 'img/cases/sklip/reel-poster.jpg' },
     };
     const ICON = {
+      linkedin: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M3.6 5.6h2v6.8h-2zM4.6 2.6a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3zM7.2 5.6h1.9v.93c.27-.5.93-1.05 1.9-1.05 2.05 0 2.4 1.33 2.4 3.06v3.86h-2V9c0-.82-.02-1.86-1.14-1.86-1.13 0-1.3.88-1.3 1.8v3.46h-2z"/></svg>',
       arrow: '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg>',
       mail: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="2" y="3.5" width="12" height="9" rx="2"/><path d="M2.5 4.5 8 9l5.5-4.5"/></svg>',
       copy: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5.5" y="5.5" width="8" height="8" rx="1.8"/><path d="M10.5 5.5V4a1.5 1.5 0 0 0-1.5-1.5H4A1.5 1.5 0 0 0 2.5 4v5A1.5 1.5 0 0 0 4 10.5h1.5"/></svg>',
@@ -725,8 +726,9 @@ body { position: relative; }
       });
       const acts = document.createElement('div');
       acts.className = 'acts';
-      if (/otousche@gmail\.com/.test(text)) {
-        acts.insertAdjacentHTML('beforeend', `<a class="act primary" href="mailto:otousche@gmail.com">${ICON.mail}${t.write}</a><button class="act" type="button" data-copy>${ICON.copy}<span>${t.copy}</span></button>`);
+      // Olivier's contact always comes as a pair: email and LinkedIn
+      if (/otousche@gmail\.com|linkedin\.com\/in\/olivier-tousche/.test(text)) {
+        acts.insertAdjacentHTML('beforeend', `<a class="act primary" href="mailto:otousche@gmail.com">${ICON.mail}${t.write}</a><a class="act" href="https://www.linkedin.com/in/olivier-tousche-a6160b122/" target="_blank" rel="noopener">${ICON.linkedin}LinkedIn</a><button class="act" type="button" data-copy>${ICON.copy}<span>${t.copy}</span></button>`);
         acts.querySelector('[data-copy]').addEventListener('click', async (e) => {
           const label = e.currentTarget.querySelector('span');
           try { await navigator.clipboard.writeText('otousche@gmail.com'); label.textContent = t.copied; setTimeout(() => { label.textContent = t.copy; }, 1800); } catch (err) {}

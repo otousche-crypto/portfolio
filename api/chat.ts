@@ -20,9 +20,9 @@ const token = process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TO
 const redis = url && token ? new Redis({ url, token }) : null;
 
 // Un script qui boucle sur l'API ne doit pas pouvoir vider le crédit Anthropic :
-// 13 messages par 10 minutes et 38 par jour par visiteur ; au-delà de 300 par jour pour tout le site,
+// 20 messages par 10 minutes et 57 par jour par visiteur ; au-delà de 300 par jour pour tout le site,
 // l'agent se met en pause sans appeler le modèle (même si l'abus change d'IP).
-const PER_BURST = 13, PER_DAY = 38, SITE_PER_DAY = 300;
+const PER_BURST = 20, PER_DAY = 57, SITE_PER_DAY = 300;
 
 const store: Store = redis ? (() => {
   const burst = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(PER_BURST, '10 m'), prefix: 'agent:rl' });
