@@ -736,15 +736,27 @@ body { position: relative; }
       add('div', 'msg me', esc(text));
       const bubbles = [add('div', 'msg bot', TYPING)];
       down();
-      let answer = '', shown = 1, opening = false;
-      // Each part streams into its own bubble; the next one opens after a short "typing" beat, as in a real chat
+      let answer = '', shown = 0, opening = false;
+      // Each part streams into its own bubble, at a human pace: the agent "types" each bubble for a time that grows with
+      // its length, and pauses a moment before starting the next. A ready-made answer arrives all at once: without this
+      // rhythm it would pop up instantly and feel automatic
+      const t0 = performance.now();
+      const beat = s => Math.min(2400, Math.max(1000, 600 + s.length * 14));
       const paint = () => {
         const parts = split(answer);
+        // An empty part (two separators in a row) gets a hidden slot, removed once the answer is complete
+        while (!opening && shown && shown < parts.length - 1 && !parts[shown].trim()) { bubbles.push(Object.assign(add('div', 'msg bot', ''), { hidden: true })); shown++; }
         for (let i = 0; i < shown; i++) if (parts[i]?.trim()) bubbles[i].innerHTML = md(parts[i]);
-        if (parts.length > shown && !opening) {
+        if (parts[shown]?.trim() && !opening) {
           opening = true;
-          bubbles.push(add('div', 'msg bot', TYPING));
-          setTimeout(() => { shown++; opening = false; paint(); }, 900);
+          const first = !shown;
+          const type = () => {
+            if (!first) bubbles.push(add('div', 'msg bot', TYPING));
+            down();
+            const wait = first ? t0 + beat(parts[0]) - performance.now() : beat(split(answer)[shown] || '');
+            setTimeout(() => { shown++; opening = false; paint(); }, Math.max(0, wait));
+          };
+          if (first) type(); else setTimeout(type, 500);
         }
         down();
       };
@@ -762,7 +774,7 @@ body { position: relative; }
           paint();
         }
         if (!answer.trim()) throw new Error('error');
-        while (opening || split(answer).length > shown) await sleep(100);
+        while (opening || split(answer).slice(shown).some(p => p.trim())) await sleep(100);
         // A separator with nothing after it would leave an empty bubble
         const parts = split(answer);
         bubbles.forEach((b, i) => { if (parts[i]?.trim()) b.innerHTML = md(parts[i]); else b.remove(); });
