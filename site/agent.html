@@ -11,6 +11,8 @@
     try { l = new URLSearchParams(location.search).get('lang'); if (l === 'fr' || l === 'en') localStorage.setItem('lang', l); else l = localStorage.getItem('lang'); } catch (e) {}
     if (l !== 'fr' && l !== 'en') l = /^fr\b/i.test((navigator.languages || [])[0] || navigator.language || '') ? 'fr' : 'en';
     document.documentElement.lang = document.documentElement.dataset.lang = l;
+    // ?embed: the page opens inside the other pages' agent sheet (agent-dock.js), and its back arrow closes the sheet
+    if (new URLSearchParams(location.search).has('embed') && parent !== window) document.documentElement.classList.add('embed');
   })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -444,6 +446,20 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     document.getElementById('hood-open').addEventListener('click', () => d.showModal());
     document.getElementById('hood-close').addEventListener('click', () => d.close());
     d.addEventListener('click', e => { if (e.target === d) d.close(); });
+  })();
+</script>
+<script>
+  // Embedded in the sheet: the back arrow becomes a close button, Escape closes too, and case-study links open in the page itself
+  (() => {
+    if (!document.documentElement.classList.contains('embed')) return;
+    const back = document.querySelector('.back'), hood = document.getElementById('hood');
+    const close = () => parent.postMessage({ type: 'agent-close' }, location.origin);
+    back.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>';
+    const label = () => back.setAttribute('aria-label', document.documentElement.lang === 'en' ? 'Close' : 'Fermer');
+    label(); addEventListener('langchange', label);
+    back.addEventListener('click', e => { e.preventDefault(); close(); });
+    addEventListener('keydown', e => { if (e.key === 'Escape' && !hood.open) close(); });
+    document.addEventListener('click', e => { const a = e.target.closest('a.case'); if (a) a.target = '_top'; }, true);
   })();
 </script>
 <script>
