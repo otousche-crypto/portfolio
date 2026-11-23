@@ -10,14 +10,16 @@
   document.head.insertAdjacentHTML('beforeend', `<style>
 /* The same glass, halo and ring as the agent's composer (agent.html, .compose) */
 /* A little narrower than the content column (32px gutters, 16 on phones), so it never lines up with the images and thumbnails */
-.agd { position: fixed; z-index: 90; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; padding: 0 48px max(16px, env(safe-area-inset-bottom, 0px)); pointer-events: none; transition: opacity .25s, translate .25s; }
-.agd.away { opacity: 0; translate: 0 8px; }
+/* Only as wide as the field and lifted off the bottom edge: Safari on iOS takes a full-width fixed bar glued to the
+   bottom for a toolbar, and fills the space under its own floating address bar with a solid colour */
+.agd { position: fixed; z-index: 90; left: 50%; bottom: max(16px, env(safe-area-inset-bottom, 0px)); width: min(640px, calc(100% - 96px)); translate: -50% 0; display: flex; pointer-events: none; transition: opacity .25s, translate .25s; }
+.agd.away { opacity: 0; translate: -50% 8px; }
 /* It waits a beat after the page loads, then pops out of its bottom edge with an overshoot, like the agent's bubbles */
 /* No fill: an animation still applied after it ends stops the glass from blurring the page behind it */
 .agd.later { visibility: hidden; }
 .agd.in .agd-field { animation: agd-in .32s cubic-bezier(.2,.9,.3,1.35); transform-origin: 50% 100%; }
 @keyframes agd-in { from { opacity: 0; transform: translateY(10px) scale(.5); } 40% { opacity: 1; } }
-.agd-field { pointer-events: auto; position: relative; isolation: isolate; width: min(640px, 100%); display: flex; align-items: center; gap: 8px; padding: 5px 5px 5px 17px; border-radius: 26px; border: 1px solid rgba(255,255,255,.85); background: none; cursor: text; text-align: left;
+.agd-field { pointer-events: auto; position: relative; isolation: isolate; width: 100%; display: flex; align-items: center; gap: 8px; padding: 5px 5px 5px 17px; border-radius: 26px; border: 1px solid rgba(255,255,255,.85); background: none; cursor: text; text-align: left;
   font: 16px/1.45 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #6e6e76; -webkit-font-smoothing: antialiased;
   box-shadow: 0 0 0 1px rgba(15,15,18,.08), 0 16px 40px -20px rgba(20,20,40,.3); }
 /* More see-through than the agent's composer: the page shows, blurred, through the glass */
@@ -37,7 +39,7 @@
 .agd-space { height: 96px; }
 /* Phones: a slimmer field, closer to the bottom edge, so it hides as little of the page as possible */
 @media (max-width: 640px) {
-  .agd { padding: 0 44px max(10px, env(safe-area-inset-bottom, 0px)); }
+  .agd { bottom: max(10px, env(safe-area-inset-bottom, 0px)); width: calc(100% - 88px); }
   .agd-field { padding: 3px 3px 3px 14px; font-size: 15px; }
   .agd-ph { padding: 7px 0; }
   .agd-send { width: 32px; height: 32px; }
