@@ -65,7 +65,7 @@ ok('falls back to page language', replyLang('Altered ?', 'en') === 'en');
   const text = await res.text();
   ok('starter answered without model', res.status === 200 && !called && text.includes('Go MoonBound') && /\[\[.+\|.+\]\]$/.test(text));
   const en = await (await handleChat(req(user('Is he available?')), { client: spy, store, visitor: 'v' })).text();
-  ok('english starter answered in english', !called && en.startsWith('Yes, we'));
+  ok('english starter answered in english', !called && /^Yes\b/.test(en) && /\bWe're\b/.test(en));
 }
 ok('ended conversation refused', validate({ messages: [{ role: 'user', content: 'Q' }, { role: 'assistant', content: 'Je m’arrête ici.\n[[FIN]]' }, { role: 'user', content: 'Q2' }] }) === 'conversation_ended');
 ok('age before and on birthday', ageOn(new Date(2027, 0, 31)) === 34 && ageOn(new Date(2027, 1, 1)) === 35);
