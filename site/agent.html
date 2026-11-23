@@ -203,9 +203,8 @@ body { position: relative; }
 .hood article ul { padding-left: 18px; }
 .hood li + li { margin-top: 5px; }
 @media (max-width: 640px) { .hood-grid { grid-template-columns: 1fr; } }
-/* Message limit: a ring beside the name fills up as the visitor uses their messages; it opens the limits text, like "i" */
-.who-name { display: flex; align-items: center; gap: 4px; }
-.quota { display: grid; place-items: center; width: 26px; height: 26px; margin: -4px 0; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; transition: background .2s; }
+/* Message limit: a ring left of "New chat" fills up as the visitor uses their messages; it opens the limits text, like "i" */
+.quota { display: grid; place-items: center; width: 33px; height: 33px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; transition: background .2s; }
 .quota:hover, .quota:focus-visible, .quota[aria-pressed="true"] { background: rgba(15,15,18,.06); }
 .quota svg { width: 15px; height: 15px; transform: rotate(-90deg); }
 .quota circle { fill: none; stroke-width: 2.6; }
@@ -225,8 +224,9 @@ body { position: relative; }
 <body>
 <header class="bar">
   <a class="back" href="index.html#laboratoire" aria-label="Retour au laboratoire" data-en-aria="Back to the lab"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg></a>
-  <div class="who"><div class="who-name"><b>Agent</b><button class="quota" type="button" id="quota-open" aria-label="Limite de messages" data-en-aria="Message limit"><svg viewBox="0 0 20 20" aria-hidden="true"><circle class="q-track" cx="10" cy="10" r="7.5"/><circle class="q-arc" cx="10" cy="10" r="7.5" pathLength="100"/></svg></button></div><span data-en="Answers from Olivier’s background">Répond à partir du parcours d’Olivier</span></div>
+  <div class="who"><b>Agent</b><span data-en="Answers from Olivier’s background">Répond à partir du parcours d’Olivier</span></div>
   <div class="tools">
+    <button class="quota" type="button" id="quota-open" aria-label="Limite de messages" data-en-aria="Message limit"><svg viewBox="0 0 20 20" aria-hidden="true"><circle class="q-track" cx="10" cy="10" r="7.5"/><circle class="q-arc" cx="10" cy="10" r="7.5" pathLength="100"/></svg></button>
     <button class="tool" type="button" id="reset" aria-label="Nouvelle conversation" data-en-aria="New chat"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v10M3 8h10"/></svg><span data-en="New chat">Nouvelle conversation</span></button>
     <button class="tool" type="button" id="hood-open" aria-label="Informations" data-en-aria="About this agent"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6.25"/><path d="M8 7.2v3.6M8 5.1v.1"/></svg><span data-en="About">Informations</span></button>
   </div>
@@ -553,7 +553,7 @@ body { position: relative; }
         // Automatic notices when the visitor nears their limit (messages left after this answer)
         left2: 'Petite info : il vous reste 2 questions avec moi pour le moment. Pour aller plus loin, le mieux reste d’échanger directement avec Olivier, sur [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) ou à otousche@gmail.com.',
         left0: 'C’était votre dernière question avec moi pour le moment ! Le mieux, maintenant, c’est d’échanger directement avec Olivier : sur [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) ou à otousche@gmail.com.',
-        quota: n => n === 0 ? 'Vous avez atteint la limite pour le moment' : `Il vous reste ${n} question${n > 1 ? 's' : ''}`,
+        quota: pct => `${pct} % de crédits restants`,
         paused: 'Je fais une pause pour aujourd’hui 😴 En attendant, écrivez directement à Olivier : otousche@gmail.com.',
         conversation_ended: 'Je me suis arrêté là 😄 Cliquez sur « Nouvelle conversation » pour repartir sur de bonnes bases.', ended: 'Conversation terminée',
         conversation_too_long: 'Cette conversation a atteint sa longueur maximale. Cliquez sur « Nouvelle conversation » pour continuer, ou, le mieux, échangez directement avec Olivier : sur [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) ou à otousche@gmail.com.',
@@ -567,7 +567,7 @@ body { position: relative; }
         429: 'You’ve reached the message limit for now. The best is to talk to Olivier directly: on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) or at otousche@gmail.com.',
         left2: 'Quick heads-up: you have 2 questions left with me for now. To go further, the best is to talk to Olivier directly, on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) or at otousche@gmail.com.',
         left0: 'That was your last question with me for now! The best next step is to talk to Olivier directly: on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) or at otousche@gmail.com.',
-        quota: n => n === 0 ? 'You’ve reached the limit for now' : `You have ${n} question${n > 1 ? 's' : ''} left`,
+        quota: pct => `${pct}% of credits left`,
         paused: 'I’m taking a break for today 😴 In the meantime, email Olivier directly: otousche@gmail.com.',
         conversation_ended: 'I stopped there 😄 Click “New chat” to start afresh.', ended: 'Conversation closed',
         conversation_too_long: 'This conversation has reached its maximum length. Click “New chat” to keep going, or better, talk to Olivier directly: on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) or at otousche@gmail.com.',
@@ -594,7 +594,7 @@ body { position: relative; }
       for (const el of [document.getElementById('quota-open'), document.querySelector('.q-bar')]) {
         el.style.setProperty('--used', used); el.classList.toggle('low', state === 'low'); el.classList.toggle('out', state === 'out');
       }
-      document.getElementById('quota-left').textContent = T[lang()].quota(left);
+      document.getElementById('quota-left').textContent = T[lang()].quota(100 - used);
     };
     try { cid = sessionStorage.getItem(KEY + '-id') || ''; } catch (e) {}
     const newCid = () => {
