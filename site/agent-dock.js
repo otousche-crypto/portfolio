@@ -54,8 +54,11 @@
 </style>`);
 
   const dock = document.createElement('div');
-  dock.className = 'agd no-i18n later';
-  setTimeout(() => dock.classList.replace('later', 'in'), 600);
+  dock.className = 'agd no-i18n';
+  // The pop plays once per visit: on the next pages the field is simply there
+  let seen = false;
+  try { seen = sessionStorage.getItem('agent-dock-seen') === '1'; sessionStorage.setItem('agent-dock-seen', '1'); } catch (e) {}
+  if (!seen) { dock.classList.add('later'); setTimeout(() => dock.classList.replace('later', 'in'), 600); }
   dock.innerHTML = `<button class="agd-field" type="button" aria-haspopup="dialog"><i class="agd-ring" aria-hidden="true"></i><span class="agd-ph"></span><span class="agd-send" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></button>`;
   const modal = document.createElement('div');
   modal.className = 'agd-modal no-i18n'; modal.hidden = true;
@@ -88,7 +91,7 @@
   };
   const reveal = () => {
     if (!open || !loaded) return;
-    frame.animate([{ opacity: 0 }, { opacity: 1 }], { duration: still ? 0 : 260, easing: 'ease-out', fill: 'forwards' });
+    frame.animate([{ opacity: 0 }, { opacity: 1 }], { duration: still ? 0 : 160, easing: 'ease-out', fill: 'forwards' });
     // The page is on screen: its portrait composes itself, then the agent says hello
     agent().dispatchEvent(new (agent().Event)('sheetopen'));
     sync();
@@ -115,10 +118,10 @@
       sheet.appendChild(frame);
     }
     dock.classList.add('away');
-    const ms = still ? 0 : 620, ease = 'cubic-bezier(.2,.85,.25,1)';
+    const ms = still ? 0 : 380, ease = 'cubic-bezier(.2,.85,.25,1)';
     anim = [
       sheet.animate([{ clipPath: from(), backgroundColor: '#ffffff' }, { clipPath: FULL, backgroundColor: '#f1f1f4' }], { duration: ms, easing: ease }),
-      backdrop.animate([{ opacity: 0 }, { opacity: 1 }], { duration: still ? 0 : 320, easing: 'ease-out' }),
+      backdrop.animate([{ opacity: 0 }, { opacity: 1 }], { duration: still ? 0 : 200, easing: 'ease-out' }),
     ];
     anim[0].finished.then(() => { anim = []; reveal(); }, () => {});
   };
@@ -127,14 +130,14 @@
     if (!open) return;
     open = false;
     anim.forEach(a => a.cancel());
-    const ms = still ? 0 : 460, ease = 'cubic-bezier(.5,0,.2,1)';
-    const fade = frame.animate([{ opacity: getComputedStyle(frame).opacity }, { opacity: 0 }], { duration: still ? 0 : 140, fill: 'forwards' });
+    const ms = still ? 0 : 280, ease = 'cubic-bezier(.5,0,.2,1)';
+    const fade = frame.animate([{ opacity: getComputedStyle(frame).opacity }, { opacity: 0 }], { duration: still ? 0 : 90, fill: 'forwards' });
     anim = [
       fade,
-      sheet.animate([{ clipPath: FULL, backgroundColor: '#f1f1f4' }, { clipPath: from(), backgroundColor: '#ffffff' }], { duration: ms, delay: still ? 0 : 80, easing: ease, fill: 'forwards' }),
-      backdrop.animate([{ opacity: 1 }, { opacity: 0 }], { duration: ms, delay: still ? 0 : 80, easing: 'ease-in', fill: 'forwards' }),
+      sheet.animate([{ clipPath: FULL, backgroundColor: '#f1f1f4' }, { clipPath: from(), backgroundColor: '#ffffff' }], { duration: ms, delay: still ? 0 : 40, easing: ease, fill: 'forwards' }),
+      backdrop.animate([{ opacity: 1 }, { opacity: 0 }], { duration: ms, delay: still ? 0 : 40, easing: 'ease-in', fill: 'forwards' }),
     ];
-    setTimeout(() => dock.classList.remove('away'), still ? 0 : ms - 120);
+    setTimeout(() => dock.classList.remove('away'), still ? 0 : ms - 80);
     anim[1].finished.then(() => {
       anim.forEach(a => a.cancel()); anim = [];
       modal.hidden = true; root.style.overflow = ''; field.focus({ preventScroll: true });
