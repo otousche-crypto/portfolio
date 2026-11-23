@@ -14,12 +14,13 @@
 .agd.away { opacity: 0; translate: 0 8px; }
 /* It waits a beat after the page loads, then pops out of its bottom edge with an overshoot, like the agent's bubbles */
 .agd.later { visibility: hidden; }
-.agd.in .agd-field { animation: agd-in .5s cubic-bezier(.2,.9,.3,1.35) both; transform-origin: 50% 100%; }
+.agd.in .agd-field { animation: agd-in .32s cubic-bezier(.2,.9,.3,1.35) both; transform-origin: 50% 100%; }
 @keyframes agd-in { from { opacity: 0; transform: translateY(10px) scale(.5); } 40% { opacity: 1; } }
 .agd-field { pointer-events: auto; position: relative; isolation: isolate; width: min(640px, 100%); display: flex; align-items: center; gap: 8px; padding: 5px 5px 5px 17px; border-radius: 26px; border: 1px solid rgba(255,255,255,.85); background: none; cursor: text; text-align: left;
-  font: 16px/1.45 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #8a8a92; -webkit-font-smoothing: antialiased;
+  font: 16px/1.45 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #6e6e76; -webkit-font-smoothing: antialiased;
   box-shadow: 0 0 0 1px rgba(15,15,18,.08), 0 16px 40px -20px rgba(20,20,40,.3); }
-.agd-field::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none; background: rgba(255,255,255,.82); -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5); }
+/* More see-through than the agent's composer: the page shows, blurred, through the glass */
+.agd-field::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none; background: rgba(255,255,255,.58); -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8); }
 @property --agd-beam { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 @keyframes agd-beam { to { --agd-beam: 360deg; } }
 .agd-field::after { content: ""; position: absolute; inset: -65px; padding: 64px; background: conic-gradient(from var(--agd-beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent) content-box;
@@ -35,7 +36,7 @@
 .agd-space { height: 96px; }
 /* Phones: a slimmer field, closer to the bottom edge, so it hides as little of the page as possible */
 @media (max-width: 640px) {
-  .agd { padding: 0 32px max(10px, env(safe-area-inset-bottom, 0px)); }
+  .agd { padding: 0 44px max(10px, env(safe-area-inset-bottom, 0px)); }
   .agd-field { padding: 3px 3px 3px 14px; font-size: 15px; }
   .agd-ph { padding: 7px 0; }
   .agd-send { width: 32px; height: 32px; }
@@ -53,7 +54,7 @@
 
   const dock = document.createElement('div');
   dock.className = 'agd no-i18n later';
-  setTimeout(() => dock.classList.replace('later', 'in'), 1200);
+  setTimeout(() => dock.classList.replace('later', 'in'), 600);
   dock.innerHTML = `<button class="agd-field" type="button" aria-haspopup="dialog"><i class="agd-ring" aria-hidden="true"></i><span class="agd-ph"></span><span class="agd-send" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></button>`;
   const modal = document.createElement('div');
   modal.className = 'agd-modal no-i18n'; modal.hidden = true;
