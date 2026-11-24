@@ -12,7 +12,7 @@
 /* A little narrower than the content column (32px gutters, 16 on phones), so it never lines up with the images and thumbnails */
 /* Only as wide as the field and lifted off the bottom edge: Safari on iOS takes a full-width fixed bar glued to the
    bottom for a toolbar, and fills the space under its own floating address bar with a solid colour */
-.agd { position: fixed; z-index: 90; left: 50%; bottom: max(16px, env(safe-area-inset-bottom, 0px)); width: min(640px, calc(100% - 96px)); translate: -50% 0; display: flex; pointer-events: none; transition: opacity .18s, translate .18s; }
+.agd { position: fixed; z-index: 90; left: 50%; bottom: max(22px, env(safe-area-inset-bottom, 0px)); width: min(640px, calc(100% - 96px)); translate: -50% 0; display: flex; pointer-events: none; transition: opacity .18s, translate .18s; }
 .agd.away { opacity: 0; translate: -50% 8px; }
 /* While the window grows out of it, the field stays on top of it, then fades once the window is open */
 .agd.lift { z-index: 1001; }
@@ -46,19 +46,19 @@
 .agd-space { height: 96px; }
 /* Phones: a slimmer field, closer to the bottom edge, so it hides as little of the page as possible */
 @media (max-width: 640px) {
-  .agd { bottom: max(10px, env(safe-area-inset-bottom, 0px)); width: calc(100% - 88px); }
+  .agd { bottom: max(18px, env(safe-area-inset-bottom, 0px)); width: calc(100% - 88px); }
   .agd-field { padding: 3px 3px 3px 14px; font-size: 15px; }
   .agd-ph { padding: 7px 0; }
   .agd-send { width: 32px; height: 32px; }
   .agd-send svg { width: 15px; height: 15px; }
-  .agd-space { height: 64px; }
+  .agd-space { height: 72px; }
 }
 /* The sheet: a floating card, rounded on all four corners, the whole width of the screen less a light margin (16px, 10px on phones) */
 .agd-modal { position: fixed; inset: 0; z-index: 1000; }
 .agd-modal[hidden] { display: none; }
 .agd-backdrop { position: absolute; inset: 0; background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
-.agd-sheet { position: absolute; left: 50%; translate: -50% 0; width: calc(100% - 32px); top: max(40px, 10svh); bottom: max(16px, env(safe-area-inset-bottom, 0px)); border-radius: 26px; overflow: hidden; background: #f1f1f4; box-shadow: 0 30px 80px -30px rgba(20,20,40,.45); }
-@media (max-width: 640px) { .agd-sheet { width: calc(100% - 20px); top: max(32px, 7svh); bottom: max(10px, env(safe-area-inset-bottom, 0px)); } }
+.agd-sheet { position: absolute; left: 50%; translate: -50% 0; width: calc(100% - 24px); top: max(40px, 10svh); bottom: max(12px, env(safe-area-inset-bottom, 0px)); border-radius: 26px; overflow: hidden; background: #f1f1f4; box-shadow: 0 30px 80px -30px rgba(20,20,40,.45); }
+@media (max-width: 640px) { .agd-sheet { width: calc(100% - 16px); top: max(32px, 7svh); bottom: max(8px, env(safe-area-inset-bottom, 0px)); } }
 .agd-sheet iframe { display: block; width: 100%; height: 100%; border: 0; opacity: 0; }
 @media (prefers-reduced-motion: reduce) { .agd-field::after, .agd-ring, .agd.in .agd-field { animation: none; --agd-beam: 200deg; } .agd-field { transition: none; transform: none !important; } }
 </style>`);
@@ -92,6 +92,18 @@
 
   let frame = null, loaded = false, open = false, anim = [];
   const agent = () => frame?.contentWindow;
+  // The agent's composer lands exactly where the field was: same width, same height above the bottom of the screen,
+  // and the field's slimmer build on phones (agent.html reads these in its embed styles)
+  const fit = () => {
+    const w = agent();
+    if (!loaded || !w) return;
+    const root = w.document.documentElement, s = sheet.getBoundingClientRect();
+    root.style.setProperty('--dock-w', field.offsetWidth + 'px');
+    root.style.setProperty('--dock-b', Math.max(0, parseFloat(getComputedStyle(dock).bottom) - (innerHeight - s.bottom)) + 'px');
+    root.classList.toggle('slim', matchMedia('(max-width: 640px)').matches);
+    w.dispatchEvent(new w.Event('sheetfit'));
+  };
+  addEventListener('resize', fit);
   const sync = () => {
     // The sheet speaks the page's language, and lands in the composer
     const w = agent();
@@ -119,11 +131,12 @@
     open = true;
     anim.forEach(a => a.cancel());
     modal.hidden = false;
+    fit();
     root.style.overflow = 'hidden';
     if (!frame) {
       frame = document.createElement('iframe');
       frame.title = T[lang()].title;
-      frame.addEventListener('load', () => { loaded = true; if (!anim.length || anim.every(a => a.playState === 'finished')) reveal(); }, { once: true });
+      frame.addEventListener('load', () => { loaded = true; fit(); if (!anim.length || anim.every(a => a.playState === 'finished')) reveal(); }, { once: true });
       frame.src = 'agent.html?embed';
       sheet.appendChild(frame);
     }
