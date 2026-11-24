@@ -14,6 +14,8 @@
    bottom for a toolbar, and fills the space under its own floating address bar with a solid colour */
 .agd { position: fixed; z-index: 90; left: 50%; bottom: max(16px, env(safe-area-inset-bottom, 0px)); width: min(640px, calc(100% - 96px)); translate: -50% 0; display: flex; pointer-events: none; transition: opacity .25s, translate .25s; }
 .agd.away { opacity: 0; translate: -50% 8px; }
+/* While the window grows out of it, the field stays on top of it, then fades once the window is open */
+.agd.lift { z-index: 1001; }
 /* It waits a beat after the page loads, then pops out of its bottom edge with an overshoot, like the agent's bubbles */
 /* No fill: an animation still applied after it ends stops the glass from blurring the page behind it */
 .agd.later { visibility: hidden; }
@@ -125,19 +127,25 @@
       frame.src = 'agent.html?embed';
       sheet.appendChild(frame);
     }
-    dock.classList.add('away');
+    dock.classList.add('lift');
     const ms = still ? 0 : 380, ease = 'cubic-bezier(.2,.85,.25,1)';
     anim = [
       sheet.animate([{ clipPath: from(), backgroundColor: '#ffffff' }, { clipPath: FULL, backgroundColor: '#f1f1f4' }], { duration: ms, easing: ease }),
       backdrop.animate([{ opacity: 0 }, { opacity: 1 }], { duration: still ? 0 : 200, easing: 'ease-out' }),
     ];
-    anim[0].finished.then(() => { anim = []; reveal(); }, () => {});
+    anim[0].finished.then(() => {
+      anim = []; reveal();
+      dock.classList.add('away');
+      setTimeout(() => { if (open) dock.classList.remove('lift'); }, still ? 0 : 250);
+    }, () => {});
   };
 
   const hide = () => {
     if (!open) return;
     open = false;
     anim.forEach(a => a.cancel());
+    // Closed before the window finished opening: the field was still on top, it steps back like the rest
+    dock.classList.remove('lift'); dock.classList.add('away');
     const ms = still ? 0 : 280, ease = 'cubic-bezier(.5,0,.2,1)';
     const fade = frame.animate([{ opacity: getComputedStyle(frame).opacity }, { opacity: 0 }], { duration: still ? 0 : 90, fill: 'forwards' });
     anim = [
