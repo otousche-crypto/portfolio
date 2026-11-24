@@ -34,12 +34,7 @@
   background: conic-gradient(from var(--agd-beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent); animation: agd-beam 5s linear infinite; }
 .agd-field:hover .agd-ring, .agd-field:focus-visible .agd-ring { opacity: .9; }
 .agd-ph { flex: 1; min-width: 0; padding: 9px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-/* The text and the button are swept by the ring's beam: same gradient, centred on the field (--cx/--cy, set in JS) */
-.agd-ph, .agd-send { animation: agd-beam 5s linear infinite; }
-.agd-ph { color: transparent; -webkit-text-fill-color: transparent; -webkit-background-clip: text; background-clip: text;
-  background-image: conic-gradient(from var(--agd-beam) at var(--cx, 50%) var(--cy, 50%), #55565d 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, #55565d); }
-.agd-send { flex: none; width: 40px; height: 40px; border-radius: 50%; color: #fff; display: grid; place-items: center; opacity: .55;
-  background: conic-gradient(from var(--agd-beam) at var(--cx, 50%) var(--cy, 50%), #2c2d32 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, #2c2d32); }
+.agd-send { flex: none; width: 40px; height: 40px; border-radius: 50%; background: #2c2d32; color: #fff; display: grid; place-items: center; opacity: .55; }
 .agd-send svg { width: 18px; height: 18px; }
 .agd-space { height: 96px; }
 /* Phones: a slimmer field, closer to the bottom edge, so it hides as little of the page as possible */
@@ -73,7 +68,7 @@
   const space = document.createElement('div');
   space.className = 'agd-space'; space.setAttribute('aria-hidden', 'true');
   document.body.append(space, dock, modal);
-  const field = dock.querySelector('.agd-field'), ring = dock.querySelector('.agd-ring'), ph = dock.querySelector('.agd-ph'), send = dock.querySelector('.agd-send');
+  const field = dock.querySelector('.agd-field'), ring = dock.querySelector('.agd-ring'), ph = dock.querySelector('.agd-ph');
   const backdrop = modal.querySelector('.agd-backdrop'), sheet = modal.querySelector('.agd-sheet');
 
   const texts = () => { const t = T[lang()]; ph.textContent = t.ph; field.setAttribute('aria-label', t.open); sheet.setAttribute('aria-label', t.title); };
@@ -84,7 +79,6 @@
   const fitRing = () => {
     const w = field.offsetWidth, h = field.offsetHeight, r = Math.min(26, h / 2);
     if (w && h) ring.style.clipPath = `path(evenodd, '${pill(0, 0, w, h, r)}${pill(1, 1, w - 2, h - 2, r - 1)}')`;
-    for (const el of [ph, send]) { el.style.setProperty('--cx', w / 2 - el.offsetLeft + 'px'); el.style.setProperty('--cy', h / 2 - el.offsetTop + 'px'); }
   };
   new ResizeObserver(fitRing).observe(field);
 
