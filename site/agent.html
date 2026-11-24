@@ -56,6 +56,16 @@ button { font: inherit; color: inherit; }
 .back svg { width: 16px; height: 16px; }
 /* In the sheet, the arrow is a close cross, at the far right as on a modal */
 .embed .back { order: 1; margin: 0 -6px 0 0; }
+/* In the sheet, the composer sits exactly where the site's field was: agent-dock.js passes its width (--dock-w), its
+   height above the bottom (--dock-b), on phones its slimmer build (.slim), and with a pointer the 5 % swell the field
+   has under the mouse (.swell, the same scale from the bottom edge as on the site) */
+.embed .dock { padding-bottom: var(--dock-b, 14px); }
+.embed .dock .col { max-width: calc(var(--dock-w, 728px) + 32px); }
+.embed.swell .compose { transform: scale(1.05); transform-origin: 50% 100%; }
+.embed.slim .compose { padding: 3px 3px 3px 14px; }
+.embed.slim .compose textarea { padding: 6.5px 0; }
+.embed.slim .send { width: 32px; height: 32px; }
+.embed.slim .send svg { width: 15px; height: 15px; }
 .who { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
 .who b { font-weight: 600; letter-spacing: -0.01em; }
 .who span { color: var(--muted); font-size: 13px; display: flex; align-items: center; gap: 6px; }
@@ -923,6 +933,8 @@ body { position: relative; }
     q.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); ask(q.value); } });
     document.getElementById('reset').addEventListener('click', () => { if (busy) return; window.readInfo?.(false); messages = []; cid = ''; save(); render(); update(); log.scrollTop = 0; q.focus(); });
     addEventListener('langchange', () => { if (!busy) render(); });
+    // In the sheet: the composer just took the site's field geometry, its height is measured again
+    addEventListener('sheetfit', update);
     render(); update();
 
     // Once the face has composed itself, the agent "types" for 2 s, then says hello; a returning visitor gets it at once
