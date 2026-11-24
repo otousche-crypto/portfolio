@@ -854,7 +854,10 @@ body { position: relative; }
       chips.innerHTML = '';
       messages.push({ role: 'user', content: text });
       add('div', 'msg me', esc(text));
-      const bubbles = [add('div', 'msg bot', TYPING)];
+      // The agent takes a moment to read before it starts typing: the "typing" bubble shows up after READ ms
+      const READ = 800;
+      const bubbles = [Object.assign(add('div', 'msg bot', TYPING), { hidden: true })];
+      setTimeout(() => { bubbles[0].hidden = false; down(); }, READ);
       down();
       let answer = '', shown = 0, opening = false;
       // Each part streams into its own bubble, at a human pace: the agent "types" each bubble for a time that grows with
@@ -873,7 +876,7 @@ body { position: relative; }
           const type = () => {
             if (!first) bubbles.push(add('div', 'msg bot', TYPING));
             down();
-            const wait = first ? t0 + beat(parts[0]) - performance.now() : pausedBefore(answer, shown) ? 3500 : beat(split(answer)[shown] || '');
+            const wait = first ? t0 + READ + beat(parts[0]) - performance.now() : pausedBefore(answer, shown) ? 3500 : beat(split(answer)[shown] || '');
             setTimeout(() => { shown++; opening = false; paint(); }, Math.max(0, wait));
           };
           if (first) type(); else setTimeout(type, 500);
