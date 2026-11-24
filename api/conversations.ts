@@ -1,7 +1,7 @@
 // ─── /api/conversations : les logs de l'agent, pour la page privée conversations.html ───
 //   GET   les conversations, les votes et les résumés déjà faits
 //   POST  { key } résume une conversation avec Claude Haiku (une phrase), gardé dans Redis
-// Fermé par défaut. Il faut ADMIN_TOKEN (Vercel → Settings → Environment Variables), 24 caractères au moins.
+// Fermé par défaut. Il faut ADMIN_TOKEN (Vercel → Settings → Environment Variables).
 // Mauvais mot de passe : 10 essais par heure et par IP, 30 par jour pour tout le site ; au-delà, tout est refusé,
 // même le bon mot de passe, jusqu'au lendemain. Sans Redis pour compter les essais, tout est refusé aussi.
 
@@ -30,7 +30,7 @@ const parse = <T>(rows: unknown[]) => rows.map((r) => (typeof r === 'string' ? J
 // null si l'accès est accordé, sinon la réponse de refus
 async function guard(req: Request): Promise<Response | null> {
   const secret = process.env.ADMIN_TOKEN;
-  if (!secret || secret.length < 24 || !redis || !perIp || !perSite) return json({ error: 'unavailable' }, 503);
+  if (!secret || !redis || !perIp || !perSite) return json({ error: 'unavailable' }, 503);
   // Les essais ratés du jour bloquent tout le monde, le propriétaire compris : on vérifie sans consommer
   if ((await perSite.getRemaining('all')).remaining <= 0) return json({ error: 'locked' }, 429);
   const given = req.headers.get('authorization')?.replace(/^Bearer\s+/i, '') ?? '';

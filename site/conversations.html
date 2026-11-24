@@ -145,7 +145,7 @@ button, input { font: inherit; color: inherit; }
 
   const show = (which) => { $('login').hidden = which !== 'login'; $('app').hidden = which !== 'app'; };
   const api = (opts = {}) => fetch('/api/conversations', { ...opts, cache: 'no-store', credentials: 'omit', headers: { authorization: 'Bearer ' + pw, ...(opts.body ? { 'content-type': 'application/json' } : {}) } }).catch(() => null);
-  const ERR = { forbidden: 'Mot de passe incorrect.', too_many: 'Trop d’essais, réessayez dans une heure.', locked: 'Accès verrouillé pour aujourd’hui après trop d’essais ratés.', unavailable: 'Accès fermé : ADMIN_TOKEN manque sur Vercel, ou fait moins de 24 caractères.' };
+  const ERR = { forbidden: 'Mot de passe incorrect.', too_many: 'Trop d’essais, réessayez dans une heure.', locked: 'Accès verrouillé pour aujourd’hui après trop d’essais ratés.', unavailable: 'Accès fermé : ADMIN_TOKEN manque sur Vercel.' };
   const logout = (msg = '') => { try { sessionStorage.removeItem(KEY); } catch (e) {} pw = ''; chats = []; summaries = {}; current = -1; $('list').innerHTML = $('thread').innerHTML = ''; $('err').textContent = msg; $('pw').value = ''; show('login'); };
 
   const load = async () => {
