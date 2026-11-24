@@ -64,7 +64,7 @@
   // The pop plays once per visit: on the next pages the field is simply there
   let seen = false;
   try { seen = sessionStorage.getItem('agent-dock-seen') === '1'; sessionStorage.setItem('agent-dock-seen', '1'); } catch (e) {}
-  if (!seen) { dock.classList.add('later'); setTimeout(() => dock.classList.replace('later', 'in'), 600); }
+  if (!seen) { dock.classList.add('later'); setTimeout(() => dock.classList.replace('later', 'in'), 2000); }
   dock.innerHTML = `<button class="agd-field" type="button" aria-haspopup="dialog"><i class="agd-ring" aria-hidden="true"></i><span class="agd-ph"></span><span class="agd-send" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></button>`;
   const modal = document.createElement('div');
   modal.className = 'agd-modal no-i18n'; modal.hidden = true;
