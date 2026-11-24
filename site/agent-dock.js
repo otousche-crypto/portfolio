@@ -27,12 +27,12 @@
 @property --agd-beam { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 @keyframes agd-beam { to { --agd-beam: 360deg; } }
 .agd-field::after { content: ""; position: absolute; inset: -65px; padding: 64px; background: conic-gradient(from var(--agd-beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent) content-box;
-  border-radius: 999px; z-index: -2; pointer-events: none; opacity: .28; filter: blur(22px); animation: agd-beam 5s linear infinite; transition: opacity .3s; }
-.agd-field:hover::after, .agd-field:focus-visible::after { opacity: .42; }
+  border-radius: 999px; z-index: -2; pointer-events: none; opacity: .6; filter: blur(22px); animation: agd-beam 5s linear infinite; transition: opacity .3s; }
+.agd-field:hover::after, .agd-field:focus-visible::after { opacity: .8; }
 .agd-field:focus-visible { outline: none; }
-.agd-ring { position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; z-index: 1; opacity: .6; clip-path: inset(50%); transition: opacity .3s;
+.agd-ring { position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; z-index: 1; opacity: .9; clip-path: inset(50%); transition: opacity .3s;
   background: conic-gradient(from var(--agd-beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent); animation: agd-beam 5s linear infinite; }
-.agd-field:hover .agd-ring, .agd-field:focus-visible .agd-ring { opacity: .85; }
+.agd-field:hover .agd-ring, .agd-field:focus-visible .agd-ring { opacity: 1; }
 .agd-ph { flex: 1; min-width: 0; padding: 9px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .agd-send { flex: none; width: 40px; height: 40px; border-radius: 50%; background: #2c2d32; color: #fff; display: grid; place-items: center; opacity: .25; }
 .agd-send svg { width: 18px; height: 18px; }
