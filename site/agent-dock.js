@@ -20,10 +20,11 @@
 .agd.in .agd-field { animation: agd-in .32s cubic-bezier(.2,.9,.3,1.35); }
 @keyframes agd-in { from { opacity: 0; transform: translateY(10px) scale(.5); } 40% { opacity: 1; } }
 .agd-field { pointer-events: auto; position: relative; isolation: isolate; width: 100%; display: flex; align-items: center; gap: 8px; padding: 5px 5px 5px 17px; border-radius: 26px; border: 1px solid rgba(255,255,255,.85); background: none; cursor: text; text-align: left;
-  font: 16px/1.45 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #6e6e76; -webkit-font-smoothing: antialiased;
+  font: 16px/1.45 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #48484f; -webkit-font-smoothing: antialiased;
   box-shadow: 0 0 0 1px rgba(15,15,18,.08), 0 16px 40px -20px rgba(20,20,40,.3); }
-/* More see-through than the agent's composer: the page shows, blurred, through the glass */
-.agd-field::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none; background: rgba(255,255,255,.58); -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8); }
+/* More see-through than the agent's composer: the page shows, blurred, through the glass. Opaque enough (72 %) for the
+   dark text to stay readable over a dark image (about 4.7:1 over black) */
+.agd-field::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none; background: rgba(255,255,255,.72); -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8); }
 @property --agd-beam { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 @keyframes agd-beam { to { --agd-beam: 360deg; } }
 .agd-field::after { content: ""; position: absolute; inset: -65px; padding: 64px; background: conic-gradient(from var(--agd-beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent) content-box;
