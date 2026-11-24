@@ -134,6 +134,7 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
     async start(controller) {
       let answer = '';
       let outcome = 'ok';
+      let usage: Anthropic.Usage | undefined;
       try {
         const run = deps.client.messages.stream({
           model: MODEL,
@@ -153,6 +154,7 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
           }
         }
         const final = await run.finalMessage();
+        usage = final.usage;
         if (final.stop_reason === 'refusal') {
           outcome = 'refusal';
           const text = (answer ? '\n---\n' : '') + FALLBACK[lang];
@@ -170,8 +172,9 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
         controller.enqueue(encoder.encode((answer ? '\n---\n' : '') + text));
       }
       controller.close();
-      // Log anonymisé : la question, la réponse, la langue. Ni IP ni identifiant.
-      await deps.store?.log({ at: new Date().toISOString(), cid: input.cid, lang, turn: (messages.length + 1) / 2, question: messages.at(-1)!.content, answer, outcome })
+      // Log anonymisé : la question, la réponse, la langue, les tokens facturés (pour le coût). Ni IP ni identifiant.
+      const tokens = usage && { in: usage.input_tokens, out: usage.output_tokens, cr: usage.cache_read_input_tokens ?? 0, cw: usage.cache_creation_input_tokens ?? 0 };
+      await deps.store?.log({ at: new Date().toISOString(), cid: input.cid, lang, turn: (messages.length + 1) / 2, question: messages.at(-1)!.content, answer, outcome, tokens })
         .catch((e) => console.error('log error', e));
     },
   });

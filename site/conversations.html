@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
 <title>Conversations · Agent</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,6 +41,11 @@ button, input { font: inherit; color: inherit; }
 .list button[aria-current="true"] { background: var(--sel); }
 .list .meta { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 12px; }
 .list .q { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.list .sum { color: #5a5a62; font-size: 12.5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.list .sum:empty { display: none; }
+.summary { background: #fff; border-radius: 16px; padding: 14px 16px; box-shadow: 0 0 0 1px var(--line); display: grid; gap: 6px; margin-bottom: 8px; }
+.summary p { margin: 0; }
+.summary small { color: var(--muted); font-size: 12px; }
 .day { padding: 12px 12px 4px; color: var(--muted); font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
 
 .main { min-height: 0; overflow-y: auto; }
@@ -93,26 +100,43 @@ button, input { font: inherit; color: inherit; }
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
+  // The password lives only for this tab (sessionStorage): closing it logs out
   const KEY = 'agent-admin';
-  let pw = ''; try { pw = localStorage.getItem(KEY) || ''; } catch (e) {}
-  let chats = [], order = 'new', current = -1;
+  let pw = ''; try { pw = sessionStorage.getItem(KEY) || ''; localStorage.removeItem(KEY); } catch (e) {}
+  let chats = [], summaries = {}, systemChars = 0, order = 'new', current = -1;
 
-  const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   // Light markdown, as the agent writes it: **bold** and [label](url)
-  const md = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, t, u) => /^(https?:|mailto:|\/|[\w-]+\.html)/.test(u) ? `<a href="${u}" target="_blank" rel="noopener">${t}</a>` : t);
+  const md = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, t, u) => /^(https?:|mailto:|\/|[\w-]+\.html)/.test(u) ? `<a href="${u}" target="_blank" rel="noopener noreferrer">${t}</a>` : t);
   const when = (iso, o) => new Date(iso).toLocaleString('fr-FR', { timeZone: 'Europe/Paris', ...o });
   const LABEL = { canned: 'réponse toute prête', refusal: 'refus du modèle', max_tokens: 'réponse coupée' };
   const bad = (o) => o.startsWith('api_') || o === 'error' || o === 'refusal' || o === 'max_tokens';
   const ENDED = /\n?\[\[\s*(FIN|END)\s*\]\]\s*$/;
 
-  // By conversation: the id drawn by the page; older logs, without one, are split at every first question
+  // Claude Haiku 5.5, in $ per token: input, output, cache read, cache write (5 min)
+  const PRICE = { in: 0.10e-6, out: 0.50e-6, cr: 0.01e-6, cw: 0.125e-6 };
+  const tok = (chars) => chars / 3;
+  // One answer's cost: the billed tokens when they were logged; otherwise an estimate from the text
+  // (cached profile + history + question in, answer out).
+  const costOf = (m, i, msgs) => {
+    // A ready-made answer costs nothing, nor does a call the API turned down
+    if (m.outcome === 'canned' || (!m.tokens && !m.answer)) return { usd: 0, exact: true };
+    const t = m.tokens;
+    if (t) return { usd: t.in * PRICE.in + t.out * PRICE.out + t.cr * PRICE.cr + t.cw * PRICE.cw, exact: true };
+    const history = msgs.slice(Math.max(0, i - 3), i).reduce((n, x) => n + x.question.length + Math.min(x.answer.length, 1200), 0);
+    return { usd: tok(systemChars) * PRICE.cr + tok(history + m.question.length) * PRICE.in + tok(m.answer.length) * PRICE.out, exact: false };
+  };
+  const chatCost = (c) => c.msgs.reduce((a, m, i) => { const x = costOf(m, i, c.msgs); return { usd: a.usd + x.usd, exact: a.exact && x.exact }; }, { usd: 0, exact: true });
+  const money = ({ usd, exact }) => (exact ? '' : '≈ ') + (usd === 0 ? '0 $' : usd < 0.01 ? (usd * 100).toFixed(usd < 0.001 ? 3 : 2).replace('.', ',') + ' ¢' : usd.toFixed(3).replace('.', ',') + ' $');
+
+  // Same grouping as agent/conversations.ts: the keys must match the server's for the summaries
   const group = (logs, votes) => {
     const out = [], byCid = new Map();
     for (const l of [...logs].sort((a, b) => a.at.localeCompare(b.at))) {
       if (l.cid) {
-        if (!byCid.has(l.cid)) { const c = { msgs: [], votes: [] }; byCid.set(l.cid, c); out.push(c); }
+        if (!byCid.has(l.cid)) { const c = { key: l.cid, msgs: [], votes: [] }; byCid.set(l.cid, c); out.push(c); }
         byCid.get(l.cid).msgs.push(l);
-      } else if (l.turn === 1 || !out.length || out.at(-1).msgs[0].cid) out.push({ msgs: [l], votes: [] });
+      } else if (l.turn === 1 || !out.length || out.at(-1).msgs[0].cid) out.push({ key: 't' + l.at, msgs: [l], votes: [] });
       else out.at(-1).msgs.push(l);
     }
     for (const v of votes) if (v.cid && byCid.has(v.cid)) byCid.get(v.cid).votes.push(v);
@@ -120,21 +144,33 @@ button, input { font: inherit; color: inherit; }
   };
 
   const show = (which) => { $('login').hidden = which !== 'login'; $('app').hidden = which !== 'app'; };
+  const api = (opts = {}) => fetch('/api/conversations', { ...opts, cache: 'no-store', credentials: 'omit', headers: { authorization: 'Bearer ' + pw, ...(opts.body ? { 'content-type': 'application/json' } : {}) } }).catch(() => null);
+  const ERR = { forbidden: 'Mot de passe incorrect.', too_many: 'Trop d’essais, réessayez dans une heure.', locked: 'Accès verrouillé pour aujourd’hui après trop d’essais ratés.', unavailable: 'Accès fermé : ADMIN_TOKEN manque sur Vercel, ou fait moins de 24 caractères.' };
+  const logout = (msg = '') => { try { sessionStorage.removeItem(KEY); } catch (e) {} pw = ''; chats = []; summaries = {}; current = -1; $('list').innerHTML = $('thread').innerHTML = ''; $('err').textContent = msg; $('pw').value = ''; show('login'); };
 
   const load = async () => {
-    const r = await fetch('/api/conversations', { headers: { authorization: 'Bearer ' + pw } }).catch(() => null);
-    if (!r || !r.ok) {
-      const code = r ? (await r.json().catch(() => ({}))).error : 'network';
-      try { localStorage.removeItem(KEY); } catch (e) {}
-      $('err').textContent = { forbidden: 'Mot de passe incorrect.', too_many: 'Trop d’essais, réessayez dans une heure.', unavailable: 'ADMIN_TOKEN n’est pas configuré sur Vercel.' }[code] || 'Impossible de charger les conversations.';
-      return show('login');
+    const r = await api();
+    if (!r || !r.ok) return logout(ERR[r ? (await r.json().catch(() => ({}))).error : ''] || 'Impossible de charger les conversations.');
+    const data = await r.json();
+    systemChars = data.systemChars || 0; summaries = data.summaries || {};
+    chats = group(data.logs, data.votes);
+    const canned = data.logs.filter((l) => l.outcome === 'canned').length;
+    const up = data.votes.filter((v) => v.vote === 'up').length, down = data.votes.length - up;
+    const total = chats.reduce((a, c) => { const x = chatCost(c); return { usd: a.usd + x.usd, exact: a.exact && x.exact }; }, { usd: 0, exact: true });
+    $('stats').textContent = `${chats.length} conversations · ${data.logs.length} questions (${canned} toutes prêtes) · ${money(total)} · ${up} 👍 ${down} 👎`;
+    show('app'); list(); summarize();
+  };
+
+  // Summaries missing (or out of date: the conversation went on) are written one after the other, newest first
+  const stale = (c) => !summaries[c.key] || summaries[c.key].n !== c.msgs.length;
+  const summarize = async () => {
+    for (const c of [...chats].reverse().filter(stale).slice(0, 30)) {
+      if (!pw) return;
+      const r = await api({ method: 'POST', body: JSON.stringify({ key: c.key }) });
+      if (!r || !r.ok) return;
+      summaries[c.key] = await r.json();
+      list(); if (chats[current] === c) read(current, true);
     }
-    const { logs, votes } = await r.json();
-    chats = group(logs, votes);
-    const canned = logs.filter((l) => l.outcome === 'canned').length;
-    const up = votes.filter((v) => v.vote === 'up').length, down = votes.length - up;
-    $('stats').textContent = `${chats.length} conversations · ${logs.length} questions (${canned} toutes prêtes) · ${up} 👍 ${down} 👎`;
-    show('app'); list();
   };
 
   const list = () => {
@@ -142,27 +178,29 @@ button, input { font: inherit; color: inherit; }
     let lastDay = '', html = '';
     for (const i of idx) {
       const c = chats[i], first = c.msgs[0], d = when(first.at, { weekday: 'long', day: 'numeric', month: 'long' });
-      if (d !== lastDay) { html += `<li class="day">${d}</li>`; lastDay = d; }
+      if (d !== lastDay) { html += `<li class="day">${esc(d)}</li>`; lastDay = d; }
       const flags = (c.msgs.some((m) => bad(m.outcome)) ? ' ⚠️' : '') + (ENDED.test(c.msgs.at(-1).answer) ? ' 🔒' : '') + c.votes.map((v) => v.vote === 'up' ? '👍' : '👎').join('');
-      html += `<li><button type="button" data-i="${i}" aria-current="${i === current}"><span class="meta"><span>${when(first.at, { hour: '2-digit', minute: '2-digit' })} · ${first.lang.toUpperCase()}</span><span>${c.msgs.length} q.${flags}</span></span><span class="q">${esc(first.question)}</span></button></li>`;
+      const sum = summaries[c.key]?.text || '';
+      html += `<li><button type="button" data-i="${i}" aria-current="${i === current}"><span class="meta"><span>${when(first.at, { hour: '2-digit', minute: '2-digit' })} · ${esc(first.lang.toUpperCase())} · ${money(chatCost(c))}</span><span>${c.msgs.length} q.${flags}</span></span><span class="q">${esc(first.question)}</span><span class="sum">${esc(sum)}</span></button></li>`;
     }
     $('list').innerHTML = html || '<li class="empty">Aucune conversation pour l’instant.</li>';
   };
 
-  const read = (i) => {
+  const read = (i, keepScroll) => {
     current = i; const c = chats[i];
-    let html = '';
-    for (const m of c.msgs) {
+    const sum = summaries[c.key], cost = chatCost(c);
+    let html = `<div class="summary"><p>${sum ? esc(sum.text) + (stale(c) ? ' <small>(résumé en cours de mise à jour…)</small>' : '') : '<small>Résumé en cours…</small>'}</p><small>Coût ${cost.exact ? '' : 'estimé '}de la conversation : ${money(cost)}${cost.exact ? '' : ' (tokens non enregistrés à l’époque, estimation à partir du texte)'}</small></div>`;
+    c.msgs.forEach((m, j) => {
       html += `<div class="msg me">${esc(m.question)}</div>`;
       const ended = ENDED.test(m.answer);
       for (const part of m.answer.replace(ENDED, '').split(/\n-{3,}\n/)) if (part.trim()) html += `<div class="msg bot">${md(part.trim())}</div>`;
       const tags = [LABEL[m.outcome] || (m.outcome !== 'ok' ? m.outcome : ''), ended ? 'conversation fermée' : ''].filter(Boolean);
       const votes = c.votes.filter((v) => v.question === m.question).map((v) => v.vote === 'up' ? '👍' : '👎').join(' ');
-      html += `<div class="note">${when(m.at, { hour: '2-digit', minute: '2-digit', second: '2-digit' })} ${tags.map((t) => `<span class="tag${bad(m.outcome) || t === 'conversation fermée' ? ' bad' : ''}">${t}</span>`).join('')}${votes}</div>`;
-    }
+      html += `<div class="note">${when(m.at, { hour: '2-digit', minute: '2-digit', second: '2-digit' })} · ${money(costOf(m, j, c.msgs))} ${tags.map((t) => `<span class="tag${bad(m.outcome) || t === 'conversation fermée' ? ' bad' : ''}">${esc(t)}</span>`).join('')}${votes}</div>`;
+    });
     $('thread').innerHTML = html;
-    $('head').innerHTML = `<b>${when(c.msgs[0].at, { dateStyle: 'full', timeStyle: 'short' })}</b> · ${c.msgs.length} question${c.msgs.length > 1 ? 's' : ''} · ${c.msgs[0].lang.toUpperCase()}`;
-    $('app').classList.add('reading'); $('main').scrollTop = 0; list();
+    $('head').innerHTML = `<b>${when(c.msgs[0].at, { dateStyle: 'full', timeStyle: 'short' })}</b> · ${c.msgs.length} question${c.msgs.length > 1 ? 's' : ''} · ${esc(c.msgs[0].lang.toUpperCase())}`;
+    $('app').classList.add('reading'); if (!keepScroll) $('main').scrollTop = 0; list();
   };
 
   $('list').addEventListener('click', (e) => { const b = e.target.closest('button[data-i]'); if (b) read(+b.dataset.i); });
@@ -171,10 +209,10 @@ button, input { font: inherit; color: inherit; }
     order = b.dataset.order; document.querySelectorAll('[data-order]').forEach((x) => x.setAttribute('aria-pressed', x === b)); list();
   });
   $('back').addEventListener('click', () => $('app').classList.remove('reading'));
-  $('logout').addEventListener('click', () => { try { localStorage.removeItem(KEY); } catch (e) {} pw = ''; $('err').textContent = ''; show('login'); });
+  $('logout').addEventListener('click', () => logout());
   $('login-form').addEventListener('submit', (e) => {
     e.preventDefault(); pw = $('pw').value; $('err').textContent = '';
-    try { localStorage.setItem(KEY, pw); } catch (err) {}
+    try { sessionStorage.setItem(KEY, pw); } catch (err) {}
     load();
   });
 
