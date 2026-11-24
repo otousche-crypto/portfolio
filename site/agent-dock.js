@@ -12,7 +12,7 @@
 /* A little narrower than the content column (32px gutters, 16 on phones), so it never lines up with the images and thumbnails */
 /* Only as wide as the field and lifted off the bottom edge: Safari on iOS takes a full-width fixed bar glued to the
    bottom for a toolbar, and fills the space under its own floating address bar with a solid colour */
-.agd { position: fixed; z-index: 90; left: 50%; bottom: max(16px, env(safe-area-inset-bottom, 0px)); width: min(640px, calc(100% - 96px)); translate: -50% 0; display: flex; pointer-events: none; transition: opacity .25s, translate .25s; }
+.agd { position: fixed; z-index: 90; left: 50%; bottom: max(16px, env(safe-area-inset-bottom, 0px)); width: min(640px, calc(100% - 96px)); translate: -50% 0; display: flex; pointer-events: none; transition: opacity .18s, translate .18s; }
 .agd.away { opacity: 0; translate: -50% 8px; }
 /* While the window grows out of it, the field stays on top of it, then fades once the window is open */
 .agd.lift { z-index: 1001; }
@@ -101,7 +101,7 @@
   };
   const reveal = () => {
     if (!open || !loaded) return;
-    frame.animate([{ opacity: 0 }, { opacity: 1 }], { duration: still ? 0 : 160, easing: 'ease-out', fill: 'forwards' });
+    frame.animate([{ opacity: 0 }, { opacity: 1 }], { duration: still ? 0 : 120, easing: 'ease-out', fill: 'forwards' });
     // The page is on screen: its portrait composes itself, then the agent says hello
     agent().dispatchEvent(new (agent().Event)('sheetopen'));
     sync();
@@ -128,15 +128,15 @@
       sheet.appendChild(frame);
     }
     dock.classList.add('lift');
-    const ms = still ? 0 : 380, ease = 'cubic-bezier(.2,.85,.25,1)';
+    const ms = still ? 0 : 260, ease = 'cubic-bezier(.2,.85,.25,1)';
     anim = [
       sheet.animate([{ clipPath: from(), backgroundColor: '#ffffff' }, { clipPath: FULL, backgroundColor: '#f1f1f4' }], { duration: ms, easing: ease }),
-      backdrop.animate([{ opacity: 0 }, { opacity: 1 }], { duration: still ? 0 : 200, easing: 'ease-out' }),
+      backdrop.animate([{ opacity: 0 }, { opacity: 1 }], { duration: still ? 0 : 150, easing: 'ease-out' }),
     ];
     anim[0].finished.then(() => {
       anim = []; reveal();
       dock.classList.add('away');
-      setTimeout(() => { if (open) dock.classList.remove('lift'); }, still ? 0 : 250);
+      setTimeout(() => { if (open) dock.classList.remove('lift'); }, still ? 0 : 200);
     }, () => {});
   };
 
