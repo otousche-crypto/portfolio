@@ -91,6 +91,7 @@ a { color: inherit; }
 .hero p { font-size: 18px; color: var(--muted); max-width: 56ch; margin: 36px 0 0; }
 .hero p strong { color: var(--fg); font-weight: 500; }
 .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+@media (max-width: 760px) { .hero { padding-bottom: 56px; } }  /* mobile: the projects follow the tags more closely */
 .hero-tags span { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
 html { overflow-x: clip; }  /* full-bleed lines and the cropped bust never cause a sideways scroll */
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }  /* the navbar anchors glide to their section */
