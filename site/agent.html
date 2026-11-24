@@ -56,6 +56,23 @@ button { font: inherit; color: inherit; }
 .back svg { width: 16px; height: 16px; }
 /* In the sheet, the arrow is a close cross, at the far right as on a modal */
 .embed .back { order: 1; margin: 0 -6px 0 0; }
+/* The sheet around the page is frosted glass (agent-dock.js): the page lets it show through */
+.embed body { background: transparent; }
+/* In the sheet, the composer sits exactly where the site's field was: agent-dock.js passes its width (--dock-w), its
+   height above the bottom (--dock-b), on phones its slimmer build (.slim), and with a pointer the 5 % swell the field
+   has under the mouse (.swell, the same scale from the bottom edge as on the site) */
+.embed .dock { padding-bottom: var(--dock-b, 14px); }
+.embed .dock .col { max-width: calc(var(--dock-w, 728px) + 32px); }
+.embed.swell .compose { transform: scale(1.05); transform-origin: 50% 100%; }
+.embed.slim .compose { padding: 3px 3px 3px 14px; }
+.embed.slim .compose textarea { padding: 6.5px 0; }
+/* …and looks like it too: the same glass, the same text in the same grey (agent-dock.js, .agd-field). On phones the
+   hint is 15px like the field's, while what the visitor types stays at 16px (below that, iOS zooms into the page) */
+.embed .compose::before { background: rgba(255,255,255,.72); -webkit-backdrop-filter: blur(10px) saturate(1.6); backdrop-filter: blur(10px) saturate(1.6); }
+.embed .compose textarea::placeholder { color: #5f5f67; opacity: 1; }
+.embed.slim .compose textarea::placeholder { font-size: 15px; }
+.embed.slim .send { width: 32px; height: 32px; }
+.embed.slim .send svg { width: 15px; height: 15px; }
 .who { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
 .who b { font-weight: 600; letter-spacing: -0.01em; }
 .who span { color: var(--muted); font-size: 13px; display: flex; align-items: center; gap: 6px; }
@@ -569,6 +586,8 @@ body { position: relative; }
     const T = {
       fr: {
         hello: 'Bonjour ! Je suis l’agent IA d’Olivier : posez-moi vos questions, je tâcherai d’y répondre !',
+        // The composer's hint; in the sheet, the same words as the site's field it grew out of (agent-dock.js)
+        ask: document.documentElement.classList.contains('embed') ? 'Une question sur mon parcours ?' : 'Posez vos questions',
         suggestions: ['Pourquoi cet agent ?', 'Comment utilise-t-il l’IA ?', 'Sa vision produit ?', 'Son approche du design ?', 'Est-il disponible ?'],
         // Fills in when the agent's own suggestions are missing or were already asked
         // Every suggestion the page may show has a ready-made answer (agent/canned.ts, SUGGESTIONS): a click never calls the model
@@ -586,6 +605,7 @@ body { position: relative; }
       },
       en: {
         hello: 'Hello! I’m Olivier’s AI agent: ask me your questions, I’ll do my best to answer!',
+        ask: document.documentElement.classList.contains('embed') ? 'Any question about my work?' : 'Ask your questions',
         suggestions: ['Why this agent?', 'How does he use AI?', 'His product vision?', 'His design approach?', 'Is he available?'],
         more: ['His product builder projects?', 'Tell me about Go MoonBound', 'How does he use AI?', 'His product vision?', 'His design approach?', 'His UX research experience?', 'Tell me about Altered', 'Why this agent?', 'Is he available?'],
         429: 'You’ve reached the message limit for now. The best is to talk to Olivier directly: on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) or at otousche@gmail.com.',
@@ -797,7 +817,7 @@ body { position: relative; }
     const update = () => {
       const n = q.value.length;
       q.disabled = ended();
-      q.placeholder = ended() ? T[lang()].ended : (lang() === 'en' ? q.dataset.enPlaceholder : 'Posez vos questions');
+      q.placeholder = ended() ? T[lang()].ended : T[lang()].ask;
       send.disabled = busy || ended() || !q.value.trim();
       count.textContent = n > MAX - 150 ? MAX - n : '';
       q.style.height = 'auto'; q.style.height = Math.min(q.scrollHeight, 160) + 'px';
@@ -834,7 +854,10 @@ body { position: relative; }
       chips.innerHTML = '';
       messages.push({ role: 'user', content: text });
       add('div', 'msg me', esc(text));
-      const bubbles = [add('div', 'msg bot', TYPING)];
+      // The agent takes a moment to read before it starts typing: the "typing" bubble shows up after READ ms
+      const READ = 800;
+      const bubbles = [Object.assign(add('div', 'msg bot', TYPING), { hidden: true })];
+      setTimeout(() => { bubbles[0].hidden = false; down(); }, READ);
       down();
       let answer = '', shown = 0, opening = false;
       // Each part streams into its own bubble, at a human pace: the agent "types" each bubble for a time that grows with
@@ -853,7 +876,7 @@ body { position: relative; }
           const type = () => {
             if (!first) bubbles.push(add('div', 'msg bot', TYPING));
             down();
-            const wait = first ? t0 + beat(parts[0]) - performance.now() : pausedBefore(answer, shown) ? 3500 : beat(split(answer)[shown] || '');
+            const wait = first ? t0 + READ + beat(parts[0]) - performance.now() : pausedBefore(answer, shown) ? 3500 : beat(split(answer)[shown] || '');
             setTimeout(() => { shown++; opening = false; paint(); }, Math.max(0, wait));
           };
           if (first) type(); else setTimeout(type, 500);
@@ -923,6 +946,8 @@ body { position: relative; }
     q.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); ask(q.value); } });
     document.getElementById('reset').addEventListener('click', () => { if (busy) return; window.readInfo?.(false); messages = []; cid = ''; save(); render(); update(); log.scrollTop = 0; q.focus(); });
     addEventListener('langchange', () => { if (!busy) render(); });
+    // In the sheet: the composer just took the site's field geometry, its height is measured again
+    addEventListener('sheetfit', update);
     render(); update();
 
     // Once the face has composed itself, the agent "types" for 2 s, then says hello; a returning visitor gets it at once

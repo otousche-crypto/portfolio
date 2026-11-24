@@ -12,23 +12,30 @@
 /* A little narrower than the content column (32px gutters, 16 on phones), so it never lines up with the images and thumbnails */
 /* Only as wide as the field and lifted off the bottom edge: Safari on iOS takes a full-width fixed bar glued to the
    bottom for a toolbar, and fills the space under its own floating address bar with a solid colour */
-.agd { position: fixed; z-index: 90; left: 50%; bottom: max(16px, env(safe-area-inset-bottom, 0px)); width: min(640px, calc(100% - 96px)); translate: -50% 0; display: flex; pointer-events: none; transition: opacity .25s, translate .25s; }
+.agd { position: fixed; z-index: 90; left: 50%; bottom: max(22px, env(safe-area-inset-bottom, 0px)); width: min(640px, calc(100% - 96px)); translate: -50% 0; display: flex; pointer-events: none; transition: opacity .18s, translate .18s; }
 .agd.away { opacity: 0; translate: -50% 8px; }
+/* While the window grows out of it, the field stays on top of it, then fades once the window is open */
+.agd.lift { z-index: 1001; }
 /* It waits a beat after the page loads, then pops out of its bottom edge with an overshoot, like the agent's bubbles */
 /* No fill: an animation still applied after it ends stops the glass from blurring the page behind it */
 .agd.later { visibility: hidden; }
-.agd.in .agd-field { animation: agd-in .32s cubic-bezier(.2,.9,.3,1.35); transform-origin: 50% 100%; }
+.agd.in .agd-field { animation: agd-in .32s cubic-bezier(.2,.9,.3,1.35); }
 @keyframes agd-in { from { opacity: 0; transform: translateY(10px) scale(.5); } 40% { opacity: 1; } }
 .agd-field { pointer-events: auto; position: relative; isolation: isolate; width: 100%; display: flex; align-items: center; gap: 8px; padding: 5px 5px 5px 17px; border-radius: 26px; border: 1px solid rgba(255,255,255,.85); background: none; cursor: text; text-align: left;
-  font: 16px/1.45 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #6e6e76; -webkit-font-smoothing: antialiased;
+  font: 16px/1.45 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #5f5f67; -webkit-font-smoothing: antialiased;
   box-shadow: 0 0 0 1px rgba(15,15,18,.08), 0 16px 40px -20px rgba(20,20,40,.3); }
-/* More see-through than the agent's composer: the page shows, blurred, through the glass */
-.agd-field::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none; background: rgba(255,255,255,.58); -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8); }
+/* More see-through than the agent's composer: the page shows, blurred, through the glass. Opaque enough (72 %) for the
+   text to stay readable over a dark image, while keeping the soft look of a placeholder (about 3.3:1 over black) */
+.agd-field::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none; background: rgba(255,255,255,.72); -webkit-backdrop-filter: blur(10px) saturate(1.6); backdrop-filter: blur(10px) saturate(1.6); }
 @property --agd-beam { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 @keyframes agd-beam { to { --agd-beam: 360deg; } }
 .agd-field::after { content: ""; position: absolute; inset: -65px; padding: 64px; background: conic-gradient(from var(--agd-beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent) content-box;
   border-radius: 999px; z-index: -2; pointer-events: none; opacity: .28; filter: blur(22px); animation: agd-beam 5s linear infinite; transition: opacity .3s; }
 .agd-field:hover::after, .agd-field:focus-visible::after { opacity: .42; }
+/* On hover it swells from its bottom edge, with a slight bounce: it invites the click (pointers only; phones have no hover).
+   Not on keyboard focus: closing the sheet hands the focus back to the field, which would leave it swollen */
+.agd-field { transform-origin: 50% 100%; transition: transform .3s cubic-bezier(.2,.9,.3,1.5); }
+@media (hover: hover) { .agd-field:hover { transform: scale(1.05); } }
 .agd-field:focus-visible { outline: none; }
 .agd-ring { position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; z-index: 1; opacity: .6; clip-path: inset(50%); transition: opacity .3s;
   background: conic-gradient(from var(--agd-beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent); animation: agd-beam 5s linear infinite; }
@@ -39,20 +46,22 @@
 .agd-space { height: 96px; }
 /* Phones: a slimmer field, closer to the bottom edge, so it hides as little of the page as possible */
 @media (max-width: 640px) {
-  .agd { bottom: max(10px, env(safe-area-inset-bottom, 0px)); width: calc(100% - 88px); }
+  .agd { bottom: max(18px, env(safe-area-inset-bottom, 0px)); width: calc(100% - 88px); }
   .agd-field { padding: 3px 3px 3px 14px; font-size: 15px; }
   .agd-ph { padding: 7px 0; }
   .agd-send { width: 32px; height: 32px; }
   .agd-send svg { width: 15px; height: 15px; }
-  .agd-space { height: 64px; }
+  .agd-space { height: 72px; }
 }
-/* The sheet: full width, a strip of the page left visible on top */
+/* The sheet: a floating card, rounded on all four corners, the whole width of the screen less a light margin. Frosted
+   glass like the field it grows out of: the page shows through, lightly blurred (the agent page inside is transparent) */
 .agd-modal { position: fixed; inset: 0; z-index: 1000; }
 .agd-modal[hidden] { display: none; }
 .agd-backdrop { position: absolute; inset: 0; background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
-.agd-sheet { position: absolute; left: 0; right: 0; bottom: 0; top: max(28px, 7svh); border-radius: 26px 26px 0 0; overflow: hidden; background: #f1f1f4; box-shadow: 0 -30px 80px -30px rgba(20,20,40,.45); }
+.agd-sheet { position: absolute; left: 50%; translate: -50% 0; width: calc(100% - 24px); top: max(40px, 10svh); bottom: max(12px, env(safe-area-inset-bottom, 0px)); border-radius: 26px; overflow: hidden; background: rgba(241,241,244,.88); -webkit-backdrop-filter: blur(10px) saturate(1.6); backdrop-filter: blur(10px) saturate(1.6); box-shadow: 0 30px 80px -30px rgba(20,20,40,.45); }
+@media (max-width: 640px) { .agd-sheet { width: calc(100% - 16px); top: max(32px, 7svh); bottom: max(8px, env(safe-area-inset-bottom, 0px)); } }
 .agd-sheet iframe { display: block; width: 100%; height: 100%; border: 0; opacity: 0; }
-@media (prefers-reduced-motion: reduce) { .agd-field::after, .agd-ring, .agd.in .agd-field { animation: none; --agd-beam: 200deg; } }
+@media (prefers-reduced-motion: reduce) { .agd-field::after, .agd-ring, .agd.in .agd-field { animation: none; --agd-beam: 200deg; } .agd-field { transition: none; transform: none !important; } }
 </style>`);
 
   const dock = document.createElement('div');
@@ -60,7 +69,7 @@
   // The pop plays once per visit: on the next pages the field is simply there
   let seen = false;
   try { seen = sessionStorage.getItem('agent-dock-seen') === '1'; sessionStorage.setItem('agent-dock-seen', '1'); } catch (e) {}
-  if (!seen) { dock.classList.add('later'); setTimeout(() => dock.classList.replace('later', 'in'), 600); }
+  if (!seen) { dock.classList.add('later'); setTimeout(() => dock.classList.replace('later', 'in'), 2000); }
   dock.innerHTML = `<button class="agd-field" type="button" aria-haspopup="dialog"><i class="agd-ring" aria-hidden="true"></i><span class="agd-ph"></span><span class="agd-send" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></button>`;
   const modal = document.createElement('div');
   modal.className = 'agd-modal no-i18n'; modal.hidden = true;
@@ -84,6 +93,20 @@
 
   let frame = null, loaded = false, open = false, anim = [];
   const agent = () => frame?.contentWindow;
+  // The agent's composer lands exactly where the field was: same width, same height above the bottom of the screen,
+  // the field's slimmer build on phones, and, on screens with a pointer, the 5 % swell the field has under the mouse
+  // when it is clicked (agent.html reads these in its embed styles)
+  const fit = () => {
+    const w = agent();
+    if (!loaded || !w) return;
+    const root = w.document.documentElement, s = sheet.getBoundingClientRect();
+    root.style.setProperty('--dock-w', field.offsetWidth + 'px');
+    root.style.setProperty('--dock-b', Math.max(0, parseFloat(getComputedStyle(dock).bottom) - (innerHeight - s.bottom)) + 'px');
+    root.classList.toggle('slim', matchMedia('(max-width: 640px)').matches);
+    root.classList.toggle('swell', matchMedia('(hover: hover)').matches);
+    w.dispatchEvent(new w.Event('sheetfit'));
+  };
+  addEventListener('resize', fit);
   const sync = () => {
     // The sheet speaks the page's language, and lands in the composer
     const w = agent();
@@ -93,7 +116,7 @@
   };
   const reveal = () => {
     if (!open || !loaded) return;
-    frame.animate([{ opacity: 0 }, { opacity: 1 }], { duration: still ? 0 : 160, easing: 'ease-out', fill: 'forwards' });
+    frame.animate([{ opacity: 0 }, { opacity: 1 }], { duration: still ? 0 : 120, easing: 'ease-out', fill: 'forwards' });
     // The page is on screen: its portrait composes itself, then the agent says hello
     agent().dispatchEvent(new (agent().Event)('sheetopen'));
     sync();
@@ -104,39 +127,46 @@
     const f = field.getBoundingClientRect(), s = sheet.getBoundingClientRect();
     return `inset(${f.top - s.top}px ${s.right - f.right}px ${s.bottom - f.bottom}px ${f.left - s.left}px round 26px)`;
   };
-  const FULL = 'inset(0px 0px 0px 0px round 26px 26px 0px 0px)';
+  const FULL = 'inset(0px 0px 0px 0px round 26px)';
 
   const show = () => {
     if (open) return;
     open = true;
     anim.forEach(a => a.cancel());
     modal.hidden = false;
+    fit();
     root.style.overflow = 'hidden';
     if (!frame) {
       frame = document.createElement('iframe');
       frame.title = T[lang()].title;
-      frame.addEventListener('load', () => { loaded = true; if (!anim.length || anim.every(a => a.playState === 'finished')) reveal(); }, { once: true });
+      frame.addEventListener('load', () => { loaded = true; fit(); if (!anim.length || anim.every(a => a.playState === 'finished')) reveal(); }, { once: true });
       frame.src = 'agent.html?embed';
       sheet.appendChild(frame);
     }
-    dock.classList.add('away');
-    const ms = still ? 0 : 380, ease = 'cubic-bezier(.2,.85,.25,1)';
+    dock.classList.add('lift');
+    const ms = still ? 0 : 260, ease = 'cubic-bezier(.2,.85,.25,1)';
     anim = [
-      sheet.animate([{ clipPath: from(), backgroundColor: '#ffffff' }, { clipPath: FULL, backgroundColor: '#f1f1f4' }], { duration: ms, easing: ease }),
-      backdrop.animate([{ opacity: 0 }, { opacity: 1 }], { duration: still ? 0 : 200, easing: 'ease-out' }),
+      sheet.animate([{ clipPath: from(), backgroundColor: 'rgba(255,255,255,.72)' }, { clipPath: FULL, backgroundColor: 'rgba(241,241,244,.88)' }], { duration: ms, easing: ease }),
+      backdrop.animate([{ opacity: 0 }, { opacity: 1 }], { duration: still ? 0 : 150, easing: 'ease-out' }),
     ];
-    anim[0].finished.then(() => { anim = []; reveal(); }, () => {});
+    anim[0].finished.then(() => {
+      anim = []; reveal();
+      dock.classList.add('away');
+      setTimeout(() => { if (open) dock.classList.remove('lift'); }, still ? 0 : 200);
+    }, () => {});
   };
 
   const hide = () => {
     if (!open) return;
     open = false;
     anim.forEach(a => a.cancel());
+    // Closed before the window finished opening: the field was still on top, it steps back like the rest
+    dock.classList.remove('lift'); dock.classList.add('away');
     const ms = still ? 0 : 280, ease = 'cubic-bezier(.5,0,.2,1)';
     const fade = frame.animate([{ opacity: getComputedStyle(frame).opacity }, { opacity: 0 }], { duration: still ? 0 : 90, fill: 'forwards' });
     anim = [
       fade,
-      sheet.animate([{ clipPath: FULL, backgroundColor: '#f1f1f4' }, { clipPath: from(), backgroundColor: '#ffffff' }], { duration: ms, delay: still ? 0 : 40, easing: ease, fill: 'forwards' }),
+      sheet.animate([{ clipPath: FULL, backgroundColor: 'rgba(241,241,244,.88)' }, { clipPath: from(), backgroundColor: 'rgba(255,255,255,.72)' }], { duration: ms, delay: still ? 0 : 40, easing: ease, fill: 'forwards' }),
       backdrop.animate([{ opacity: 1 }, { opacity: 0 }], { duration: ms, delay: still ? 0 : 40, easing: 'ease-in', fill: 'forwards' }),
     ];
     setTimeout(() => dock.classList.remove('away'), still ? 0 : ms - 80);
