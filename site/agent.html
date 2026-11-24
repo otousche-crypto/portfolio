@@ -568,7 +568,7 @@ body { position: relative; }
     const lang = () => document.documentElement.lang === 'en' ? 'en' : 'fr';
     const T = {
       fr: {
-        hello: 'Je suis l’agent IA d’Olivier : posez-moi vos questions, je tâcherai d’y répondre !',
+        hello: 'Bonjour ! Je suis l’agent IA d’Olivier : posez-moi vos questions, je tâcherai d’y répondre !',
         suggestions: ['Pourquoi cet agent ?', 'Comment utilise-t-il l’IA ?', 'Sa vision produit ?', 'Son approche du design ?', 'Est-il disponible ?'],
         // Fills in when the agent's own suggestions are missing or were already asked
         // Every suggestion the page may show has a ready-made answer (agent/canned.ts, SUGGESTIONS): a click never calls the model
@@ -585,7 +585,7 @@ body { position: relative; }
         write: 'Écrire à Olivier', copy: 'Copier l’email', copied: 'Copié !', up: 'Réponse utile', down: 'Réponse pas utile', thanks: 'Merci pour votre retour !', caseStudy: 'Lire l’étude de cas',
       },
       en: {
-        hello: 'I’m Olivier’s AI agent: ask me your questions, I’ll do my best to answer!',
+        hello: 'Hello! I’m Olivier’s AI agent: ask me your questions, I’ll do my best to answer!',
         suggestions: ['Why this agent?', 'How does he use AI?', 'His product vision?', 'His design approach?', 'Is he available?'],
         more: ['His product builder projects?', 'Tell me about Go MoonBound', 'How does he use AI?', 'His product vision?', 'His design approach?', 'His UX research experience?', 'Tell me about Altered', 'Why this agent?', 'Is he available?'],
         429: 'You’ve reached the message limit for now. The best is to talk to Olivier directly: on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) or at otousche@gmail.com.',
