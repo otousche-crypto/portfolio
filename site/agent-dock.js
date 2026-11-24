@@ -20,21 +20,26 @@
 .agd.in .agd-field { animation: agd-in .32s cubic-bezier(.2,.9,.3,1.35); transform-origin: 50% 100%; }
 @keyframes agd-in { from { opacity: 0; transform: translateY(10px) scale(.5); } 40% { opacity: 1; } }
 .agd-field { pointer-events: auto; position: relative; isolation: isolate; width: 100%; display: flex; align-items: center; gap: 8px; padding: 5px 5px 5px 17px; border-radius: 26px; border: 1px solid rgba(255,255,255,.85); background: none; cursor: text; text-align: left;
-  font: 16px/1.45 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #3d3e44; -webkit-font-smoothing: antialiased;
+  font: 16px/1.45 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #55565d; -webkit-font-smoothing: antialiased;
   box-shadow: 0 0 0 1px rgba(15,15,18,.08), 0 16px 40px -20px rgba(20,20,40,.3); }
 /* More see-through than the agent's composer: the page shows, blurred, through the glass */
-.agd-field::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none; background: rgba(255,255,255,.72); -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8); }
+.agd-field::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none; background: rgba(255,255,255,.64); -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8); }
 @property --agd-beam { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 @keyframes agd-beam { to { --agd-beam: 360deg; } }
 .agd-field::after { content: ""; position: absolute; inset: -65px; padding: 64px; background: conic-gradient(from var(--agd-beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent) content-box;
-  border-radius: 999px; z-index: -2; pointer-events: none; opacity: .6; filter: blur(22px); animation: agd-beam 5s linear infinite; transition: opacity .3s; }
-.agd-field:hover::after, .agd-field:focus-visible::after { opacity: .8; }
+  border-radius: 999px; z-index: -2; pointer-events: none; opacity: .38; filter: blur(22px); animation: agd-beam 5s linear infinite; transition: opacity .3s; }
+.agd-field:hover::after, .agd-field:focus-visible::after { opacity: .55; }
 .agd-field:focus-visible { outline: none; }
-.agd-ring { position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; z-index: 1; opacity: .9; clip-path: inset(50%); transition: opacity .3s;
+.agd-ring { position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; z-index: 1; opacity: .7; clip-path: inset(50%); transition: opacity .3s;
   background: conic-gradient(from var(--agd-beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent); animation: agd-beam 5s linear infinite; }
-.agd-field:hover .agd-ring, .agd-field:focus-visible .agd-ring { opacity: 1; }
+.agd-field:hover .agd-ring, .agd-field:focus-visible .agd-ring { opacity: .9; }
 .agd-ph { flex: 1; min-width: 0; padding: 9px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.agd-send { flex: none; width: 40px; height: 40px; border-radius: 50%; background: #2c2d32; color: #fff; display: grid; place-items: center; opacity: .85; }
+/* The text and the button are swept by the ring's beam: same gradient, centred on the field (--cx/--cy, set in JS) */
+.agd-ph, .agd-send { animation: agd-beam 5s linear infinite; }
+.agd-ph { color: transparent; -webkit-text-fill-color: transparent; -webkit-background-clip: text; background-clip: text;
+  background-image: conic-gradient(from var(--agd-beam) at var(--cx, 50%) var(--cy, 50%), #55565d 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, #55565d); }
+.agd-send { flex: none; width: 40px; height: 40px; border-radius: 50%; color: #fff; display: grid; place-items: center; opacity: .55;
+  background: conic-gradient(from var(--agd-beam) at var(--cx, 50%) var(--cy, 50%), #2c2d32 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, #2c2d32); }
 .agd-send svg { width: 18px; height: 18px; }
 .agd-space { height: 96px; }
 /* Phones: a slimmer field, closer to the bottom edge, so it hides as little of the page as possible */
@@ -68,7 +73,7 @@
   const space = document.createElement('div');
   space.className = 'agd-space'; space.setAttribute('aria-hidden', 'true');
   document.body.append(space, dock, modal);
-  const field = dock.querySelector('.agd-field'), ring = dock.querySelector('.agd-ring'), ph = dock.querySelector('.agd-ph');
+  const field = dock.querySelector('.agd-field'), ring = dock.querySelector('.agd-ring'), ph = dock.querySelector('.agd-ph'), send = dock.querySelector('.agd-send');
   const backdrop = modal.querySelector('.agd-backdrop'), sheet = modal.querySelector('.agd-sheet');
 
   const texts = () => { const t = T[lang()]; ph.textContent = t.ph; field.setAttribute('aria-label', t.open); sheet.setAttribute('aria-label', t.title); };
@@ -79,6 +84,7 @@
   const fitRing = () => {
     const w = field.offsetWidth, h = field.offsetHeight, r = Math.min(26, h / 2);
     if (w && h) ring.style.clipPath = `path(evenodd, '${pill(0, 0, w, h, r)}${pill(1, 1, w - 2, h - 2, r - 1)}')`;
+    for (const el of [ph, send]) { el.style.setProperty('--cx', w / 2 - el.offsetLeft + 'px'); el.style.setProperty('--cy', h / 2 - el.offsetTop + 'px'); }
   };
   new ResizeObserver(fitRing).observe(field);
 
