@@ -202,11 +202,16 @@ body { position: relative; }
 .hood article p + p { margin-top: 8px; }
 .hood article ul { padding-left: 18px; }
 .hood li + li { margin-top: 5px; }
-.changes { list-style: none; margin: 4px 0 0; padding: 0; }
-.changes li { display: grid; grid-template-columns: 92px 1fr; gap: 4px 14px; padding: 12px 0; border-top: 1px solid var(--line); }
-.changes li:first-child { border-top: 0; padding-top: 4px; }
-.changes .v { color: var(--muted); font-size: 13px; line-height: 1.5; font-variant-numeric: tabular-nums; }
-.changes .v b { display: block; color: var(--ink); font-weight: 600; }
+.changelog { margin-top: 12px; background: #fff; border-radius: 18px; box-shadow: 0 0 0 1px var(--line); }
+.changelog summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; font-weight: 600; font-size: 15.5px; letter-spacing: -0.01em; cursor: pointer; list-style: none; }
+.changelog summary::-webkit-details-marker { display: none; }
+.changelog summary svg { width: 16px; height: 16px; color: var(--muted); transition: transform .2s ease; }
+.changelog[open] summary svg { transform: rotate(180deg); }
+.changelog > p { margin: -4px 20px 4px; color: #4a4a52; font-size: 15px; line-height: 1.6; }
+.changes { list-style: none; margin: 0; padding: 0 20px 8px; }
+.changes li { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 12px 0; border-top: 1px solid var(--line); }
+.changes li:first-child { border-top: 0; }
+.changes .v { color: var(--ink); font-size: 13px; font-weight: 600; line-height: 1.6; font-variant-numeric: tabular-nums; }
 .changes .what b { display: block; font-size: 14.5px; font-weight: 600; margin-bottom: 2px; }
 .changes .what span { color: #4a4a52; font-size: 14px; line-height: 1.55; }
 @media (max-width: 640px) { .hood-grid { grid-template-columns: 1fr; } }
@@ -329,19 +334,19 @@ body { position: relative; }
         <h3 data-en="Tested before every change">Testé avant chaque modification</h3>
         <p data-en="A suite of legitimate questions and attack attempts (prompt injection, role play, off-topic, salary…) runs against the real agent, and a second model grades each answer. A prompt change ships only if the score holds.">Une suite de questions légitimes et de tentatives d’attaque (injection de prompt, jeu de rôle, hors sujet, salaire…) tourne contre le vrai agent, et un second modèle note chaque réponse. Une modification du prompt n’est publiée que si le score tient.</p>
       </article>
-      <article class="wide">
-        <h3 data-en="Changelog">Journal des versions</h3>
-        <p data-en="The agent evolves as it gets used: every conversation tells me what to improve.">L’agent évolue au fil des usages : chaque conversation m’indique ce qu’il faut améliorer.</p>
-        <ol class="changes">
-          <li><span class="v"><b>v1.5</b><span data-en="Nov 23, 2026">23 nov. 2026</span></span><span class="what"><b data-en="Available everywhere">Disponible partout</b><span data-en="The agent’s field on every page of the portfolio, opening in a modal, to ask a question wherever you are.">Le champ de l’agent sur toutes les pages du portfolio, qui s’ouvre en modale, pour poser une question où que vous soyez.</span></span></li>
-          <li><span class="v"><b>v1.4</b><span data-en="Nov 23, 2026">23 nov. 2026</span></span><span class="what"><b data-en="A more human tone">Un ton plus humain</b><span data-en="The agent talks about itself in the first person, takes a natural pace between bubbles, and switches to “tu” if you do, with 👍 / 👎 to share your feedback.">L’agent parle de lui à la première personne, prend un rythme naturel entre les bulles et tutoie si vous le tutoyez, avec 👍 / 👎 pour donner votre avis.</span></span></li>
-          <li><span class="v"><b>v1.3</b><span data-en="Nov 20, 2026">20 nov. 2026</span></span><span class="what"><b data-en="Humour against hijacking and insults">De l’humour face aux détournements et aux insultes</b><span data-en="Attempts to hijack the agent, insults and sensitive topics get a humorous reply, and after three the conversation closes.">Les tentatives de détournement, les insultes et les sujets sensibles reçoivent une réponse avec humour, et au bout de trois la conversation se ferme.</span></span></li>
-          <li><span class="v"><b>v1.2</b><span data-en="Nov 20, 2026">20 nov. 2026</span></span><span class="what"><b data-en="A hybrid model, with pre-written suggestions">Un modèle hybride, avec des suggestions pré-rédigées</b><span data-en="Under every answer, suggested questions with a pre-written reply, answered without calling the model, and links to the case studies.">Sous chaque réponse, des suggestions de questions avec une réponse pré-rédigée, servie sans appel au modèle, et des liens vers les études de cas.</span></span></li>
-          <li><span class="v"><b>v1.1</b><span data-en="Nov 20, 2026">20 nov. 2026</span></span><span class="what"><b data-en="Usage limits and credits">Limites d’usage et crédits</b><span data-en="Each visitor gets a number of message credits per conversation and per day, and a ring shows how many are left.">Chaque visiteur dispose de crédits de messages par conversation et par jour, et un anneau indique combien il en reste.</span></span></li>
-          <li><span class="v"><b>v1.0</b><span data-en="Nov 20, 2026">20 nov. 2026</span></span><span class="what"><b data-en="First version">Première version</b><span data-en="A profile written by Olivier, Claude Haiku behind a Vercel function, and a test suite before every change.">Un profil rédigé par Olivier, Claude Haiku derrière une fonction Vercel, et une suite de tests avant chaque modification.</span></span></li>
-        </ol>
-      </article>
     </div>
+    <details class="changelog">
+      <summary><span data-en="Changelog">Journal des versions</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></summary>
+      <p data-en="The agent evolves as it gets used: every conversation tells me what to improve.">L’agent évolue au fil des usages : chaque conversation m’indique ce qu’il faut améliorer.</p>
+      <ol class="changes">
+        <li><span class="v">v1.5</span><span class="what"><b data-en="Available everywhere">Disponible partout</b><span data-en="The agent’s field on every page of the portfolio, opening in a modal, to ask a question wherever you are.">Le champ de l’agent sur toutes les pages du portfolio, qui s’ouvre en modale, pour poser une question où que vous soyez.</span></span></li>
+        <li><span class="v">v1.4</span><span class="what"><b data-en="A more human tone">Un ton plus humain</b><span data-en="The agent talks about itself in the first person, takes a natural pace between bubbles, and switches to “tu” if you do, with 👍 / 👎 to share your feedback.">L’agent parle de lui à la première personne, prend un rythme naturel entre les bulles et tutoie si vous le tutoyez, avec 👍 / 👎 pour donner votre avis.</span></span></li>
+        <li><span class="v">v1.3</span><span class="what"><b data-en="Humour against hijacking and insults">De l’humour face aux détournements et aux insultes</b><span data-en="Attempts to hijack the agent, insults and sensitive topics get a humorous reply, and after three the conversation closes.">Les tentatives de détournement, les insultes et les sujets sensibles reçoivent une réponse avec humour, et au bout de trois la conversation se ferme.</span></span></li>
+        <li><span class="v">v1.2</span><span class="what"><b data-en="A hybrid model, with pre-written suggestions">Un modèle hybride, avec des suggestions pré-rédigées</b><span data-en="Under every answer, suggested questions with a pre-written reply, answered without calling the model, and links to the case studies.">Sous chaque réponse, des suggestions de questions avec une réponse pré-rédigée, servie sans appel au modèle, et des liens vers les études de cas.</span></span></li>
+        <li><span class="v">v1.1</span><span class="what"><b data-en="Usage limits and credits">Limites d’usage et crédits</b><span data-en="Each visitor gets a number of message credits per conversation and per day, and a ring shows how many are left.">Chaque visiteur dispose de crédits de messages par conversation et par jour, et un anneau indique combien il en reste.</span></span></li>
+        <li><span class="v">v1.0</span><span class="what"><b data-en="First version">Première version</b><span data-en="A profile written by Olivier, Claude Haiku behind a Vercel function, and a test suite before every change.">Un profil rédigé par Olivier, Claude Haiku derrière une fonction Vercel, et une suite de tests avant chaque modification.</span></span></li>
+      </ol>
+    </details>
   </div>
 </section>
 
