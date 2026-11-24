@@ -31,9 +31,9 @@ button, input { font: inherit; color: inherit; }
 .side-top { padding: 16px; border-bottom: 1px solid var(--line); display: grid; gap: 10px; }
 .side-top h1 { margin: 0; font-size: 17px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .stats { margin: 0; color: var(--muted); font-size: 12.5px; }
-.row { display: flex; gap: 6px; }
-.row button { flex: 1; padding: 6px 8px; border-radius: 9px; border: 1px solid var(--line); background: #fff; font-size: 12.5px; cursor: pointer; }
-.row button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+.sort { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12.5px; color: var(--muted); }
+.sort select { flex: 1; max-width: 200px; padding: 6px 28px 6px 10px; border-radius: 9px; border: 1px solid var(--line); font-size: 13px; color: var(--fg); cursor: pointer; -webkit-appearance: none; appearance: none;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%238a8a92' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E") no-repeat right 8px center / 14px; }
 .tool { padding: 5px 10px; border-radius: 9px; border: 1px solid var(--line); background: #fff; font-size: 12.5px; font-weight: 400; cursor: pointer; }
 .list { flex: 1; overflow-y: auto; margin: 0; padding: 6px; list-style: none; }
 .list button { width: 100%; display: grid; gap: 2px; text-align: left; padding: 10px 12px; border: 0; border-radius: 12px; background: none; cursor: pointer; }
@@ -74,6 +74,16 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
 .compare .val { display: grid; text-align: right; font-size: 13px; font-variant-numeric: tabular-nums; line-height: 1.25; }
 @media (max-width: 480px) { .compare li { grid-template-columns: 1fr 76px; } .compare .bar { grid-column: 1 / -1; grid-row: 2; } }
 dialog { max-height: calc(100svh - 32px); overflow-y: auto; }
+.chart { position: relative; margin: 4px 20px 10px; }
+.chart svg { display: block; width: 100%; overflow: visible; }
+.chart .grid { stroke: rgba(15,15,18,.07); stroke-width: 1; }
+.chart .axis { fill: var(--muted); font-size: 10.5px; font-variant-numeric: tabular-nums; }
+.chart .b { fill: var(--ink); }
+.chart .b.zero { fill: #c9c9d1; }
+.chart .hit { fill: transparent; cursor: pointer; }
+.chart .hit:hover + .b, .chart .b.on { fill: #0a84ff; }
+.tip { position: absolute; z-index: 2; pointer-events: none; transform: translate(-50%, calc(-100% - 8px)); background: var(--fg); color: #fff; padding: 6px 9px; border-radius: 9px; font-size: 12px; line-height: 1.35; white-space: nowrap; max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
+.tip small { display: block; color: rgba(255,255,255,.65); }
 .list .meta { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 12px; }
 .list .q { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .list .sum { color: #5a5a62; font-size: 12.5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -121,10 +131,15 @@ dialog { max-height: calc(100svh - 32px); overflow-y: auto; }
       <button class="cta" type="button" id="analytics-open">Analytics <span id="analytics-peek"></span></button>
       <p class="stats" id="stats"></p>
       <button class="mark" type="button" id="all-read">Tout marquer lu</button>
-      <div class="row" role="group" aria-label="Ordre">
-        <button type="button" data-order="new" aria-pressed="true">Plus récentes</button>
-        <button type="button" data-order="old" aria-pressed="false">Plus anciennes</button>
-      </div>
+      <label class="sort">Trier par
+        <select id="order">
+          <option value="new">Plus récentes</option>
+          <option value="old">Plus anciennes</option>
+          <option value="dear">Plus chères</option>
+          <option value="cheap">Moins chères</option>
+          <option value="long">Plus longues</option>
+        </select>
+      </label>
     </div>
     <ol class="list" id="list"></ol>
   </aside>
@@ -137,6 +152,9 @@ dialog { max-height: calc(100svh - 32px); overflow-y: auto; }
 <dialog id="analytics" aria-labelledby="analytics-title">
   <div class="dlg-top"><h2 id="analytics-title">Analytics</h2><button class="tool" type="button" id="analytics-close">Fermer</button></div>
   <div class="kpis" id="kpis"></div>
+  <h3 class="dlg-h">Coût par conversation</h3>
+  <p class="dlg-sub" id="chart-sub"></p>
+  <div class="chart" id="chart"><div class="tip" id="tip" hidden></div></div>
   <h3 class="dlg-h">Avec un autre modèle</h3>
   <p class="dlg-sub">Le même trafic, aux tarifs publics de chaque modèle (novembre 2026). Une estimation : chaque modèle découpe le texte et répond un peu différemment.</p>
   <ol class="compare" id="compare"></ol>
@@ -260,19 +278,65 @@ dialog { max-height: calc(100svh - 32px); overflow-y: auto; }
     const rows = MODELS.map((x) => ({ ...x, usd: priced(totals, x.p) })).sort((a, b) => a.usd - b.usd);
     const max = Math.max(...rows.map((r) => r.usd)) || 1, base = rows.find((r) => r.current).usd || 1;
     $('compare').innerHTML = rows.map((r) => `<li class="${r.current ? 'cur' : ''}"><span class="nm"><b>${esc(r.name)}</b><small>${esc(r.by)}${r.current ? ' · actuel' : ''}</small></span><span class="bar"><i style="width:${Math.max(2, r.usd / max * 100)}%"></i></span><span class="val">${money({ usd: r.usd, exact })}<small>${r.current ? '' : '× ' + (r.usd / base).toFixed(1).replace('.', ',')}</small></span></li>`).join('');
+    drawChart();
     $('kpi-note').textContent = `Tarif Claude Haiku 5.5. Les résumés de cette page ont coûté ${money({ usd: summariesCost, exact: true })} en plus.${exact ? '' : ' « ≈ » : une partie des anciens messages a été enregistrée sans ses tokens, leur coût est estimé à partir du texte.'} Les réponses toutes prêtes comptent aussi les questions de départ.`;
     $('analytics-peek').textContent = money({ usd: spent, exact });
   };
 
+  // Sorted by date, the list is cut into days; by cost or length, each row carries its own date
+  const SORTS = {
+    new: (a, b) => b - a, old: (a, b) => a - b,
+    dear: (a, b) => chatCost(chats[b]).usd - chatCost(chats[a]).usd || b - a,
+    cheap: (a, b) => chatCost(chats[a]).usd - chatCost(chats[b]).usd || b - a,
+    long: (a, b) => chats[b].msgs.length - chats[a].msgs.length || b - a,
+  };
+  // Cost per conversation, in order: one bar each, hover for the detail, click to open it
+  const drawChart = () => {
+    const box = $('chart'), W = box.clientWidth || 500, H = 150, L = 44, B = 18, T = 6;
+    const data = chats.map((c, i) => ({ i, c, ...chatCost(c) }));
+    const avg = data.length ? data.reduce((a, d) => a + d.usd, 0) / data.length : 0;
+    $('chart-sub').textContent = data.length ? `Une barre par conversation, de la plus ancienne à la plus récente. Moyenne : ${money({ usd: avg, exact: data.every((d) => d.exact) })}. Cliquez une barre pour l’ouvrir.` : '';
+    if (!data.length) { box.querySelector('svg')?.remove(); return; }
+    // A round top for the y scale: 1, 2 or 5 × a power of ten
+    const peak = Math.max(...data.map((d) => d.usd)) || 1e-6, p10 = 10 ** Math.floor(Math.log10(peak));
+    const top = [1, 2, 5, 10].map((m) => m * p10).find((v) => v >= peak);
+    const y = (v) => T + (H - T - B) * (1 - v / top), slot = (W - L) / data.length, bw = Math.max(1, Math.min(18, slot - 2));
+    const ticks = [0, top / 2, top];
+    let svg = ticks.map((v) => `<line class="grid" x1="${L}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${L - 6}" y="${y(v) + 3.5}" text-anchor="end">${money({ usd: v, exact: true })}</text>`).join('');
+    // Dates under the first, middle and last bars
+    for (const k of [...new Set([0, Math.floor((data.length - 1) / 2), data.length - 1])]) {
+      const x = L + slot * k + slot / 2;
+      svg += `<text class="axis" x="${x}" y="${H - 4}" text-anchor="${k === 0 ? 'start' : k === data.length - 1 ? 'end' : 'middle'}">${when(data[k].c.msgs[0].at, { day: 'numeric', month: 'short' })}</text>`;
+    }
+    for (const d of data) {
+      const x = L + slot * d.i + (slot - bw) / 2, h = Math.max(d.usd ? 2 : 1, H - B - y(d.usd)), r = Math.min(4, bw / 2, h);
+      // Rounded at the data end only, square on the baseline
+      const path = `M${x},${H - B}V${H - B - h + r}Q${x},${H - B - h} ${x + r},${H - B - h}H${x + bw - r}Q${x + bw},${H - B - h} ${x + bw},${H - B - h + r}V${H - B}Z`;
+      svg += `<rect class="hit" data-i="${d.i}" x="${L + slot * d.i}" y="${T}" width="${slot}" height="${H - T - B}"/><path class="b${d.usd ? '' : ' zero'}${d.i === current ? ' on' : ''}" d="${path}"/>`;
+    }
+    box.querySelector('svg')?.remove();
+    box.insertAdjacentHTML('afterbegin', `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Coût par conversation">${svg}</svg>`);
+  };
+  $('chart').addEventListener('mousemove', (e) => {
+    const hit = e.target.closest('.hit'), tip = $('tip');
+    if (!hit) { tip.hidden = true; return; }
+    const c = chats[+hit.dataset.i], r = $('chart').getBoundingClientRect(), hr = hit.getBoundingClientRect();
+    tip.innerHTML = `${money(chatCost(c))} · ${c.msgs.length} q.<small>${esc(when(c.msgs[0].at, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }))} · ${esc(c.msgs[0].question)}</small>`;
+    tip.style.left = Math.min(Math.max(hr.left - r.left + hr.width / 2, 90), r.width - 90) + 'px'; tip.style.top = '20px'; tip.hidden = false;
+  });
+  $('chart').addEventListener('mouseleave', () => { $('tip').hidden = true; });
+  $('chart').addEventListener('click', (e) => { const hit = e.target.closest('.hit'); if (hit) { $('analytics').close(); read(+hit.dataset.i); } });
+
   const list = () => {
-    const idx = chats.map((_, i) => i); if (order === 'new') idx.reverse();
+    const idx = chats.map((_, i) => i).sort(SORTS[order]);
+    const byDate = order === 'new' || order === 'old';
     let lastDay = '', html = '';
     for (const i of idx) {
       const c = chats[i], first = c.msgs[0], d = when(first.at, { weekday: 'long', day: 'numeric', month: 'long' });
-      if (d !== lastDay) { html += `<li class="day">${esc(d)}</li>`; lastDay = d; }
+      if (byDate && d !== lastDay) { html += `<li class="day">${esc(d)}</li>`; lastDay = d; }
       const flags = (c.msgs.some((m) => bad(m.outcome)) ? ' ⚠️' : '') + (ENDED.test(c.msgs.at(-1).answer) ? ' 🔒' : '') + c.votes.map((v) => v.vote === 'up' ? '👍' : '👎').join('');
       const sum = summaries[c.key]?.text || '';
-      html += `<li><button type="button" class="${unread(c) ? 'unread' : ''}" data-i="${i}" aria-current="${i === current}"><span class="meta"><span>${when(first.at, { hour: '2-digit', minute: '2-digit' })} · ${esc(first.lang.toUpperCase())} · ${money(chatCost(c))}</span><span>${c.msgs.length} q.${flags}</span></span><span class="q">${esc(first.question)}</span><span class="sum">${esc(sum)}</span></button></li>`;
+      html += `<li><button type="button" class="${unread(c) ? 'unread' : ''}" data-i="${i}" aria-current="${i === current}"><span class="meta"><span>${byDate ? '' : when(first.at, { day: 'numeric', month: 'short' }) + ' '}${when(first.at, { hour: '2-digit', minute: '2-digit' })} · ${esc(first.lang.toUpperCase())} · ${money(chatCost(c))}</span><span>${c.msgs.length} q.${flags}</span></span><span class="q">${esc(first.question)}</span><span class="sum">${esc(sum)}</span></button></li>`;
     }
     $('list').innerHTML = html || '<li class="empty">Aucune conversation pour l’instant.</li>';
   };
@@ -296,13 +360,10 @@ dialog { max-height: calc(100svh - 32px); overflow-y: auto; }
   };
 
   $('list').addEventListener('click', (e) => { const b = e.target.closest('button[data-i]'); if (b) read(+b.dataset.i); });
-  document.querySelector('.row').addEventListener('click', (e) => {
-    const b = e.target.closest('button[data-order]'); if (!b) return;
-    order = b.dataset.order; document.querySelectorAll('[data-order]').forEach((x) => x.setAttribute('aria-pressed', x === b)); list();
-  });
+  $('order').addEventListener('change', (e) => { order = e.target.value; list(); $('list').scrollTop = 0; });
   $('back').addEventListener('click', () => $('app').classList.remove('reading'));
   $('logout').addEventListener('click', () => logout());
-  $('analytics-open').addEventListener('click', () => $('analytics').showModal());
+  $('analytics-open').addEventListener('click', () => { $('analytics').showModal(); drawChart(); });
   $('analytics-close').addEventListener('click', () => $('analytics').close());
   $('analytics').addEventListener('click', (e) => { if (e.target === $('analytics')) $('analytics').close(); });
   $('all-read').addEventListener('click', () => { for (const c of chats) seen[c.key] = c.msgs.length; saveSeen(); list(); });
