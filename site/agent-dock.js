@@ -20,10 +20,10 @@
 .agd.in .agd-field { animation: agd-in .32s cubic-bezier(.2,.9,.3,1.35); transform-origin: 50% 100%; }
 @keyframes agd-in { from { opacity: 0; transform: translateY(10px) scale(.5); } 40% { opacity: 1; } }
 .agd-field { pointer-events: auto; position: relative; isolation: isolate; width: 100%; display: flex; align-items: center; gap: 8px; padding: 5px 5px 5px 17px; border-radius: 26px; border: 1px solid rgba(255,255,255,.85); background: none; cursor: text; text-align: left;
-  font: 16px/1.45 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #6e6e76; -webkit-font-smoothing: antialiased;
+  font: 16px/1.45 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #3d3e44; -webkit-font-smoothing: antialiased;
   box-shadow: 0 0 0 1px rgba(15,15,18,.08), 0 16px 40px -20px rgba(20,20,40,.3); }
 /* More see-through than the agent's composer: the page shows, blurred, through the glass */
-.agd-field::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none; background: rgba(255,255,255,.58); -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8); }
+.agd-field::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none; background: rgba(255,255,255,.72); -webkit-backdrop-filter: blur(22px) saturate(1.8); backdrop-filter: blur(22px) saturate(1.8); }
 @property --agd-beam { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 @keyframes agd-beam { to { --agd-beam: 360deg; } }
 .agd-field::after { content: ""; position: absolute; inset: -65px; padding: 64px; background: conic-gradient(from var(--agd-beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent) content-box;
@@ -34,7 +34,7 @@
   background: conic-gradient(from var(--agd-beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent); animation: agd-beam 5s linear infinite; }
 .agd-field:hover .agd-ring, .agd-field:focus-visible .agd-ring { opacity: 1; }
 .agd-ph { flex: 1; min-width: 0; padding: 9px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.agd-send { flex: none; width: 40px; height: 40px; border-radius: 50%; background: #2c2d32; color: #fff; display: grid; place-items: center; opacity: .25; }
+.agd-send { flex: none; width: 40px; height: 40px; border-radius: 50%; background: #2c2d32; color: #fff; display: grid; place-items: center; opacity: .85; }
 .agd-send svg { width: 18px; height: 18px; }
 .agd-space { height: 96px; }
 /* Phones: a slimmer field, closer to the bottom edge, so it hides as little of the page as possible */
