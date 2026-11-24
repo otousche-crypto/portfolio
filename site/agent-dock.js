@@ -58,7 +58,7 @@
 .agd-modal { position: fixed; inset: 0; z-index: 1000; }
 .agd-modal[hidden] { display: none; }
 .agd-backdrop { position: absolute; inset: 0; background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
-.agd-sheet { position: absolute; left: 50%; translate: -50% 0; width: calc(100% - 24px); top: max(40px, 10svh); bottom: max(12px, env(safe-area-inset-bottom, 0px)); border-radius: 26px; overflow: hidden; background: rgba(241,241,244,.8); -webkit-backdrop-filter: blur(10px) saturate(1.6); backdrop-filter: blur(10px) saturate(1.6); box-shadow: 0 30px 80px -30px rgba(20,20,40,.45); }
+.agd-sheet { position: absolute; left: 50%; translate: -50% 0; width: calc(100% - 24px); top: max(40px, 10svh); bottom: max(12px, env(safe-area-inset-bottom, 0px)); border-radius: 26px; overflow: hidden; background: rgba(241,241,244,.88); -webkit-backdrop-filter: blur(10px) saturate(1.6); backdrop-filter: blur(10px) saturate(1.6); box-shadow: 0 30px 80px -30px rgba(20,20,40,.45); }
 @media (max-width: 640px) { .agd-sheet { width: calc(100% - 16px); top: max(32px, 7svh); bottom: max(8px, env(safe-area-inset-bottom, 0px)); } }
 .agd-sheet iframe { display: block; width: 100%; height: 100%; border: 0; opacity: 0; }
 @media (prefers-reduced-motion: reduce) { .agd-field::after, .agd-ring, .agd.in .agd-field { animation: none; --agd-beam: 200deg; } .agd-field { transition: none; transform: none !important; } }
@@ -146,7 +146,7 @@
     dock.classList.add('lift');
     const ms = still ? 0 : 260, ease = 'cubic-bezier(.2,.85,.25,1)';
     anim = [
-      sheet.animate([{ clipPath: from(), backgroundColor: 'rgba(255,255,255,.72)' }, { clipPath: FULL, backgroundColor: 'rgba(241,241,244,.8)' }], { duration: ms, easing: ease }),
+      sheet.animate([{ clipPath: from(), backgroundColor: 'rgba(255,255,255,.72)' }, { clipPath: FULL, backgroundColor: 'rgba(241,241,244,.88)' }], { duration: ms, easing: ease }),
       backdrop.animate([{ opacity: 0 }, { opacity: 1 }], { duration: still ? 0 : 150, easing: 'ease-out' }),
     ];
     anim[0].finished.then(() => {
@@ -166,7 +166,7 @@
     const fade = frame.animate([{ opacity: getComputedStyle(frame).opacity }, { opacity: 0 }], { duration: still ? 0 : 90, fill: 'forwards' });
     anim = [
       fade,
-      sheet.animate([{ clipPath: FULL, backgroundColor: 'rgba(241,241,244,.8)' }, { clipPath: from(), backgroundColor: 'rgba(255,255,255,.72)' }], { duration: ms, delay: still ? 0 : 40, easing: ease, fill: 'forwards' }),
+      sheet.animate([{ clipPath: FULL, backgroundColor: 'rgba(241,241,244,.88)' }, { clipPath: from(), backgroundColor: 'rgba(255,255,255,.72)' }], { duration: ms, delay: still ? 0 : 40, easing: ease, fill: 'forwards' }),
       backdrop.animate([{ opacity: 1 }, { opacity: 0 }], { duration: ms, delay: still ? 0 : 40, easing: 'ease-in', fill: 'forwards' }),
     ];
     setTimeout(() => dock.classList.remove('away'), still ? 0 : ms - 80);
