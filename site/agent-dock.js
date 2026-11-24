@@ -55,8 +55,8 @@
 .agd-modal { position: fixed; inset: 0; z-index: 1000; }
 .agd-modal[hidden] { display: none; }
 .agd-backdrop { position: absolute; inset: 0; background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
-.agd-sheet { position: absolute; left: 50%; translate: -50% 0; width: calc(100% - 32px); top: max(28px, 7svh); bottom: max(16px, env(safe-area-inset-bottom, 0px)); border-radius: 26px; overflow: hidden; background: #f1f1f4; box-shadow: 0 30px 80px -30px rgba(20,20,40,.45); }
-@media (max-width: 640px) { .agd-sheet { width: calc(100% - 20px); top: max(20px, 5svh); bottom: max(10px, env(safe-area-inset-bottom, 0px)); } }
+.agd-sheet { position: absolute; left: 50%; translate: -50% 0; width: calc(100% - 32px); top: max(40px, 10svh); bottom: max(16px, env(safe-area-inset-bottom, 0px)); border-radius: 26px; overflow: hidden; background: #f1f1f4; box-shadow: 0 30px 80px -30px rgba(20,20,40,.45); }
+@media (max-width: 640px) { .agd-sheet { width: calc(100% - 20px); top: max(32px, 7svh); bottom: max(10px, env(safe-area-inset-bottom, 0px)); } }
 .agd-sheet iframe { display: block; width: 100%; height: 100%; border: 0; opacity: 0; }
 @media (prefers-reduced-motion: reduce) { .agd-field::after, .agd-ring, .agd.in .agd-field { animation: none; --agd-beam: 200deg; } .agd-field { transition: none; transform: none !important; } }
 </style>`);
