@@ -93,7 +93,8 @@
   let frame = null, loaded = false, open = false, anim = [];
   const agent = () => frame?.contentWindow;
   // The agent's composer lands exactly where the field was: same width, same height above the bottom of the screen,
-  // and the field's slimmer build on phones (agent.html reads these in its embed styles)
+  // the field's slimmer build on phones, and, on screens with a pointer, the 5 % swell the field has under the mouse
+  // when it is clicked (agent.html reads these in its embed styles)
   const fit = () => {
     const w = agent();
     if (!loaded || !w) return;
@@ -101,6 +102,7 @@
     root.style.setProperty('--dock-w', field.offsetWidth + 'px');
     root.style.setProperty('--dock-b', Math.max(0, parseFloat(getComputedStyle(dock).bottom) - (innerHeight - s.bottom)) + 'px');
     root.classList.toggle('slim', matchMedia('(max-width: 640px)').matches);
+    root.classList.toggle('swell', matchMedia('(hover: hover)').matches);
     w.dispatchEvent(new w.Event('sheetfit'));
   };
   addEventListener('resize', fit);
