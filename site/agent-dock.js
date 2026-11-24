@@ -17,7 +17,7 @@
 /* It waits a beat after the page loads, then pops out of its bottom edge with an overshoot, like the agent's bubbles */
 /* No fill: an animation still applied after it ends stops the glass from blurring the page behind it */
 .agd.later { visibility: hidden; }
-.agd.in .agd-field { animation: agd-in .32s cubic-bezier(.2,.9,.3,1.35); transform-origin: 50% 100%; }
+.agd.in .agd-field { animation: agd-in .32s cubic-bezier(.2,.9,.3,1.35); }
 @keyframes agd-in { from { opacity: 0; transform: translateY(10px) scale(.5); } 40% { opacity: 1; } }
 .agd-field { pointer-events: auto; position: relative; isolation: isolate; width: 100%; display: flex; align-items: center; gap: 8px; padding: 5px 5px 5px 17px; border-radius: 26px; border: 1px solid rgba(255,255,255,.85); background: none; cursor: text; text-align: left;
   font: 16px/1.45 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #6e6e76; -webkit-font-smoothing: antialiased;
@@ -29,6 +29,9 @@
 .agd-field::after { content: ""; position: absolute; inset: -65px; padding: 64px; background: conic-gradient(from var(--agd-beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent) content-box;
   border-radius: 999px; z-index: -2; pointer-events: none; opacity: .28; filter: blur(22px); animation: agd-beam 5s linear infinite; transition: opacity .3s; }
 .agd-field:hover::after, .agd-field:focus-visible::after { opacity: .42; }
+/* On hover it swells from its bottom edge, with a slight bounce: it invites the click (pointers only; phones have no hover) */
+.agd-field { transform-origin: 50% 100%; transition: transform .3s cubic-bezier(.2,.9,.3,1.5); }
+@media (hover: hover) { .agd-field:hover, .agd-field:focus-visible { transform: scale(1.05); } }
 .agd-field:focus-visible { outline: none; }
 .agd-ring { position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; z-index: 1; opacity: .6; clip-path: inset(50%); transition: opacity .3s;
   background: conic-gradient(from var(--agd-beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent); animation: agd-beam 5s linear infinite; }
@@ -52,7 +55,7 @@
 .agd-backdrop { position: absolute; inset: 0; background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
 .agd-sheet { position: absolute; left: 0; right: 0; bottom: 0; top: max(28px, 7svh); border-radius: 26px 26px 0 0; overflow: hidden; background: #f1f1f4; box-shadow: 0 -30px 80px -30px rgba(20,20,40,.45); }
 .agd-sheet iframe { display: block; width: 100%; height: 100%; border: 0; opacity: 0; }
-@media (prefers-reduced-motion: reduce) { .agd-field::after, .agd-ring, .agd.in .agd-field { animation: none; --agd-beam: 200deg; } }
+@media (prefers-reduced-motion: reduce) { .agd-field::after, .agd-ring, .agd.in .agd-field { animation: none; --agd-beam: 200deg; } .agd-field { transition: none; transform: none !important; } }
 </style>`);
 
   const dock = document.createElement('div');
