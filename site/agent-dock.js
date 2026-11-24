@@ -29,9 +29,10 @@
 .agd-field::after { content: ""; position: absolute; inset: -65px; padding: 64px; background: conic-gradient(from var(--agd-beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent) content-box;
   border-radius: 999px; z-index: -2; pointer-events: none; opacity: .28; filter: blur(22px); animation: agd-beam 5s linear infinite; transition: opacity .3s; }
 .agd-field:hover::after, .agd-field:focus-visible::after { opacity: .42; }
-/* On hover it swells from its bottom edge, with a slight bounce: it invites the click (pointers only; phones have no hover) */
+/* On hover it swells from its bottom edge, with a slight bounce: it invites the click (pointers only; phones have no hover).
+   Not on keyboard focus: closing the sheet hands the focus back to the field, which would leave it swollen */
 .agd-field { transform-origin: 50% 100%; transition: transform .3s cubic-bezier(.2,.9,.3,1.5); }
-@media (hover: hover) { .agd-field:hover, .agd-field:focus-visible { transform: scale(1.05); } }
+@media (hover: hover) { .agd-field:hover { transform: scale(1.05); } }
 .agd-field:focus-visible { outline: none; }
 .agd-ring { position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; z-index: 1; opacity: .6; clip-path: inset(50%); transition: opacity .3s;
   background: conic-gradient(from var(--agd-beam), transparent 0 58%, #7c5cff 70%, #ff5ca8 79%, #ffb547 87%, #4fd1ff 95%, transparent); animation: agd-beam 5s linear infinite; }
