@@ -59,6 +59,21 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
 .kpi small { color: var(--muted); font-size: 12.5px; line-height: 1.4; }
 .dlg-note { margin: 0; padding: 4px 20px 20px; color: var(--muted); font-size: 12px; line-height: 1.5; }
 @media (max-width: 480px) { .kpis { grid-template-columns: 1fr; } }
+.dlg-h { margin: 10px 20px 2px; font-size: 15px; }
+.dlg-sub { margin: 0 20px 8px; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+.compare { list-style: none; margin: 0; padding: 0 20px 8px; display: grid; gap: 4px; }
+.compare li { display: grid; grid-template-columns: 150px 1fr 82px; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 10px; }
+.compare li.cur { background: var(--bg); }
+.compare .nm { display: grid; line-height: 1.25; }
+.compare .nm b { font-size: 13.5px; font-weight: 600; }
+.compare .nm small, .compare .val small { color: var(--muted); font-size: 11.5px; }
+.compare .bar { height: 8px; border-radius: 99px; background: var(--bg); overflow: hidden; }
+.compare li.cur .bar { background: #fff; }
+.compare .bar i { display: block; height: 100%; border-radius: inherit; background: var(--ink); }
+.compare li.cur .bar i { background: #0a84ff; }
+.compare .val { display: grid; text-align: right; font-size: 13px; font-variant-numeric: tabular-nums; line-height: 1.25; }
+@media (max-width: 480px) { .compare li { grid-template-columns: 1fr 76px; } .compare .bar { grid-column: 1 / -1; grid-row: 2; } }
+dialog { max-height: calc(100svh - 32px); overflow-y: auto; }
 .list .meta { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 12px; }
 .list .q { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .list .sum { color: #5a5a62; font-size: 12.5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -122,6 +137,9 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
 <dialog id="analytics" aria-labelledby="analytics-title">
   <div class="dlg-top"><h2 id="analytics-title">Analytics</h2><button class="tool" type="button" id="analytics-close">Fermer</button></div>
   <div class="kpis" id="kpis"></div>
+  <h3 class="dlg-h">Avec un autre modèle</h3>
+  <p class="dlg-sub">Le même trafic, aux tarifs publics de chaque modèle (novembre 2026). Une estimation : chaque modèle découpe le texte et répond un peu différemment.</p>
+  <ol class="compare" id="compare"></ol>
   <p class="dlg-note" id="kpi-note"></p>
 </dialog>
 
@@ -151,14 +169,16 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   const tok = (chars) => chars / 3;
   // One answer's cost: the billed tokens when they were logged; otherwise an estimate from the text
   // (cached profile + history + question in, answer out).
-  const costOf = (m, i, msgs) => {
-    // A ready-made answer costs nothing, nor does a call the API turned down
-    if (m.outcome === 'canned' || (!m.tokens && !m.answer)) return { usd: 0, exact: true };
-    const t = m.tokens;
-    if (t) return { usd: t.in * PRICE.in + t.out * PRICE.out + t.cr * PRICE.cr + t.cw * PRICE.cw, exact: true };
+  // The tokens of one answer: logged when available, otherwise estimated (cached profile + history + question in, answer out).
+  // A ready-made answer costs nothing, nor does a call the API turned down.
+  const tokensOf = (m, i, msgs) => {
+    if (m.outcome === 'canned' || (!m.tokens && !m.answer)) return { t: { in: 0, out: 0, cr: 0, cw: 0 }, exact: true };
+    if (m.tokens) return { t: m.tokens, exact: true };
     const history = msgs.slice(Math.max(0, i - 3), i).reduce((n, x) => n + x.question.length + Math.min(x.answer.length, 1200), 0);
-    return { usd: tok(systemChars) * PRICE.cr + tok(history + m.question.length) * PRICE.in + tok(m.answer.length) * PRICE.out, exact: false };
+    return { t: { in: tok(history + m.question.length), out: tok(m.answer.length), cr: tok(systemChars), cw: 0 }, exact: false };
   };
+  const priced = (t, p) => t.in * p.in + t.out * p.out + t.cr * p.cr + t.cw * p.cw;
+  const costOf = (m, i, msgs) => { const { t, exact } = tokensOf(m, i, msgs); return { usd: priced(t, PRICE), exact }; };
   const chatCost = (c) => c.msgs.reduce((a, m, i) => { const x = costOf(m, i, c.msgs); return { usd: a.usd + x.usd, exact: a.exact && x.exact }; }, { usd: 0, exact: true });
   const money = ({ usd, exact }) => (exact ? '' : '≈ ') + (usd === 0 ? '0 $' : usd < 0.01 ? (usd * 100).toFixed(usd < 0.001 ? 3 : 2).replace('.', ',') + ' ¢' : usd.toFixed(3).replace('.', ',') + ' $');
 
@@ -207,6 +227,16 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   };
 
   // Analytics: what the agent costs, and what the ready-made answers to suggestions save
+  // Other models at the same token counts (public list prices, Nov 2026; $ per million tokens: input / output / cached input)
+  const M = (inp, out, cr, cw = inp) => ({ in: inp / 1e6, out: out / 1e6, cr: cr / 1e6, cw: cw / 1e6 });
+  const MODELS = [
+    { name: 'Claude Haiku 5.5', by: 'Anthropic', p: PRICE, current: true },
+    { name: 'Mistral Small 4', by: 'Mistral', p: M(0.15, 0.60, 0.015) },
+    { name: 'GPT-5.4 nano', by: 'OpenAI', p: M(0.20, 1.25, 0.02) },
+    { name: 'Gemini 3.5 Flash-Lite', by: 'Google', p: M(0.30, 2.50, 0.03) },
+    { name: 'GPT-5.4 mini', by: 'OpenAI', p: M(0.75, 4.50, 0.075) },
+    { name: 'Claude Sonnet 5.5', by: 'Anthropic', p: M(2, 10, 0.20, 2.5) },
+  ];
   const SUM_PRICE = (t) => t ? t.in * PRICE.in + t.out * PRICE.out : 0;
   const pct = (x) => (x * 100).toFixed(0) + ' %';
   const analytics = () => {
@@ -224,6 +254,12 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       k(money({ usd: chats.length ? spent / chats.length : 0, exact }), `Coût moyen par conversation (${chats.length} conversations)`) +
       k(all.length ? pct(canned / all.length) : '—', `Questions venues d’une suggestion (${canned} sur ${all.length})`) +
       k(money({ usd: canned * avgAnswer, exact: false }), `Économisé par les réponses toutes prêtes (${canned} × ${money({ usd: avgAnswer, exact: true })} en moyenne)`);
+    // Same questions, same answers, re-priced: the tokens logged (or estimated) times each model's rates
+    const totals = chats.flatMap((c) => c.msgs.map((m, i) => tokensOf(m, i, c.msgs).t))
+      .reduce((a, t) => ({ in: a.in + t.in, out: a.out + t.out, cr: a.cr + t.cr, cw: a.cw + t.cw }), { in: 0, out: 0, cr: 0, cw: 0 });
+    const rows = MODELS.map((x) => ({ ...x, usd: priced(totals, x.p) })).sort((a, b) => a.usd - b.usd);
+    const max = Math.max(...rows.map((r) => r.usd)) || 1, base = rows.find((r) => r.current).usd || 1;
+    $('compare').innerHTML = rows.map((r) => `<li class="${r.current ? 'cur' : ''}"><span class="nm"><b>${esc(r.name)}</b><small>${esc(r.by)}${r.current ? ' · actuel' : ''}</small></span><span class="bar"><i style="width:${Math.max(2, r.usd / max * 100)}%"></i></span><span class="val">${money({ usd: r.usd, exact })}<small>${r.current ? '' : '× ' + (r.usd / base).toFixed(1).replace('.', ',')}</small></span></li>`).join('');
     $('kpi-note').textContent = `Tarif Claude Haiku 5.5. Les résumés de cette page ont coûté ${money({ usd: summariesCost, exact: true })} en plus.${exact ? '' : ' « ≈ » : une partie des anciens messages a été enregistrée sans ses tokens, leur coût est estimé à partir du texte.'} Les réponses toutes prêtes comptent aussi les questions de départ.`;
     $('analytics-peek').textContent = money({ usd: spent, exact });
   };
