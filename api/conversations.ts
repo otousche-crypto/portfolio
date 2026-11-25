@@ -1,7 +1,7 @@
 // ─── /api/conversations : les logs de l'agent, pour la page privée conversations.html ───
 //   GET   les conversations, les votes et les résumés déjà faits
 //   POST  { key } résume une conversation avec Claude Haiku (une phrase), gardé dans Redis
-//   DELETE    supprime les conversations de 1 ou 2 questions venues uniquement des suggestions (réponses toutes prêtes)
+//   DELETE { key } supprime une conversation, ses votes et son résumé
 //   POST  { recap: true } passe en revue les questions tapées par les visiteurs (pas les suggestions) : statut de la
 //         réponse, questions critiques restées sans réponse, ce qu'il faudrait ajouter au profil ; gardé dans Redis
 // Fermé par défaut. Il faut ADMIN_TOKEN (Vercel → Settings → Environment Variables).
@@ -169,19 +169,21 @@ export async function POST(req: Request) {
   return json({ key, n: chat.msgs.length, text, tokens });
 }
 
-// Une conversation sans question tapée, d'une ou deux suggestions cliquées : elle n'apprend rien
-const idle = (c: { msgs: Log[] }) => c.msgs.length <= 2 && c.msgs.every((m) => m.outcome === 'canned');
-
 export async function DELETE(req: Request) {
   const denied = await guard(req);
   if (denied) return denied;
-  const rows = await raw!.lrange<string>('agent:logs', 0, -1);
+  const key = ((await req.json().catch(() => ({}))) as { key?: unknown }).key;
+  if (typeof key !== 'string' || key.length > 64) return json({ error: 'invalid' }, 400);
+  const [rows, voteRows] = await Promise.all([raw!.lrange<string>('agent:logs', 0, -1), raw!.lrange<string>('agent:feedback', 0, -1)]);
   const logs = rows.map((r) => JSON.parse(r) as Log);
-  const chats = groupChats(logs).filter(idle);
-  const doomed = new Set(chats.flatMap((c) => c.msgs));
+  const chat = groupChats(logs).find((c) => c.key === key);
+  if (!chat) return json({ error: 'not_found' }, 404);
+  const doomed = new Set(chat.msgs);
   const p = raw!.pipeline();
   rows.forEach((r, i) => { if (doomed.has(logs[i])) p.lrem('agent:logs', 1, r); });
-  if (chats.length) p.hdel('agent:summaries', ...chats.map((c) => c.key));
-  if (doomed.size) await p.exec();
-  return json({ chats: chats.length, questions: doomed.size });
+  // Ses 👍 / 👎 et son résumé partent avec elle
+  voteRows.forEach((r) => { if ((JSON.parse(r) as { cid?: string }).cid === key) p.lrem('agent:feedback', 1, r); });
+  p.hdel('agent:summaries', key);
+  await p.exec();
+  return json({ key, questions: doomed.size });
 }

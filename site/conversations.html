@@ -31,8 +31,7 @@ button, input, select { font: inherit; color: inherit; }
 .cta.ghost:hover, .cta.ghost:focus-visible { background: var(--raised); box-shadow: 0 0 0 1px var(--line-strong); }
 .cta.ghost span { color: var(--muted); }
 .cta.ghost span.hot { color: var(--danger); font-weight: 500; }
-.marks { justify-self: start; display: flex; gap: 2px; margin: -4px 0 0 -10px; }
-.mark { padding: 6px 10px; border: 0; border-radius: var(--r-pill); background: none; color: var(--fg-3); font-size: var(--t-small); cursor: pointer; transition: background .2s, color .2s; }
+.mark { justify-self: start; margin: -4px 0 0 -10px; padding: 6px 10px; border: 0; border-radius: var(--r-pill); background: none; color: var(--fg-3); font-size: var(--t-small); cursor: pointer; transition: background .2s, color .2s; }
 .mark:hover, .mark:focus-visible { background: var(--hover); color: var(--fg); }
 
 /* Login: one card, as the agent's Informations cards */
@@ -64,6 +63,12 @@ button, input, select { font: inherit; color: inherit; }
 .list .q { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .list .sum { color: var(--fg-2); font-size: 12.5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .list .sum:empty { display: none; }
+/* The bin, at the bottom right of a conversation: shown on hover (always on touch screens) */
+.list li { position: relative; }
+.list .del { position: absolute; right: 6px; bottom: 6px; display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: var(--raised); box-shadow: var(--sh-ring); color: var(--muted); cursor: pointer; opacity: 0; transition: opacity .2s, color .2s; }
+.list li:hover .del, .list .del:focus-visible { opacity: 1; }
+.list .del:hover, .list .del:focus-visible { color: #e5484d; }
+@media (hover: none) { .list .del { opacity: .7; } }
 /* Day headers: sentence case, like every label on the site */
 .day { padding: 14px 12px 4px; color: var(--muted); font-size: var(--t-small); font-weight: 500; letter-spacing: var(--track-label); }
 .day::first-letter { text-transform: uppercase; }
@@ -175,7 +180,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       <button class="cta" type="button" id="analytics-open">Analytics <span id="analytics-peek"></span></button>
       <button class="cta ghost" type="button" id="recap-open">Questions des visiteurs <span id="recap-peek"></span></button>
       <p class="stats" id="stats"></p>
-      <span class="marks"><button class="mark" type="button" id="all-read">Tout marquer lu</button><button class="mark" type="button" id="purge">Nettoyer</button></span>
+      <button class="mark" type="button" id="all-read">Tout marquer lu</button>
       <label class="sort">Trier par
         <select id="order">
           <option value="new">Plus récentes</option>
@@ -288,8 +293,6 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     return out;
   };
 
-  // Same rule as the server (api/conversations.ts, idle): 1 or 2 questions, all from suggestions
-  const idle = (c) => c.msgs.length <= 2 && c.msgs.every((m) => m.outcome === 'canned');
   const show = (which) => { $('login').hidden = which !== 'login'; $('app').hidden = which !== 'app'; };
   const api = (opts = {}) => fetch('/api/conversations', { ...opts, cache: 'no-store', credentials: 'omit', headers: { authorization: 'Bearer ' + pw, ...(opts.body ? { 'content-type': 'application/json' } : {}) } }).catch(() => null);
   const ERR = { forbidden: 'Mot de passe incorrect.', too_many: 'Trop d’essais, réessayez dans une heure.', locked: 'Accès verrouillé pour aujourd’hui après trop d’essais ratés.', unavailable: 'Accès fermé : ADMIN_TOKEN manque sur Vercel.' };
@@ -468,7 +471,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       if (byDate && d !== lastDay) { html += `<li class="day">${esc(d)}</li>`; lastDay = d; }
       const flags = (c.msgs.some((m) => bad(m.outcome)) ? ' ⚠️' : '') + (ENDED.test(c.msgs.at(-1).answer) ? ' 🔒' : '') + c.votes.map((v) => v.vote === 'up' ? '👍' : '👎').join('');
       const sum = summaries[c.key]?.text || '';
-      html += `<li><button type="button" class="${unread(c) ? 'unread' : ''}" data-i="${i}" aria-current="${i === current}"><span class="meta"><span>${byDate ? '' : when(first.at, { day: 'numeric', month: 'short' }) + ' '}${when(first.at, { hour: '2-digit', minute: '2-digit' })} · ${esc(first.lang.toUpperCase())} · ${money(chatCost(c))}</span><span>${c.msgs.length} q.${flags}</span></span><span class="q">${esc(first.question)}</span><span class="sum">${esc(sum)}</span></button></li>`;
+      html += `<li><button type="button" class="${unread(c) ? 'unread' : ''}" data-i="${i}" aria-current="${i === current}"><span class="meta"><span>${byDate ? '' : when(first.at, { day: 'numeric', month: 'short' }) + ' '}${when(first.at, { hour: '2-digit', minute: '2-digit' })} · ${esc(first.lang.toUpperCase())} · ${money(chatCost(c))}</span><span>${c.msgs.length} q.${flags}</span></span><span class="q">${esc(first.question)}</span><span class="sum">${esc(sum)}</span></button><button class="del" type="button" data-del="${i}" aria-label="Supprimer la conversation" title="Supprimer"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5h11M6.5 4.5V3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1.5M4 4.5l.7 8.6a1 1 0 0 0 1 .9h4.6a1 1 0 0 0 1-.9l.7-8.6"/></svg></button></li>`;
     }
     $('list').innerHTML = html || '<li class="empty">Aucune conversation pour l’instant.</li>';
   };
@@ -495,7 +498,24 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     $('app').classList.add('reading'); if (!keepScroll) $('main').scrollTop = 0; list();
   };
 
-  $('list').addEventListener('click', (e) => { const b = e.target.closest('button[data-i]'); if (b) read(+b.dataset.i); });
+  $('list').addEventListener('click', async (e) => {
+    const del = e.target.closest('button[data-del]');
+    if (del) {
+      // Deleted for good, after a confirmation that names the conversation
+      const c = chats[+del.dataset.del];
+      if (!confirm(`Supprimer définitivement cette conversation (${c.msgs.length} question${c.msgs.length > 1 ? 's' : ''}) ?\n\n« ${c.msgs[0].question.slice(0, 80)} »\n\nC’est irréversible.`)) return;
+      const r = await api({ method: 'DELETE', body: JSON.stringify({ key: c.key }) });
+      if (!r || !r.ok) return alert('La suppression a échoué.');
+      // The conversation open on the right stays open (unless it is the one deleted)
+      const open = chats[current] === c ? null : chats[current]?.key;
+      if (!open) { $('thread').innerHTML = '<p class="empty">Choisissez une conversation.</p>'; $('app').classList.remove('reading'); }
+      current = -1;
+      await load();
+      current = chats.findIndex((x) => x.key === open);
+      return list();
+    }
+    const b = e.target.closest('button[data-i]'); if (b) read(+b.dataset.i);
+  });
   $('order').addEventListener('change', (e) => { order = e.target.value; list(); $('list').scrollTop = 0; });
   $('back').addEventListener('click', () => $('app').classList.remove('reading'));
   $('logout').addEventListener('click', () => logout());
@@ -512,16 +532,6 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   $('analytics-close').addEventListener('click', () => $('analytics').close());
   $('analytics').addEventListener('click', (e) => { if (e.target === $('analytics')) $('analytics').close(); });
   $('all-read').addEventListener('click', () => { for (const c of chats) seen[c.key] = c.msgs.length; saveSeen(); list(); });
-  // Deletes for good the conversations that taught nothing: 1 or 2 questions, all clicked suggestions
-  $('purge').addEventListener('click', async () => {
-    const n = chats.filter(idle).length;
-    if (!n) return alert('Rien à nettoyer : aucune conversation de 1 ou 2 questions venues uniquement des suggestions.');
-    if (!confirm(`Supprimer définitivement ${n} conversation${n > 1 ? 's' : ''} de 1 ou 2 questions, venues uniquement des suggestions ?\n\nC’est irréversible.`)) return;
-    const r = await api({ method: 'DELETE' });
-    if (!r || !r.ok) return alert('La suppression a échoué.');
-    current = -1; $('thread').innerHTML = '<p class="empty">Choisissez une conversation.</p>';
-    await load();
-  });
   $('login-form').addEventListener('submit', (e) => {
     e.preventDefault(); pw = $('pw').value; $('err').textContent = '';
     try { sessionStorage.setItem(KEY, pw); } catch (err) {}
