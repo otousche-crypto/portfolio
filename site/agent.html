@@ -106,6 +106,9 @@ body { position: relative; }
 .msg p + p, .msg ul + p, .msg p + ul { margin-top: 8px; }
 .msg ul { margin: 0; padding-left: 20px; }
 .msg a { text-decoration: underline; text-underline-offset: 2px; }
+/* The « i » the agent points to, drawn as the Informations button's own pictogram; a click opens it */
+.msg .ipic { display: inline-grid; place-items: center; vertical-align: -.2em; width: 1.25em; height: 1.25em; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; }
+.msg .ipic svg { width: 100%; height: 100%; }
 .msg.bot { align-self: flex-start; background: #fff; border-top-left-radius: 6px; box-shadow: 0 1px 0 rgba(0,0,0,.03), 0 10px 26px -14px rgba(20,20,40,.2); }
 .msg.me { align-self: flex-end; background: var(--ink); color: #fff; border-top-right-radius: 6px; white-space: pre-wrap; }
 /* Each new bubble pops out of its corner, with a slight overshoot */
@@ -655,12 +658,15 @@ body { position: relative; }
       try { host = new URL(url.replace(/&amp;/g, '&')).hostname; } catch (e) {}
       return HOSTS.includes(host) ? `<a href="${url}" target="_blank" rel="noopener">${label}</a>` : label;
     };
+    const INFO_ICON = document.querySelector('#hood-open svg').outerHTML;
     const inline = s => esc(s)
       .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
       .replace(/(^|[^*\w])\*(?!\s)([^*]+?)\*(?!\w)/g, '$1<i>$2</i>')
       .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_, label, url) => link(url, label))
       .replace(/(^|[\s(])(https?:\/\/[^\s<)]+[^\s<).,;:!?])/g, (_, pre, url) => pre + link(url, url))
-      .replace(/([\w.+-]+@[\w-]+\.[\w.-]*\w)/g, '<a href="mailto:$1">$1</a>');
+      .replace(/([\w.+-]+@[\w-]+\.[\w.-]*\w)/g, '<a href="mailto:$1">$1</a>')
+      // The « i » (or “i”) of the Informations button becomes its pictogram
+      .replace(/«\s*i\s*»|“i”|&quot;i&quot;/g, () => `<button class="ipic" type="button" aria-label="${lang() === 'en' ? 'About this agent' : 'Informations'}">${INFO_ICON}</button>`);
     const md = text => {
       const out = []; let list = null;
       for (const line of text.split('\n')) {
@@ -945,6 +951,7 @@ body { position: relative; }
     q.addEventListener('input', update);
     q.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); ask(q.value); } });
     document.getElementById('reset').addEventListener('click', () => { if (busy) return; window.readInfo?.(false); messages = []; cid = ''; save(); render(); update(); log.scrollTop = 0; q.focus(); });
+    log.addEventListener('click', e => { if (e.target.closest('.ipic')) window.readInfo?.(true); });
     addEventListener('langchange', () => { if (!busy) render(); });
     // In the sheet: the composer just took the site's field geometry, its height is measured again
     addEventListener('sheetfit', update);
