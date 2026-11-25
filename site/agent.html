@@ -23,36 +23,27 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
 <style>
 /* Full-screen chat on Stampit's light grey and dot grid: a slim bar on top, the conversation in one centred column, the composer pinned at the bottom */
 :root {
-  --bg: #f1f1f4;
-  --fg: #0f0f12;
-  --ink: #2c2d32;        /* one dark anthracite for every filled surface: visitor bubbles, suggestions, buttons */
-  --ink-hover: #3d3e44;
-  --muted: #8a8a92;
-  --line: rgba(15,15,18,.08);
-  --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --bg: var(--canvas);   /* the page sits on the agent's light grey; every other token comes from css/tokens.css */
   --col: 760px;
-  color-scheme: light;
 }
-* { box-sizing: border-box; }
 html, body { height: 100%; }
 body {
-  margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased;
   display: flex; flex-direction: column; height: 100svh; overflow: hidden;
 }
 body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background-image: radial-gradient(rgba(15,15,18,.09) 1px, transparent 1px); background-size: 18px 18px; mask-image: radial-gradient(80% 70% at 50% 40%, #000, transparent); }
-a { color: inherit; }
 button { font: inherit; color: inherit; }
 
 /* ── Bar ── */
 .bar { position: absolute; z-index: 3; top: 0; left: 0; right: 0; display: flex; align-items: center; gap: 16px; padding: 14px max(16px, env(safe-area-inset-left, 0px)) 14px max(16px, env(safe-area-inset-left, 0px)); font-size: 14px;
-  background: linear-gradient(to bottom, rgba(255,255,255,.78), rgba(255,255,255,.6)); -webkit-backdrop-filter: saturate(180%) blur(24px); backdrop-filter: saturate(180%) blur(24px); }  /* the site header's frosted white */
+  background: var(--glass); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }  /* the site header's frosted white */
 @media (min-width: 720px) { .bar { padding-inline: 28px; } }
-.back { display: grid; place-items: center; width: 34px; height: 34px; margin-left: -6px; border-radius: 50%; text-decoration: none; color: #5f5f68; transition: background .2s, color .2s; }
-.back:hover, .back:focus-visible { background: rgba(15,15,18,.06); color: var(--fg); }
+.back { display: grid; place-items: center; width: 34px; height: 34px; margin-left: -6px; border-radius: 50%; text-decoration: none; color: var(--fg-3); transition: background .2s, color .2s; }
+.back:hover, .back:focus-visible { background: var(--hover); color: var(--fg); }
 .back svg { width: 16px; height: 16px; }
 /* In the sheet, the arrow is a close cross, at the far right as on a modal */
 .embed .back { order: 1; margin: 0 -6px 0 0; }
@@ -69,18 +60,15 @@ button { font: inherit; color: inherit; }
 /* …and looks like it too: the same glass, the same text in the same grey (agent-dock.js, .agd-field). On phones the
    hint is 15px like the field's, while what the visitor types stays at 16px (below that, iOS zooms into the page) */
 .embed .compose::before { background: rgba(255,255,255,.72); -webkit-backdrop-filter: blur(10px) saturate(1.6); backdrop-filter: blur(10px) saturate(1.6); }
-.embed .compose textarea::placeholder { color: #5f5f67; opacity: 1; }
+.embed .compose textarea::placeholder { color: var(--fg-3); opacity: 1; }
 .embed.slim .compose textarea::placeholder { font-size: 15px; }
 .embed.slim .send { width: 32px; height: 32px; }
 .embed.slim .send svg { width: 15px; height: 15px; }
 .who { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
 .who b { font-weight: 600; letter-spacing: -0.01em; }
 .who span { color: var(--muted); font-size: 13px; display: flex; align-items: center; gap: 6px; }
-.who span::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #34c37a; }
+.who span::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ok); }
 .tools { margin-left: auto; display: flex; align-items: center; gap: 6px; }
-.tool { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 7px 12px; border-radius: 999px; color: #5f5f68; cursor: pointer; font-size: 13.5px; white-space: nowrap; transition: background .2s, color .2s; }
-.tool:hover, .tool:focus-visible { background: rgba(15,15,18,.06); color: var(--fg); }
-.tool svg { width: 15px; height: 15px; flex: none; }
 /* Phones: icons only, and the status line gives way to the name */
 @media (max-width: 640px) { .tool span, .who span { display: none; } .tools { gap: 0; } .tool { padding: 9px; } }
 
@@ -101,17 +89,7 @@ body { position: relative; }
 @media (max-width: 640px) {
   .face { top: 93px; translate: 40% 0; font-size: calc((100svh - 195px) / 57); opacity: .9; }
 }
-.msg { max-width: min(600px, 88%); padding: 12px 16px; border-radius: 20px; font-size: 15.5px; line-height: 1.55; overflow-wrap: anywhere; }
-.msg p { margin: 0; }
-.msg p + p, .msg ul + p, .msg p + ul { margin-top: 8px; }
-.msg ul { margin: 0; padding-left: 20px; }
-.msg a { text-decoration: underline; text-underline-offset: 2px; }
-/* The « i » the agent points to, drawn as the Informations button's own pictogram; a click opens it */
-.msg .ipic { display: inline-grid; place-items: center; vertical-align: middle; width: 1.9em; height: 1.9em; margin: -.3em .1em -.2em; padding: 0; border: 0; border-radius: 50%; background: rgba(15,15,18,.06); color: #5f5f68; cursor: pointer; transition: background .2s, color .2s; }
-.msg .ipic:hover, .msg .ipic:focus-visible { background: rgba(15,15,18,.1); color: var(--fg); }
-.msg .ipic svg { width: 15px; height: 15px; }
-.msg.bot { align-self: flex-start; background: #fff; border-top-left-radius: 6px; box-shadow: 0 1px 0 rgba(0,0,0,.03), 0 10px 26px -14px rgba(20,20,40,.2); }
-.msg.me { align-self: flex-end; background: var(--ink); color: #fff; border-top-right-radius: 6px; white-space: pre-wrap; }
+/* Bubbles, chips, the « i » pictogram and panels: css/components.css */
 /* Each new bubble pops out of its corner, with a slight overshoot */
 .msg { animation: pop .42s cubic-bezier(.2,.9,.3,1.25) both; transform-origin: 0 100%; }
 .msg.me { transform-origin: 100% 100%; }
@@ -119,15 +97,13 @@ body { position: relative; }
 @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.6); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .msg { animation-name: fade; } @keyframes fade { from { opacity: 0; } } }
 .typing { display: inline-flex; gap: 4px; padding: 6px 0; }
-.typing i { width: 6px; height: 6px; border-radius: 50%; background: #b9b9c0; animation: blink 1.2s infinite both; }
+.typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--faint); animation: blink 1.2s infinite both; }
 .typing i:nth-child(2) { animation-delay: .2s; } .typing i:nth-child(3) { animation-delay: .4s; }
 @keyframes blink { 0%, 80%, 100% { opacity: .3; } 40% { opacity: 1; } }
 .chips { display: flex; gap: 8px; margin: 0 -16px 10px; padding: 2px 16px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent); mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent); }
 .chips::-webkit-scrollbar { display: none; }
 .chips:empty { display: none; }
-/* The same anthracite as the visitor's bubbles: a suggestion is a question they can send as is */
-.chips button { flex: none; scroll-snap-align: start; white-space: nowrap; font-size: 14px; background: var(--ink); color: #fff; border: 0; border-radius: 999px; padding: 10px 16px; cursor: pointer; transition: background .2s, transform .2s; }
-.chips button:hover, .chips button:focus-visible { background: var(--ink-hover); transform: translateY(-1px); }
+.chips .chip { scroll-snap-align: start; }
 /* Phones: one suggestion and the start of the next */
 @media (max-width: 640px) { .chips button { max-width: calc(100vw - 84px); overflow: hidden; text-overflow: ellipsis; } }
 
@@ -135,20 +111,20 @@ body { position: relative; }
 .extras { align-self: flex-start; display: flex; flex-direction: column; gap: 8px; max-width: min(600px, 88%); margin-top: -4px; animation: rise .35s ease-out both; }
 .extras.calm { animation: none; }
 @keyframes rise { from { opacity: 0; transform: translateY(4px); } }
-.case { display: flex; align-items: center; gap: 12px; width: min(340px, 100%); padding: 8px 14px 8px 8px; background: #fff; border-radius: 16px; text-decoration: none; color: inherit; box-shadow: 0 0 0 1px var(--line); transition: box-shadow .2s, transform .2s; }
-.case:hover, .case:focus-visible { box-shadow: 0 0 0 1px rgba(15,15,18,.25), 0 10px 24px -14px rgba(20,20,40,.3); transform: translateY(-1px); }
-.case img { flex: none; width: 56px; height: 56px; border-radius: 10px; object-fit: cover; background: var(--bg); }
+.case { display: flex; align-items: center; gap: 12px; width: min(340px, 100%); padding: 8px 14px 8px 8px; background: var(--raised); border-radius: var(--r-sm); text-decoration: none; color: inherit; box-shadow: var(--sh-ring); transition: box-shadow .2s, transform .2s; }
+.case:hover, .case:focus-visible { box-shadow: 0 0 0 1px var(--line-strong), 0 10px 24px -14px rgba(20,20,40,.3); transform: translateY(-1px); }
+.case img { flex: none; width: 56px; height: 56px; border-radius: var(--r-xs); object-fit: cover; background: var(--bg); }
 .case span { flex: 1; display: flex; flex-direction: column; min-width: 0; font-size: 14.5px; font-weight: 500; }
 .case small { font-size: 12.5px; font-weight: 400; color: var(--muted); }
 .case svg { flex: none; width: 12px; height: 12px; color: var(--muted); }
 .acts { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
-.act { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; color: #5f5f68; text-decoration: none; background: none; border: 0; padding: 6px 10px; border-radius: 999px; cursor: pointer; transition: background .2s, color .2s; }
-.act:hover, .act:focus-visible { background: rgba(15,15,18,.06); color: var(--fg); }
+.act { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; color: var(--fg-3); text-decoration: none; background: none; border: 0; padding: 6px 10px; border-radius: 999px; cursor: pointer; transition: background .2s, color .2s; }
+.act:hover, .act:focus-visible { background: var(--hover); color: var(--fg); }
 .act.primary { background: var(--ink); color: #fff; }
-.act.primary:hover, .act.primary:focus-visible { background: #2a2a30; color: #fff; }
+.act.primary:hover, .act.primary:focus-visible { background: var(--ink-hover); color: #fff; }
 .act svg { width: 14px; height: 14px; }
 .fb { padding: 6px; }
-.fb[aria-pressed="true"] { color: var(--fg); background: rgba(15,15,18,.08); }
+.fb[aria-pressed="true"] { color: var(--fg); background: var(--active); }
 .fb:disabled { cursor: default; }
 .fb:disabled:not([aria-pressed="true"]) { opacity: .35; }
 .thanks { font-size: 12.5px; color: var(--muted); padding-left: 4px; }
@@ -157,7 +133,7 @@ body { position: relative; }
 .dock { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; padding: 10px 0 max(14px, env(safe-area-inset-bottom, 0px)); pointer-events: none; }
 .dock .chips, .dock .compose { pointer-events: auto; }
 .compose { display: flex; gap: 8px; align-items: flex-end; border-radius: 26px; padding: 5px 5px 5px 17px; position: relative; border: 1px solid rgba(255,255,255,.85);
-  box-shadow: 0 0 0 1px var(--line), 0 16px 40px -20px rgba(20,20,40,.3); }
+  box-shadow: var(--sh-ring), 0 16px 40px -20px rgba(20,20,40,.3); }
 /* Glass: a frosted pane (::before) over the halo (::after), both behind the composer. The halo glows on the
    background around it and only shows through the glass very faintly. No mask: some browsers fail to apply them */
 .compose::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none;
@@ -197,59 +173,57 @@ body { position: relative; }
 .info { flex: 1; position: relative; z-index: 1; overflow-y: auto; overscroll-behavior: contain; padding: calc(var(--bar-h, 63px) + 20px) 0 max(32px, env(safe-area-inset-bottom, 0px)); }
 .info:not([hidden]) .hood { animation: rise .35s ease-out both; }
 .reading .log, .reading .dock, .reading .face, .reading .ai-note { display: none; }
-.tool[aria-pressed="true"] { background: rgba(15,15,18,.08); color: var(--fg); }
 .hood { padding-block: 0; }
 .hood-top { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 18px; }
 .hood-top h2 { margin: 0; font-size: 22px; letter-spacing: -0.02em; outline: none; }
-.to-chat { display: inline-flex; align-items: center; gap: 6px; margin-left: -10px; padding: 7px 12px 7px 8px; background: none; border: 0; border-radius: 999px; color: #5f5f68; font-size: 13.5px; cursor: pointer; transition: background .2s, color .2s; }
-.to-chat:hover, .to-chat:focus-visible { background: rgba(15,15,18,.06); color: var(--fg); }
+.to-chat { display: inline-flex; align-items: center; gap: 6px; margin-left: -10px; padding: 7px 12px 7px 8px; background: none; border: 0; border-radius: 999px; color: var(--fg-3); font-size: 13.5px; cursor: pointer; transition: background .2s, color .2s; }
+.to-chat:hover, .to-chat:focus-visible { background: var(--hover); color: var(--fg); }
 .to-chat svg { width: 14px; height: 14px; }
 .why { margin: 0 0 22px; }
 .why h3, .how { margin: 0 0 8px; font-size: 15.5px; letter-spacing: -0.01em; }
-.why p, .how-intro { margin: 0; color: #4a4a52; font-size: 15px; line-height: 1.6; }
+.why p, .how-intro { margin: 0; color: var(--fg-2); font-size: 15px; line-height: 1.6; }
 .how-intro { margin-bottom: 14px; }
 .why p + p { margin-top: 10px; }
-.why ul { margin: 10px 0 0; padding-left: 18px; color: #4a4a52; font-size: 15px; line-height: 1.6; }
+.why ul { margin: 10px 0 0; padding-left: 18px; color: var(--fg-2); font-size: 15px; line-height: 1.6; }
 .why li + li { margin-top: 6px; }
 .why li b { color: var(--fg); font-weight: 600; }
 /* One line, always: on a narrow screen it scrolls sideways rather than wrapping */
 .flow { display: flex; align-items: center; gap: 6px; margin: 0 -16px 18px; padding: 2px 16px; font-size: 13px; white-space: nowrap; overflow-x: auto; scrollbar-width: none; }
 .flow::-webkit-scrollbar { display: none; }
 .flow .loop { background: var(--ink); color: #fff; }
-.flow span { background: #fff; border-radius: 999px; padding: 6px 12px; box-shadow: 0 0 0 1px var(--line); }
+.flow span { background: var(--raised); border-radius: 999px; padding: 6px 12px; box-shadow: var(--sh-ring); }
 .flow i { font-style: normal; color: var(--muted); }
 .hood-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .hood-grid .wide { grid-column: 1 / -1; }
-.hood article { background: #fff; border-radius: 18px; padding: 20px; box-shadow: 0 0 0 1px var(--line); }
 .hood h3 { margin: 0 0 8px; font-size: 15.5px; letter-spacing: -0.01em; }
-.hood article p, .hood article ul { margin: 0; color: #4a4a52; font-size: 14px; }
+.hood article p, .hood article ul { margin: 0; color: var(--fg-2); font-size: 14px; }
 .hood article p + p { margin-top: 8px; }
 .hood article ul { padding-left: 18px; }
 .hood li + li { margin-top: 5px; }
-.changelog { margin-top: 12px; background: #fff; border-radius: 18px; box-shadow: 0 0 0 1px var(--line); }
+.changelog { margin-top: 12px; padding: 0; }
 .changelog summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; font-weight: 600; font-size: 15.5px; letter-spacing: -0.01em; cursor: pointer; list-style: none; }
 .changelog summary::-webkit-details-marker { display: none; }
 .changelog summary svg { width: 16px; height: 16px; color: var(--muted); transition: transform .2s ease; }
 .changelog[open] summary svg { transform: rotate(180deg); }
-.changelog > p { margin: -4px 20px 4px; color: #4a4a52; font-size: 15px; line-height: 1.6; }
+.changelog > p { margin: -4px 20px 4px; color: var(--fg-2); font-size: 15px; line-height: 1.6; }
 .changes { list-style: none; margin: 0; padding: 0 20px 8px; }
 .changes li { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 12px 0; border-top: 1px solid var(--line); }
 .changes li:first-child { border-top: 0; }
 .changes .v { color: var(--ink); font-size: 13px; font-weight: 600; line-height: 1.6; font-variant-numeric: tabular-nums; }
 .changes .what b { display: block; font-size: 14.5px; font-weight: 600; margin-bottom: 2px; }
-.changes .what span { color: #4a4a52; font-size: 14px; line-height: 1.55; }
+.changes .what span { color: var(--fg-2); font-size: 14px; line-height: 1.55; }
 @media (max-width: 640px) { .hood-grid { grid-template-columns: 1fr; } }
 /* Message limit: a ring left of "New chat" fills up as the visitor uses their messages; it opens the limits text, like "i" */
 .quota { display: grid; place-items: center; width: 33px; height: 33px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; transition: background .2s; }
-.quota:hover, .quota:focus-visible, .quota[aria-pressed="true"] { background: rgba(15,15,18,.06); }
+.quota:hover, .quota:focus-visible, .quota[aria-pressed="true"] { background: var(--hover); }
 .quota svg { width: 15px; height: 15px; transform: rotate(-90deg); }
 .quota circle { fill: none; stroke-width: 2.6; }
 .q-track { stroke: rgba(15,15,18,.12); }
-.q-arc { stroke: #4CB8FF; stroke-linecap: round; stroke-dasharray: var(--used, 0) 100; transition: stroke-dasharray .6s ease, stroke .3s; }
-.low .q-arc, .low.q-bar i { stroke: #f2994a; background: #f2994a; }
-.out .q-arc, .out.q-bar i { stroke: #e5484d; background: #e5484d; }
+.q-arc { stroke: var(--accent); stroke-linecap: round; stroke-dasharray: var(--used, 0) 100; transition: stroke-dasharray .6s ease, stroke .3s; }
+.low .q-arc, .low.q-bar i { stroke: var(--warn); background: var(--warn); }
+.out .q-arc, .out.q-bar i { stroke: var(--danger); background: var(--danger); }
 .q-bar { height: 6px; margin: 4px 0 12px; border-radius: 999px; background: rgba(15,15,18,.08); overflow: hidden; }
-.q-bar i { display: block; height: 100%; width: calc(var(--used, 0) * 1%); border-radius: inherit; background: #4CB8FF; transition: width .6s ease; }
+.q-bar i { display: block; height: 100%; width: calc(var(--used, 0) * 1%); border-radius: inherit; background: var(--accent); transition: width .6s ease; }
 .q-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .q-link { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 14px; text-decoration: none; transition: opacity .2s; }
 .q-link:hover, .q-link:focus-visible { opacity: .85; }
@@ -293,12 +267,12 @@ body { position: relative; }
       <h2 id="quota-title" tabindex="-1" data-en="Message limit">Limite de messages</h2>
     </div>
     <div class="hood-grid">
-      <article class="wide">
+      <article class="panel wide">
         <h3 id="quota-left"></h3>
         <div class="q-bar" aria-hidden="true"><i></i></div>
         <p data-en="The number of messages is limited, to keep costs under control. If you’d like to talk more, contact Olivier directly.">Le nombre de messages est limité, pour maîtriser les coûts. Si vous souhaitez échanger davantage, contactez directement Olivier.</p>
       </article>
-      <article class="wide">
+      <article class="panel wide">
         <h3 data-en="To contact Olivier">Pour contacter Olivier</h3>
         <p data-en="I’m here to give you a first look. To go further, the best is still to talk to Olivier directly.">Je suis là pour vous donner un premier aperçu. Pour aller plus loin, le mieux reste d’échanger directement avec Olivier.</p>
         <div class="q-links">
@@ -345,16 +319,16 @@ body { position: relative; }
       <span class="loop" data-en="Suggestions ↺">Suggestions ↺</span>
     </div>
     <div class="hood-grid">
-      <article class="wide">
+      <article class="panel wide">
         <h3 data-en="A hybrid model">Un modèle hybride</h3>
         <p data-en="Below every answer, suggestions offer questions in one click. Questions you write yourself go through Anthropic’s API; the suggestions, on the other hand, have a pre-written answer.">Sous chaque réponse, des suggestions proposent des questions en un clic. Les questions que vous rédigez vous-même passent par l’API d’Anthropic ; les suggestions, elles, ont une réponse pré-enregistrée.</p>
         <p data-en="<b>The result:</b> the agentic experience feels continuous, while only the questions the visitor writes call on the model. A click on a suggestion keeps the conversation going without using a single token. It also keeps the conversation going when Anthropic’s API runs into a technical issue."><b>Résultat :</b> l’expérience agentique semble continue, alors que seules les questions rédigées par le visiteur sollicitent le modèle. Un clic sur une suggestion, et l’échange se poursuit sans consommer de token. Cela permet aussi de continuer à échanger en cas de problème technique lié à l’API d’Anthropic.</p>
       </article>
-      <article>
+      <article class="panel">
         <h3 data-en="One source of truth">Une seule source de vérité</h3>
         <p data-en="The agent only knows a profile written by Olivier: experience, projects, method, what he is looking for. No RAG needed at this size: the whole profile sits in the system prompt, cached on the API side to cut cost and latency. If something is not in it, the agent says so and points to Olivier.">L’agent ne connaît qu’un profil rédigé par Olivier : expériences, projets, méthode, ce qu’il recherche. Pas besoin de RAG à cette taille : tout le profil tient dans le prompt système, mis en cache côté API pour réduire coût et latence. Ce qui n’y figure pas, l’agent dit qu’il ne le sait pas et renvoie vers Olivier.</p>
       </article>
-      <article>
+      <article class="panel">
         <h3 data-en="Guardrails in layers">Des garde-fous en couches</h3>
         <ul>
           <li data-en="A narrow scope: off-topic requests get a polite one-line decline.">Un périmètre étroit : les demandes hors sujet reçoivent un refus courtois en une phrase.</li>
@@ -364,16 +338,16 @@ body { position: relative; }
           <li data-en="Nothing confidential in the context: what the model doesn’t know, it can’t leak.">Rien de confidentiel dans le contexte : ce que le modèle ne sait pas, il ne peut pas le divulguer.</li>
         </ul>
       </article>
-      <article>
+      <article class="panel">
         <h3 data-en="A server between you and the model">Un serveur entre vous et le modèle</h3>
         <p data-en="The page never talks to the model directly. A Vercel function holds the API key, validates every request, applies the limits and streams the answer back. Claude Haiku answers at low effort: fast, cheap, and enough for this job.">La page ne parle jamais directement au modèle. Une fonction Vercel détient la clé API, valide chaque requête, applique les limites et renvoie la réponse en streaming. Claude Haiku répond avec un effort bas : rapide, économique, et suffisant pour cet usage.</p>
       </article>
-      <article>
+      <article class="panel">
         <h3 data-en="Tested before every change">Testé avant chaque modification</h3>
         <p data-en="A suite of legitimate questions and attack attempts (prompt injection, role play, off-topic, salary…) runs against the real agent, and a second model grades each answer. A prompt change ships only if the score holds.">Une suite de questions légitimes et de tentatives d’attaque (injection de prompt, jeu de rôle, hors sujet, salaire…) tourne contre le vrai agent, et un second modèle note chaque réponse. Une modification du prompt n’est publiée que si le score tient.</p>
       </article>
     </div>
-    <details class="changelog">
+    <details class="changelog panel">
       <summary><span data-en="Changelog">Changelog</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></summary>
       <p data-en="The agent evolves with use and with visitor feedback. Feel free to share yours!">L’agent évolue au fil des usages et des retours utilisateurs. N’hésitez pas à me faire part du vôtre&nbsp;!</p>
       <ol class="changes">
@@ -764,7 +738,7 @@ body { position: relative; }
       chips.innerHTML = ''; chips.scrollLeft = 0;
       list.forEach(s => {
         const b = document.createElement('button');
-        b.type = 'button'; b.textContent = s;
+        b.type = 'button'; b.className = 'chip'; b.textContent = s;
         b.addEventListener('click', () => ask(s));
         chips.appendChild(b);
       });
