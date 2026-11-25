@@ -120,7 +120,7 @@ Il a trouvé un cabinet d'avocats spécialisé, travaillé avec le prestataire d
 Au final : un portefeuille unique, toutes devises, lancé dans plusieurs pays en même temps. Tout est dans l'[étude de cas Altered](https://www.oliviertousche.com/equinox.html).
 [[Son approche du design ? | Son expérience en recherche UX ?]]`,
 
-  'pourquoi cet agent ?': `Olivier m'a conçu entièrement, from scratch. Il a pensé chaque détail de nos échanges : mon ton, les questions que je vous suggère, ou le fait que vous puissiez me parler depuis n'importe quelle page.
+  'pourquoi cet agent ?': `Je tourne sur Claude Haiku, mais le modèle n'est que le moteur. Olivier a conçu toute l'expérience autour, from scratch : le rythme de mes réponses, mon ton, les questions que je vous suggère, ou le fait que vous puissiez me parler depuis n'importe quelle page.
 ---
 Pourquoi ? Parce qu'avec l'IA, la conversation prend de plus en plus de place dans nos usages. Et pour Olivier, ce genre d'interaction, il faut l'expérimenter soi-même, sur un vrai produit.
 ---
@@ -148,7 +148,7 @@ He found a specialised law firm, worked with the payment provider, and used desi
 In the end: a single wallet, all currencies, launched in several countries at once. It's all in the [Altered case study](https://www.oliviertousche.com/equinox.html).
 [[His design approach? | His UX research experience?]]`,
 
-  'why this agent?': `Olivier designed me entirely, from scratch. He thought through every detail of our chats: my tone, the questions I suggest, and being able to talk to me from any page.
+  'why this agent?': `I run on Claude Haiku, but the model is only the engine. Olivier designed the whole experience around it, from scratch: the pace of my answers, my tone, the questions I suggest, and being able to talk to me from any page.
 ---
 Why? Because with AI, conversation is taking up more and more room in how we use products. And for Olivier, that kind of interaction is something you have to experience first-hand, on a real product.
 ---
