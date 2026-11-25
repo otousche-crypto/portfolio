@@ -718,9 +718,10 @@ body { position: relative; }
     };
     new ResizeObserver(fitRing).observe(form);
     addEventListener('resize', fitRing);
+    // Never more than 3 suggestions at a time
     const showChips = list => {
       chips.innerHTML = ''; chips.scrollLeft = 0;
-      list.forEach(s => {
+      list.slice(0, 3).forEach(s => {
         const b = document.createElement('button');
         b.type = 'button'; b.className = 'chip'; b.textContent = s;
         b.addEventListener('click', () => ask(s));
