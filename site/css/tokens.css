@@ -1,0 +1,80 @@
+/* Design tokens + base: the one source for colours, type, radii, shadows and motion, on every page of the site
+   (home, case studies, agent, conversations). The public pages are the reference; a page only overrides a token
+   when its surface changes (the agent sits on --canvas). Product mock-ups (Sklip, Go MoonBound, Altered…) keep
+   their products' own colours and are not tokenised. */
+:root {
+  /* Surfaces */
+  --bg: #ffffff;
+  --soft: #f3f3f5;        /* tiles, chips, quiet hovers */
+  --canvas: #f1f1f4;      /* the agent's light grey, under the dot grid */
+  --raised: #ffffff;      /* cards and bubbles on --canvas */
+
+  /* Text */
+  --fg: #111113;
+  --fg-2: #55555c;        /* reading text: paragraphs, descriptions */
+  --fg-3: #5f5f68;        /* quiet controls: nav links, toolbar buttons */
+  --muted: #9a9aa2;       /* meta, captions, hints */
+  --faint: #c4c4ca;       /* separators */
+
+  /* Lines and states (translucent, so they read the same on white and on --canvas) */
+  --line: rgba(15,15,18,.09);
+  --line-strong: rgba(15,15,18,.25);
+  --hover: rgba(15,15,18,.06);
+  --active: rgba(15,15,18,.08);
+
+  /* Filled surfaces: one black everywhere (primary buttons, the visitor's bubbles, suggestions, send) */
+  --ink: #111113;
+  --ink-hover: #2c2d32;
+  --pill: var(--ink);     /* primary buttons on the public pages */
+  --pill-fg: #ffffff;
+
+  /* Colour */
+  --accent: #4CB8FF;
+  --ok: #34c37a;
+  --warn: #f2994a;
+  --danger: #e5484d;
+  /* The agent's composer beam runs #7c5cff → #ff5ca8 → #ffb547 → #4fd1ff (home card, agent page, agent-dock.js) */
+
+  /* Type */
+  --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --t-eyebrow: 14px;      /* labels: sentence case, weight 500, never mono caps */
+  --t-caption: 13.5px;
+  --t-small: 13px;
+  --track-label: -0.005em;
+
+  /* Radii */
+  --radius: 28px;         /* full-width panels: project cards, case heroes, "next" card */
+  --r-lg: 24px;           /* feature blocks */
+  --r-md: 18px;           /* cards, figures, message bubbles' family */
+  --r-sm: 14px;           /* tiles, stat boxes */
+  --r-xs: 10px;           /* logos, thumbnails */
+  --r-pill: 999px;
+
+  /* Shadows */
+  --sh-ring: 0 0 0 1px var(--line);
+  --sh-float: 0 1px 0 rgba(0,0,0,.03), 0 10px 26px -14px rgba(20,20,40,.2);
+  --sh-overlay: 0 30px 80px -24px rgba(20,20,40,.45);
+
+  /* Glass: the frosted white of the site header and the agent bar */
+  --glass: linear-gradient(to bottom, rgba(255,255,255,.78), rgba(255,255,255,.6));
+  --glass-blur: saturate(180%) blur(24px);
+
+  /* Motion */
+  --ease: cubic-bezier(.2,.7,.2,1);
+  --ease-pop: cubic-bezier(.2,.9,.3,1.25);
+
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--sans); font-size: 16px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

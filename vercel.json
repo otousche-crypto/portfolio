@@ -3,6 +3,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
+    { "source": "/design-system", "destination": "/design-system.html" },
     { "source": "/decadi", "destination": "https://decadi.vercel.app/decadi" },
     { "source": "/decadi/:path*", "destination": "https://decadi.vercel.app/decadi/:path*" }
   ],

@@ -1,0 +1,82 @@
+/* Components shared by every surface: public pages, the agent and its conversation log (tokens in tokens.css).
+   One definition each; a page only adds its layout around them. Catalogue: design-system.html */
+
+/* ── Atoms ── */
+
+/* Quiet pill: a text control that takes a soft grey pill on hover (nav, toolbars, back links) */
+.tool { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border: 0; border-radius: var(--r-pill); background: none; color: var(--fg-3); font: inherit; font-size: 13.5px; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background .2s, color .2s; }
+.tool:hover, .tool:focus-visible { background: var(--hover); color: var(--fg); }
+.tool[aria-pressed="true"] { background: var(--active); color: var(--fg); }
+.tool svg { width: 15px; height: 15px; flex: none; }
+
+/* Chip: a suggestion, a question the visitor can send as is; the same black as their bubbles */
+.chip { flex: none; display: inline-block; border: 0; border-radius: var(--r-pill); padding: 10px 16px; background: var(--ink); color: #fff; font: inherit; font-size: 14px; white-space: nowrap; }
+button.chip { cursor: pointer; transition: background .2s, transform .2s; }
+button.chip:hover, button.chip:focus-visible { background: var(--ink-hover); transform: translateY(-1px); }
+
+/* Badge: a skill or a source, in a soft pill; .badges lines them up */
+.badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.badges > span, .badge { font-size: var(--t-small); padding: 6px 12px; border-radius: var(--r-pill); background: var(--soft); }
+
+/* The « i » pictogram of the agent's Informations button, inline in text */
+.ipic { display: inline-grid; place-items: center; vertical-align: middle; width: 1.9em; height: 1.9em; margin: -.3em .1em -.2em; padding: 0; border: 0; border-radius: 50%; background: var(--hover); color: var(--fg-3); }
+button.ipic { cursor: pointer; transition: background .2s, color .2s; }
+button.ipic:hover, button.ipic:focus-visible { background: rgba(15,15,18,.1); color: var(--fg); }
+.ipic svg { width: 15px; height: 15px; }
+
+/* ── Molecules ── */
+
+/* Message bubble: the agent on white (.bot), the visitor in black (.me), the speaker's corner squared */
+.msg { max-width: min(600px, 88%); padding: 12px 16px; border-radius: 20px; font-size: 15.5px; line-height: 1.55; overflow-wrap: anywhere; }
+.msg p { margin: 0; }
+.msg p + p, .msg ul + p, .msg p + ul { margin-top: 8px; }
+.msg ul { margin: 0; padding-left: 20px; }
+.msg a { text-decoration: underline; text-underline-offset: 2px; }
+.msg.bot { align-self: flex-start; background: var(--raised); border-top-left-radius: 6px; box-shadow: var(--sh-float); }
+.msg.me { align-self: flex-end; background: var(--ink); color: #fff; border-top-right-radius: 6px; white-space: pre-wrap; }
+
+/* Panel: a white card on a hairline (the agent's Informations, the log's summary and login) */
+.panel { background: var(--raised); border-radius: var(--r-md); padding: 20px; box-shadow: var(--sh-ring); }
+
+/* Stat tiles: a big figure over its label, in soft tiles; --n columns (3 by default) */
+.tiles { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 10px; }
+.tiles > div { background: var(--tile-bg, var(--soft)); border-radius: var(--r-sm); padding: 16px 18px; display: grid; gap: 2px; align-content: start; }
+.tiles b { font-size: 26px; line-height: 1.1; font-weight: 600; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.tiles b small { font-size: 15px; font-weight: 500; letter-spacing: 0; color: var(--muted); margin-right: 5px; }
+.tiles > div > span, .tiles > div > small { font-size: var(--t-small); line-height: 1.4; color: var(--fg-2); }
+@media (max-width: 760px) { .tiles { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .tiles.stack { grid-template-columns: 1fr; } }
+
+/* ── The agent's molecules ── */
+
+/* Typing: three dots while the answer is on its way */
+.typing { display: inline-flex; gap: 4px; padding: 6px 0; }
+.typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--faint); animation: typing-dot 1.2s infinite both; }
+.typing i:nth-child(2) { animation-delay: .2s; } .typing i:nth-child(3) { animation-delay: .4s; }
+@keyframes typing-dot { 0%, 80%, 100% { opacity: .3; } 40% { opacity: 1; } }
+
+/* Case card: a case study suggested under an answer, thumbnail, title and arrow */
+.case { display: flex; align-items: center; gap: 12px; width: min(340px, 100%); padding: 8px 14px 8px 8px; background: var(--raised); border-radius: var(--r-sm); text-decoration: none; color: inherit; box-shadow: var(--sh-ring); transition: box-shadow .2s, transform .2s; }
+.case:hover, .case:focus-visible { box-shadow: 0 0 0 1px var(--line-strong), 0 10px 24px -14px rgba(20,20,40,.3); transform: translateY(-1px); }
+.case img { flex: none; width: 56px; height: 56px; border-radius: var(--r-xs); object-fit: cover; background: var(--bg); }
+.case span { flex: 1; display: flex; flex-direction: column; min-width: 0; font-size: 14.5px; font-weight: 500; }
+.case small { font-size: 12.5px; font-weight: 400; color: var(--muted); }
+.case svg { flex: none; width: 12px; height: 12px; color: var(--muted); }
+
+/* Actions under an answer: quiet text pills, a black one for the main action, 👍 / 👎 (.fb) and their thanks */
+.acts { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.act { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; color: var(--fg-3); text-decoration: none; background: none; border: 0; padding: 6px 10px; border-radius: 999px; cursor: pointer; transition: background .2s, color .2s; }
+.act:hover, .act:focus-visible { background: var(--hover); color: var(--fg); }
+.act.primary { background: var(--ink); color: #fff; }
+.act.primary:hover, .act.primary:focus-visible { background: var(--ink-hover); color: #fff; }
+.act svg { width: 14px; height: 14px; }
+.fb { padding: 6px; }
+.fb[aria-pressed="true"] { color: var(--fg); background: var(--active); }
+.fb:disabled { cursor: default; }
+.fb:disabled:not([aria-pressed="true"]) { opacity: .35; }
+.thanks { font-size: 12.5px; color: var(--muted); padding-left: 4px; }
+
+/* Flow: steps in white pills separated by arrows, the looping step in black */
+.flow .loop { background: var(--ink); color: #fff; }
+.flow span { background: var(--raised); border-radius: 999px; padding: 6px 12px; box-shadow: var(--sh-ring); }
+.flow i { font-style: normal; color: var(--muted); }

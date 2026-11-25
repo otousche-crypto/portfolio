@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Design system · Olivier Tousche</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/site.css">
+<style>
+/* The site's design system, in atomic order (foundations, atoms, molecules, organisms, templates). Every specimen is
+   the real component from css/components.css or css/site.css, not a copy; the swatches read the tokens' live values.
+   Only the catalogue's own frame (ds-*) is styled here. Not linked from the site. */
+.ds-sec { padding-block: 40px 72px; }
+.ds-sec > .label { margin-bottom: 20px; }
+.ds-intro { margin: 0 0 28px; max-width: 64ch; color: var(--fg-2); }
+.ds-level { margin: 0 0 6px; font-size: var(--t-eyebrow); font-weight: 500; color: var(--muted); }
+.ds-group + .ds-group { margin-top: 36px; }
+.ds-group h3 { margin: 0 0 14px; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+code { font-family: var(--mono); font-size: .86em; }
+
+/* Side menu: the page's levels and their groups, the one in view highlighted; the top bar keeps the site's links */
+.ds-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px; align-items: start; }
+.ds-side { position: sticky; top: 88px; max-height: calc(100svh - 108px); overflow-y: auto; padding: 72px 0 24px; scrollbar-width: none; }
+.ds-side::-webkit-scrollbar { display: none; }
+.ds-side ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.ds-side ol ol { margin: 2px 0 8px 12px; padding-left: 10px; border-left: 1px solid var(--line); }
+.ds-side a { display: block; padding: 6px 10px; border-radius: var(--r-pill); color: var(--fg-3); font-size: 14px; text-decoration: none; transition: background .2s, color .2s; }
+.ds-side ol ol a { padding-block: 4px; font-size: var(--t-small); color: var(--muted); }
+.ds-side a:hover, .ds-side a:focus-visible { background: var(--hover); color: var(--fg); }
+.ds-side a[aria-current="true"] { background: var(--active); color: var(--fg); font-weight: 500; }
+.ds-side ol ol a[aria-current="true"] { background: none; color: var(--fg); }
+/* Accordions: one level open at a time (details[name]); the level in view opens by itself while scrolling */
+.ds-side summary { display: flex; align-items: center; list-style: none; cursor: pointer; border-radius: var(--r-pill); }
+.ds-side summary::-webkit-details-marker { display: none; }
+.ds-side summary a { flex: 1; }
+.ds-side summary i { display: grid; place-items: center; width: 28px; height: 28px; flex: none; border-radius: 50%; color: var(--muted); transition: background .2s, color .2s; }
+.ds-side summary:hover i { background: var(--hover); color: var(--fg); }
+.ds-side summary svg { width: 14px; height: 14px; transition: transform .2s var(--ease); }
+.ds-side details[open] summary svg { transform: rotate(90deg); }
+.ds-side details ol { animation: ds-open .2s var(--ease); }
+@keyframes ds-open { from { opacity: 0; transform: translateY(-4px); } }
+.ds-side-title { margin: 0 0 12px 10px; font-size: var(--t-eyebrow); font-weight: 500; color: var(--muted); }
+.ds-group, .label { scroll-margin-top: 96px; }
+.ds-main > .ds-sec:first-child { padding-top: 72px; }
+/* Below 900px the summary sits above the content, its accordions closed until opened */
+@media (max-width: 900px) {
+  .ds-layout { grid-template-columns: 1fr; gap: 0; }
+  .ds-side { position: static; max-height: none; padding: 24px 0 16px; border-bottom: 1px solid var(--line); }
+  .ds-main > .ds-sec:first-child { padding-top: 40px; }
+}
+
+/* Colour swatches */
+.ds-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 12px; }
+.ds-sw { all: unset; box-sizing: border-box; display: grid; align-content: start; border-radius: var(--r-sm); overflow: hidden; box-shadow: var(--sh-ring); background: var(--raised); cursor: copy; transition: transform .2s var(--ease), box-shadow .2s; }
+.ds-sw:hover, .ds-sw:focus-visible { transform: translateY(-2px); box-shadow: 0 0 0 1px var(--line-strong), var(--sh-float); }
+.ds-sw i { height: 72px; background: var(--c); box-shadow: inset 0 -1px 0 var(--line); }
+.ds-sw.on-dot i { background: radial-gradient(rgba(15,15,18,.09) 1px, transparent 1px) 0 0 / 12px 12px, var(--c); }
+.ds-sw span { display: grid; gap: 1px; padding: 10px 12px 12px; }
+.ds-sw b { font-family: var(--mono); font-size: 12.5px; font-weight: 500; }
+.ds-sw small { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ds-sw em { font-style: normal; font-size: var(--t-small); color: var(--fg-2); line-height: 1.4; margin-top: 4px; }
+.ds-sw.copied small { color: var(--ok); }
+
+/* Type specimens */
+.ds-type { border-top: 1px solid var(--line); }
+.ds-type > div { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid var(--line); }
+.ds-spec { display: grid; gap: 2px; font-size: var(--t-small); color: var(--muted); }
+.ds-spec b { color: var(--fg); font-weight: 500; font-size: 14px; }
+.ds-type p { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+
+/* Radii and shadows */
+.ds-boxes { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
+.ds-box { display: grid; gap: 10px; align-content: start; }
+.ds-box i { aspect-ratio: 4 / 3; background: var(--soft); border: 1px solid var(--line); }
+.ds-box.shadow { background: var(--canvas); border-radius: var(--r-md); padding: 12px 12px 14px; }
+.ds-box.shadow i { background: var(--raised); border: 0; border-radius: var(--r-md); margin: 8px; }
+.ds-box span { display: grid; gap: 1px; font-size: var(--t-small); color: var(--muted); }
+.ds-box b { font-family: var(--mono); font-size: 12.5px; font-weight: 500; color: var(--fg); }
+
+/* Specimen frames: the component on its stage, its name, classes and where the site uses it */
+.ds-comps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.ds-comp { border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; display: grid; grid-template-rows: 1fr auto; min-width: 0; }
+.ds-comp.wide { grid-column: 1 / -1; }
+.ds-stage { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 32px 24px; min-height: 120px; min-width: 0; }
+.ds-stage.canvas { background: var(--canvas); }
+.ds-stage.col { flex-direction: column; align-items: stretch; }
+.ds-stage.dark { background: #04050c; }
+.ds-stage.flush { padding: 0; }
+.ds-cap { padding: 12px 16px 14px; border-top: 1px solid var(--line); font-size: var(--t-small); line-height: 1.5; color: var(--muted); }
+.ds-cap b { display: block; margin-bottom: 2px; color: var(--fg); font-weight: 500; font-size: 14px; }
+.ds-cap i { font-style: normal; color: var(--fg-2); }
+/* Specimens taken out of their page context */
+.ds-stage .top { position: static; padding: 0; width: 100%; }
+.ds-stage .top::before { display: none; }
+.ds-stage .label, .ds-stage .cs-back, .ds-stage .copy-btn, .ds-stage .cert, .ds-stage .tags { margin: 0; }
+.ds-stage .cs-quote, .ds-stage .cs-fig { margin: 0 !important; }
+.ds-stage .card { width: 100%; cursor: default; }
+.ds-stage .card:hover { transform: none; }
+.ds-stage .agent .visual { padding-bottom: 40px; }  /* the space the ASCII face takes on the home page */
+.ds-stage .cs-next { margin: 0; width: 100%; }
+.ds-stage .macbook { width: 86%; margin: 0 auto 0 0; }
+.ds-stage .iphone { right: 32px; bottom: 32px; width: 18%; min-width: 0; }
+@media (max-width: 760px) { .ds-stage .iphone { right: 12px; bottom: 16px; width: 26%; border-radius: 16px; padding: 3px; } .ds-stage .iphone .scr { border-radius: 13px; } }
+.ds-stage .agd-field { width: min(640px, 100%); cursor: default; }
+.ds-contact .contact { min-height: 0; padding: 0; border-top: 0; gap: 20px; }
+.ds-footer { padding-block: 32px 8px; overflow: hidden; }
+.ds-footer footer { width: 100%; padding-block: 24px 16px; }
+.ds-chat { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.ds-swatch-ink { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Templates: each page's grid as a wireframe, drawn to scale (1 unit = 1px of a 1440px screen, 390px on the phone),
+   heights shortened. Columns in blue, margins and gutters in pink, measures on top; the toggle hides them */
+.ds-tpl-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; margin: 0 0 28px; font-size: var(--t-small); color: var(--muted); }
+.ds-key { display: inline-flex; align-items: center; gap: 6px; }
+.ds-key i { width: 12px; height: 12px; border-radius: 3px; background: var(--wf-col); outline: 1px dashed var(--wf-col-line); outline-offset: -1px; }
+.ds-key.gut i { background: var(--wf-gut); outline: 0; }
+.ds-tpl { margin-top: 48px; }
+.ds-tpl-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 14px; scroll-margin-top: 96px; }
+.ds-tpl-head h3 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.015em; }
+.ds-tpl-head .tool { margin-right: -12px; }
+.ds-tpl-views { display: grid; grid-template-columns: minmax(0, 1fr) 22%; gap: 16px; align-items: start; }
+.ds-tpl-views figure { margin: 0; display: grid; gap: 8px; min-width: 0; }
+.ds-tpl-views figcaption { font-size: 12.5px; color: var(--muted); text-align: center; }
+.ds-specs { margin: 18px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px 28px; padding-top: 18px; border-top: 1px solid var(--line); }
+.ds-specs div { display: grid; gap: 3px; align-content: start; }
+.ds-specs dt { font-size: var(--t-small); font-weight: 500; color: var(--muted); }
+.ds-specs dd { margin: 0; font-size: 14px; line-height: 1.5; color: var(--fg-2); }
+.ds-specs code { color: var(--fg); }
+
+.ds-sec { --wf-col: rgba(76,184,255,.16); --wf-col-line: rgba(30,150,235,.75); --wf-gut: rgba(255,92,168,.14); }
+.wf { position: relative; container-type: inline-size; border-radius: var(--r-sm); box-shadow: var(--sh-ring), var(--sh-float); background: #fff; overflow: hidden; }
+.wf.canvas { background: var(--canvas); }
+.wf-in { --px: calc(100cqw / 1440); position: relative; display: flex; flex-direction: column; font-size: max(10px, calc(13 * var(--px))); line-height: 1.2; color: var(--fg-3); }
+.wf.phone .wf-in { --px: calc(100cqw / 390); font-size: max(9px, calc(11 * var(--px))); }
+.wf-wrap { width: min(100%, calc(1200 * var(--px))); margin-inline: auto; padding-inline: calc(32 * var(--px)); position: relative; }
+.wf.phone .wf-wrap { padding-inline: calc(16 * var(--px)); }
+.wf-row { display: flex; align-items: center; justify-content: space-between; gap: calc(12 * var(--px)); }
+.wf-stack { display: flex; flex-direction: column; gap: calc(var(--g, 12) * var(--px)); }
+.wf-grid { display: grid; gap: calc(var(--g, 20) * var(--px)); }
+.wb { background: #e9e9ee; border-radius: calc(var(--r, 14) * var(--px)); min-height: calc(var(--h, 40) * var(--px)); }
+.wb.dark { background: #2a2a31; }
+.wb.ink { background: var(--ink); }
+.wb.white { background: #fff; box-shadow: var(--sh-ring); }
+.wl { height: calc(var(--h, 10) * var(--px)); width: var(--w, 100%); background: #d9d9e0; border-radius: 99px; }
+.wl.big { --h: 44; background: #cfcfd6; }
+.wl.mid { --h: 22; background: #cfcfd6; }
+.wl.muted { background: #e6e6eb; }
+.wf-pill { display: inline-block; height: calc(var(--h, 26) * var(--px)); width: calc(var(--w, 80) * var(--px)); border-radius: 99px; background: var(--bgp, #e9e9ee); }
+.wf-pill.ink { --bgp: var(--ink); }
+.wf-line { height: 1px; background: var(--line); }
+.wf-glass { background: rgba(255,255,255,.75); box-shadow: inset 0 -1px 0 var(--line); }
+/* Overlay: columns, gutters, measures */
+.ds-sec.cols .wc { background-image: linear-gradient(var(--wf-col), var(--wf-col)); outline: 1px dashed var(--wf-col-line); outline-offset: -1px; }
+.ds-sec.cols .wf-grid, .ds-sec.cols .wf-stack.gut { background: var(--wf-gut); }
+.ds-sec.cols .wf-grid > .wc { background-color: var(--wf-bg, #fff); }
+.wf.canvas { --wf-bg: var(--canvas); }
+.ds-sec.cols .wf-wrap.gut { background: linear-gradient(90deg, var(--wf-gut) 0 calc(32 * var(--px)), transparent 0 calc(100% - 32 * var(--px)), var(--wf-gut) 0); }
+.ds-sec.cols .wf.phone .wf-wrap.gut { background: linear-gradient(90deg, var(--wf-gut) 0 calc(16 * var(--px)), transparent 0 calc(100% - 16 * var(--px)), var(--wf-gut) 0); }
+.wc { position: relative; min-width: 0; }
+.wc[data-col]::before { content: attr(data-col); position: absolute; z-index: 2; top: calc(4 * var(--px)); left: calc(4 * var(--px)); padding: calc(2 * var(--px)) calc(6 * var(--px)); border-radius: 99px; background: rgb(30,150,235); color: #fff; font-weight: 500; white-space: nowrap; opacity: 0; transition: opacity .2s; pointer-events: none; }
+.ds-sec.cols .wc[data-col]::before { opacity: 1; }
+.wf-dim { position: relative; height: calc(22 * var(--px)); margin-inline: auto; opacity: 0; transition: opacity .2s; }
+.ds-sec.cols .wf-dim { opacity: 1; }
+.wf-dim::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px solid rgb(255,92,168); }
+.wf-dim::after { content: ""; position: absolute; inset: 25% 0; border-inline: 1px solid rgb(255,92,168); }
+.wf-dim span { position: relative; z-index: 1; display: table; margin: 0 auto; padding: 0 calc(6 * var(--px)); background: #fff; color: rgb(214,40,120); font-weight: 500; line-height: calc(22 * var(--px)); white-space: nowrap; }
+.wf.canvas .wf-dim span { background: var(--canvas); }
+.wf-dots { background-image: radial-gradient(rgba(15,15,18,.09) 1px, transparent 1px); background-size: calc(18 * var(--px)) calc(18 * var(--px)); }
+@media (max-width: 760px) { .ds-tpl-views { grid-template-columns: 1fr; } .ds-tpl-views figure:last-child { width: 56%; margin-inline: auto; } }
+
+/* Page-specific modules: cards linking to the module on its page */
+.ds-specs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.ds-spec-card { display: grid; gap: 6px; align-content: start; padding: 18px 20px; border-radius: var(--r-md); box-shadow: var(--sh-ring); text-decoration: none; color: inherit; transition: box-shadow .2s, transform .2s var(--ease); }
+.ds-spec-card:hover, .ds-spec-card:focus-visible { box-shadow: 0 0 0 1px var(--line-strong), var(--sh-float); transform: translateY(-2px); }
+.ds-spec-card b { display: flex; align-items: center; gap: 6px; font-size: 15.5px; font-weight: 600; letter-spacing: -0.01em; }
+.ds-spec-card b svg { width: 11px; height: 11px; color: var(--muted); }
+.ds-spec-card span { font-size: 14px; line-height: 1.5; color: var(--fg-2); }
+.ds-spec-card .ds-spec-where { font-size: var(--t-small); font-weight: 500; color: var(--muted); }
+.ds-spec-card code { font-size: 12px; color: var(--muted); }
+
+/* Rules */
+.ds-rules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.ds-rule { border-radius: var(--r-md); padding: 20px; background: var(--soft); }
+.ds-rule h4 { margin: 0 0 6px; font-size: 15.5px; letter-spacing: -0.01em; }
+.ds-rule p { margin: 0; color: var(--fg-2); font-size: 14.5px; line-height: 1.55; }
+
+@media (max-width: 760px) {
+  .ds-type > div { grid-template-columns: 1fr; gap: 8px; }
+  .ds-comps, .ds-rules { grid-template-columns: 1fr; }
+  .ds-stage { padding: 24px 16px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="index.html"><span>Olivier</span><span>Tousche</span></a>
+    <nav>
+      <a href="index.html#projets">Projets</a>
+      <a href="index.html#about">À propos</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="cs-head" style="padding-top: 56px">
+    <h1>Design system</h1>
+    <p class="cs-lede">Tous les composants du portfolio et de l’agent, classés de l’atome à la page. Chaque exemple est le vrai composant, lu dans les fichiers du site.</p>
+    <div class="cs-metarow">
+      <dl class="cs-meta">
+        <div><dt>Fondations</dt><dd><code>css/tokens.css</code></dd></div>
+        <div><dt>Atomes et molécules</dt><dd><code>css/components.css</code></dd></div>
+        <div><dt>Organismes publics</dt><dd><code>css/site.css</code></dd></div>
+        <div><dt>Référence</dt><dd>Pages publiques</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <div class="ds-layout">
+  <aside class="ds-side" aria-label="Sommaire">
+    <p class="ds-side-title">Sommaire</p>
+    <ol>
+      <li><details name="ds-nav"><summary><a href="#fondations">Fondations</a><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg></i></summary>
+        <ol>
+          <li><a href="#couleurs">Couleurs</a></li>
+          <li><a href="#typo">Typographie</a></li>
+          <li><a href="#rayons">Rayons</a></li>
+          <li><a href="#ombres">Ombres</a></li>
+        </ol>
+      </details></li>
+      <li><details name="ds-nav"><summary><a href="#atomes">Atomes</a><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg></i></summary>
+        <ol>
+          <li><a href="#boutons">Boutons</a></li>
+          <li><a href="#pilules">Pilules et chips</a></li>
+          <li><a href="#petits">Badges, picto, langue</a></li>
+          <li><a href="#separateurs">Séparateurs</a></li>
+        </ol>
+      </details></li>
+      <li><details name="ds-nav"><summary><a href="#molecules">Molécules</a><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg></i></summary>
+        <ol>
+          <li><a href="#cartes-mol">Cartes</a></li>
+          <li><a href="#conversation">Conversation</a></li>
+          <li><a href="#contenus">Contenus</a></li>
+          <li><a href="#etude">Étude de cas</a></li>
+        </ol>
+      </details></li>
+      <li><details name="ds-nav"><summary><a href="#organismes">Organismes</a><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg></i></summary>
+        <ol>
+          <li><a href="#navigation">Navigation</a></li>
+          <li><a href="#entete">En-tête d’étude</a></li>
+          <li><a href="#cartes">Cartes projet</a></li>
+          <li><a href="#appareils">Appareils</a></li>
+          <li><a href="#dock">Dock de l’agent</a></li>
+          <li><a href="#contact-specimen">Contact et pied de page</a></li>
+        </ol>
+      </details></li>
+      <li><a href="#specifiques">Spécifiques</a></li>
+      <li><details name="ds-nav"><summary><a href="#gabarits">Gabarits</a><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg></i></summary>
+        <ol>
+          <li><a href="#tpl-accueil">Accueil</a></li>
+          <li><a href="#tpl-cas">Étude de cas</a></li>
+          <li><a href="#tpl-agent">Agent</a></li>
+          <li><a href="#tpl-catalogue">Catalogue</a></li>
+        </ol>
+      </details></li>
+      <li><a href="#regles">Règles</a></li>
+    </ol>
+  </aside>
+  <div class="ds-main">
+
+  <!-- ── Foundations ── -->
+  <section class="ds-sec">
+    <div class="label" id="fondations"><span>Fondations</span><span><code>css/tokens.css</code></span></div>
+    <p class="ds-intro">Les valeurs de base. Tout le reste en dépend : une couleur, un rayon ou une ombre de l’interface vient d’ici. Cliquez une couleur pour copier son token.</p>
+    <div class="ds-group" id="couleurs"><h3>Couleurs</h3>
+      <p class="ds-level">Surfaces</p><div class="ds-swatches" data-tokens="--bg:Fond des pages publiques|--soft:Tuiles, chips, survols discrets|--canvas:Fond de l’agent, sous la trame de points|--raised:Cartes et bulles posées sur le gris"></div>
+      <p class="ds-level" style="margin-top: 20px">Texte</p><div class="ds-swatches" data-tokens="--fg:Titres, texte principal|--fg-2:Texte de lecture, descriptions|--fg-3:Contrôles discrets : navigation, outils|--muted:Méta, légendes, indications|--faint:Séparateurs"></div>
+      <p class="ds-level" style="margin-top: 20px">Remplis</p><div class="ds-swatches" data-tokens="--ink:Un seul noir : boutons primaires, bulles du visiteur, suggestions, envoi|--ink-hover:Survol des surfaces noires|--pill-fg:Texte sur noir"></div>
+      <p class="ds-level" style="margin-top: 20px">Traits et états</p><div class="ds-swatches" data-tokens="--line:Traits et contours, translucide|--line-strong:Contour au survol|--hover:Fond au survol|--active:Fond d’un bouton enfoncé"></div>
+      <p class="ds-level" style="margin-top: 20px">Couleur</p><div class="ds-swatches" data-tokens="--accent:Accent : jauge, non-lu, sélection|--ok:Statut en ligne, succès|--warn:Alerte|--danger:Erreur, refus"></div>
+    </div>
+    <div class="ds-group" id="typo"><h3>Typographie</h3>
+      <p class="ds-intro" style="margin-bottom: 16px">Geist partout. Labels en casse de phrase, graisse 500, jamais en mono majuscules. Geist Mono est réservé aux données techniques.</p>
+      <div class="ds-type">
+        <div><span class="ds-spec"><b>Display</b>clamp(48–112px) · 600 · −0,045em</span><p style="font-size: clamp(48px, 6.4vw, 96px); line-height: 1; letter-spacing: -0.045em; font-weight: 600"><span style="color: var(--muted)">Product</span><br>Designer.</p></div>
+        <div><span class="ds-spec"><b>Titre d’étude de cas</b>clamp(34–60px) · 600 · −0,04em</span><p style="font-size: clamp(34px, 4.6vw, 60px); line-height: 1.04; letter-spacing: -0.04em; font-weight: 600">Concevoir un écosystème</p></div>
+        <div><span class="ds-spec"><b>Titre de section</b>clamp(28–40px) · 600 · −0,03em</span><p class="cs-h2" style="margin: 0 !important">Le problème de départ</p></div>
+        <div><span class="ds-spec"><b>Titre de carte</b>clamp(24–32px) · 600 · −0,025em</span><p style="font-size: clamp(24px, 2.6vw, 32px); line-height: 1.12; letter-spacing: -0.025em; font-weight: 600">Signer tout ce qu’on livre</p></div>
+        <div><span class="ds-spec"><b>Sous-titre</b>22px · 600 · −0,02em</span><p class="cs-h3">Trois temps pour un lancement</p></div>
+        <div><span class="ds-spec"><b>Chapô</b>20px · <code>--muted</code></span><p class="cs-lede" style="margin: 0">Du constat de marché au produit testable.</p></div>
+        <div><span class="ds-spec"><b>Texte de lecture</b>18px / 1,7 · <code>--fg-2</code></span><div class="cs-text"><p>Je prototype et je livre mes propres produits : <strong>moins de transferts</strong>, et une intention qui ne se dilue plus.</p></div></div>
+        <div><span class="ds-spec"><b>Corps</b>16px / 1,5</span><p>Le texte courant de l’interface, des cartes et des réponses de l’agent.</p></div>
+        <div><span class="ds-spec"><b>Label</b>14px · 500 · <code>--t-eyebrow</code></span><p class="cs-eye">Rôle · Résumé · Contact</p></div>
+        <div><span class="ds-spec"><b>Légende</b>13,5px · <code>--t-caption</code></span><p class="cs-note" style="margin: 0 !important">La page How to play, version desktop.</p></div>
+        <div><span class="ds-spec"><b>Petit</b>13px · <code>--t-small</code></span><p style="font-size: var(--t-small); color: var(--muted)">10:12 · FR · 0,019 ¢</p></div>
+        <div><span class="ds-spec"><b>Mono</b>Geist Mono · données</span><p style="font-family: var(--mono); font-size: 13px">--ink: #111113</p></div>
+      </div>
+    </div>
+    <div class="ds-group" id="rayons"><h3>Rayons</h3>
+      <div class="ds-boxes">
+        <div class="ds-box"><i style="border-radius: var(--radius)"></i><span><b>--radius</b>28px · panneaux pleine largeur</span></div>
+        <div class="ds-box"><i style="border-radius: var(--r-lg)"></i><span><b>--r-lg</b>24px · blocs</span></div>
+        <div class="ds-box"><i style="border-radius: var(--r-md)"></i><span><b>--r-md</b>18px · cartes, figures</span></div>
+        <div class="ds-box"><i style="border-radius: var(--r-sm)"></i><span><b>--r-sm</b>14px · tuiles</span></div>
+        <div class="ds-box"><i style="border-radius: var(--r-xs)"></i><span><b>--r-xs</b>10px · logos, vignettes</span></div>
+        <div class="ds-box"><i style="border-radius: var(--r-pill); aspect-ratio: 3 / 1"></i><span><b>--r-pill</b>boutons, chips</span></div>
+      </div>
+    </div>
+    <div class="ds-group" id="ombres"><h3>Ombres</h3>
+      <div class="ds-boxes">
+        <div class="ds-box shadow"><i style="box-shadow: var(--sh-ring)"></i><span><b>--sh-ring</b>Contour 1px</span></div>
+        <div class="ds-box shadow"><i style="box-shadow: var(--sh-float)"></i><span><b>--sh-float</b>Bulle, carte posée</span></div>
+        <div class="ds-box shadow"><i style="box-shadow: var(--sh-overlay)"></i><span><b>--sh-overlay</b>Feuille, dialogue</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Atoms ── -->
+  <section class="ds-sec">
+    <div class="label" id="atomes"><span>Atomes</span><span>Indivisibles</span></div>
+    <p class="ds-intro">Les plus petites pièces : un bouton, une pilule, un badge, un trait. Elles ne se décomposent plus et se réutilisent partout.</p>
+    <div class="ds-group" id="boutons"><h3>Boutons</h3>
+      <div class="ds-comps">
+        <div class="ds-comp"><div class="ds-stage"><a class="btn primary" href="#boutons">Lire le use case</a><a class="btn" href="#boutons">Site <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg></a></div><div class="ds-cap"><b>Bouton</b><code>.btn.primary</code> · <code>.btn</code> <i>— cartes projet, étude suivante</i></div></div>
+        <div class="ds-comp"><div class="ds-stage dark"><span style="--c-pill: #fc4c02; --c-pill-fg: #fff; --c-ghost: rgba(255,255,255,.1); --c-fg: #fff; display: flex; gap: 8px"><a class="btn primary" href="#boutons">Lire le use case</a><a class="btn" href="#boutons">Go MoonBound</a></span></div><div class="ds-cap"><b>Bouton dans un panneau</b>Prend les variables <code>--c-*</code> du produit (ici Go MoonBound)</div></div>
+        <div class="ds-comp"><div class="ds-stage"><a class="cs-visit" href="#boutons">Sklip <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg></a></div><div class="ds-cap"><b>Action principale</b><code>.cs-visit</code> <i>— en-tête d’étude de cas</i></div></div>
+        <div class="ds-comp"><div class="ds-stage"><button class="copy-btn" type="button">Copier l’adresse</button></div><div class="ds-cap"><b>Bouton secondaire</b><code>.copy-btn</code> <i>— bloc Contact</i></div></div>
+      </div>
+    </div>
+    <div class="ds-group" id="pilules"><h3>Pilules et chips</h3>
+      <div class="ds-comps">
+        <div class="ds-comp"><div class="ds-stage"><span class="tool">Repos</span><span class="tool" style="background: var(--hover); color: var(--fg)">Survol</span><span class="tool" aria-pressed="true">Enfoncé</span></div><div class="ds-cap"><b>Pilule discrète</b><code>.tool</code> <i>— barre de l’agent ; même dessin que les liens de navigation et le lien retour</i></div></div>
+        <div class="ds-comp"><div class="ds-stage"><a class="cs-back" href="#pilules">← Tous les projets</a></div><div class="ds-cap"><b>Lien retour</b><code>.cs-back</code> <i>— haut des études de cas</i></div></div>
+        <div class="ds-comp wide"><div class="ds-stage canvas"><button class="chip" type="button">Ses projets ?</button><button class="chip" type="button">Comment travaille-t-il ?</button></div><div class="ds-cap"><b>Chip de suggestion</b><code>.chip</code> <i>— sous les réponses de l’agent</i></div></div>
+      </div>
+    </div>
+    <div class="ds-group" id="petits"><h3>Badges, picto, langue</h3>
+      <div class="ds-comps">
+        <div class="ds-comp"><div class="ds-stage"><div class="badges"><span>User research</span><span>Prototyping</span><span>Product vision</span><span>Vibe coding</span></div></div><div class="ds-cap"><b>Badges</b><code>.badges</code> · <code>.badge</code> <i>— hero et À propos de l’accueil, sources de la méthode Sklip</i></div></div>
+        <div class="ds-comp"><div class="ds-stage"><button class="ipic" type="button" aria-label="Informations"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6.25"/><path d="M8 7.2v3.6M8 5.1v.1"/></svg></button><span class="lang-switch" role="group" aria-label="Langue"><button type="button" aria-pressed="true">FR</button><i aria-hidden="true">/</i><button type="button" aria-pressed="false">EN</button></span></div><div class="ds-cap"><b>Picto « i », sélecteur de langue</b><code>.ipic</code> <i>— dans les réponses de l’agent</i> · <code>.lang-switch</code> <i>— pied de page</i></div></div>
+      </div>
+    </div>
+    <div class="ds-group" id="separateurs"><h3>Séparateurs</h3>
+      <div class="ds-comps">
+        <div class="ds-comp"><div class="ds-stage col"><p style="margin: 0; color: var(--fg-2)">Fin d’une partie.</p><hr class="cs-hr" style="margin: 0 !important; width: 100%"><p style="margin: 0; color: var(--fg-2)">Début de la suivante.</p></div><div class="ds-cap"><b>Trait</b><code>.cs-hr</code> · 1 px <code>--line</code> <i>— entre deux parties d’une étude de cas</i></div></div>
+        <div class="ds-comp"><div class="ds-stage col"><div class="label"><span>Projets</span></div></div><div class="ds-cap"><b>Label sur un trait</b><code>.label</code> <i>— ouvre chaque section de l’accueil</i></div></div>
+        <div class="ds-comp wide"><div class="ds-stage col ds-footer"><footer><span>Pleine largeur, d’un bord à l’autre de l’écran</span><span></span></footer></div><div class="ds-cap"><b>Trait pleine largeur</b><code>footer::before</code> <i>— au-dessus du pied de page, dépasse le conteneur jusqu’aux bords de l’écran</i></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Molecules ── -->
+  <section class="ds-sec">
+    <div class="label" id="molecules"><span>Molécules</span><span>Quelques atomes assemblés</span></div>
+    <p class="ds-intro">Des groupes simples qui forment une unité : une bulle et son texte, une carte, une figure et sa légende.</p>
+    <div class="ds-group" id="cartes-mol"><h3>Cartes</h3>
+      <div class="ds-comps">
+        <div class="ds-comp wide"><div class="ds-stage"><a class="cert" href="#contenus"><span class="cert-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17.304 3.541h-3.672l6.696 16.918H24Zm-10.608 0L0 20.459h3.744l1.37-3.553h7.005l1.369 3.553h3.744L10.536 3.541Zm-.371 10.223 2.291-5.946 2.292 5.946Z"/></svg></span><span class="cert-txt"><span>Certification Anthropic</span><b>AI Fluency: Framework &amp; Foundations</b></span><svg class="cert-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></div><div class="ds-cap"><b>Certification</b><code>.cert</code> <i>— À propos de l’accueil</i></div></div>
+        <div class="ds-comp wide"><div class="ds-stage canvas"><div class="panel" style="width: 100%"><h4 style="margin: 0 0 8px; font-size: 15.5px">Une seule source de vérité</h4><p style="margin: 0; color: var(--fg-2); font-size: 14px">L’agent ne connaît qu’un profil rédigé par Olivier. Ce qui n’y figure pas, il dit qu’il ne le sait pas.</p></div></div><div class="ds-cap"><b>Panneau</b><code>.panel</code> <i>— Informations de l’agent (à fond blanc, sur le gris de l’agent)</i></div></div>
+        <div class="ds-comp"><div class="ds-stage canvas"><a class="case" href="sklip.html"><img src="img/cases/sklip/hero.jpg" alt=""><span>Sklip<small>Étude de cas</small></span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg></a></div><div class="ds-cap"><b>Carte d’étude</b><code>.case</code> <i>— proposée par l’agent sous une réponse</i></div></div>
+        <div class="ds-comp"><div class="ds-stage"><div class="tiles" style="--n: 2; width: 100%"><div><b>669</b><span>voyageurs</span></div><div><b>72 %</b><span>actifs ce mois-ci</span></div></div></div><div class="ds-cap"><b>Tuile chiffrée</b><code>.tiles</code> <i>— voir Contenus pour la grille complète</i></div></div>
+      </div>
+    </div>
+    <div class="ds-group" id="conversation"><h3>Conversation</h3>
+      <div class="ds-comps">
+        <div class="ds-comp wide"><div class="ds-stage canvas col"><div class="ds-chat"><div class="msg bot"><p>Olivier est <b>Senior Product Designer</b>. Aujourd’hui il conçoit <i>et</i> construit :</p><ul><li>Go MoonBound</li><li>Sklip</li></ul></div><div class="msg me">Il cherche quoi en ce moment ?</div><div class="msg bot"><p>Pour en savoir plus sur cet agent, cliquez sur <span class="ipic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6.25"/><path d="M8 7.2v3.6M8 5.1v.1"/></svg></span>.</p></div></div></div><div class="ds-cap"><b>Bulles</b><code>.msg.bot</code> · <code>.msg.me</code> <i>— page Agent : listes, gras, italique, picto</i></div></div>
+        <div class="ds-comp"><div class="ds-stage canvas col"><div class="msg bot" style="align-self: flex-start"><span class="typing" aria-label="…"><i></i><i></i><i></i></span></div></div><div class="ds-cap"><b>Saisie en cours</b><code>.typing</code> <i>— dans une bulle, le temps que la réponse arrive</i></div></div>
+        <div class="ds-comp"><div class="ds-stage canvas col"><div class="acts"><a class="act primary" href="#conversation">Écrire à Olivier</a><a class="act" href="#conversation">LinkedIn</a><button class="act fb" type="button" aria-label="Utile" aria-pressed="true">👍</button><button class="act fb" type="button" aria-label="Pas utile" disabled>👎</button><span class="thanks">Merci !</span></div></div><div class="ds-cap"><b>Actions et avis</b><code>.acts</code> · <code>.act</code> · <code>.fb</code> <i>— sous une réponse de l’agent</i></div></div>
+        <div class="ds-comp wide"><div class="ds-stage canvas"><div class="flow" style="margin: 0; padding: 0; display: flex; align-items: center; gap: 6px; font-size: 13px; flex-wrap: wrap"><span>Votre question</span><i>→</i><span>Contrôles et limites</span><i>→</i><span>Claude Haiku + profil</span><i>→</i><span>Réponse</span><i>→</i><span class="loop">Suggestions ↺</span></div></div><div class="ds-cap"><b>Parcours</b><code>.flow</code> <i>— Informations de l’agent : comment une question circule</i></div></div>
+      </div>
+    </div>
+    <div class="ds-group" id="contenus"><h3>Contenus</h3>
+      <div class="ds-comps">
+        <div class="ds-comp wide"><div class="ds-stage col"><div class="tiles"><div><b>7,8 M</b><span>cartes scannées</span></div><div><b>6,2 M€</b><span>sur Kickstarter</span></div><div><b>15+</b><span>pays</span></div></div></div><div class="ds-cap"><b>Tuiles chiffrées</b><code>.tiles</code> · colonnes <code>--n</code>, fond <code>--tile-bg</code>, <code>.stack</code> en colonne sur mobile <i>— Altered, Go MoonBound, Sklip</i></div></div>
+        <div class="ds-comp"><div class="ds-stage col"><div class="cs-text"><ul class="cs-list" style="font-size: 16px"><li><strong>Cadrer</strong> le besoin avec les joueurs</li><li><strong>Concevoir</strong> le parcours</li><li><strong>Tester</strong> avant de livrer</li></ul></div></div><div class="ds-cap"><b>Liste</b><code>.cs-list</code> <i>— études de cas, puces grises</i></div></div>
+        <div class="ds-comp"><div class="ds-stage col"><blockquote class="cs-quote"><p>Une intention qui ne se dilue plus entre le design et le code.</p></blockquote></div><div class="ds-cap"><b>Citation</b><code>.cs-quote</code></div></div>
+        <div class="ds-comp wide"><div class="ds-stage col"><figure class="cs-fig" style="max-width: 560px; margin: 0 auto !important"><span class="zoom" style="cursor: default"><img src="img/cases/equinox-altered/howtoplay-desktop.jpg" alt=""></span><figcaption>La page How to play, version desktop.</figcaption></figure></div><div class="ds-cap"><b>Figure et légende</b><code>.cs-fig</code> <i>— un clic ouvre l’image en grand (<code>.lightbox</code>) sur les études de cas</i></div></div>
+        <div class="ds-comp wide"><div class="ds-stage col"><details class="cs-log" open><summary>Historique des mises à jour<i aria-hidden="true"></i></summary><ol><li><div><b>v1.1</b><span>avril 2026</span></div><p>Classement et partage.</p></li><li><div><b>v1.0</b><span>mars 2026</span></div><p>Lancement : scène 3D Terre / Lune.</p></li></ol></details></div><div class="ds-cap"><b>Journal repliable</b><code>.cs-log</code> <i>— Go MoonBound</i></div></div>
+        <div class="ds-comp wide"><div class="ds-stage col"><aside class="cs-aside" style="margin: 0 !important"><p class="cs-aside-eye">Coulisses</p><h2 class="cs-h3">Méthode : le framework BMAD</h2><div class="cs-text"><p>Un encadré gris pour une histoire à côté du récit principal.</p></div></aside></div><div class="ds-cap"><b>Encadré</b><code>.cs-aside</code> <i>— Sklip</i></div></div>
+      </div>
+    </div>
+    <div class="ds-group" id="etude"><h3>Étude de cas</h3>
+      <div class="ds-comps">
+        <div class="ds-comp wide"><div class="ds-stage col"><dl class="cs-meta"><div><dt>Rôle</dt><dd>Senior Product Designer</dd></div><div><dt>Entreprise</dt><dd>Equinox</dd></div><div><dt>Période</dt><dd>2021–2025</dd></div></dl></div><div class="ds-cap"><b>Méta</b><code>.cs-meta</code> <i>— en-tête des études de cas</i></div></div>
+        <div class="ds-comp wide"><div class="ds-stage col"><section class="cs-tldr"><div class="cs-eye">En bref</div><ol class="cs-keys"><li><b>Un écosystème</b> pensé en trois temps.</li><li><b>Un paiement</b> conforme dans 15 pays.</li></ol></section></div><div class="ds-cap"><b>Résumé</b><code>.cs-tldr</code> · <code>.cs-keys</code> <i>— Altered, Go MoonBound</i></div></div>
+        <div class="ds-comp"><div class="ds-stage col"><p class="cs-step" style="margin: 0 !important">Temps 1 · Cadrer</p><dl class="cs-roles"><div><dt>Mon rôle</dt><dd>Cadrer, concevoir, tester.</dd></div></dl></div><div class="ds-cap"><b>Étape, tableau de rôles</b><code>.cs-step</code> · <code>.cs-roles</code></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Organisms ── -->
+  <section class="ds-sec">
+    <div class="label" id="organismes"><span>Organismes</span><span>Sections complètes</span></div>
+    <p class="ds-intro">Des blocs autonomes qui portent une fonction : la barre du haut, une carte projet, le dock de l’agent.</p>
+    <div class="ds-group" id="navigation"><h3>Navigation</h3>
+      <div class="ds-comps">
+        <div class="ds-comp wide"><div class="ds-stage col"><header class="top"><a class="brand" href="#navigation"><span>Olivier</span><span>Tousche</span></a><nav><a href="#navigation">Projets</a><a href="#navigation">À propos</a><a href="#navigation">Contact</a></nav></header></div><div class="ds-cap"><b>Barre du haut</b><code>.top</code> · verre <code>--glass</code>, collante <i>— toutes les pages publiques ; c’est elle, en haut de cette page</i></div></div>
+      </div>
+    </div>
+    <div class="ds-group" id="entete"><h3>En-tête d’étude de cas</h3>
+      <div class="ds-comps">
+        <div class="ds-comp wide"><div class="ds-stage col">
+          <a class="cs-back" href="#entete" style="align-self: flex-start">← Tous les projets</a>
+          <header class="cs-head"><div class="cs-kicker"><img src="img/cases/sklip/logo.png" alt="">Sklip</div><h1 style="font-size: clamp(28px, 3.6vw, 44px)">Concevoir facilement ses propres Scratch Tools</h1><p class="cs-lede" style="font-size: 17px">Du constat de marché au produit testable.</p>
+            <div class="cs-metarow" style="margin-top: 24px"><dl class="cs-meta"><div><dt>Rôle</dt><dd>Product Designer &amp; Builder</dd></div><div><dt>Durée</dt><dd>2026</dd></div></dl><a class="cs-visit" href="sklip.html">Sklip <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg></a></div>
+          </header>
+          <div class="cs-hero" style="--hero-bg: #100e16; --hero-fit: cover; margin-top: 28px"><img src="img/cases/sklip/hero.jpg" alt=""></div>
+        </div><div class="ds-cap"><b>En-tête d’étude de cas</b><code>.cs-back</code> · <code>.cs-head</code> · <code>.cs-meta</code> · <code>.cs-visit</code> · <code>.cs-hero</code> <i>— haut de chaque étude de cas ; le visuel prend toute la largeur du conteneur</i></div></div>
+      </div>
+    </div>
+    <div class="ds-group" id="cartes"><h3>Cartes projet</h3>
+      <div class="ds-comps">
+        <div class="ds-comp wide"><div class="ds-stage flush">
+          <article class="card agent">
+            <div class="text">
+              <h3>Agent</h3>
+              <h2>Mon IA qui répond à vos questions</h2>
+              <p class="meta" style="margin: 0">Agent conversationnel · Claude Haiku · 2026</p>
+              <div class="actions"><a class="btn primary" href="agent.html">Nouvelle session <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg></a></div>
+            </div>
+            <div class="visual">
+              <div class="ag-scene" aria-hidden="true"><div class="ag-talk"><div class="ag-msg bot">Bonjour ! Je suis l’assistant IA d’Olivier. Que voulez-vous savoir sur son parcours ?</div><div class="ag-input"><span>Votre question…</span><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></i></div></div></div>
+            </div>
+          </article>
+        </div><div class="ds-cap"><b>Carte projet · miniature Agent</b><code>.card</code> + habillage produit (<code>.agent</code>, <code>.moon</code>, <code>.sklip</code>…) <i>— accueil. Sur le site, le visage ASCII d’Olivier s’ajoute à droite.</i></div></div>
+        <div class="ds-comp wide"><div class="ds-stage flush"><a class="cs-next" href="sklip.html" style="--next-bg: #100e16"><div><small>Projet suivant</small><h3>Sklip — Concevoir facilement ses propres Scratch Tools</h3><span class="btn">Lire le use case</span></div><img src="img/cases/sklip/hero.jpg" alt=""></a></div><div class="ds-cap"><b>Étude suivante</b><code>.cs-next</code> · fond <code>--next-bg</code> <i>— fin des études de cas</i></div></div>
+      </div>
+    </div>
+    <div class="ds-group" id="appareils"><h3>Appareils</h3>
+      <div class="ds-comps">
+        <div class="ds-comp wide"><div class="ds-stage" style="background: radial-gradient(38% 55% at 22% 78%, rgba(70,82,140,.32), transparent 70%), #04050c; padding: 40px 32px">
+          <div class="macbook"><div class="lid"><div class="mb-screen"><img src="img/moon-desktop.jpg" alt=""></div></div><div class="base"></div></div>
+          <div class="iphone"><div class="scr"><div class="ios-bar" style="background: #04040a; color: #fff" aria-hidden="true"><span>9:41</span><i class="island"></i><span class="ind"></span></div><img src="img/moon-mobile.jpg" alt="" style="object-position: center bottom"></div></div>
+        </div><div class="ds-cap"><b>MacBook et iPhone</b><code>.macbook</code> · <code>.iphone</code> · <code>.ios-bar</code> <i>— cartes Go MoonBound et Décadi, vitrine d’Altered</i></div></div>
+      </div>
+    </div>
+    <div class="ds-group" id="dock"><h3>Dock de l’agent</h3>
+      <div class="ds-comps">
+        <div class="ds-comp wide"><div class="ds-stage canvas" style="justify-content: center; padding: 48px 24px"><span class="agd-field"><span class="agd-ph">Une question sur mon parcours ?</span><span class="agd-send" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></span></div><div class="ds-cap"><b>Dock de l’agent</b><code>agent-dock.js</code> · <code>.agd-field</code> <i>— collé en bas de toutes les pages publiques ; un clic l’agrandit en feuille qui contient la page Agent. Le vrai est actif en bas de cette page.</i></div></div>
+      </div>
+    </div>
+    <div class="ds-group" id="contact-specimen"><h3>Contact et pied de page</h3>
+      <div class="ds-comps">
+        <div class="ds-comp wide"><div class="ds-stage col ds-contact"><section class="contact">
+    <h2 class="contact-title">Contact</h2>
+    <div>
+      <h4>Écrire</h4>
+      <div class="big">otousche@gmail.com</div>
+      <button class="copy-btn" type="button">Copier l'adresse</button>
+    </div>
+    <div>
+      <h4>Réseau</h4>
+      <a class="big" href="https://www.linkedin.com/in/olivier-tousche-a6160b122/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+    <div>
+      <h4>Basé à</h4>
+      <div class="big">Paris · remote</div>
+    </div>
+    <div>
+      <h4>CV</h4>
+      <a class="big cv-fr" href="cv/Olivier_Tousche_CV-fr.pdf" target="_blank" rel="noopener">Afficher le CV ↗</a>
+      <a class="big cv-en" href="cv/Olivier_Tousche_CV-en.pdf" target="_blank" rel="noopener">View CV ↗</a>
+    </div>
+  </section></div><div class="ds-cap"><b>Contact</b><code>.contact</code> · <code>contact.js</code> <i>— bas de chaque page publique. Le script y ajoute le portrait ASCII d’Olivier, posé sur le trait du pied de page et coupé par le bord droit : il est en vrai en bas de cette page.</i></div></div>
+        <div class="ds-comp wide"><div class="ds-stage col ds-footer"><footer><span>© 2026 Olivier Tousche</span><span class="lang-switch" role="group" aria-label="Langue · Language"><button type="button" data-demo-lang="fr" aria-pressed="true">FR</button><i aria-hidden="true">/</i><button type="button" data-demo-lang="en" aria-pressed="false">EN</button></span></footer></div><div class="ds-cap"><b>Pied de page</b><code>footer</code> · <code>.lang-switch</code> <i>— toutes les pages publiques ; un trait pleine largeur au-dessus, le choix de langue à droite</i></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Page-specific modules ── -->
+  <section class="ds-sec">
+    <div class="label" id="specifiques"><span>Spécifiques</span><span>Hors système</span></div>
+    <p class="ds-intro">Des modules qui n’existent que sur une page, souvent aux couleurs d’un produit. Ils s’appuient sur les tokens, mais ne sont pas des composants du système : leur CSS reste dans leur page. Un clic ouvre le module en place.</p>
+    <div class="ds-specs-grid">
+        <a class="ds-spec-card" href="gomoonbound.html#rapport"><span class="ds-spec-where">Go MoonBound</span><b>Rapport de mission <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></b><span>Les chiffres en direct, dans le ciel étoilé du produit : tuiles vitrées, courbe, indicateurs.</span><code>gm-report</code></a>
+        <a class="ds-spec-card" href="sklip.html#personas"><span class="ds-spec-where">Sklip</span><b>Fiches personas <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></b><span>Un carrousel de fiches aux couleurs et à la typo de Sklip (Outfit).</span><code>sp-*</code></a>
+        <a class="ds-spec-card" href="sklip.html#methode"><span class="ds-spec-where">Sklip</span><b>Schéma de méthode <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></b><span>Les étapes BMAD par agent, avec chevrons, l’humain dans la boucle et les chiffres.</span><code>bmad · bm-*</code></a>
+        <a class="ds-spec-card" href="equinox.html#vitrine"><span class="ds-spec-where">Altered</span><b>Vitrine MacBook défilante <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></b><span>Une page qui défile dans un MacBook, la navigation restant collée en haut.</span><code>showcase · sm-*</code></a>
+        <a class="ds-spec-card" href="equinox.html#phases"><span class="ds-spec-where">Altered</span><b>Phases et schéma <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></b><span>Les trois temps du projet en cartes, et le schéma des flux de paiement.</span><code>cs-phases · cs-diagram</code></a>
+        <a class="ds-spec-card" href="index.html#about"><span class="ds-spec-where">Accueil</span><b>Activité GitHub <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></b><span>Le calendrier des contributions, ses cinq gris lus dans les tokens.</span><code>gh-*</code></a>
+        <a class="ds-spec-card" href="agent.html"><span class="ds-spec-where">Agent</span><b>Barre et champ de l’agent <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></b><span>La jauge de messages en anneau, le champ et son faisceau coloré, le visage ASCII.</span><code>bar · quota · compose</code></a>
+    </div>
+  </section>
+
+  <!-- ── Templates ── -->
+  <section class="ds-sec cols" id="ds-templates">
+    <div class="label" id="gabarits"><span>Gabarits</span><span>Les grilles des pages</span></div>
+    <p class="ds-intro">Les organismes mis en page. Chaque gabarit est dessiné à l’échelle d’un écran de 1440 px et d’un téléphone de 390 px, avec les vraies largeurs ; seules les hauteurs sont raccourcies.</p>
+    <div class="ds-tpl-bar">
+      <button class="tool" type="button" id="cols-toggle" aria-pressed="true" style="margin-left: -12px"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2.5" width="12" height="11" rx="1.5"/><path d="M6 2.5v11M10 2.5v11"/></svg>Colonnes et cotes</button>
+      <span class="ds-key"><i></i>Colonnes</span>
+      <span class="ds-key gut"><i></i>Marges et gouttières</span>
+      <span>Commun : conteneur <code>.wrap</code> 1200 px max, marges 32 px (16 px sous 720 px), barre du haut collante.</span>
+    </div>
+
+    <!-- Home -->
+    <div class="ds-tpl">
+      <div class="ds-tpl-head" id="tpl-accueil"><h3>Accueil</h3><a class="tool" href="index.html">Ouvrir la page ↗</a></div>
+      <div class="ds-tpl-views">
+        <figure><div class="wf"><div class="wf-in">
+          <div class="wf-wrap wf-glass" style="padding-block: calc(20 * var(--px))"><div class="wf-row"><span class="wf-stack" style="--g: 3"><span class="wl" style="--w: calc(52 * var(--px)); --h: 9"></span><span class="wl" style="--w: calc(60 * var(--px)); --h: 9"></span></span><span class="wf-row" style="gap: calc(18 * var(--px))"><span class="wl" style="--w: calc(48 * var(--px))"></span><span class="wl" style="--w: calc(56 * var(--px))"></span><span class="wl" style="--w: calc(52 * var(--px))"></span></span></div></div>
+          <div class="wf-wrap gut">
+            <div class="wf-dim"><span>1200 max · contenu 1136</span></div>
+            <div class="wc wf-stack" data-col=".hero · 980 max" style="width: calc(980 * var(--px)); padding-block: calc(40 * var(--px)) calc(56 * var(--px)); --g: 10">
+              <span class="wl big muted" style="--w: 40%"></span><span class="wl big" style="--w: 55%"></span>
+              <span class="wl" style="--w: 70%; margin-top: calc(14 * var(--px))"></span><span class="wl" style="--w: 52%"></span>
+              <span class="wf-row" style="justify-content: flex-start; gap: calc(8 * var(--px)); margin-top: calc(8 * var(--px))"><span class="wf-pill" style="--w: 90; --h: 22"></span><span class="wf-pill" style="--w: 80; --h: 22"></span><span class="wf-pill" style="--w: 96; --h: 22"></span></span>
+            </div>
+            <div class="wl" style="--h: 9; --w: calc(60 * var(--px))"></div><div class="wf-line" style="margin: calc(12 * var(--px)) 0 calc(20 * var(--px))"></div>
+            <div class="wf-stack gut" style="--g: 20">
+              <div class="wf-grid" style="grid-template-columns: 5fr 7fr; --g: 0; border-radius: calc(28 * var(--px)); overflow: hidden; background: #f1f1f4; --wf-bg: #f1f1f4">
+                <div class="wc wf-stack" data-col=".card .text · 5fr" style="padding: calc(48 * var(--px)); --g: 12; justify-content: center; min-height: calc(260 * var(--px))"><span class="wb" style="--h: 28; --r: 8; width: calc(28 * var(--px))"></span><span class="wl mid"></span><span class="wl mid" style="--w: 70%"></span><span class="wl" style="--w: 50%"></span><span class="wf-pill ink" style="--w: 110; --h: 30"></span></div>
+                <div class="wc" data-col=".visual · 7fr" style="display: grid; place-items: center; padding: calc(40 * var(--px)) calc(40 * var(--px)) calc(40 * var(--px)) 0"><span class="wb dark" style="width: 92%; --h: 190; --r: 12"></span></div>
+              </div>
+              <div class="wb" style="--h: 40; --r: 28; border-radius: calc(28 * var(--px)) calc(28 * var(--px)) 0 0"></div>
+            </div>
+            <div class="wl" style="--h: 9; --w: calc(70 * var(--px)); margin-top: calc(40 * var(--px))"></div><div class="wf-line" style="margin: calc(12 * var(--px)) 0 calc(20 * var(--px))"></div>
+            <div class="wf-grid" style="grid-template-columns: 1fr 1fr; --g: 48; margin-bottom: calc(40 * var(--px))">
+              <div class="wc wf-stack" data-col=".about · 1fr" style="--g: 10; padding-block: calc(4 * var(--px))"><span class="wl mid" style="--w: 90%"></span><span class="wl mid" style="--w: 60%"></span><span class="wb" style="--h: 70; --r: 6; margin-top: calc(18 * var(--px))"></span></div>
+              <div class="wc wf-stack" data-col="1fr" style="--g: 10; padding-block: calc(4 * var(--px))"><span class="wl"></span><span class="wl" style="--w: 85%"></span><span class="wl" style="--w: 92%"></span><span class="wb white" style="--h: 46; margin-top: calc(10 * var(--px))"></span></div>
+            </div>
+            <div class="wf-line"></div>
+            <div class="wf-row" style="padding-block: calc(16 * var(--px))"><span class="wl" style="--w: calc(120 * var(--px)); --h: 8"></span><span class="wl" style="--w: calc(40 * var(--px)); --h: 8"></span></div>
+          </div>
+        </div></div><figcaption>Desktop · 1440 px</figcaption></figure>
+        <figure><div class="wf phone"><div class="wf-in">
+          <div class="wf-wrap wf-glass" style="padding-block: calc(16 * var(--px))"><div class="wf-row"><span class="wl" style="--w: calc(56 * var(--px))"></span><span class="wl" style="--w: calc(140 * var(--px))"></span></div></div>
+          <div class="wf-wrap gut">
+            <div class="wc wf-stack" data-col="1 col." style="padding-block: calc(40 * var(--px)) calc(40 * var(--px)); --g: 10"><span class="wl big muted" style="--w: 60%"></span><span class="wl big" style="--w: 85%"></span><span class="wl" style="margin-top: calc(10 * var(--px))"></span><span class="wl" style="--w: 70%"></span></div>
+            <div class="wf-grid" style="grid-template-columns: 1fr; --g: 0; border-radius: calc(28 * var(--px)); overflow: hidden; background: #f1f1f4; --wf-bg: #f1f1f4">
+              <div class="wc wf-stack" data-col="texte" style="padding: calc(32 * var(--px)) calc(28 * var(--px)) calc(8 * var(--px)); --g: 10"><span class="wl mid"></span><span class="wl mid" style="--w: 70%"></span><span class="wf-pill ink" style="--w: 120; --h: 32"></span></div>
+              <div class="wc" data-col="visuel" style="padding: calc(24 * var(--px)) calc(24 * var(--px)) calc(32 * var(--px))"><span class="wb dark" style="display: block; --h: 170; --r: 10"></span></div>
+            </div>
+            <div class="wf-stack" style="--g: 10; padding-block: calc(40 * var(--px)) calc(24 * var(--px))"><span class="wl mid"></span><span class="wl mid" style="--w: 60%"></span><span class="wl" style="margin-top: calc(12 * var(--px))"></span><span class="wl" style="--w: 80%"></span></div>
+          </div>
+        </div></div><figcaption>Mobile · 390 px</figcaption></figure>
+      </div>
+      <dl class="ds-specs">
+        <div><dt>Hero</dt><dd>980 px max, une colonne</dd></div>
+        <div><dt>Carte projet</dt><dd><code>5fr / 7fr</code> (texte / visuel), marges internes 48 px ; une colonne sous 860 px</dd></div>
+        <div><dt>Cartes entre elles</dt><dd>Gouttière 20 px</dd></div>
+        <div><dt>À propos</dt><dd><code>1fr / 1fr</code>, gouttière 48 px ; une colonne sous 480 px</dd></div>
+        <div><dt>Rythme</dt><dd>Sections séparées de 96 px, label sur un trait</dd></div>
+      </dl>
+    </div>
+
+    <!-- Case study -->
+    <div class="ds-tpl">
+      <div class="ds-tpl-head" id="tpl-cas"><h3>Étude de cas</h3><a class="tool" href="equinox.html">Ouvrir la page ↗</a></div>
+      <div class="ds-tpl-views">
+        <figure><div class="wf"><div class="wf-in">
+          <div class="wf-wrap wf-glass" style="padding-block: calc(20 * var(--px))"><div class="wf-row"><span class="wf-stack" style="--g: 3"><span class="wl" style="--w: calc(52 * var(--px)); --h: 9"></span><span class="wl" style="--w: calc(60 * var(--px)); --h: 9"></span></span><span class="wf-row" style="gap: calc(18 * var(--px))"><span class="wl" style="--w: calc(48 * var(--px))"></span><span class="wl" style="--w: calc(56 * var(--px))"></span><span class="wl" style="--w: calc(52 * var(--px))"></span></span></div></div>
+          <div class="wf-wrap gut">
+            <span class="wf-pill" style="--w: 110; --h: 22; margin: calc(20 * var(--px)) 0 calc(28 * var(--px))"></span>
+            <div class="wc wf-stack" data-col=".cs-head · 860 max" style="width: calc(860 * var(--px)); --g: 10; padding-bottom: calc(8 * var(--px))"><span class="wb" style="--h: 32; --r: 8; width: calc(32 * var(--px))"></span><span class="wl big" style="--h: 40"></span><span class="wl big" style="--h: 40; --w: 60%"></span><span class="wl mid muted" style="--h: 14; --w: 62%; margin-top: calc(8 * var(--px))"></span></div>
+            <div class="wf-row" style="margin: calc(24 * var(--px)) 0 calc(32 * var(--px))"><span class="wf-row" style="gap: calc(40 * var(--px))"><span class="wl" style="--w: calc(110 * var(--px))"></span><span class="wl" style="--w: calc(80 * var(--px))"></span><span class="wl" style="--w: calc(70 * var(--px))"></span></span><span class="wf-pill ink" style="--w: 90; --h: 34"></span></div>
+            <div class="wc" data-col=".cs-hero · pleine largeur, 16/8" style="height: calc(200 * var(--px)); border-radius: calc(28 * var(--px)); background-color: #2a2a31"></div>
+            <div class="wf-dim" style="width: calc(880 * var(--px)); margin-top: calc(40 * var(--px))"><span>880 max · colonne de lecture centrée</span></div>
+            <div class="wc wf-stack" data-col=".cs-body" style="width: calc(880 * var(--px)); margin-inline: auto; --g: 10; padding-block: calc(8 * var(--px)) calc(16 * var(--px))">
+              <span class="wl mid" style="--w: 50%; margin-top: calc(18 * var(--px))"></span>
+              <span class="wl" style="margin-top: calc(10 * var(--px))"></span><span class="wl"></span><span class="wl" style="--w: 75%"></span>
+              <div class="wf-grid" style="grid-template-columns: repeat(3, 1fr); --g: 10; margin-top: calc(12 * var(--px))"><div class="wc" data-col=".tiles · 3 ou 4" style="height: calc(56 * var(--px)); border-radius: calc(14 * var(--px))"></div><div class="wc" style="height: calc(56 * var(--px)); border-radius: calc(14 * var(--px))"></div><div class="wc" style="height: calc(56 * var(--px)); border-radius: calc(14 * var(--px))"></div></div>
+              <div class="wf-grid" style="grid-template-columns: 1fr 1fr; --g: 40; margin-top: calc(16 * var(--px))"><div class="wc" data-col=".cs-split · 1fr" style="height: calc(90 * var(--px)); border-radius: calc(18 * var(--px)); background-color: #e9e9ee"></div><div class="wc" data-col="1fr" style="height: calc(90 * var(--px)); border-radius: calc(18 * var(--px)); background-color: #e9e9ee"></div></div>
+            </div>
+            <div class="wf-grid" style="grid-template-columns: 1fr 1fr; --g: 32; padding: calc(32 * var(--px)) calc(48 * var(--px)); border-radius: calc(28 * var(--px)); background-color: #2a2a31; margin: calc(24 * var(--px)) 0 calc(32 * var(--px)); --wf-bg: #2a2a31">
+              <div class="wc wf-stack" data-col=".cs-next · 1fr" style="--g: 10; justify-content: center"><span class="wl" style="--w: 40%; background: #55555c"></span><span class="wl mid" style="background: #55555c"></span><span class="wf-pill" style="--w: 100; --h: 28; --bgp: #fff"></span></div>
+              <div class="wc" data-col="1fr" style="height: calc(110 * var(--px)); border-radius: calc(12 * var(--px)); background-color: #3d3e44"></div>
+            </div>
+          </div>
+        </div></div><figcaption>Desktop · 1440 px</figcaption></figure>
+        <figure><div class="wf phone"><div class="wf-in">
+          <div class="wf-wrap wf-glass" style="padding-block: calc(16 * var(--px))"><div class="wf-row"><span class="wl" style="--w: calc(56 * var(--px))"></span><span class="wl" style="--w: calc(140 * var(--px))"></span></div></div>
+          <div class="wf-wrap gut">
+            <div class="wc wf-stack" data-col="1 col." style="padding-block: calc(24 * var(--px)) calc(20 * var(--px)); --g: 10"><span class="wf-pill" style="--w: 110; --h: 20"></span><span class="wl big" style="--h: 30; margin-top: calc(10 * var(--px))"></span><span class="wl big" style="--h: 30; --w: 70%"></span><span class="wl muted" style="margin-top: calc(6 * var(--px))"></span><span class="wf-pill ink" style="--w: 90; --h: 32; margin-top: calc(10 * var(--px))"></span></div>
+            <div class="wb dark" style="--h: 260; --r: 28"></div>
+            <div class="wf-stack" style="--g: 10; padding-block: calc(36 * var(--px)) calc(24 * var(--px))"><span class="wl mid" style="--w: 70%"></span><span class="wl"></span><span class="wl"></span><span class="wl" style="--w: 80%"></span>
+              <div class="wf-grid" style="grid-template-columns: 1fr 1fr; --g: 10; margin-top: calc(8 * var(--px))"><div class="wc" data-col="tuiles · 2" style="height: calc(56 * var(--px)); border-radius: calc(14 * var(--px))"></div><div class="wc" style="height: calc(56 * var(--px)); border-radius: calc(14 * var(--px))"></div></div>
+            </div>
+          </div>
+        </div></div><figcaption>Mobile · 390 px</figcaption></figure>
+      </div>
+      <dl class="ds-specs">
+        <div><dt>En-tête</dt><dd>Titre et méta sur 860 px max, chapô 46 caractères</dd></div>
+        <div><dt>Hero</dt><dd>Pleine largeur du conteneur, ratio <code>16/8</code> (<code>4/3</code> sous 760 px)</dd></div>
+        <div><dt>Colonne de lecture</dt><dd><code>.cs-body</code> 880 px max, centrée ; texte 18 px, titres espacés de 96 px</dd></div>
+        <div><dt>Dans la colonne</dt><dd><code>.tiles</code> 3 ou 4 colonnes (2 sous 760 px) ; <code>.cs-split</code> <code>1fr / 1fr</code>, gouttière 40 px</dd></div>
+        <div><dt>Étude suivante</dt><dd><code>1fr / 1fr</code>, gouttière 32 px ; une colonne sous 760 px</dd></div>
+      </dl>
+    </div>
+
+    <!-- Agent -->
+    <div class="ds-tpl">
+      <div class="ds-tpl-head" id="tpl-agent"><h3>Agent</h3><a class="tool" href="agent.html">Ouvrir la page ↗</a></div>
+      <div class="ds-tpl-views">
+        <figure><div class="wf canvas"><div class="wf-in wf-dots" style="height: calc(620 * var(--px))">
+          <div class="wf-glass" style="padding: calc(14 * var(--px)) calc(28 * var(--px))"><div class="wf-row"><span class="wf-row" style="gap: calc(16 * var(--px))"><span class="wf-pill" style="--w: 30; --h: 30"></span><span class="wf-stack" style="--g: 4"><span class="wl" style="--w: calc(48 * var(--px))"></span><span class="wl muted" style="--w: calc(150 * var(--px)); --h: 8"></span></span></span><span class="wf-row" style="gap: calc(8 * var(--px))"><span class="wf-pill" style="--w: 30; --h: 30"></span><span class="wf-pill" style="--w: 160"></span><span class="wf-pill" style="--w: 110"></span></span></div></div>
+          <span style="position: absolute; right: 0; top: 50%; translate: 40% -50%; width: calc(380 * var(--px)); aspect-ratio: .8; border-radius: 45%; background: #e6e6ec; display: grid; place-items: center start; padding-left: calc(30 * var(--px)); color: var(--muted)">Visage ASCII</span>
+          <div class="wf-dim" style="width: calc(760 * var(--px)); margin-top: calc(26 * var(--px))"><span>.col · 760 max, centrée</span></div>
+          <div class="wc wf-stack" data-col="conversation" style="width: calc(760 * var(--px)); margin-inline: auto; padding: calc(16 * var(--px)); --g: 14; flex: 1">
+            <span class="wb white" style="--h: 64; --r: 20; width: calc(520 * var(--px)); border-top-left-radius: calc(6 * var(--px)); margin-top: calc(10 * var(--px))"></span>
+            <span class="wb ink" style="--h: 40; --r: 20; width: calc(260 * var(--px)); align-self: flex-end; border-top-right-radius: calc(6 * var(--px))"></span>
+            <span class="wb white" style="--h: 90; --r: 20; width: calc(600 * var(--px)); border-top-left-radius: calc(6 * var(--px))"></span>
+          </div>
+          <div class="wc wf-stack" data-col=".dock · même colonne" style="width: calc(760 * var(--px)); margin: 0 auto calc(14 * var(--px)); padding: calc(10 * var(--px)) calc(16 * var(--px)) 0; --g: 10">
+            <span class="wf-row" style="justify-content: flex-start; gap: calc(8 * var(--px))"><span class="wf-pill ink" style="--w: 150; --h: 38"></span><span class="wf-pill ink" style="--w: 190; --h: 38"></span></span>
+            <span class="wb white" style="--h: 50; --r: 26"></span>
+          </div>
+        </div></div><figcaption>Desktop · 1440 px</figcaption></figure>
+        <figure><div class="wf phone canvas"><div class="wf-in wf-dots" style="height: calc(700 * var(--px))">
+          <div class="wf-glass" style="padding: calc(14 * var(--px)) calc(16 * var(--px))"><div class="wf-row"><span class="wf-row" style="gap: calc(10 * var(--px))"><span class="wf-pill" style="--w: 30; --h: 30"></span><span class="wl" style="--w: calc(48 * var(--px))"></span></span><span class="wf-row" style="gap: calc(4 * var(--px))"><span class="wf-pill" style="--w: 30; --h: 30"></span><span class="wf-pill" style="--w: 30; --h: 30"></span><span class="wf-pill" style="--w: 30; --h: 30"></span></span></div></div>
+          <div class="wc wf-stack" data-col="pleine largeur" style="padding: calc(30 * var(--px)) calc(16 * var(--px)); --g: 14; flex: 1">
+            <span class="wb white" style="--h: 80; --r: 20; width: 88%; border-top-left-radius: calc(6 * var(--px))"></span>
+            <span class="wb ink" style="--h: 40; --r: 20; width: 60%; align-self: flex-end; border-top-right-radius: calc(6 * var(--px))"></span>
+          </div>
+          <div class="wf-stack" style="padding: 0 calc(16 * var(--px)) calc(14 * var(--px)); --g: 10"><span class="wf-row" style="justify-content: flex-start; gap: calc(8 * var(--px)); overflow: hidden"><span class="wf-pill ink" style="--w: 280; --h: 38; flex: none"></span><span class="wf-pill ink" style="--w: 120; --h: 38; flex: none"></span></span><span class="wb white" style="--h: 44; --r: 22"></span></div>
+        </div></div><figcaption>Mobile · 390 px</figcaption></figure>
+      </div>
+      <dl class="ds-specs">
+        <div><dt>Écran</dt><dd>Plein écran, sans <code>.wrap</code> : barre vitrée en haut, conversation au centre, champ collé en bas</dd></div>
+        <div><dt>Colonne</dt><dd><code>--col</code> 760 px max, marges 16 px ; la conversation et le champ partagent la même colonne</dd></div>
+        <div><dt>Bulles</dt><dd>600 px max (88 % sur mobile), agent à gauche, visiteur à droite</dd></div>
+        <div><dt>Informations</dt><dd>Cartes en <code>1fr / 1fr</code>, gouttière 12 px ; une colonne sous 640 px</dd></div>
+        <div><dt>Visage ASCII</dt><dd>Fixé au bord droit, 40 % hors écran ; estompé sous 1100 px</dd></div>
+      </dl>
+    </div>
+
+    <!-- Catalogue -->
+    <div class="ds-tpl">
+      <div class="ds-tpl-head" id="tpl-catalogue"><h3>Catalogue</h3><span class="tool" style="cursor: default">Cette page</span></div>
+      <div class="ds-tpl-views">
+        <figure><div class="wf"><div class="wf-in">
+          <div class="wf-wrap wf-glass" style="padding-block: calc(20 * var(--px))"><div class="wf-row"><span class="wf-stack" style="--g: 3"><span class="wl" style="--w: calc(52 * var(--px)); --h: 9"></span><span class="wl" style="--w: calc(60 * var(--px)); --h: 9"></span></span></div></div>
+          <div class="wf-wrap gut">
+            <div class="wf-stack" style="--g: 10; padding-block: calc(40 * var(--px))"><span class="wl big" style="--w: 30%"></span><span class="wl mid muted" style="--h: 14; --w: 50%"></span></div>
+            <div class="wf-grid" style="grid-template-columns: calc(200 * var(--px)) 1fr; --g: 56; margin-bottom: calc(32 * var(--px))">
+              <div class="wc wf-stack" data-col=".ds-side · 200, collant" style="--g: 8; padding: calc(30 * var(--px)) calc(10 * var(--px))"><span class="wf-pill" style="--w: 160; --h: 24"></span><span class="wl muted" style="--w: 60%"></span><span class="wl muted" style="--w: 70%"></span><span class="wl" style="--w: 50%; margin-top: calc(10 * var(--px))"></span><span class="wl muted" style="--w: 60%"></span></div>
+              <div class="wc wf-stack" data-col=".ds-main · 1fr" style="--g: 12; padding-top: calc(30 * var(--px))">
+                <span class="wl" style="--w: 20%"></span><span class="wf-line"></span>
+                <div class="wf-grid" style="grid-template-columns: 1fr 1fr; --g: 12"><div class="wb" style="--h: 110; --r: 18; background: #fff; box-shadow: inset 0 0 0 1px var(--line)"></div><div class="wb" style="--h: 110; --r: 18; background: #fff; box-shadow: inset 0 0 0 1px var(--line)"></div></div>
+              </div>
+            </div>
+          </div>
+        </div></div><figcaption>Desktop · 1440 px</figcaption></figure>
+        <figure><div class="wf phone"><div class="wf-in">
+          <div class="wf-wrap wf-glass" style="padding-block: calc(16 * var(--px))"><div class="wf-row"><span class="wl" style="--w: calc(56 * var(--px))"></span><span class="wl" style="--w: calc(200 * var(--px))"></span></div></div>
+          <div class="wf-wrap gut">
+            <div class="wc wf-stack" data-col="sommaire → barre du haut" style="--g: 12; padding-block: calc(40 * var(--px)) calc(24 * var(--px))"><span class="wl big" style="--w: 70%; --h: 30"></span><span class="wl"></span><div class="wb" style="--h: 120; --r: 18; background: #fff; box-shadow: inset 0 0 0 1px var(--line); margin-top: calc(16 * var(--px))"></div><div class="wb" style="--h: 120; --r: 18; background: #fff; box-shadow: inset 0 0 0 1px var(--line)"></div></div>
+          </div>
+        </div></div><figcaption>Mobile · 390 px</figcaption></figure>
+      </div>
+      <dl class="ds-specs">
+        <div><dt>Mise en page</dt><dd>Sommaire <code>200px</code> collant | contenu <code>1fr</code>, gouttière 56 px</dd></div>
+        <div><dt>Exemples</dt><dd>Cadres en <code>1fr / 1fr</code>, gouttière 12 px ; une colonne sous 760 px</dd></div>
+        <div><dt>Sous 900 px</dt><dd>Le sommaire disparaît, ses liens passent dans la barre du haut</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="ds-sec">
+    <div class="label" id="regles"><span>Règles</span></div>
+    <div class="ds-rules">
+      <div class="ds-rule"><h4>Un token avant une valeur</h4><p>Une couleur, un rayon ou une ombre de l’interface vient de <code>tokens.css</code>. Une page ne redéfinit un token que si sa surface change (l’agent : <code>--bg: var(--canvas)</code>).</p></div>
+      <div class="ds-rule"><h4>Une définition par composant</h4><p>Ce qui sert à plusieurs surfaces vit dans <code>components.css</code>, ce qui sert aux pages publiques dans <code>site.css</code>. Le <code>&lt;style&gt;</code> d’une page ne garde que sa mise en page.</p></div>
+      <div class="ds-rule"><h4>Labels en casse de phrase</h4><p>Geist 500, jamais de mono majuscules, y compris dans les légendes et les schémas.</p></div>
+      <div class="ds-rule"><h4>Les produits gardent leurs couleurs</h4><p>Les maquettes (Sklip, Go MoonBound, Altered, Décadi, Stampit) sont des illustrations : leurs couleurs et polices restent en dehors des tokens.</p></div>
+    </div>
+  </section>
+
+  </div>
+  </div>
+
+  <section class="contact" id="contact">
+    <h2 class="contact-title">Contact</h2>
+    <div>
+      <h4>Écrire</h4>
+      <div class="big">otousche@gmail.com</div>
+      <button class="copy-btn" id="copy" type="button">Copier l'adresse</button>
+    </div>
+    <div>
+      <h4>Réseau</h4>
+      <a class="big" href="https://www.linkedin.com/in/olivier-tousche-a6160b122/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+    <div>
+      <h4>Basé à</h4>
+      <div class="big">Paris · remote</div>
+    </div>
+    <div>
+      <h4>CV</h4>
+      <a class="big cv-fr" href="cv/Olivier_Tousche_CV-fr.pdf" target="_blank" rel="noopener">Afficher le CV ↗</a>
+      <a class="big cv-en" href="cv/Olivier_Tousche_CV-en.pdf" target="_blank" rel="noopener">View CV ↗</a>
+    </div>
+    <div class="ascii-stand" aria-hidden="true"><canvas class="ascii-me"></canvas></div>
+  </section>
+
+  <footer><span>© 2026 Olivier Tousche</span><span class="lang-switch" role="group" aria-label="Langue · Language"><button type="button" data-set-lang="fr" aria-pressed="true">FR</button><i aria-hidden="true">/</i><button type="button" data-set-lang="en" aria-pressed="false">EN</button></span></footer>
+</div>
+
+<script>
+  // Swatches: each token's live value, read from css/tokens.css; a click copies var(--token)
+  const root = getComputedStyle(document.documentElement);
+  for (const box of document.querySelectorAll('[data-tokens]')) {
+    box.innerHTML = box.dataset.tokens.split('|').map((t) => {
+      const [name, use] = t.split(':');
+      const value = root.getPropertyValue(name).trim();
+      return `<button class="ds-sw${name === '--canvas' ? ' on-dot' : ''}" type="button" style="--c: var(${name})" data-token="${name}"><i></i><span><b>${name}</b><small>${value}</small><em>${use}</em></span></button>`;
+    }).join('');
+  }
+  // Side menu: the last level (and group) whose top has passed under the bar is the current one
+  const links = [...document.querySelectorAll('.ds-side a')];
+  const targets = links.map((a) => document.getElementById(a.hash.slice(1)));
+  const wide = matchMedia('(min-width: 901px)');
+  let opened = null;  // the level opened by scrolling (a level the visitor opens or closes by hand stays as they left it)
+  const current = () => {
+    let sec = null, sub = null;
+    targets.forEach((t, i) => {
+      if (t.getBoundingClientRect().top > 120) return;
+      if (links[i].closest('ol ol')) sub = links[i]; else { sec = links[i]; sub = null; }
+    });
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) { sec = links.at(-1); sub = null; }  // the last section is reached
+    sec ||= links[0];
+    for (const a of links) a.setAttribute('aria-current', String(a === sec || a === sub));
+    const open = sec.closest('li').querySelector('details');
+    if (wide.matches && open && !open.open && open !== opened) { open.open = true; opened = open; }  // only while the summary sticks beside the content
+  };
+  addEventListener('scroll', current, { passive: true }); current();
+  // Templates: show or hide the columns, gutters and measures
+  document.getElementById('cols-toggle').addEventListener('click', (e) => {
+    const on = e.currentTarget.getAttribute('aria-pressed') !== 'true';
+    e.currentTarget.setAttribute('aria-pressed', String(on));
+    document.getElementById('ds-templates').classList.toggle('cols', on);
+  });
+  document.addEventListener('click', async (e) => {
+    const sw = e.target.closest('.ds-sw');
+    if (!sw) return;
+    try { await navigator.clipboard.writeText(`var(${sw.dataset.token})`); } catch (err) { return; }
+    const small = sw.querySelector('small'), was = small.textContent;
+    sw.classList.add('copied'); small.textContent = 'Copié';
+    setTimeout(() => { sw.classList.remove('copied'); small.textContent = was; }, 1200);
+  });
+</script>
+<script>
+  // Language switch in the footer: this page is in French only; the choice is kept for the rest of the site
+  (() => {
+    let l = 'fr'; try { l = localStorage.getItem('lang') || 'fr'; } catch (e) {}
+    const set = (v) => document.querySelectorAll('[data-set-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.setLang === v)));
+    set(l);
+    document.querySelectorAll('[data-set-lang]').forEach((b) => b.addEventListener('click', () => { try { localStorage.setItem('lang', b.dataset.setLang); } catch (e) {} set(b.dataset.setLang); }));
+  })();
+</script>
+<script src="contact.js" defer></script>
+<script src="agent-dock.js" defer></script>
+</body>
+</html>

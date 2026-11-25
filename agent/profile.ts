@@ -34,6 +34,7 @@ Product designer depuis 2017, en grand groupe, en agence et en startup, sur des 
 - Décadi en ligne : https://www.oliviertousche.com/decadi
 - CV : https://www.oliviertousche.com/cv/Olivier_Tousche_CV-fr.pdf (en anglais : https://www.oliviertousche.com/cv/Olivier_Tousche_CV-en.pdf)
 - LinkedIn : https://www.linkedin.com/in/olivier-tousche-a6160b122/
+- Design system du portfolio (tokens, composants, gabarits) : https://www.oliviertousche.com/design-system — à donner seulement si on le demande
 
 ## Recherche actuelle
 - Ouvert à un CDI comme à des missions freelance.
