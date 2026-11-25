@@ -95,6 +95,13 @@ button, input, select { font: inherit; color: inherit; }
 .empty { padding: 60px 20px; text-align: center; color: var(--muted); }
 
 /* Analytics: a sheet like the agent's, figures in tiles like the case studies' */
+/* The undo bar: after a deletion, at the bottom of the screen; each "Annuler" brings back the last one deleted */
+.undo { position: fixed; z-index: 50; left: 50%; bottom: max(20px, env(safe-area-inset-bottom, 0px)); translate: -50% 0; display: flex; align-items: center; gap: 14px; padding: 8px 8px 8px 18px; border-radius: var(--r-pill); background: var(--ink); color: #fff; font-size: 14px; box-shadow: var(--sh-overlay); white-space: nowrap; animation: undo-in .25s cubic-bezier(.2,.9,.3,1.2); }
+.undo button { padding: 7px 14px; border: 0; border-radius: var(--r-pill); background: rgba(255,255,255,.14); color: #fff; font: inherit; font-weight: 500; cursor: pointer; transition: background .2s; }
+.undo button:hover, .undo button:focus-visible { background: rgba(255,255,255,.24); }
+.undo kbd { margin-left: 6px; font: inherit; font-size: 12px; opacity: .6; }
+@keyframes undo-in { from { opacity: 0; translate: -50% 12px; } }
+@media (hover: none) { .undo kbd { display: none; } }
 dialog { width: min(560px, calc(100% - 32px)); max-height: calc(100svh - 32px); overflow-y: auto; border: 0; border-radius: var(--r-lg); padding: 0 0 4px; background: var(--raised); box-shadow: var(--sh-overlay); color: var(--fg); }
 dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
 .dlg-top { display: flex; justify-content: space-between; align-items: center; padding: 20px 20px 6px 24px; }
@@ -216,12 +223,16 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   <div id="recap-body"><p class="recap-wait">Analyse des questions…</p></div>
 </dialog>
 
+<div class="undo" id="undo" role="status" hidden><span id="undo-text"></span><button type="button" id="undo-btn">Annuler<kbd>⌘Z</kbd></button></div>
+
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
   // The password lives only for this tab (sessionStorage): closing it logs out
   const KEY = 'agent-admin';
   let pw = ''; try { pw = sessionStorage.getItem(KEY) || ''; localStorage.removeItem(KEY); } catch (e) {}
+  // Conversations deleted here and not brought back: hidden at once, even before the server is done
+  const hidden = new Set();
   let chats = [], summaries = {}, recap = null, systemChars = 0, order = 'new', current = -1;
   // Read state, per browser: the number of questions seen in each conversation (a conversation that went on is unread again)
   const SEEN = 'agent-admin-seen';
@@ -303,7 +314,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     if (!r || !r.ok) return logout(ERR[r ? (await r.json().catch(() => ({}))).error : ''] || 'Impossible de charger les conversations.');
     const data = await r.json();
     systemChars = data.systemChars || 0; summaries = data.summaries || {}; recap = data.recap || null;
-    chats = group(data.logs, data.votes);
+    chats = group(data.logs, data.votes).filter((c) => !hidden.has(c.key));
     const canned = data.logs.filter((l) => l.outcome === 'canned').length;
     const up = data.votes.filter((v) => v.vote === 'up').length, down = data.votes.length - up;
     const total = chats.reduce((a, c) => { const x = chatCost(c); return { usd: a.usd + x.usd, exact: a.exact && x.exact }; }, { usd: 0, exact: true });
@@ -500,20 +511,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
 
   $('list').addEventListener('click', async (e) => {
     const del = e.target.closest('button[data-del]');
-    if (del) {
-      // Deleted for good, after a confirmation that names the conversation
-      const c = chats[+del.dataset.del];
-      if (!confirm(`Supprimer définitivement cette conversation (${c.msgs.length} question${c.msgs.length > 1 ? 's' : ''}) ?\n\n« ${c.msgs[0].question.slice(0, 80)} »\n\nC’est irréversible.`)) return;
-      const r = await api({ method: 'DELETE', body: JSON.stringify({ key: c.key }) });
-      if (!r || !r.ok) return alert('La suppression a échoué.');
-      // The conversation open on the right stays open (unless it is the one deleted)
-      const open = chats[current] === c ? null : chats[current]?.key;
-      if (!open) { $('thread').innerHTML = '<p class="empty">Choisissez une conversation.</p>'; $('app').classList.remove('reading'); }
-      current = -1;
-      await load();
-      current = chats.findIndex((x) => x.key === open);
-      return list();
-    }
+    if (del) return remove(chats[+del.dataset.del]);
     const b = e.target.closest('button[data-i]'); if (b) read(+b.dataset.i);
   });
   $('order').addEventListener('change', (e) => { order = e.target.value; list(); $('list').scrollTop = 0; });
@@ -531,6 +529,53 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   });
   $('analytics-close').addEventListener('click', () => $('analytics').close());
   $('analytics').addEventListener('click', (e) => { if (e.target === $('analytics')) $('analytics').close(); });
+  // Deleting is instant, with no confirmation: the conversation goes to the server's trash (kept a day), and the bar at
+  // the bottom brings it back. "Annuler" again brings back the one before, and so on (⌘Z / Ctrl+Z too)
+  const undo = [];
+  let queue = Promise.resolve(), undoTimer = 0;
+  const run = (f) => (queue = queue.then(f, f));
+  const bar = (text) => {
+    clearTimeout(undoTimer);
+    $('undo-text').textContent = text ?? (undo.length > 1 ? `${undo.length} conversations supprimées` : 'Conversation supprimée');
+    $('undo-btn').hidden = !undo.length;
+    $('undo').hidden = false;
+    // Left alone for 10 s, the bar goes (the conversations stay deleted)
+    undoTimer = setTimeout(() => { $('undo').hidden = true; undo.length = 0; }, undo.length ? 10000 : 2000);
+  };
+  // Keeps the conversation open on the right, unless it is the one gone
+  const keepOpen = (key) => {
+    current = chats.findIndex((x) => x.key === key);
+    if (current < 0) { $('thread').innerHTML = '<p class="empty">Choisissez une conversation.</p>'; $('app').classList.remove('reading'); }
+    list();
+  };
+  const remove = (c) => {
+    const open = chats[current]?.key;
+    hidden.add(c.key); undo.push(c.key);
+    chats = chats.filter((x) => x !== c);
+    keepOpen(open); bar();
+    run(async () => {
+      const r = await api({ method: 'DELETE', body: JSON.stringify({ key: c.key }) });
+      if (r && r.ok) return;
+      hidden.delete(c.key); undo.splice(undo.indexOf(c.key), 1);
+      bar('La suppression a échoué'); const o = chats[current]?.key; await load(); keepOpen(o);
+    });
+  };
+  const restore = () => {
+    const key = undo.pop();
+    if (!key) return;
+    bar(undo.length ? undefined : 'Conversation restaurée');
+    run(async () => {
+      const r = await api({ method: 'POST', body: JSON.stringify({ restore: key }) });
+      if (r && r.ok) hidden.delete(key); else bar('Impossible d’annuler');
+      const o = chats[current]?.key; await load(); keepOpen(o);
+    });
+  };
+  $('undo-btn').addEventListener('click', restore);
+  addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() !== 'z' || !(e.metaKey || e.ctrlKey) || e.shiftKey || !undo.length || document.activeElement?.closest?.('input, textarea, select') || document.querySelector('dialog[open]')) return;
+    e.preventDefault(); restore();
+  });
+  if (!/Mac|iPhone|iPad/.test(navigator.platform)) $('undo-btn').querySelector('kbd').textContent = 'Ctrl+Z';
   $('all-read').addEventListener('click', () => { for (const c of chats) seen[c.key] = c.msgs.length; saveSeen(); list(); });
   $('login-form').addEventListener('submit', (e) => {
     e.preventDefault(); pw = $('pw').value; $('err').textContent = '';

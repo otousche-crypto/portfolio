@@ -1,7 +1,8 @@
 // ─── /api/conversations : les logs de l'agent, pour la page privée conversations.html ───
 //   GET   les conversations, les votes et les résumés déjà faits
 //   POST  { key } résume une conversation avec Claude Haiku (une phrase), gardé dans Redis
-//   DELETE { key } supprime une conversation, ses votes et son résumé
+//   DELETE { key } supprime une conversation, ses votes et son résumé : ils passent une journée dans une corbeille
+//   POST  { restore: key } remet une conversation de la corbeille (le « Annuler » de la page)
 //   POST  { recap: true } passe en revue les questions tapées par les visiteurs (pas les suggestions) : statut de la
 //         réponse, questions critiques restées sans réponse, ce qu'il faudrait ajouter au profil ; gardé dans Redis
 // Fermé par défaut. Il faut ADMIN_TOKEN (Vercel → Settings → Environment Variables).
@@ -146,8 +147,9 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   const denied = await guard(req);
   if (denied) return denied;
+  const body = (await req.json().catch(() => ({}))) as { key?: unknown; recap?: unknown; restore?: unknown };
+  if (typeof body.restore === 'string' && body.restore.length <= 64) return restore(body.restore);
   if (!client) return json({ error: 'no_model' }, 503);
-  const body = (await req.json().catch(() => ({}))) as { key?: unknown; recap?: unknown };
   if (body.recap === true) return recap();
   const key = body.key;
   if (typeof key !== 'string' || key.length > 64) return json({ error: 'invalid' }, 400);
@@ -169,21 +171,40 @@ export async function POST(req: Request) {
   return json({ key, n: chat.msgs.length, text, tokens });
 }
 
+// La corbeille : ce qu'une suppression a retiré, tel quel, gardé une journée pour pouvoir l'annuler
+type Trashed = { logs: string[]; votes: string[]; summary: unknown };
+const TRASH = (key: string) => `agent:trash:${key}`;
+
 export async function DELETE(req: Request) {
   const denied = await guard(req);
   if (denied) return denied;
   const key = ((await req.json().catch(() => ({}))) as { key?: unknown }).key;
   if (typeof key !== 'string' || key.length > 64) return json({ error: 'invalid' }, 400);
-  const [rows, voteRows] = await Promise.all([raw!.lrange<string>('agent:logs', 0, -1), raw!.lrange<string>('agent:feedback', 0, -1)]);
+  const [rows, voteRows, summary] = await Promise.all([raw!.lrange<string>('agent:logs', 0, -1), raw!.lrange<string>('agent:feedback', 0, -1), redis!.hget('agent:summaries', key)]);
   const logs = rows.map((r) => JSON.parse(r) as Log);
   const chat = groupChats(logs).find((c) => c.key === key);
   if (!chat) return json({ error: 'not_found' }, 404);
   const doomed = new Set(chat.msgs);
-  const p = raw!.pipeline();
-  rows.forEach((r, i) => { if (doomed.has(logs[i])) p.lrem('agent:logs', 1, r); });
   // Ses 👍 / 👎 et son résumé partent avec elle
-  voteRows.forEach((r) => { if ((JSON.parse(r) as { cid?: string }).cid === key) p.lrem('agent:feedback', 1, r); });
+  const trashed: Trashed = { logs: rows.filter((_, i) => doomed.has(logs[i])), votes: voteRows.filter((r) => (JSON.parse(r) as { cid?: string }).cid === key), summary };
+  await redis!.set(TRASH(key), trashed, { ex: 86400 });
+  const p = raw!.pipeline();
+  for (const r of trashed.logs) p.lrem('agent:logs', 1, r);
+  for (const r of trashed.votes) p.lrem('agent:feedback', 1, r);
   p.hdel('agent:summaries', key);
   await p.exec();
   return json({ key, questions: doomed.size });
+}
+
+async function restore(key: string): Promise<Response> {
+  const t = await redis!.get<Trashed>(TRASH(key));
+  if (!t) return json({ error: 'not_found' }, 404);
+  const p = raw!.pipeline();
+  // La liste est triée à la lecture (par date) : l'ordre de remise n'importe pas
+  if (t.logs.length) p.rpush('agent:logs', ...t.logs);
+  if (t.votes.length) p.rpush('agent:feedback', ...t.votes);
+  if (t.summary) p.hset('agent:summaries', { [key]: JSON.stringify(t.summary) });
+  p.del(TRASH(key));
+  await p.exec();
+  return json({ key, questions: t.logs.length });
 }
