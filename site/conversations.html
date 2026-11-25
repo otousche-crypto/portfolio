@@ -26,6 +26,11 @@ button, input, select { font: inherit; color: inherit; }
 .cta, .login button { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 16px; border: 0; border-radius: var(--r-pill); background: var(--ink); color: #fff; font-size: 14px; font-weight: 500; cursor: pointer; transition: background .2s; }
 .cta:hover, .cta:focus-visible, .login button:hover, .login button:focus-visible { background: var(--ink-hover); }
 .cta span { color: rgba(255,255,255,.65); font-weight: 400; font-size: var(--t-small); }
+/* The secondary one: white, on a hairline */
+.cta.ghost { background: var(--raised); color: var(--fg); box-shadow: var(--sh-ring); }
+.cta.ghost:hover, .cta.ghost:focus-visible { background: var(--raised); box-shadow: 0 0 0 1px var(--line-strong); }
+.cta.ghost span { color: var(--muted); }
+.cta.ghost span.hot { color: var(--danger); font-weight: 500; }
 .mark { justify-self: start; margin: -4px 0 0 -10px; padding: 6px 10px; border: 0; border-radius: var(--r-pill); background: none; color: var(--fg-3); font-size: var(--t-small); cursor: pointer; transition: background .2s, color .2s; }
 .mark:hover, .mark:focus-visible { background: var(--hover); color: var(--fg); }
 
@@ -92,6 +97,34 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
 .dlg-h { margin: 18px 24px 2px; font-size: 15.5px; letter-spacing: -0.01em; }
 .dlg-sub { margin: 0 24px 8px; color: var(--muted); font-size: var(--t-small); line-height: 1.45; }
 .dlg-note { margin: 0; padding: 4px 24px 20px; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+.dlg-top .top-tools { margin-right: 0; }
+/* Questions: what visitors typed, the ones the agent could not answer first */
+.recap-sum { margin: 4px 24px 12px; color: var(--fg-2); line-height: 1.55; }
+.recap-kpis { --n: 3; --tile-bg: var(--canvas); padding: 4px 24px 8px; }
+.recap-kpis b.hot { color: var(--danger); }
+.qs { list-style: none; margin: 0; padding: 4px 16px 8px; display: grid; gap: 6px; }
+.qs li { padding: 12px 14px; border-radius: var(--r-sm); background: var(--canvas); display: grid; gap: 4px; }
+.qs li.crit { background: rgba(229,72,77,.06); box-shadow: inset 0 0 0 1px rgba(229,72,77,.18); }  /* --danger, faint */
+.qs .qq { font-size: 14.5px; font-weight: 500; line-height: 1.4; }
+.qs .qq em { font-style: normal; font-weight: 400; color: var(--muted); }
+.qs .qm { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12.5px; color: var(--muted); }
+.qs .qm .tag { padding: 1px 8px; border-radius: var(--r-pill); background: var(--raised); box-shadow: var(--sh-ring); color: var(--fg-2); }
+.qs .qm button { margin-left: auto; padding: 2px 8px; font-size: 12.5px; }
+.qs .why { margin: 0; font-size: 13.5px; color: var(--fg-2); line-height: 1.45; }
+.qs .fix { margin: 0; font-size: 13.5px; line-height: 1.45; }
+.qs .fix b { font-weight: 600; }
+.themes { margin: 0; padding: 0 16px 8px; display: grid; gap: 4px; }
+.themes details { border-radius: var(--r-sm); }
+.themes summary { display: flex; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: var(--r-sm); cursor: pointer; list-style: none; font-size: 14px; }
+.themes summary::-webkit-details-marker { display: none; }
+.themes summary:hover { background: var(--hover); }
+.themes summary span { color: var(--muted); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.themes summary .gap { color: var(--danger); }
+.themes ul { list-style: none; margin: 0; padding: 0 10px 8px 22px; display: grid; gap: 4px; font-size: 13.5px; color: var(--fg-2); }
+.themes li::before { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 8px 1px -14px; border-radius: 50%; background: var(--ok); }
+.themes li.miss::before { background: var(--danger); }
+.themes li.off::before { background: var(--faint); }
+.recap-wait { margin: 8px 24px 16px; color: var(--muted); font-size: var(--t-small); }
 .compare { list-style: none; margin: 0; padding: 0 16px 8px; display: grid; gap: 4px; }
 .compare li { display: grid; grid-template-columns: 150px 1fr 82px; align-items: center; gap: 10px; padding: 6px 8px; border-radius: var(--r-xs); }
 .compare li.cur { background: var(--canvas); }
@@ -139,6 +172,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     <div class="side-top">
       <h1>Conversations <span class="top-tools"><button class="tool" type="button" id="logout">Se déconnecter</button></span></h1>
       <button class="cta" type="button" id="analytics-open">Analytics <span id="analytics-peek"></span></button>
+      <button class="cta ghost" type="button" id="recap-open">Questions des visiteurs <span id="recap-peek"></span></button>
       <p class="stats" id="stats"></p>
       <button class="mark" type="button" id="all-read">Tout marquer lu</button>
       <label class="sort">Trier par
@@ -171,13 +205,18 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   <p class="dlg-note" id="kpi-note"></p>
 </dialog>
 
+<dialog id="recap" aria-labelledby="recap-title">
+  <div class="dlg-top"><h2 id="recap-title">Questions des visiteurs</h2><span class="top-tools"><button class="tool" type="button" id="recap-refresh">Mettre à jour</button><button class="tool" type="button" id="recap-close">Fermer</button></span></div>
+  <div id="recap-body"><p class="recap-wait">Analyse des questions…</p></div>
+</dialog>
+
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
   // The password lives only for this tab (sessionStorage): closing it logs out
   const KEY = 'agent-admin';
   let pw = ''; try { pw = sessionStorage.getItem(KEY) || ''; localStorage.removeItem(KEY); } catch (e) {}
-  let chats = [], summaries = {}, systemChars = 0, order = 'new', current = -1;
+  let chats = [], summaries = {}, recap = null, systemChars = 0, order = 'new', current = -1;
   // Read state, per browser: the number of questions seen in each conversation (a conversation that went on is unread again)
   const SEEN = 'agent-admin-seen';
   let seen = {}; try { seen = JSON.parse(localStorage.getItem(SEEN) || '{}'); } catch (e) {}
@@ -257,13 +296,13 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     const r = await api();
     if (!r || !r.ok) return logout(ERR[r ? (await r.json().catch(() => ({}))).error : ''] || 'Impossible de charger les conversations.');
     const data = await r.json();
-    systemChars = data.systemChars || 0; summaries = data.summaries || {};
+    systemChars = data.systemChars || 0; summaries = data.summaries || {}; recap = data.recap || null;
     chats = group(data.logs, data.votes);
     const canned = data.logs.filter((l) => l.outcome === 'canned').length;
     const up = data.votes.filter((v) => v.vote === 'up').length, down = data.votes.length - up;
     const total = chats.reduce((a, c) => { const x = chatCost(c); return { usd: a.usd + x.usd, exact: a.exact && x.exact }; }, { usd: 0, exact: true });
     $('stats').textContent = `${chats.length} conversations · ${data.logs.length} questions (${canned} toutes prêtes) · ${money(total)} · ${up} 👍 ${down} 👎`;
-    show('app'); analytics(); list(); summarize();
+    show('app'); analytics(); recapPeek(); list(); summarize();
   };
 
   // Summaries missing (or out of date: the conversation went on) are written one after the other, newest first
@@ -315,6 +354,62 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     drawChart();
     $('kpi-note').textContent = `Tarif Claude Haiku 5.5. Les résumés de cette page ont coûté ${money({ usd: summariesCost, exact: true })} en plus.${exact ? '' : ' « ≈ » : une partie des anciens messages a été enregistrée sans ses tokens, leur coût est estimé à partir du texte.'} Les réponses toutes prêtes comptent aussi les questions de départ.`;
     $('analytics-peek').textContent = money({ usd: spent, exact });
+  };
+
+
+  // Questions typed by visitors (suggestions excluded), reviewed by Claude Haiku on the server: did the agent answer,
+  // is the question one a recruiter or a client expects an answer to, what to add to the profile. Kept until the
+  // questions change, so reopening costs nothing
+  const STATUS = { repondu: 'répondu', partiel: 'réponse partielle', sans_reponse: 'sans réponse', renvoye: 'renvoyé vers Olivier', hors_sujet: 'hors sujet', detournement: 'détournement', echec: 'échec technique' };
+  const MISSED = new Set(['partiel', 'sans_reponse', 'renvoye', 'echec']);
+  const norm = (q) => q.toLowerCase().replace(/[’`]/g, "'").replace(/\s+/g, ' ').replace(/[\s?!.]+$/, '').trim();
+  // The same question asked several times shows once, with how many times and its latest date
+  const dedupe = (items) => {
+    const by = new Map();
+    for (const it of items) { const k = norm(it.question), g = by.get(k); if (g) g.n++; else by.set(k, { ...it, n: 1 }); }
+    return [...by.values()];
+  };
+  const qItem = (it) => `<li class="${it.critical ? 'crit' : ''}"><span class="qq">« ${esc(it.question)} »${it.n > 1 ? ` <em>× ${it.n}</em>` : ''}</span>`
+    + `<span class="qm"><span class="tag">${esc(it.theme)}</span><span>${esc(STATUS[it.status] || it.status)}</span><span>${esc(when(it.at, { day: 'numeric', month: 'short' }))} · ${esc(it.lang.toUpperCase())}</span><button class="tool" type="button" data-key="${esc(it.key)}">Voir</button></span>`
+    + (it.why ? `<p class="why">${esc(it.why)}</p>` : '') + (it.fix ? `<p class="fix"><b>À ajouter au profil :</b> ${esc(it.fix)}</p>` : '') + '</li>';
+  const renderRecap = (r, note = '') => {
+    if (!r) { $('recap-body').innerHTML = `<p class="recap-wait">${note || 'Analyse des questions…'}</p>`; return; }
+    const items = r.items || [];
+    const crit = dedupe(items.filter((it) => it.critical && MISSED.has(it.status)));
+    const other = dedupe(items.filter((it) => !it.critical && MISSED.has(it.status)));
+    const offTopic = items.filter((it) => it.status === 'hors_sujet' || it.status === 'detournement').length;
+    const themes = new Map();
+    for (const it of items) { if (!themes.has(it.theme)) themes.set(it.theme, []); themes.get(it.theme).push(it); }
+    const tk = (v, l, hot) => `<div><b class="${hot ? 'hot' : ''}">${v}</b><small>${l}</small></div>`;
+    let html = r.summary ? `<p class="recap-sum">${esc(r.summary)}</p>` : '';
+    html += `<div class="tiles stack recap-kpis">${tk(items.length, 'questions tapées (suggestions exclues)')}${tk(items.filter((it) => MISSED.has(it.status)).length, 'sans réponse complète')}${tk(crit.length, 'critiques à traiter', crit.length > 0)}</div>`;
+    html += `<h3 class="dlg-h">Critiques sans réponse</h3><p class="dlg-sub">Ce qu’un recruteur ou un client attend, et que l’agent n’a pas su donner. Les plus récentes d’abord.</p>`;
+    html += crit.length ? `<ul class="qs">${crit.map(qItem).join('')}</ul>` : '<p class="recap-wait">Aucune pour l’instant.</p>';
+    if (other.length) html += `<h3 class="dlg-h">Autres réponses à améliorer</h3><ul class="qs">${other.map(qItem).join('')}</ul>`;
+    html += `<h3 class="dlg-h">Par thème</h3><p class="dlg-sub">Pastille rouge : pas de réponse complète ; grise : hors sujet ou détournement${offTopic ? ` (${offTopic})` : ''}.</p><div class="themes">`;
+    for (const [t, list] of [...themes].sort((a, b) => b[1].length - a[1].length)) {
+      const miss = list.filter((it) => MISSED.has(it.status)).length;
+      html += `<details><summary>${esc(t)}<span>${list.length}${miss ? ` · <span class="gap">${miss} sans réponse</span>` : ''}</span></summary><ul>${dedupe(list).map((it) => `<li class="${MISSED.has(it.status) ? 'miss' : it.status === 'hors_sujet' || it.status === 'detournement' ? 'off' : ''}">${esc(it.question)}${it.n > 1 ? ` × ${it.n}` : ''}</li>`).join('')}</ul></details>`;
+    }
+    html += '</div>';
+    const cost = r.tokens ? money({ usd: SUM_PRICE(r.tokens), exact: true }) : '';
+    html += `<p class="dlg-note">Analysé le ${esc(when(r.at, { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }))} par Claude Haiku 5.5${cost ? `, pour ${cost}` : ''}. Refaite seulement quand de nouvelles questions arrivent.${note ? ' ' + note : ''}</p>`;
+    $('recap-body').innerHTML = html;
+  };
+  const recapPeek = () => {
+    const n = recap ? dedupe((recap.items || []).filter((it) => it.critical && MISSED.has(it.status))).length : 0;
+    $('recap-peek').textContent = n ? `${n} critique${n > 1 ? 's' : ''}` : '';
+    $('recap-peek').className = n ? 'hot' : '';
+  };
+  const ERR_RECAP = { no_model: 'Analyse impossible : ANTHROPIC_API_KEY manque sur Vercel.', no_recap: 'Le modèle n’a pas renvoyé d’analyse, réessayez.' };
+  let recapBusy = false;
+  const runRecap = async () => {
+    if (recapBusy) return; recapBusy = true;
+    renderRecap(recap, recap ? 'Vérification des nouvelles questions…' : '');
+    const r = await api({ method: 'POST', body: JSON.stringify({ recap: true }) });
+    recapBusy = false;
+    if (!r || !r.ok) { const e = r ? (await r.json().catch(() => ({}))).error : ''; renderRecap(recap, ERR_RECAP[e] || 'Analyse impossible pour l’instant.'); return; }
+    recap = await r.json(); renderRecap(recap); recapPeek();
   };
 
   // Sorted by date, the list is cut into days; by cost or length, each row carries its own date
@@ -402,6 +497,15 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   $('back').addEventListener('click', () => $('app').classList.remove('reading'));
   $('logout').addEventListener('click', () => logout());
   $('analytics-open').addEventListener('click', () => { $('analytics').showModal(); drawChart(); });
+  $('recap-open').addEventListener('click', () => { $('recap').showModal(); runRecap(); });
+  $('recap-refresh').addEventListener('click', runRecap);
+  $('recap-close').addEventListener('click', () => $('recap').close());
+  $('recap').addEventListener('click', (e) => {
+    if (e.target === $('recap')) return $('recap').close();
+    const b = e.target.closest('button[data-key]'); if (!b) return;
+    const i = chats.findIndex((c) => c.key === b.dataset.key);
+    if (i >= 0) { $('recap').close(); read(i); }
+  });
   $('analytics-close').addEventListener('click', () => $('analytics').close());
   $('analytics').addEventListener('click', (e) => { if (e.target === $('analytics')) $('analytics').close(); });
   $('all-read').addEventListener('click', () => { for (const c of chats) seen[c.key] = c.msgs.length; saveSeen(); list(); });
