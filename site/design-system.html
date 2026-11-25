@@ -34,6 +34,16 @@ code { font-family: var(--mono); font-size: .86em; }
 .ds-side a:hover, .ds-side a:focus-visible { background: var(--hover); color: var(--fg); }
 .ds-side a[aria-current="true"] { background: var(--active); color: var(--fg); font-weight: 500; }
 .ds-side ol ol a[aria-current="true"] { background: none; color: var(--fg); }
+/* Accordions: one level open at a time (details[name]); the level in view opens by itself while scrolling */
+.ds-side summary { display: flex; align-items: center; list-style: none; cursor: pointer; border-radius: var(--r-pill); }
+.ds-side summary::-webkit-details-marker { display: none; }
+.ds-side summary a { flex: 1; }
+.ds-side summary i { display: grid; place-items: center; width: 28px; height: 28px; flex: none; border-radius: 50%; color: var(--muted); transition: background .2s, color .2s; }
+.ds-side summary:hover i { background: var(--hover); color: var(--fg); }
+.ds-side summary svg { width: 14px; height: 14px; transition: transform .2s var(--ease); }
+.ds-side details[open] summary svg { transform: rotate(90deg); }
+.ds-side details ol { animation: ds-open .2s var(--ease); }
+@keyframes ds-open { from { opacity: 0; transform: translateY(-4px); } }
 .ds-side-title { margin: 0 0 12px 10px; font-size: var(--t-eyebrow); font-weight: 500; color: var(--muted); }
 .ds-group, .label { scroll-margin-top: 96px; }
 .ds-main > .ds-sec:first-child { padding-top: 72px; }
@@ -205,44 +215,44 @@ code { font-family: var(--mono); font-size: .86em; }
   <aside class="ds-side" aria-label="Sommaire">
     <p class="ds-side-title">Sommaire</p>
     <ol>
-      <li><a href="#fondations">Fondations</a>
+      <li><details name="ds-nav"><summary><a href="#fondations">Fondations</a><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg></i></summary>
         <ol>
           <li><a href="#couleurs">Couleurs</a></li>
           <li><a href="#typo">Typographie</a></li>
           <li><a href="#rayons">Rayons</a></li>
           <li><a href="#ombres">Ombres</a></li>
         </ol>
-      </li>
-      <li><a href="#atomes">Atomes</a>
+      </details></li>
+      <li><details name="ds-nav"><summary><a href="#atomes">Atomes</a><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg></i></summary>
         <ol>
           <li><a href="#boutons">Boutons</a></li>
           <li><a href="#pilules">Pilules et chips</a></li>
           <li><a href="#petits">Tags, picto, langue</a></li>
         </ol>
-      </li>
-      <li><a href="#molecules">Molécules</a>
+      </details></li>
+      <li><details name="ds-nav"><summary><a href="#molecules">Molécules</a><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg></i></summary>
         <ol>
           <li><a href="#conversation">Conversation</a></li>
           <li><a href="#contenus">Contenus</a></li>
           <li><a href="#etude">Étude de cas</a></li>
         </ol>
-      </li>
-      <li><a href="#organismes">Organismes</a>
+      </details></li>
+      <li><details name="ds-nav"><summary><a href="#organismes">Organismes</a><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg></i></summary>
         <ol>
           <li><a href="#navigation">Navigation</a></li>
           <li><a href="#cartes">Cartes projet</a></li>
           <li><a href="#appareils">Appareils</a></li>
           <li><a href="#dock">Dock de l’agent</a></li>
         </ol>
-      </li>
-      <li><a href="#gabarits">Gabarits</a>
+      </details></li>
+      <li><details name="ds-nav"><summary><a href="#gabarits">Gabarits</a><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg></i></summary>
         <ol>
           <li><a href="#tpl-accueil">Accueil</a></li>
           <li><a href="#tpl-cas">Étude de cas</a></li>
           <li><a href="#tpl-agent">Agent</a></li>
           <li><a href="#tpl-catalogue">Catalogue</a></li>
         </ol>
-      </li>
+      </details></li>
       <li><a href="#regles">Règles</a></li>
     </ol>
   </aside>
@@ -594,6 +604,7 @@ code { font-family: var(--mono); font-size: .86em; }
   // Side menu: the last level (and group) whose top has passed under the bar is the current one
   const links = [...document.querySelectorAll('.ds-side a')];
   const targets = links.map((a) => document.getElementById(a.hash.slice(1)));
+  let opened = null;  // the level opened by scrolling (a level the visitor opens or closes by hand stays as they left it)
   const current = () => {
     let sec = null, sub = null;
     targets.forEach((t, i) => {
@@ -603,6 +614,8 @@ code { font-family: var(--mono); font-size: .86em; }
     if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) { sec = links.at(-1); sub = null; }  // the last section is reached
     sec ||= links[0];
     for (const a of links) a.setAttribute('aria-current', String(a === sec || a === sub));
+    const open = sec.closest('li').querySelector('details');
+    if (open && !open.open && open !== opened) { open.open = true; opened = open; }
   };
   addEventListener('scroll', current, { passive: true }); current();
   // Templates: show or hide the columns, gutters and measures
