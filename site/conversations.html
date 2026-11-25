@@ -349,7 +349,12 @@ dialog { max-height: calc(100svh - 32px); overflow-y: auto; }
     c.msgs.forEach((m, j) => {
       html += `<div class="msg me">${esc(m.question)}</div>`;
       const ended = ENDED.test(m.answer);
-      for (const part of m.answer.replace(ENDED, '').split(/\n-{3,}\n/)) if (part.trim()) html += `<div class="msg bot">${md(part.trim())}</div>`;
+      // As the visitor saw it: bubbles split on --- (or ~~~, a pause), the [[A | B]] line shown as the suggestions offered
+      const sugg = m.answer.match(/\n?\[\[([^\]]*\|[^\]]*)\]\]\s*$/);
+      const body = m.answer.replace(ENDED, '').replace(/\n?\[\[[^\]]*\]\]\s*$/, '');
+      const seps = [...body.matchAll(/\n[ \t]*(-{3,}|~{3,})[ \t]*(?=\n|$)/g)].map((x) => x[1][0]);
+      body.split(/\n[ \t]*(?:-{3,}|~{3,})[ \t]*(?:\n|$)/).forEach((part, k) => { if (part.trim()) html += `${seps[k - 1] === '~' ? '<div class="note">… pause …</div>' : ''}<div class="msg bot">${md(part.trim())}</div>`; });
+      if (sugg) html += `<div class="note">Suggestions proposées : ${sugg[1].split('|').map((x) => `<span class="tag">${esc(x.trim())}</span>`).join('')}</div>`;
       const tags = [LABEL[m.outcome] || (m.outcome !== 'ok' ? m.outcome : ''), ended ? 'conversation fermée' : ''].filter(Boolean);
       const votes = c.votes.filter((v) => v.question === m.question).map((v) => v.vote === 'up' ? '👍' : '👎').join(' ');
       html += `<div class="note">${when(m.at, { hour: '2-digit', minute: '2-digit', second: '2-digit' })} · ${money(costOf(m, j, c.msgs))} ${tags.map((t) => `<span class="tag${bad(m.outcome) || t === 'conversation fermée' ? ' bad' : ''}">${esc(t)}</span>`).join('')}${votes}</div>`;
