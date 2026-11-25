@@ -52,9 +52,6 @@ body { overflow-x: clip; }
 .copy-btn { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: var(--r-pill); border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer; margin-top: 10px; transition: background .2s; }
 .copy-btn:hover, .copy-btn:focus-visible { background: var(--soft); }
 
-/* Tags: outlined (.hero-tags) or filled (.tags) */
-.hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-.hero-tags span { font-size: var(--t-small); letter-spacing: var(--track-label); color: var(--fg-3); border: 1px solid var(--line); border-radius: var(--r-pill); padding: 5px 12px; }
 /* Certification card: logo, issuer, title, arrow */
 .cert { display: flex; align-items: center; gap: 14px; margin: 24px 0 24px; padding: 14px 16px; max-width: 60ch; border: 1px solid var(--line); border-radius: var(--r-sm); text-decoration: none; color: inherit; transition: border-color .2s, background .2s; }
 .cert:hover, .cert:focus-visible { border-color: var(--line-strong); background: var(--soft); }
@@ -66,8 +63,6 @@ body { overflow-x: clip; }
 .cert-arrow { flex: none; width: 12px; height: 12px; margin-left: auto; color: var(--muted); transition: transform .2s, color .2s; }
 .cert:hover .cert-arrow, .cert:focus-visible .cert-arrow { color: var(--fg); transform: translate(1px, -1px); }
 .cert + .cert { margin-top: -12px; }  /* stacked certifications sit closer together */
-.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-.tags span { font-size: var(--t-small); padding: 6px 12px; border-radius: var(--r-pill); background: var(--soft); }
 
 /* ── Device frames: MacBook + iPhone around real screenshots ── */
 .visual { position: relative; min-width: 0; display: flex; align-items: center; justify-content: center; padding: 40px 40px 40px 0; }

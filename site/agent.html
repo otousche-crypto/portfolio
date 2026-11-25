@@ -96,10 +96,6 @@ body { position: relative; }
 .msg.calm { animation: none; }
 @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.6); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .msg { animation-name: fade; } @keyframes fade { from { opacity: 0; } } }
-.typing { display: inline-flex; gap: 4px; padding: 6px 0; }
-.typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--faint); animation: blink 1.2s infinite both; }
-.typing i:nth-child(2) { animation-delay: .2s; } .typing i:nth-child(3) { animation-delay: .4s; }
-@keyframes blink { 0%, 80%, 100% { opacity: .3; } 40% { opacity: 1; } }
 .chips { display: flex; gap: 8px; margin: 0 -16px 10px; padding: 2px 16px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent); mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent); }
 .chips::-webkit-scrollbar { display: none; }
 .chips:empty { display: none; }
@@ -110,24 +106,8 @@ body { position: relative; }
 /* Under an answer: case-study cards, actions and the 👍 / 👎, fading in once the answer is complete */
 .extras { align-self: flex-start; display: flex; flex-direction: column; gap: 8px; max-width: min(600px, 88%); margin-top: -4px; animation: rise .35s ease-out both; }
 .extras.calm { animation: none; }
+/* Case cards, actions and 👍 / 👎, the typing dots: css/components.css */
 @keyframes rise { from { opacity: 0; transform: translateY(4px); } }
-.case { display: flex; align-items: center; gap: 12px; width: min(340px, 100%); padding: 8px 14px 8px 8px; background: var(--raised); border-radius: var(--r-sm); text-decoration: none; color: inherit; box-shadow: var(--sh-ring); transition: box-shadow .2s, transform .2s; }
-.case:hover, .case:focus-visible { box-shadow: 0 0 0 1px var(--line-strong), 0 10px 24px -14px rgba(20,20,40,.3); transform: translateY(-1px); }
-.case img { flex: none; width: 56px; height: 56px; border-radius: var(--r-xs); object-fit: cover; background: var(--bg); }
-.case span { flex: 1; display: flex; flex-direction: column; min-width: 0; font-size: 14.5px; font-weight: 500; }
-.case small { font-size: 12.5px; font-weight: 400; color: var(--muted); }
-.case svg { flex: none; width: 12px; height: 12px; color: var(--muted); }
-.acts { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
-.act { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 13px; color: var(--fg-3); text-decoration: none; background: none; border: 0; padding: 6px 10px; border-radius: 999px; cursor: pointer; transition: background .2s, color .2s; }
-.act:hover, .act:focus-visible { background: var(--hover); color: var(--fg); }
-.act.primary { background: var(--ink); color: #fff; }
-.act.primary:hover, .act.primary:focus-visible { background: var(--ink-hover); color: #fff; }
-.act svg { width: 14px; height: 14px; }
-.fb { padding: 6px; }
-.fb[aria-pressed="true"] { color: var(--fg); background: var(--active); }
-.fb:disabled { cursor: default; }
-.fb:disabled:not([aria-pressed="true"]) { opacity: .35; }
-.thanks { font-size: 12.5px; color: var(--muted); padding-left: 4px; }
 
 /* ── Composer ── */
 .dock { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; padding: 10px 0 max(14px, env(safe-area-inset-bottom, 0px)); pointer-events: none; }
@@ -190,9 +170,6 @@ body { position: relative; }
 /* One line, always: on a narrow screen it scrolls sideways rather than wrapping */
 .flow { display: flex; align-items: center; gap: 6px; margin: 0 -16px 18px; padding: 2px 16px; font-size: 13px; white-space: nowrap; overflow-x: auto; scrollbar-width: none; }
 .flow::-webkit-scrollbar { display: none; }
-.flow .loop { background: var(--ink); color: #fff; }
-.flow span { background: var(--raised); border-radius: 999px; padding: 6px 12px; box-shadow: var(--sh-ring); }
-.flow i { font-style: normal; color: var(--muted); }
 .hood-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .hood-grid .wide { grid-column: 1 / -1; }
 .hood h3 { margin: 0 0 8px; font-size: 15.5px; letter-spacing: -0.01em; }

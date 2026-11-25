@@ -9,13 +9,13 @@ Trois couches, de l'atome à la page (catalogue complet : `site/design-system.ht
 | Fichier | Contenu | Chargé par |
 |---|---|---|
 | `site/css/tokens.css` | Fondations : couleurs, typo, rayons, ombres, verre, motion + base | toutes les pages |
-| `site/css/components.css` | Atomes et molécules communs à toutes les surfaces : pilule discrète `.tool`, `.chip`, picto `.ipic`, bulle `.msg`, `.panel`, tuiles `.tiles` | toutes les pages |
-| `site/css/site.css` | Organismes publics : barre du haut, label, boutons, tags, certification, cadres MacBook/iPhone, carte projet `.card` + miniature Agent, contact et pied de page, kit étude de cas `cs-*`, lightbox | accueil, études de cas, catalogue |
+| `site/css/components.css` | Atomes et molécules communs à toutes les surfaces : pilule discrète `.tool`, `.chip`, `.badge`, picto `.ipic`, bulle `.msg`, `.panel`, tuiles `.tiles`, et les pièces de l'agent (`.typing`, carte d'étude `.case`, actions `.act` / `.fb`, parcours `.flow`) | toutes les pages |
+| `site/css/site.css` | Organismes publics : barre du haut, label, boutons, certification, cadres MacBook/iPhone, carte projet `.card` + miniature Agent, contact et pied de page, kit étude de cas `cs-*`, lightbox | accueil, études de cas, catalogue |
 | `<style>` de chaque page | Sa mise en page et les habillages produit (`.moon`, `.sklip`…) | — |
 | `site/agent-dock.js` | Le dock de l'agent, injecté en bas des pages publiques | accueil, études de cas, catalogue |
 | `site/contact.js` | Le bloc Contact : portrait ASCII posé sur le pied de page, bouton « Copier l'adresse » | études de cas, catalogue (l'accueil garde son propre script, qui dessine aussi la tête de la miniature Agent) |
 
-**Fusions** : `.eq-nums`, `.eq-results` et `.bm-stats` ne font plus qu'un, `.tiles`. Les bulles, chips, picto « i » et pilules de l'agent sont des composants partagés. Les `.eq-*` partagés par deux études de cas sont renommés en `cs-*` (`cs-tldr`, `cs-keys`, `cs-eye`, `cs-step`, `cs-roles`, `cs-phases`).
+**Fusions** : `.eq-nums`, `.eq-results` et `.bm-stats` ne font plus qu'un, `.tiles`. Les bulles, chips, picto « i » et pilules de l'agent sont des composants partagés. Les tags du hero (contour), ceux d'À propos et les puces de Sklip ne font plus qu'un badge plein, `.badge`. Les `.eq-*` partagés par deux études de cas sont renommés en `cs-*` (`cs-tldr`, `cs-keys`, `cs-eye`, `cs-step`, `cs-roles`, `cs-phases`).
 
 ## Tokens
 

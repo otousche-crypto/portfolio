@@ -108,7 +108,7 @@ code { font-family: var(--mono); font-size: .86em; }
 @media (max-width: 760px) { .ds-stage .iphone { right: 12px; bottom: 16px; width: 26%; border-radius: 16px; padding: 3px; } .ds-stage .iphone .scr { border-radius: 13px; } }
 .ds-stage .agd-field { width: min(640px, 100%); cursor: default; }
 .ds-contact .contact { min-height: 0; padding: 0; border-top: 0; gap: 20px; }
-.ds-footer { padding-block: 0 8px; overflow: hidden; }
+.ds-footer { padding-block: 32px 8px; overflow: hidden; }
 .ds-footer footer { width: 100%; padding-block: 24px 16px; }
 .ds-chat { display: flex; flex-direction: column; gap: 10px; width: 100%; }
 .ds-swatch-ink { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -173,6 +173,16 @@ code { font-family: var(--mono); font-size: .86em; }
 .wf-dots { background-image: radial-gradient(rgba(15,15,18,.09) 1px, transparent 1px); background-size: calc(18 * var(--px)) calc(18 * var(--px)); }
 @media (max-width: 760px) { .ds-tpl-views { grid-template-columns: 1fr; } .ds-tpl-views figure:last-child { width: 56%; margin-inline: auto; } }
 
+/* Page-specific modules: cards linking to the module on its page */
+.ds-specs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.ds-spec-card { display: grid; gap: 6px; align-content: start; padding: 18px 20px; border-radius: var(--r-md); box-shadow: var(--sh-ring); text-decoration: none; color: inherit; transition: box-shadow .2s, transform .2s var(--ease); }
+.ds-spec-card:hover, .ds-spec-card:focus-visible { box-shadow: 0 0 0 1px var(--line-strong), var(--sh-float); transform: translateY(-2px); }
+.ds-spec-card b { display: flex; align-items: center; gap: 6px; font-size: 15.5px; font-weight: 600; letter-spacing: -0.01em; }
+.ds-spec-card b svg { width: 11px; height: 11px; color: var(--muted); }
+.ds-spec-card span { font-size: 14px; line-height: 1.5; color: var(--fg-2); }
+.ds-spec-card .ds-spec-where { font-size: var(--t-small); font-weight: 500; color: var(--muted); }
+.ds-spec-card code { font-size: 12px; color: var(--muted); }
+
 /* Rules */
 .ds-rules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .ds-rule { border-radius: var(--r-md); padding: 20px; background: var(--soft); }
@@ -226,11 +236,13 @@ code { font-family: var(--mono); font-size: .86em; }
         <ol>
           <li><a href="#boutons">Boutons</a></li>
           <li><a href="#pilules">Pilules et chips</a></li>
-          <li><a href="#petits">Tags, picto, langue</a></li>
+          <li><a href="#petits">Badges, picto, langue</a></li>
+          <li><a href="#separateurs">Séparateurs</a></li>
         </ol>
       </details></li>
       <li><details name="ds-nav"><summary><a href="#molecules">Molécules</a><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg></i></summary>
         <ol>
+          <li><a href="#cartes-mol">Cartes</a></li>
           <li><a href="#conversation">Conversation</a></li>
           <li><a href="#contenus">Contenus</a></li>
           <li><a href="#etude">Étude de cas</a></li>
@@ -239,12 +251,14 @@ code { font-family: var(--mono); font-size: .86em; }
       <li><details name="ds-nav"><summary><a href="#organismes">Organismes</a><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg></i></summary>
         <ol>
           <li><a href="#navigation">Navigation</a></li>
+          <li><a href="#entete">En-tête d’étude</a></li>
           <li><a href="#cartes">Cartes projet</a></li>
           <li><a href="#appareils">Appareils</a></li>
           <li><a href="#dock">Dock de l’agent</a></li>
           <li><a href="#contact-specimen">Contact et pied de page</a></li>
         </ol>
       </details></li>
+      <li><a href="#specifiques">Spécifiques</a></li>
       <li><details name="ds-nav"><summary><a href="#gabarits">Gabarits</a><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg></i></summary>
         <ol>
           <li><a href="#tpl-accueil">Accueil</a></li>
@@ -308,7 +322,7 @@ code { font-family: var(--mono); font-size: .86em; }
   <!-- ── Atoms ── -->
   <section class="ds-sec">
     <div class="label" id="atomes"><span>Atomes</span><span>Indivisibles</span></div>
-    <p class="ds-intro">Les plus petites pièces : un bouton, une pilule, un tag. Elles ne se décomposent plus et se réutilisent partout.</p>
+    <p class="ds-intro">Les plus petites pièces : un bouton, une pilule, un badge, un trait. Elles ne se décomposent plus et se réutilisent partout.</p>
     <div class="ds-group" id="boutons"><h3>Boutons</h3>
       <div class="ds-comps">
         <div class="ds-comp"><div class="ds-stage"><a class="btn primary" href="#boutons">Lire le use case</a><a class="btn" href="#boutons">Site <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg></a></div><div class="ds-cap"><b>Bouton</b><code>.btn.primary</code> · <code>.btn</code> <i>— cartes projet, étude suivante</i></div></div>
@@ -324,10 +338,17 @@ code { font-family: var(--mono); font-size: .86em; }
         <div class="ds-comp wide"><div class="ds-stage canvas"><button class="chip" type="button">Ses projets ?</button><button class="chip" type="button">Comment travaille-t-il ?</button></div><div class="ds-cap"><b>Chip de suggestion</b><code>.chip</code> <i>— sous les réponses de l’agent</i></div></div>
       </div>
     </div>
-    <div class="ds-group" id="petits"><h3>Tags, picto, langue</h3>
+    <div class="ds-group" id="petits"><h3>Badges, picto, langue</h3>
       <div class="ds-comps">
-        <div class="ds-comp"><div class="ds-stage col"><div class="hero-tags"><span>User research</span><span>Prototyping</span><span>Product vision</span></div><div class="tags"><span>User research</span><span>Vibe coding</span></div></div><div class="ds-cap"><b>Tags</b><code>.hero-tags</code> contour · <code>.tags</code> plein <i>— hero et À propos de l’accueil</i></div></div>
+        <div class="ds-comp"><div class="ds-stage"><div class="badges"><span>User research</span><span>Prototyping</span><span>Product vision</span><span>Vibe coding</span></div></div><div class="ds-cap"><b>Badges</b><code>.badges</code> · <code>.badge</code> <i>— hero et À propos de l’accueil, sources de la méthode Sklip</i></div></div>
         <div class="ds-comp"><div class="ds-stage"><button class="ipic" type="button" aria-label="Informations"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6.25"/><path d="M8 7.2v3.6M8 5.1v.1"/></svg></button><span class="lang-switch" role="group" aria-label="Langue"><button type="button" aria-pressed="true">FR</button><i aria-hidden="true">/</i><button type="button" aria-pressed="false">EN</button></span></div><div class="ds-cap"><b>Picto « i », sélecteur de langue</b><code>.ipic</code> <i>— dans les réponses de l’agent</i> · <code>.lang-switch</code> <i>— pied de page</i></div></div>
+      </div>
+    </div>
+    <div class="ds-group" id="separateurs"><h3>Séparateurs</h3>
+      <div class="ds-comps">
+        <div class="ds-comp"><div class="ds-stage col"><p style="margin: 0; color: var(--fg-2)">Fin d’une partie.</p><hr class="cs-hr" style="margin: 0 !important; width: 100%"><p style="margin: 0; color: var(--fg-2)">Début de la suivante.</p></div><div class="ds-cap"><b>Trait</b><code>.cs-hr</code> · 1 px <code>--line</code> <i>— entre deux parties d’une étude de cas</i></div></div>
+        <div class="ds-comp"><div class="ds-stage col"><div class="label"><span>Projets</span></div></div><div class="ds-cap"><b>Label sur un trait</b><code>.label</code> <i>— ouvre chaque section de l’accueil</i></div></div>
+        <div class="ds-comp wide"><div class="ds-stage col ds-footer"><footer><span>Pleine largeur, d’un bord à l’autre de l’écran</span><span></span></footer></div><div class="ds-cap"><b>Trait pleine largeur</b><code>footer::before</code> <i>— au-dessus du pied de page, dépasse le conteneur jusqu’aux bords de l’écran</i></div></div>
       </div>
     </div>
   </section>
@@ -335,18 +356,31 @@ code { font-family: var(--mono); font-size: .86em; }
   <!-- ── Molecules ── -->
   <section class="ds-sec">
     <div class="label" id="molecules"><span>Molécules</span><span>Quelques atomes assemblés</span></div>
-    <p class="ds-intro">Des groupes simples qui forment une unité : une bulle et son texte, une tuile chiffrée, une carte de certification.</p>
+    <p class="ds-intro">Des groupes simples qui forment une unité : une bulle et son texte, une carte, une figure et sa légende.</p>
+    <div class="ds-group" id="cartes-mol"><h3>Cartes</h3>
+      <div class="ds-comps">
+        <div class="ds-comp wide"><div class="ds-stage"><a class="cert" href="#contenus"><span class="cert-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17.304 3.541h-3.672l6.696 16.918H24Zm-10.608 0L0 20.459h3.744l1.37-3.553h7.005l1.369 3.553h3.744L10.536 3.541Zm-.371 10.223 2.291-5.946 2.292 5.946Z"/></svg></span><span class="cert-txt"><span>Certification Anthropic</span><b>AI Fluency: Framework &amp; Foundations</b></span><svg class="cert-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></div><div class="ds-cap"><b>Certification</b><code>.cert</code> <i>— À propos de l’accueil</i></div></div>
+        <div class="ds-comp wide"><div class="ds-stage canvas"><div class="panel" style="width: 100%"><h4 style="margin: 0 0 8px; font-size: 15.5px">Une seule source de vérité</h4><p style="margin: 0; color: var(--fg-2); font-size: 14px">L’agent ne connaît qu’un profil rédigé par Olivier. Ce qui n’y figure pas, il dit qu’il ne le sait pas.</p></div></div><div class="ds-cap"><b>Panneau</b><code>.panel</code> <i>— Informations de l’agent (à fond blanc, sur le gris de l’agent)</i></div></div>
+        <div class="ds-comp"><div class="ds-stage canvas"><a class="case" href="sklip.html"><img src="img/cases/sklip/hero.jpg" alt=""><span>Sklip<small>Étude de cas</small></span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg></a></div><div class="ds-cap"><b>Carte d’étude</b><code>.case</code> <i>— proposée par l’agent sous une réponse</i></div></div>
+        <div class="ds-comp"><div class="ds-stage"><div class="tiles" style="--n: 2; width: 100%"><div><b>669</b><span>voyageurs</span></div><div><b>72 %</b><span>actifs ce mois-ci</span></div></div></div><div class="ds-cap"><b>Tuile chiffrée</b><code>.tiles</code> <i>— voir Contenus pour la grille complète</i></div></div>
+      </div>
+    </div>
     <div class="ds-group" id="conversation"><h3>Conversation</h3>
       <div class="ds-comps">
         <div class="ds-comp wide"><div class="ds-stage canvas col"><div class="ds-chat"><div class="msg bot"><p>Olivier est <b>Senior Product Designer</b>. Aujourd’hui il conçoit <i>et</i> construit :</p><ul><li>Go MoonBound</li><li>Sklip</li></ul></div><div class="msg me">Il cherche quoi en ce moment ?</div><div class="msg bot"><p>Pour en savoir plus sur cet agent, cliquez sur <span class="ipic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6.25"/><path d="M8 7.2v3.6M8 5.1v.1"/></svg></span>.</p></div></div></div><div class="ds-cap"><b>Bulles</b><code>.msg.bot</code> · <code>.msg.me</code> <i>— page Agent : listes, gras, italique, picto</i></div></div>
-        <div class="ds-comp wide"><div class="ds-stage canvas"><div class="panel" style="width: 100%"><h4 style="margin: 0 0 8px; font-size: 15.5px">Une seule source de vérité</h4><p style="margin: 0; color: var(--fg-2); font-size: 14px">L’agent ne connaît qu’un profil rédigé par Olivier. Ce qui n’y figure pas, il dit qu’il ne le sait pas.</p></div></div><div class="ds-cap"><b>Panneau</b><code>.panel</code> <i>— Informations de l’agent</i></div></div>
+        <div class="ds-comp"><div class="ds-stage canvas col"><div class="msg bot" style="align-self: flex-start"><span class="typing" aria-label="…"><i></i><i></i><i></i></span></div></div><div class="ds-cap"><b>Saisie en cours</b><code>.typing</code> <i>— dans une bulle, le temps que la réponse arrive</i></div></div>
+        <div class="ds-comp"><div class="ds-stage canvas col"><div class="acts"><a class="act primary" href="#conversation">Écrire à Olivier</a><a class="act" href="#conversation">LinkedIn</a><button class="act fb" type="button" aria-label="Utile" aria-pressed="true">👍</button><button class="act fb" type="button" aria-label="Pas utile" disabled>👎</button><span class="thanks">Merci !</span></div></div><div class="ds-cap"><b>Actions et avis</b><code>.acts</code> · <code>.act</code> · <code>.fb</code> <i>— sous une réponse de l’agent</i></div></div>
+        <div class="ds-comp wide"><div class="ds-stage canvas"><div class="flow" style="margin: 0; padding: 0; display: flex; align-items: center; gap: 6px; font-size: 13px; flex-wrap: wrap"><span>Votre question</span><i>→</i><span>Contrôles et limites</span><i>→</i><span>Claude Haiku + profil</span><i>→</i><span>Réponse</span><i>→</i><span class="loop">Suggestions ↺</span></div></div><div class="ds-cap"><b>Parcours</b><code>.flow</code> <i>— Informations de l’agent : comment une question circule</i></div></div>
       </div>
     </div>
     <div class="ds-group" id="contenus"><h3>Contenus</h3>
       <div class="ds-comps">
         <div class="ds-comp wide"><div class="ds-stage col"><div class="tiles"><div><b>7,8 M</b><span>cartes scannées</span></div><div><b>6,2 M€</b><span>sur Kickstarter</span></div><div><b>15+</b><span>pays</span></div></div></div><div class="ds-cap"><b>Tuiles chiffrées</b><code>.tiles</code> · colonnes <code>--n</code>, fond <code>--tile-bg</code>, <code>.stack</code> en colonne sur mobile <i>— Altered, Go MoonBound, Sklip</i></div></div>
-        <div class="ds-comp wide"><div class="ds-stage col"><div class="label"><span>Laboratoire</span><span>Expérimentations</span></div></div><div class="ds-cap"><b>Label de section</b><code>.label</code> : un titre sur un trait <i>— sections de l’accueil</i></div></div>
-        <div class="ds-comp wide"><div class="ds-stage"><a class="cert" href="#contenus"><span class="cert-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17.304 3.541h-3.672l6.696 16.918H24Zm-10.608 0L0 20.459h3.744l1.37-3.553h7.005l1.369 3.553h3.744L10.536 3.541Zm-.371 10.223 2.291-5.946 2.292 5.946Z"/></svg></span><span class="cert-txt"><span>Certification Anthropic</span><b>AI Fluency: Framework &amp; Foundations</b></span><svg class="cert-arrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></div><div class="ds-cap"><b>Certification</b><code>.cert</code> <i>— À propos de l’accueil</i></div></div>
+        <div class="ds-comp"><div class="ds-stage col"><div class="cs-text"><ul class="cs-list" style="font-size: 16px"><li><strong>Cadrer</strong> le besoin avec les joueurs</li><li><strong>Concevoir</strong> le parcours</li><li><strong>Tester</strong> avant de livrer</li></ul></div></div><div class="ds-cap"><b>Liste</b><code>.cs-list</code> <i>— études de cas, puces grises</i></div></div>
+        <div class="ds-comp"><div class="ds-stage col"><blockquote class="cs-quote"><p>Une intention qui ne se dilue plus entre le design et le code.</p></blockquote></div><div class="ds-cap"><b>Citation</b><code>.cs-quote</code></div></div>
+        <div class="ds-comp wide"><div class="ds-stage col"><figure class="cs-fig" style="max-width: 560px; margin: 0 auto !important"><span class="zoom" style="cursor: default"><img src="img/cases/equinox-altered/howtoplay-desktop.jpg" alt=""></span><figcaption>La page How to play, version desktop.</figcaption></figure></div><div class="ds-cap"><b>Figure et légende</b><code>.cs-fig</code> <i>— un clic ouvre l’image en grand (<code>.lightbox</code>) sur les études de cas</i></div></div>
+        <div class="ds-comp wide"><div class="ds-stage col"><details class="cs-log" open><summary>Historique des mises à jour<i aria-hidden="true"></i></summary><ol><li><div><b>v1.1</b><span>avril 2026</span></div><p>Classement et partage.</p></li><li><div><b>v1.0</b><span>mars 2026</span></div><p>Lancement : scène 3D Terre / Lune.</p></li></ol></details></div><div class="ds-cap"><b>Journal repliable</b><code>.cs-log</code> <i>— Go MoonBound</i></div></div>
+        <div class="ds-comp wide"><div class="ds-stage col"><aside class="cs-aside" style="margin: 0 !important"><p class="cs-aside-eye">Coulisses</p><h2 class="cs-h3">Méthode : le framework BMAD</h2><div class="cs-text"><p>Un encadré gris pour une histoire à côté du récit principal.</p></div></aside></div><div class="ds-cap"><b>Encadré</b><code>.cs-aside</code> <i>— Sklip</i></div></div>
       </div>
     </div>
     <div class="ds-group" id="etude"><h3>Étude de cas</h3>
@@ -354,7 +388,6 @@ code { font-family: var(--mono); font-size: .86em; }
         <div class="ds-comp wide"><div class="ds-stage col"><dl class="cs-meta"><div><dt>Rôle</dt><dd>Senior Product Designer</dd></div><div><dt>Entreprise</dt><dd>Equinox</dd></div><div><dt>Période</dt><dd>2021–2025</dd></div></dl></div><div class="ds-cap"><b>Méta</b><code>.cs-meta</code> <i>— en-tête des études de cas</i></div></div>
         <div class="ds-comp wide"><div class="ds-stage col"><section class="cs-tldr"><div class="cs-eye">En bref</div><ol class="cs-keys"><li><b>Un écosystème</b> pensé en trois temps.</li><li><b>Un paiement</b> conforme dans 15 pays.</li></ol></section></div><div class="ds-cap"><b>Résumé</b><code>.cs-tldr</code> · <code>.cs-keys</code> <i>— Altered, Go MoonBound</i></div></div>
         <div class="ds-comp"><div class="ds-stage col"><p class="cs-step" style="margin: 0 !important">Temps 1 · Cadrer</p><dl class="cs-roles"><div><dt>Mon rôle</dt><dd>Cadrer, concevoir, tester.</dd></div></dl></div><div class="ds-cap"><b>Étape, tableau de rôles</b><code>.cs-step</code> · <code>.cs-roles</code></div></div>
-        <div class="ds-comp"><div class="ds-stage col"><blockquote class="cs-quote"><p>Une intention qui ne se dilue plus entre le design et le code.</p></blockquote></div><div class="ds-cap"><b>Citation</b><code>.cs-quote</code></div></div>
       </div>
     </div>
   </section>
@@ -366,6 +399,17 @@ code { font-family: var(--mono); font-size: .86em; }
     <div class="ds-group" id="navigation"><h3>Navigation</h3>
       <div class="ds-comps">
         <div class="ds-comp wide"><div class="ds-stage col"><header class="top"><a class="brand" href="#navigation"><span>Olivier</span><span>Tousche</span></a><nav><a href="#navigation">Projets</a><a href="#navigation">À propos</a><a href="#navigation">Contact</a></nav></header></div><div class="ds-cap"><b>Barre du haut</b><code>.top</code> · verre <code>--glass</code>, collante <i>— toutes les pages publiques ; c’est elle, en haut de cette page</i></div></div>
+      </div>
+    </div>
+    <div class="ds-group" id="entete"><h3>En-tête d’étude de cas</h3>
+      <div class="ds-comps">
+        <div class="ds-comp wide"><div class="ds-stage col">
+          <a class="cs-back" href="#entete" style="align-self: flex-start">← Tous les projets</a>
+          <header class="cs-head"><div class="cs-kicker"><img src="img/cases/sklip/logo.png" alt="">Sklip</div><h1 style="font-size: clamp(28px, 3.6vw, 44px)">Concevoir facilement ses propres Scratch Tools</h1><p class="cs-lede" style="font-size: 17px">Du constat de marché au produit testable.</p>
+            <div class="cs-metarow" style="margin-top: 24px"><dl class="cs-meta"><div><dt>Rôle</dt><dd>Product Designer &amp; Builder</dd></div><div><dt>Durée</dt><dd>2026</dd></div></dl><a class="cs-visit" href="sklip.html">Sklip <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l6-6M4 3h5v5"/></svg></a></div>
+          </header>
+          <div class="cs-hero" style="--hero-bg: #100e16; --hero-fit: cover; margin-top: 28px"><img src="img/cases/sklip/hero.jpg" alt=""></div>
+        </div><div class="ds-cap"><b>En-tête d’étude de cas</b><code>.cs-back</code> · <code>.cs-head</code> · <code>.cs-meta</code> · <code>.cs-visit</code> · <code>.cs-hero</code> <i>— haut de chaque étude de cas ; le visuel prend toute la largeur du conteneur</i></div></div>
       </div>
     </div>
     <div class="ds-group" id="cartes"><h3>Cartes projet</h3>
@@ -424,6 +468,21 @@ code { font-family: var(--mono); font-size: .86em; }
   </section></div><div class="ds-cap"><b>Contact</b><code>.contact</code> · <code>contact.js</code> <i>— bas de chaque page publique. Le script y ajoute le portrait ASCII d’Olivier, posé sur le trait du pied de page et coupé par le bord droit : il est en vrai en bas de cette page.</i></div></div>
         <div class="ds-comp wide"><div class="ds-stage col ds-footer"><footer><span>© 2026 Olivier Tousche</span><span class="lang-switch" role="group" aria-label="Langue · Language"><button type="button" data-demo-lang="fr" aria-pressed="true">FR</button><i aria-hidden="true">/</i><button type="button" data-demo-lang="en" aria-pressed="false">EN</button></span></footer></div><div class="ds-cap"><b>Pied de page</b><code>footer</code> · <code>.lang-switch</code> <i>— toutes les pages publiques ; un trait pleine largeur au-dessus, le choix de langue à droite</i></div></div>
       </div>
+    </div>
+  </section>
+
+  <!-- ── Page-specific modules ── -->
+  <section class="ds-sec">
+    <div class="label" id="specifiques"><span>Spécifiques</span><span>Hors système</span></div>
+    <p class="ds-intro">Des modules qui n’existent que sur une page, souvent aux couleurs d’un produit. Ils s’appuient sur les tokens, mais ne sont pas des composants du système : leur CSS reste dans leur page. Un clic ouvre le module en place.</p>
+    <div class="ds-specs-grid">
+        <a class="ds-spec-card" href="gomoonbound.html#rapport"><span class="ds-spec-where">Go MoonBound</span><b>Rapport de mission <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></b><span>Les chiffres en direct, dans le ciel étoilé du produit : tuiles vitrées, courbe, indicateurs.</span><code>gm-report</code></a>
+        <a class="ds-spec-card" href="sklip.html#personas"><span class="ds-spec-where">Sklip</span><b>Fiches personas <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></b><span>Un carrousel de fiches aux couleurs et à la typo de Sklip (Outfit).</span><code>sp-*</code></a>
+        <a class="ds-spec-card" href="sklip.html#methode"><span class="ds-spec-where">Sklip</span><b>Schéma de méthode <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></b><span>Les étapes BMAD par agent, avec chevrons, l’humain dans la boucle et les chiffres.</span><code>bmad · bm-*</code></a>
+        <a class="ds-spec-card" href="equinox.html#vitrine"><span class="ds-spec-where">Altered</span><b>Vitrine MacBook défilante <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></b><span>Une page qui défile dans un MacBook, la navigation restant collée en haut.</span><code>showcase · sm-*</code></a>
+        <a class="ds-spec-card" href="equinox.html#phases"><span class="ds-spec-where">Altered</span><b>Phases et schéma <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></b><span>Les trois temps du projet en cartes, et le schéma des flux de paiement.</span><code>cs-phases · cs-diagram</code></a>
+        <a class="ds-spec-card" href="index.html#about"><span class="ds-spec-where">Accueil</span><b>Activité GitHub <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></b><span>Le calendrier des contributions, ses cinq gris lus dans les tokens.</span><code>gh-*</code></a>
+        <a class="ds-spec-card" href="agent.html"><span class="ds-spec-where">Agent</span><b>Barre et champ de l’agent <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></b><span>La jauge de messages en anneau, le champ et son faisceau coloré, le visage ASCII.</span><code>bar · quota · compose</code></a>
     </div>
   </section>
 

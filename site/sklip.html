@@ -27,7 +27,6 @@
 .bm-eye { font-size: 12.5px; font-weight: 500; letter-spacing: var(--track-label); color: var(--muted); }
 .bm-sources { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
 .bm-sources .bm-eye { margin-right: 4px; }
-.bm-chip { font-size: 13px; padding: 4px 11px; border-radius: 999px; background: var(--soft); }
 .bm-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 22px; }
 .bm-step { position: relative; border: 1px solid var(--line); border-radius: var(--r-sm); padding: 14px 14px 16px; display: flex; flex-direction: column; gap: 4px; background: var(--bg); }
 /* chevron between steps */
@@ -43,7 +42,7 @@
 .bm-human { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: var(--r-sm); background: var(--soft); font-size: 14px; color: var(--fg-2); }
 .bm-human svg { width: 18px; height: 18px; flex: none; color: var(--fg); }
 .bm-human b { color: var(--fg); font-weight: 600; }
-.bm-human .bm-chip { background: var(--bg); }
+.bm-human .badge { background: var(--bg); }
 .bm-big { font-size: 30px; line-height: 1; font-weight: 600; letter-spacing: -.03em; font-variant-numeric: tabular-nums; margin-bottom: 4px; }
 .bm-steps:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; border-radius: 16px; }
 .bmad figcaption { font-size: var(--t-caption); color: var(--muted); text-align: center; }
@@ -122,7 +121,7 @@
     <blockquote class="cs-quote"><p class="">Comment permettre à un scratcher de composer son propre scratch tool, juste au tour près, avec des sons qu'il a le droit d'utiliser, sans compétence audio ni budget de studio ?</p></blockquote>
     <div class="cs-text"><ul class="cs-list"><li>Enjeu utilisateur : une boucle qui ne saute pas et qui sonne comme lui, obtenue en minutes et non en soirées.</li><li>Enjeu produit : rendre visible une contrainte physique (1800 ms) sans demander à l'utilisateur de la calculer.</li><li>Enjeu juridique : ne distribuer que des sons dont la provenance et la licence sont documentées.</li><li>Enjeu business : gagner la confiance d'une communauté restreinte avant toute ouverture publique.</li></ul></div>
     <h2 class="cs-h2">Personae et jobs to be done</h2>
-    <div class="sp-carousel"><div class="sp-nav"><span class="sp-count" aria-live="polite">1 / 4</span><button type="button" class="sp-prev" aria-label="Persona précédent">←</button><button type="button" class="sp-next" aria-label="Persona suivant">→</button></div><div class="sp-grid" tabindex="0" aria-label="Personae, faire défiler horizontalement"><article class="sp" style="--c:#FF5470">
+    <div class="sp-carousel" id="personas"><div class="sp-nav"><span class="sp-count" aria-live="polite">1 / 4</span><button type="button" class="sp-prev" aria-label="Persona précédent">←</button><button type="button" class="sp-next" aria-label="Persona suivant">→</button></div><div class="sp-grid" tabindex="0" aria-label="Personae, faire défiler horizontalement"><article class="sp" style="--c:#FF5470">
   <header><svg class="sp-disc" viewBox="0 0 112 112" aria-hidden="true"><circle cx="56" cy="56" r="54" fill="#0C0A12" stroke="#2C2738"/><circle cx="56" cy="56" r="44" fill="none" stroke="#2C2738"/><circle cx="56" cy="56" r="36" fill="none" stroke="#2C2738"/><circle cx="56" cy="56" r="26" fill="#FF5470"/><text x="56" y="57" text-anchor="middle" dominant-baseline="central" font-family="Outfit, sans-serif" font-weight="800" font-size="24" fill="#0C0A12">K</text></svg><div><span class="sp-tag">Primaire · Beta fermée</span><h4>Karim</h4><p>Le compétiteur, DJ professionnel</p></div></header>
   <div class="sp-stats"><div><span class="sp-eye">Budget</span><b>≈ 1 200 €<small> / an</small></b></div><div><span class="sp-eye">Setup</span><span class="sp-gear"><i>Serato</i><i>Rane</i><i>Technics</i></span></div></div>
   <p class="sp-job"><span><em>Quand</em> je prépare une routine de battle ou un cours,</span><span><em>je veux</em> fabriquer vite des scratch tools calés au tour de platine avec des sons à moi,</span><span><em>pour</em> les tester tout de suite sous timecode et les faire travailler à mes élèves.</span></p>
@@ -155,7 +154,7 @@
     <div class="cs-text"><p class="">La réponse : <strong>produire les sons moi-même</strong>. Pour les voix, j'ai écarté les grands services de synthèse vocale en ligne et choisi un modèle open source qui tourne entièrement en local :</p><ul class="cs-list"><li>Gratuit : une fois le modèle téléchargé, générer 3 ou 3 000 prises coûte la même chose. On peut itérer sans compter.</li><li>Sans dépendance : pas de compte, pas de quota, pas de conditions d'utilisation qui changent.</li><li>Des droits clairs : les services connus ne cèdent pas toujours les droits d'exploitation des sons créés. Ici, la licence autorise l'usage commercial et ne revendique aucun droit sur les sons produits.</li><li>Traçable : pour chaque son, je sais quel outil, quelle licence, quelle description de voix et quelle date. C'est ce qui permet de promettre aux utilisateurs des sons utilisables en vidéo et en création.</li></ul></div>
     <div class="cs-text"><p class="">Le modèle crée une voix à partir d'une description écrite (« voix grave et éraillée de MC des années 90 »). Aucune voix réelle n'est clonée, aucun enregistrement existant n'est réutilisé.</p></div>
     <div class="cs-text"><p class="">Tout l'enjeu est de <strong>guider le modèle au maximum</strong>. Je pars d'exemples de samples existants pour décrire précisément le résultat attendu, puis je définis chaque paramètre :</p><ul class="cs-list"><li>Les mots : interjections, chiffres, alphabet</li><li>Les phrases : phrases de battle</li><li>Les voix : hype man, MC boom bap, voix rauque…</li><li>Les tons : crié, parlé, chuchoté…</li><li>Les styles : MC des années 90, bande-annonce de film, menace…</li></ul></div>
-    <figure class="bmad">
+    <figure class="bmad" id="methode">
   
   <ol class="bm-steps" style="--n:5" tabindex="0"><li class="bm-step">
     <div class="bm-top"><span class="bm-n">01</span><span class="bm-eye">Écrire</span></div>
@@ -195,7 +194,7 @@
     <h2 class="cs-h3">Méthode : le framework BMAD</h2>
     <div class="cs-text"><p class="">Seul sur le projet, j'ai utilisé <strong>BMAD</strong> (Breakthrough Method for Agile AI-Driven Development), un framework open source qui organise le travail avec l'IA comme une équipe produit : un analyste, un product manager, un architecte, un UX designer, un développeur. Chaque agent produit un livrable écrit et versionné, qui sert d'entrée au suivant.</p><p class="">L'intérêt pour moi : <strong>garder la rigueur d'une équipe sans en avoir une.</strong> Rien ne se code sans exigence écrite, aucune exigence n'existe sans décision d'architecture qui la porte, et chaque story est développée puis relue dans un contexte neuf.</p></div>
     <figure class="bmad">
-  <div class="bm-sources"><span class="bm-eye">Sources</span><span class="bm-chip">Étude de marché</span><span class="bm-chip">Audit</span><span class="bm-chip">Stratégie de lancement</span><span class="bm-chip">Code existant</span></div>
+  <div class="bm-sources"><span class="bm-eye">Sources</span><span class="badge">Étude de marché</span><span class="badge">Audit</span><span class="badge">Stratégie de lancement</span><span class="badge">Code existant</span></div>
   <ol class="bm-steps" style="--n:5" tabindex="0"><li class="bm-step">
     <div class="bm-top"><span class="bm-n">01</span><span class="bm-eye">Analyse</span></div>
     <h5>Contexte</h5><span class="bm-agent">Agent analyste</span>
