@@ -1,6 +1,7 @@
 // ─── /api/conversations : les logs de l'agent, pour la page privée conversations.html ───
 //   GET   les conversations, les votes et les résumés déjà faits
 //   POST  { key } résume une conversation avec Claude Haiku (une phrase), gardé dans Redis
+//   DELETE    supprime les conversations de 1 ou 2 questions venues uniquement des suggestions (réponses toutes prêtes)
 //   POST  { recap: true } passe en revue les questions tapées par les visiteurs (pas les suggestions) : statut de la
 //         réponse, questions critiques restées sans réponse, ce qu'il faudrait ajouter au profil ; gardé dans Redis
 // Fermé par défaut. Il faut ADMIN_TOKEN (Vercel → Settings → Environment Variables).
@@ -18,6 +19,8 @@ import { MODEL, systemPrompt } from '../agent/prompt.js';
 const url = process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
 const token = process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
 const redis = url && token ? new Redis({ url, token }) : null;
+// Les entrées telles qu'elles sont stockées (texte JSON), pour les retirer de la liste à l'identique
+const raw = url && token ? new Redis({ url, token, automaticDeserialization: false }) : null;
 const perIp = redis ? new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(10, '1 h'), prefix: 'agent:admin:ip' }) : null;
 const perSite = redis ? new Ratelimit({ redis, limiter: Ratelimit.fixedWindow(30, '1 d'), prefix: 'agent:admin:site' }) : null;
 const client = process.env.ANTHROPIC_API_KEY ? new Anthropic() : null;
@@ -164,4 +167,21 @@ export async function POST(req: Request) {
   const tokens = { in: res.usage.input_tokens, out: res.usage.output_tokens };
   await redis!.hset('agent:summaries', { [key]: { n: chat.msgs.length, text, tokens } });
   return json({ key, n: chat.msgs.length, text, tokens });
+}
+
+// Une conversation sans question tapée, d'une ou deux suggestions cliquées : elle n'apprend rien
+const idle = (c: { msgs: Log[] }) => c.msgs.length <= 2 && c.msgs.every((m) => m.outcome === 'canned');
+
+export async function DELETE(req: Request) {
+  const denied = await guard(req);
+  if (denied) return denied;
+  const rows = await raw!.lrange<string>('agent:logs', 0, -1);
+  const logs = rows.map((r) => JSON.parse(r) as Log);
+  const chats = groupChats(logs).filter(idle);
+  const doomed = new Set(chats.flatMap((c) => c.msgs));
+  const p = raw!.pipeline();
+  rows.forEach((r, i) => { if (doomed.has(logs[i])) p.lrem('agent:logs', 1, r); });
+  if (chats.length) p.hdel('agent:summaries', ...chats.map((c) => c.key));
+  if (doomed.size) await p.exec();
+  return json({ chats: chats.length, questions: doomed.size });
 }

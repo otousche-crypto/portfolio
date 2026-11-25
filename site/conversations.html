@@ -31,7 +31,8 @@ button, input, select { font: inherit; color: inherit; }
 .cta.ghost:hover, .cta.ghost:focus-visible { background: var(--raised); box-shadow: 0 0 0 1px var(--line-strong); }
 .cta.ghost span { color: var(--muted); }
 .cta.ghost span.hot { color: var(--danger); font-weight: 500; }
-.mark { justify-self: start; margin: -4px 0 0 -10px; padding: 6px 10px; border: 0; border-radius: var(--r-pill); background: none; color: var(--fg-3); font-size: var(--t-small); cursor: pointer; transition: background .2s, color .2s; }
+.marks { justify-self: start; display: flex; gap: 2px; margin: -4px 0 0 -10px; }
+.mark { padding: 6px 10px; border: 0; border-radius: var(--r-pill); background: none; color: var(--fg-3); font-size: var(--t-small); cursor: pointer; transition: background .2s, color .2s; }
 .mark:hover, .mark:focus-visible { background: var(--hover); color: var(--fg); }
 
 /* Login: one card, as the agent's Informations cards */
@@ -174,7 +175,7 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
       <button class="cta" type="button" id="analytics-open">Analytics <span id="analytics-peek"></span></button>
       <button class="cta ghost" type="button" id="recap-open">Questions des visiteurs <span id="recap-peek"></span></button>
       <p class="stats" id="stats"></p>
-      <button class="mark" type="button" id="all-read">Tout marquer lu</button>
+      <span class="marks"><button class="mark" type="button" id="all-read">Tout marquer lu</button><button class="mark" type="button" id="purge">Nettoyer</button></span>
       <label class="sort">Trier par
         <select id="order">
           <option value="new">Plus récentes</option>
@@ -287,6 +288,8 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
     return out;
   };
 
+  // Same rule as the server (api/conversations.ts, idle): 1 or 2 questions, all from suggestions
+  const idle = (c) => c.msgs.length <= 2 && c.msgs.every((m) => m.outcome === 'canned');
   const show = (which) => { $('login').hidden = which !== 'login'; $('app').hidden = which !== 'app'; };
   const api = (opts = {}) => fetch('/api/conversations', { ...opts, cache: 'no-store', credentials: 'omit', headers: { authorization: 'Bearer ' + pw, ...(opts.body ? { 'content-type': 'application/json' } : {}) } }).catch(() => null);
   const ERR = { forbidden: 'Mot de passe incorrect.', too_many: 'Trop d’essais, réessayez dans une heure.', locked: 'Accès verrouillé pour aujourd’hui après trop d’essais ratés.', unavailable: 'Accès fermé : ADMIN_TOKEN manque sur Vercel.' };
@@ -509,6 +512,16 @@ dialog::backdrop { background: rgba(15,15,18,.35); -webkit-backdrop-filter: blur
   $('analytics-close').addEventListener('click', () => $('analytics').close());
   $('analytics').addEventListener('click', (e) => { if (e.target === $('analytics')) $('analytics').close(); });
   $('all-read').addEventListener('click', () => { for (const c of chats) seen[c.key] = c.msgs.length; saveSeen(); list(); });
+  // Deletes for good the conversations that taught nothing: 1 or 2 questions, all clicked suggestions
+  $('purge').addEventListener('click', async () => {
+    const n = chats.filter(idle).length;
+    if (!n) return alert('Rien à nettoyer : aucune conversation de 1 ou 2 questions venues uniquement des suggestions.');
+    if (!confirm(`Supprimer définitivement ${n} conversation${n > 1 ? 's' : ''} de 1 ou 2 questions, venues uniquement des suggestions ?\n\nC’est irréversible.`)) return;
+    const r = await api({ method: 'DELETE' });
+    if (!r || !r.ok) return alert('La suppression a échoué.');
+    current = -1; $('thread').innerHTML = '<p class="empty">Choisissez une conversation.</p>';
+    await load();
+  });
   $('login-form').addEventListener('submit', (e) => {
     e.preventDefault(); pw = $('pw').value; $('err').textContent = '';
     try { sessionStorage.setItem(KEY, pw); } catch (err) {}
