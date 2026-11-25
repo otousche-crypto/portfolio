@@ -622,7 +622,7 @@ body { position: relative; }
         conversation_ended: 'Je me suis arrêté là 😄 Cliquez sur « Nouvelle conversation » pour repartir sur de bonnes bases.', ended: 'Conversation terminée',
         conversation_too_long: 'Cette conversation a atteint sa longueur maximale. Cliquez sur « Nouvelle conversation » pour continuer, ou, le mieux, échangez directement avec Olivier : sur [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) ou à otousche@gmail.com.',
         error: 'Je ne peux pas vous répondre pour le moment, il y a un problème technique… En attendant, vous pouvez joindre Olivier à otousche@gmail.com ou sur [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/).',
-        write: 'Écrire à Olivier', copy: 'Copier l’email', copied: 'Copié !', up: 'Réponse utile', down: 'Réponse pas utile', thanks: 'Merci pour votre retour !', caseStudy: 'Lire l’étude de cas',
+        write: 'Écrire à Olivier', copy: 'Copier l’email', copied: 'Copié !', up: 'Réponse utile', down: 'Réponse pas utile', thanks: 'Merci pour votre retour !', caseStudy: 'Lire l’étude de cas', retry: 'Réessayer',
       },
       en: {
         hello: 'Hello! I’m Olivier’s AI agent: ask me your questions, I’ll do my best to answer!',
@@ -637,11 +637,11 @@ body { position: relative; }
         conversation_ended: 'I stopped there 😄 Click “New chat” to start afresh.', ended: 'Conversation closed',
         conversation_too_long: 'This conversation has reached its maximum length. Click “New chat” to keep going, or better, talk to Olivier directly: on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/) or at otousche@gmail.com.',
         error: 'I can’t answer you right now, there’s a technical issue… In the meantime, you can reach Olivier at otousche@gmail.com or on [LinkedIn](https://www.linkedin.com/in/olivier-tousche-a6160b122/).',
-        write: 'Email Olivier', copy: 'Copy email', copied: 'Copied!', up: 'Helpful answer', down: 'Not helpful', thanks: 'Thanks for your feedback!', caseStudy: 'Read the case study',
+        write: 'Email Olivier', copy: 'Copy email', copied: 'Copied!', up: 'Helpful answer', down: 'Not helpful', thanks: 'Thanks for your feedback!', caseStudy: 'Read the case study', retry: 'Try again',
       },
     };
 
-    let messages = [], busy = false, greeting = 'waiting';
+    let messages = [], busy = false, greeting = 'waiting', hurry = false, rush = null;
     const TYPING = '<span class="typing" aria-label="…"><i></i><i></i><i></i></span>';
     try { messages = JSON.parse(sessionStorage.getItem(KEY) || '[]'); } catch (e) {}
     const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(messages)); } catch (e) {} };
@@ -733,7 +733,14 @@ body { position: relative; }
       el.innerHTML = html; thread.appendChild(el);
       return el;
     };
-    const down = () => { log.scrollTop = log.scrollHeight; };
+    // Follows the conversation down, but never past the visitor's last question: a long answer unrolls under it, read
+    // from its start, instead of the page jumping to its end. It never scrolls back up either
+    let anchor = null;
+    const down = () => {
+      const max = log.scrollHeight - log.clientHeight;
+      if (!anchor) { log.scrollTop = max; return; }
+      log.scrollTop = Math.max(log.scrollTop, Math.min(max, anchor.offsetTop - bar.offsetHeight - 16));
+    };
     // The floating dock's height changes (suggestions or not, a growing textarea): the conversation keeps room for it
     const dock = document.querySelector('.dock'), bar = document.querySelector('.bar');
     new ResizeObserver(() => document.body.style.setProperty('--bar-h', bar.offsetHeight + 'px')).observe(bar);
@@ -821,7 +828,7 @@ body { position: relative; }
     const render = (pop) => {
       const t = T[lang()];
       quota();
-      thread.innerHTML = '';
+      thread.innerHTML = ''; anchor = null;
       if (greeting === 'shown') add('div', 'msg bot', md(t.hello));
       if (greeting === 'typing') add('div', 'msg bot', TYPING);
       // The suggestions, one swipeable line above the composer: the starters on a fresh chat, then the agent's own follow-ups
@@ -877,7 +884,7 @@ body { position: relative; }
       if (!messages.length || !cid) newCid();
       chips.innerHTML = '';
       messages.push({ role: 'user', content: text });
-      add('div', 'msg me', esc(text));
+      const me = anchor = add('div', 'msg me', esc(text));
       // The agent takes a moment to read before it starts typing: the "typing" bubble shows up after READ ms
       const READ = 800;
       const bubbles = [Object.assign(add('div', 'msg bot', TYPING), { hidden: true })];
@@ -888,7 +895,11 @@ body { position: relative; }
       // its length, and pauses a moment before starting the next. A ready-made answer arrives all at once: without this
       // rhythm it would pop up instantly and feel automatic
       const t0 = performance.now();
-      const beat = s => Math.min(2400, Math.max(1000, 600 + s.length * 14));
+      // After a couple of answers the visitor knows the agent: it types a little faster. And as soon as they start
+      // typing their next question, the answer ends at once (hurry), rather than making them wait for it
+      const pace = messages.filter(m => m.role === 'assistant').length >= 2 ? .65 : 1;
+      hurry = false;
+      const beat = s => pace * Math.min(2400, Math.max(1000, 600 + s.length * 14));
       const paint = () => {
         const parts = split(answer);
         // An empty part (two separators in a row) gets a hidden slot, removed once the answer is complete
@@ -900,10 +911,12 @@ body { position: relative; }
           const type = () => {
             if (!first) bubbles.push(add('div', 'msg bot', TYPING));
             down();
-            const wait = first ? t0 + READ + beat(parts[0]) - performance.now() : pausedBefore(answer, shown) ? 3500 : beat(split(answer)[shown] || '');
-            setTimeout(() => { shown++; opening = false; paint(); }, Math.max(0, wait));
+            const wait = hurry ? 0 : first ? t0 + READ + beat(parts[0]) - performance.now() : pausedBefore(answer, shown) ? 3500 : beat(split(answer)[shown] || '');
+            const go = () => { rush = null; shown++; opening = false; paint(); };
+            const id = setTimeout(go, Math.max(0, wait));
+            rush = () => { clearTimeout(id); go(); };
           };
-          if (first) type(); else setTimeout(type, 500);
+          if (first || hurry) type(); else setTimeout(type, 500);
         }
         down();
       };
@@ -943,7 +956,13 @@ body { position: relative; }
         if (e.message === '429') { serverLeft = 0; quota(); }
         // The agent says it itself, in its own bubble
         const last = bubbles.at(-1);
-        (last.querySelector('.typing') ? last : add('div', 'msg bot', '')).innerHTML = md(T[lang()][e.message] || T[lang()].error);
+        const said = last.querySelector('.typing') ? last : add('div', 'msg bot', '');
+        said.innerHTML = md(T[lang()][e.message] || T[lang()].error);
+        // A technical failure can be retried in one click: the question goes again, without retyping it
+        if (!['429', 'rate_limited', 'paused', 'conversation_ended', 'conversation_too_long'].includes(e.message)) {
+          const box = add('div', 'extras', `<div class="acts"><button class="act primary" type="button">${T[lang()].retry}</button></div>`);
+          box.querySelector('button').addEventListener('click', () => { if (busy) return; bubbles.forEach(b => b.remove()); [me, said, box].forEach(el => el.remove()); ask(text); });
+        }
         if (e.message !== '429' && e.message !== 'paused') showChips(next(messages.at(-1)?.content || ''));
         down();
       }
@@ -966,7 +985,7 @@ body { position: relative; }
     }
 
     form.addEventListener('submit', e => { e.preventDefault(); ask(q.value); });
-    q.addEventListener('input', update);
+    q.addEventListener('input', () => { if (busy && q.value.trim() && !hurry) { hurry = true; rush?.(); } update(); });
     q.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); ask(q.value); } });
     document.getElementById('reset').addEventListener('click', () => { if (busy) return; window.readInfo?.(false); messages = []; cid = ''; save(); render(); update(); log.scrollTop = 0; q.focus(); });
     log.addEventListener('click', e => { if (e.target.closest('.ipic')) window.readInfo?.(true); });
@@ -980,12 +999,12 @@ body { position: relative; }
       if (greeting !== 'waiting') return;
       if (messages.length) { greeting = 'shown'; return render(); }
       greeting = 'typing'; render(true);
-      setTimeout(() => { if (greeting === 'typing') { greeting = 'shown'; if (!busy) render(true); } }, 2000);
+      setTimeout(() => { if (greeting === 'typing') { greeting = 'shown'; if (!busy) render(true); } }, 1000);
     };
-    if (window.faceDone) greet(); else addEventListener('facedone', greet, { once: true });
-    // in case the portrait never animates (hidden tab, no canvas); in the sheet, counted from its opening
-    const fallback = () => setTimeout(greet, 6000);
-    if (window.sheetClosed) addEventListener('sheetopen', fallback, { once: true }); else fallback();
+    // The agent starts typing while the portrait composes, so it says hello about 1.5 s in; in the sheet, counted from
+    // its opening, and in a background tab, from when the tab is shown
+    const soon = () => document.hidden ? addEventListener('visibilitychange', soon, { once: true }) : setTimeout(greet, 400);
+    if (window.sheetClosed) addEventListener('sheetopen', soon, { once: true }); else soon();
   })();
 </script>
 </body>
