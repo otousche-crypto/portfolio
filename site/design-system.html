@@ -23,7 +23,7 @@
 .ds-group h3 { margin: 0 0 14px; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
 code { font-family: var(--mono); font-size: .86em; }
 
-/* Side menu: the page's levels and their groups, the one in view highlighted; phones keep the top bar's links */
+/* Side menu: the page's levels and their groups, the one in view highlighted; the top bar keeps the site's links */
 .ds-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px; align-items: start; }
 .ds-side { position: sticky; top: 88px; max-height: calc(100svh - 108px); overflow-y: auto; padding: 72px 0 24px; scrollbar-width: none; }
 .ds-side::-webkit-scrollbar { display: none; }
@@ -47,12 +47,11 @@ code { font-family: var(--mono); font-size: .86em; }
 .ds-side-title { margin: 0 0 12px 10px; font-size: var(--t-eyebrow); font-weight: 500; color: var(--muted); }
 .ds-group, .label { scroll-margin-top: 96px; }
 .ds-main > .ds-sec:first-child { padding-top: 72px; }
-.top nav { display: none; }
+/* Below 900px the summary sits above the content, its accordions closed until opened */
 @media (max-width: 900px) {
-  .ds-layout { grid-template-columns: 1fr; }
-  .ds-side { display: none; }
-  .top nav { display: flex; min-width: 0; overflow-x: auto; scrollbar-width: none; margin-right: -6px; }
-  .top nav::-webkit-scrollbar { display: none; }
+  .ds-layout { grid-template-columns: 1fr; gap: 0; }
+  .ds-side { position: static; max-height: none; padding: 24px 0 16px; border-bottom: 1px solid var(--line); }
+  .ds-main > .ds-sec:first-child { padding-top: 40px; }
 }
 
 /* Colour swatches */
@@ -98,7 +97,6 @@ code { font-family: var(--mono); font-size: .86em; }
 /* Specimens taken out of their page context */
 .ds-stage .top { position: static; padding: 0; width: 100%; }
 .ds-stage .top::before { display: none; }
-.ds-stage .top nav { display: flex; }
 .ds-stage .label, .ds-stage .cs-back, .ds-stage .copy-btn, .ds-stage .cert, .ds-stage .tags { margin: 0; }
 .ds-stage .cs-quote, .ds-stage .cs-fig { margin: 0 !important; }
 .ds-stage .card { width: 100%; cursor: default; }
@@ -109,6 +107,9 @@ code { font-family: var(--mono); font-size: .86em; }
 .ds-stage .iphone { right: 32px; bottom: 32px; width: 18%; min-width: 0; }
 @media (max-width: 760px) { .ds-stage .iphone { right: 12px; bottom: 16px; width: 26%; border-radius: 16px; padding: 3px; } .ds-stage .iphone .scr { border-radius: 13px; } }
 .ds-stage .agd-field { width: min(640px, 100%); cursor: default; }
+.ds-contact .contact { min-height: 0; padding: 0; border-top: 0; gap: 20px; }
+.ds-footer { padding-block: 0 8px; overflow: hidden; }
+.ds-footer footer { width: 100%; padding-block: 24px 16px; }
 .ds-chat { display: flex; flex-direction: column; gap: 10px; width: 100%; }
 .ds-swatch-ink { display: flex; gap: 8px; flex-wrap: wrap; }
 
@@ -190,11 +191,9 @@ code { font-family: var(--mono); font-size: .86em; }
   <header class="top">
     <a class="brand" href="index.html"><span>Olivier</span><span>Tousche</span></a>
     <nav>
-      <a href="#fondations">Fondations</a>
-      <a href="#atomes">Atomes</a>
-      <a href="#molecules">Molécules</a>
-      <a href="#organismes">Organismes</a>
-      <a href="#gabarits">Gabarits</a>
+      <a href="index.html#projets">Projets</a>
+      <a href="index.html#about">À propos</a>
+      <a href="#contact">Contact</a>
     </nav>
   </header>
 
@@ -243,6 +242,7 @@ code { font-family: var(--mono); font-size: .86em; }
           <li><a href="#cartes">Cartes projet</a></li>
           <li><a href="#appareils">Appareils</a></li>
           <li><a href="#dock">Dock de l’agent</a></li>
+          <li><a href="#contact-specimen">Contact et pied de page</a></li>
         </ol>
       </details></li>
       <li><details name="ds-nav"><summary><a href="#gabarits">Gabarits</a><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg></i></summary>
@@ -397,6 +397,32 @@ code { font-family: var(--mono); font-size: .86em; }
     <div class="ds-group" id="dock"><h3>Dock de l’agent</h3>
       <div class="ds-comps">
         <div class="ds-comp wide"><div class="ds-stage canvas" style="justify-content: center; padding: 48px 24px"><span class="agd-field"><span class="agd-ph">Une question sur mon parcours ?</span><span class="agd-send" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></span></div><div class="ds-cap"><b>Dock de l’agent</b><code>agent-dock.js</code> · <code>.agd-field</code> <i>— collé en bas de toutes les pages publiques ; un clic l’agrandit en feuille qui contient la page Agent. Le vrai est actif en bas de cette page.</i></div></div>
+      </div>
+    </div>
+    <div class="ds-group" id="contact-specimen"><h3>Contact et pied de page</h3>
+      <div class="ds-comps">
+        <div class="ds-comp wide"><div class="ds-stage col ds-contact"><section class="contact">
+    <h2 class="contact-title">Contact</h2>
+    <div>
+      <h4>Écrire</h4>
+      <div class="big">otousche@gmail.com</div>
+      <button class="copy-btn" type="button">Copier l'adresse</button>
+    </div>
+    <div>
+      <h4>Réseau</h4>
+      <a class="big" href="https://www.linkedin.com/in/olivier-tousche-a6160b122/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+    <div>
+      <h4>Basé à</h4>
+      <div class="big">Paris · remote</div>
+    </div>
+    <div>
+      <h4>CV</h4>
+      <a class="big cv-fr" href="cv/Olivier_Tousche_CV-fr.pdf" target="_blank" rel="noopener">Afficher le CV ↗</a>
+      <a class="big cv-en" href="cv/Olivier_Tousche_CV-en.pdf" target="_blank" rel="noopener">View CV ↗</a>
+    </div>
+  </section></div><div class="ds-cap"><b>Contact</b><code>.contact</code> · <code>contact.js</code> <i>— bas de chaque page publique. Le script y ajoute le portrait ASCII d’Olivier, posé sur le trait du pied de page et coupé par le bord droit : il est en vrai en bas de cette page.</i></div></div>
+        <div class="ds-comp wide"><div class="ds-stage col ds-footer"><footer><span>© 2026 Olivier Tousche</span><span class="lang-switch" role="group" aria-label="Langue · Language"><button type="button" data-demo-lang="fr" aria-pressed="true">FR</button><i aria-hidden="true">/</i><button type="button" data-demo-lang="en" aria-pressed="false">EN</button></span></footer></div><div class="ds-cap"><b>Pied de page</b><code>footer</code> · <code>.lang-switch</code> <i>— toutes les pages publiques ; un trait pleine largeur au-dessus, le choix de langue à droite</i></div></div>
       </div>
     </div>
   </section>
@@ -588,7 +614,30 @@ code { font-family: var(--mono); font-size: .86em; }
   </div>
   </div>
 
-  <footer><span>Design system · Olivier Tousche</span><span>tokens.css · components.css · site.css</span></footer>
+  <section class="contact" id="contact">
+    <h2 class="contact-title">Contact</h2>
+    <div>
+      <h4>Écrire</h4>
+      <div class="big">otousche@gmail.com</div>
+      <button class="copy-btn" id="copy" type="button">Copier l'adresse</button>
+    </div>
+    <div>
+      <h4>Réseau</h4>
+      <a class="big" href="https://www.linkedin.com/in/olivier-tousche-a6160b122/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+    <div>
+      <h4>Basé à</h4>
+      <div class="big">Paris · remote</div>
+    </div>
+    <div>
+      <h4>CV</h4>
+      <a class="big cv-fr" href="cv/Olivier_Tousche_CV-fr.pdf" target="_blank" rel="noopener">Afficher le CV ↗</a>
+      <a class="big cv-en" href="cv/Olivier_Tousche_CV-en.pdf" target="_blank" rel="noopener">View CV ↗</a>
+    </div>
+    <div class="ascii-stand" aria-hidden="true"><canvas class="ascii-me"></canvas></div>
+  </section>
+
+  <footer><span>© 2026 Olivier Tousche</span><span class="lang-switch" role="group" aria-label="Langue · Language"><button type="button" data-set-lang="fr" aria-pressed="true">FR</button><i aria-hidden="true">/</i><button type="button" data-set-lang="en" aria-pressed="false">EN</button></span></footer>
 </div>
 
 <script>
@@ -604,6 +653,7 @@ code { font-family: var(--mono); font-size: .86em; }
   // Side menu: the last level (and group) whose top has passed under the bar is the current one
   const links = [...document.querySelectorAll('.ds-side a')];
   const targets = links.map((a) => document.getElementById(a.hash.slice(1)));
+  const wide = matchMedia('(min-width: 901px)');
   let opened = null;  // the level opened by scrolling (a level the visitor opens or closes by hand stays as they left it)
   const current = () => {
     let sec = null, sub = null;
@@ -615,7 +665,7 @@ code { font-family: var(--mono); font-size: .86em; }
     sec ||= links[0];
     for (const a of links) a.setAttribute('aria-current', String(a === sec || a === sub));
     const open = sec.closest('li').querySelector('details');
-    if (open && !open.open && open !== opened) { open.open = true; opened = open; }
+    if (wide.matches && open && !open.open && open !== opened) { open.open = true; opened = open; }  // only while the summary sticks beside the content
   };
   addEventListener('scroll', current, { passive: true }); current();
   // Templates: show or hide the columns, gutters and measures
@@ -633,6 +683,16 @@ code { font-family: var(--mono); font-size: .86em; }
     setTimeout(() => { sw.classList.remove('copied'); small.textContent = was; }, 1200);
   });
 </script>
+<script>
+  // Language switch in the footer: this page is in French only; the choice is kept for the rest of the site
+  (() => {
+    let l = 'fr'; try { l = localStorage.getItem('lang') || 'fr'; } catch (e) {}
+    const set = (v) => document.querySelectorAll('[data-set-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.setLang === v)));
+    set(l);
+    document.querySelectorAll('[data-set-lang]').forEach((b) => b.addEventListener('click', () => { try { localStorage.setItem('lang', b.dataset.setLang); } catch (e) {} set(b.dataset.setLang); }));
+  })();
+</script>
+<script src="contact.js" defer></script>
 <script src="agent-dock.js" defer></script>
 </body>
 </html>
