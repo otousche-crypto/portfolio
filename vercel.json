@@ -4,10 +4,13 @@
   "outputDirectory": "dist",
   "rewrites": [
     { "source": "/design-system", "destination": "/design-system.html" },
+    { "source": "/vinyles/", "destination": "https://vinyles-paris.vercel.app/" },
+    { "source": "/vinyles/:path*", "destination": "https://vinyles-paris.vercel.app/:path*" },
     { "source": "/decadi", "destination": "https://decadi.vercel.app/decadi" },
     { "source": "/decadi/:path*", "destination": "https://decadi.vercel.app/decadi/:path*" }
   ],
   "redirects": [
+    { "source": "/vinyles", "destination": "/vinyles/", "permanent": false },
     { "source": "/apercu-oxw5q0627t", "destination": "/", "permanent": true },
     { "source": "/apercu-oxw5q0627t/:path*", "destination": "/:path*", "permanent": true },
     { "source": "/experience/equinox-altered", "destination": "/equinox.html", "permanent": true },
