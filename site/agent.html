@@ -557,7 +557,7 @@ body { position: relative; }
     const lang = () => document.documentElement.lang === 'en' ? 'en' : 'fr';
     const T = {
       fr: {
-        hello: 'Bonjour ! Je suis l’agent IA d’Olivier : posez-moi vos questions, je tâcherai d’y répondre !',
+        hello: 'Bonjour ! Je suis l’agent IA d’Olivier, je connais son parcours sur le bout des doigts. Qu’est-ce qui vous amène ?',
         // The composer's hint; in the sheet, the same words as the site's field it grew out of (agent-dock.js)
         ask: document.documentElement.classList.contains('embed') ? 'Une question sur mon parcours ?' : 'Posez vos questions',
         suggestions: ['Pourquoi cet agent ?', 'Comment utilise-t-il l’IA ?', 'Sa vision produit ?', 'Son approche du design ?', 'Est-il disponible ?'],
@@ -576,7 +576,7 @@ body { position: relative; }
         write: 'Écrire à Olivier', copy: 'Copier l’email', copied: 'Copié !', up: 'Réponse utile', down: 'Réponse pas utile', thanks: 'Merci pour votre retour !', caseStudy: 'Lire l’étude de cas', retry: 'Réessayer',
       },
       en: {
-        hello: 'Hello! I’m Olivier’s AI agent: ask me your questions, I’ll do my best to answer!',
+        hello: 'Hi! I’m Olivier’s AI agent, and I know his background inside out. What brings you here?',
         ask: document.documentElement.classList.contains('embed') ? 'Any question about my work?' : 'Ask your questions',
         suggestions: ['Why this agent?', 'How does he use AI?', 'His product vision?', 'His design approach?', 'Is he available?'],
         more: ['His product builder projects?', 'Tell me about Go MoonBound', 'How does he use AI?', 'His product vision?', 'His design approach?', 'His UX research experience?', 'Tell me about Altered', 'Why this agent?', 'Is he available?'],
