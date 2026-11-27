@@ -129,6 +129,12 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
 
   const { messages } = input;
   const lang = replyLang(messages.at(-1)!.content, input.lang);
+  // Haiku redonne le contact à chaque réponse malgré le prompt : on lui rappelle qu'il l'a déjà donné.
+  // Le rappel de forme vient en fin de consignes, là où il pèse le plus
+  const shared = messages.some((m) => m.role === 'assistant' && m.content.includes('otousche@gmail.com'));
+  const reminder = lang === 'en'
+    ? `${shared ? "\nYou already gave Olivier's contact details in this conversation: don't give them again unless the visitor asks." : ''}\nReminder: 3 bubbles and 90 words at most, no colons to introduce a list.`
+    : `${shared ? "\nTu as déjà donné le contact d'Olivier dans cette conversation : ne le redonne pas, sauf si le visiteur le demande." : ''}\nRappel : 3 bulles et 90 mots au plus, pas de deux-points pour annoncer une liste.`;
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
@@ -143,7 +149,7 @@ export async function handleChat(req: Request, deps: { client: Anthropic; store?
           // Le bloc en cache reste identique d'une requête à l'autre ; la consigne de langue vient après
           system: [
             { type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } },
-            { type: 'text', text: (lang === 'en' ? 'The visitor writes in English: answer entirely in English.' : 'Le visiteur écrit en français : réponds en français.') + `\nÂge d'Olivier aujourd'hui : ${ageOn(new Date())} ans.` },
+            { type: 'text', text: (lang === 'en' ? 'The visitor writes in English: answer entirely in English.' : 'Le visiteur écrit en français : réponds en français.') + `\nÂge d'Olivier aujourd'hui : ${ageOn(new Date())} ans.` + reminder },
           ],
           messages,
         });
